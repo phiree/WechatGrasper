@@ -276,11 +276,45 @@ namespace WeChatGrasper
         public string introduction { get; set; }
         public PlaceType PlaceType { get; set; }
     }
+    /*
+     文化企业列表里的企业
+     {
+            "id": "8eefefcdb1e04c99878ea32f9e27ca10",
+            "distance": 12502060.927735005,
+            "thumbnailKey": "/image/download/5b505c24cf114bac8ce45a0379a1460c.sjpg",
+            "location": [
+                118.30253601074219,
+                36.81298828125
+            ],
+            "name": "淄博稷下图书音像有限公司",
+            "satisfactionScore": "0.0",
+            "typeId": "0f7df083ef084c39ab0147bab9b2bd64",
+            "introduction": "书店主要业务涉及资格证考试辅导书，公务员考试资料，专升本辅导资料，中小学高中教辅资料，幼儿绘本，小说杂志等。"
+        },
+        详情的返回:
+        {
+        "isComment": {
+            "status": false,
+            "msg": "没有消费，不能评论"
+        },
+        "pictureKeys": [
+            "/image/download/5b505c24cf114bac8ce45a0379a1460c.sjpg",
+            "/image/download/23d4043911574aaf9e3b897c516544a6.sjpg"
+        ],
+        "address": "山东省淄博市临淄区桓公路220号大顺集团地下室",
+        "isFavorite": false,
+        "name": "淄博稷下图书音像有限公司",
+        "satisfactionScore": "0",
+        "introduction": "书店主要业务涉及资格证考试辅导书，公务员考试资料，专升本辅导资料，中小学高中教辅资料，幼儿绘本，小说杂志等。",
+        "telNumber": "18653383322"
+    }
+         */
     public enum PlaceType
     { 
         Venue,//文化场馆
         Company//文化企业
         }
+
     public class CompanyDetail { }
 
 }
