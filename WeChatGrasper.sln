@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28721.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeChatGrasper", "WeChatGrasper.csproj", "{A1A587AA-D331-401E-8805-A085004165EC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeChatGrasper", "WeChatGrasper/WeChatGrasper.csproj", "{A1A587AA-D331-401E-8805-A085004165EC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8482ED13-3534-4245-99F3-6AAE747BBE29}"
 	ProjectSection(SolutionItems) = preProject

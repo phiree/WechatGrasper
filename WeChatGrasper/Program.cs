@@ -201,7 +201,7 @@ namespace WeChatGrasper
 
         public void HandlerList(string listResult)
         {
-            OnImagesFound(new ContentHandlerEventArgs { Result = listResult.Substring(0, 105) });
+            ImageHandler?.Invoke(this,new ContentHandlerEventArgs { Result = listResult.Substring(0, 105) });
         }
         public void HandlerDetail(string detailResult)
         {
