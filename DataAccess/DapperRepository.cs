@@ -15,7 +15,8 @@ namespace DataAccess
         string connectionString;
         public DapperRepository( )
         {
-            this.connectionString = "server=.;Integrated Security=true;database=ewqy;";
+           // this.connectionString = "server=.;Integrated Security=true;database=ewqy;";
+            this.connectionString = "server=114.55.59.143,1430;uid=sa;pwd=zyzlxxjs;database=yf;";
            DapperExtensions.DapperExtensions.SetMappingAssemblies(
                new[] { typeof(ActivityMapper).Assembly });
 
