@@ -48,27 +48,27 @@ namespace DataAccess
 
         public void Save(Entity entity,string version)
         {
-            
+            var entityed=entity.ConvertToEntity();
             //Conn.Insert(entity);
             if (entity is Activity)
             {
-                var activity=(Activity)entity;
+                var activity=(Activity)entityed;
                 var existed=Conn.Get<Activity>(entity.id);
                 if(existed==null)
                 {
                     activity.Version=version;
-                    Conn.Insert(((Activity)entity).ConvertToEntity());
+                    Conn.Insert(activity);
                 }
                 else
                 { 
-                    if(activity.HashCode==activity.GetHashCode())
+                    if(activity.HashCode== existed.HashCode)
                     { 
                          
                         }
                     else
                     { 
                        activity.Version=version;
-                        Conn.Update(((Activity)entity).ConvertToEntity());
+                        Conn.Update((Activity)entityed);
                         }
                     }
                 
@@ -77,23 +77,23 @@ namespace DataAccess
             }
             else if (entity is CompanyVenue)
             {
-                var companyVenue = (CompanyVenue)entity;
+                var companyVenue = (CompanyVenue)entityed;
                 var existed = Conn.Get<CompanyVenue>(entity.id);
                 if (existed == null)
                 {
                     companyVenue.Version = version;
-                    Conn.Insert(((CompanyVenue)entity).ConvertToEntity());
+                    Conn.Insert(companyVenue);
                 }
                 else
                 {
-                    if (companyVenue.HashCode == companyVenue.GetHashCode())
+                    if (companyVenue.HashCode == existed.HashCode)
                     {
 
                     }
                     else
                     {
                         companyVenue.Version = version;
-                        Conn.Update(((CompanyVenue)entity).ConvertToEntity());
+                        Conn.Update(companyVenue);
                     }
                 }
 

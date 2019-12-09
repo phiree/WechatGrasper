@@ -4,9 +4,9 @@
     {
         public string id { get; set; }
         public PlaceType PlaceType { get; set; }
-        public  abstract override  int GetHashCode();
-         
-        public int HashCode { get;protected set;}
+        public  abstract  new  string GetHashCode();
+         public abstract Entity ConvertToEntity();
+        public string HashCode { get;protected set;}
     }
 
 }

@@ -27,7 +27,10 @@ namespace WeChatGrasper
     public class EWQY
     {
         Random rm = new Random();
-        readonly List<string> apiUrls = new List<string> { "venue/findVenueList.action", "company/findCompanyList.action", "activity/findRegionActivityList.action" };
+        readonly List<string> apiUrls = new List<string> { 
+            "venue/findVenueList.action", 
+             "company/findCompanyList.action", 
+            "activity/findRegionActivityList.action" };
         readonly IList<string> areaCode = new List<string> { "370300" };
         DataAccess.IRepository repository=new DataAccess.DapperRepository();
         public EWQY()
@@ -46,7 +49,7 @@ namespace WeChatGrasper
         ProgressRepository progressRepository = new ProgressRepository();
 
        static readonly string _dateVersion=DateTime.Now.ToString("yyyyMMddhhmmss");
-        
+        static int pageSize=500;
         public void Graspe()
         {
             var progressList = progressRepository.Get();
@@ -58,12 +61,12 @@ namespace WeChatGrasper
                 { startPageIndex = existedProgress.PageIndex; }
                 if (apiUrl == "activity/findRegionActivityList.action")
                 {
-                    GraspePagedList<Activity>(apiUrl, startPageIndex, 5, type: 0);
-                    GraspePagedList<Activity>(apiUrl, startPageIndex, 5, type: 1);
+                    GraspePagedList<Activity>(apiUrl, 0, pageSize, type: 0);
+                    GraspePagedList<Activity>(apiUrl, 0, pageSize, type: 1);
                 }
                 else
                 {
-                    GraspePagedList<CompanyVenue>(apiUrl, startPageIndex, 5, order: 0);
+                    GraspePagedList<CompanyVenue>(apiUrl, 0, pageSize, order: 0);
 
                 }
             }
@@ -75,7 +78,7 @@ namespace WeChatGrasper
             where T : Entity
         {
 
-            var pagedUrl = urlCreator.CreatePagedUrl(basePageUrl, pageIndex, pageSize);
+            var pagedUrl = urlCreator.CreatePagedUrl(basePageUrl, pageIndex, pageSize,type,order);
 
             string result = urlFetcher.FetchAsync(pagedUrl).Result;
           //  contentHandler.HandlerList(result);
@@ -115,11 +118,11 @@ namespace WeChatGrasper
               //  contentHandler.HandlerDetail(data.id, detail);
             }
             //保存当前状态
-            progressRepository.Save(new Progress { PagedBaseUrl = basePageUrl, PageIndex = pageIndex });
-            if (listData.Count == pageSize)
-            {
-                GraspePagedList<T>(basePageUrl, pageIndex + 1, pageSize);
-            }
+            //progressRepository.Save(new Progress { PagedBaseUrl = basePageUrl, PageIndex = pageIndex });
+            //if (listData.Count == pageSize)
+            //{
+            //    GraspePagedList<T>(basePageUrl, pageIndex + 1, pageSize,type,order);
+            //}
 
 
 

@@ -15,7 +15,7 @@ drop table companyvenue
  
 create table Activity
 (     id varchar(256) primary key,
-      hashCode integer,
+      hashCode varchar(50),
         PlaceType integer,
         entityid varchar(256),
         startTime varchar(256),
@@ -36,7 +36,7 @@ create table Activity
     create table  CompanyVenue  
    (
      id varchar(256) primary key,
-     hashCode integer,
+     hashCode varchar(50),
         PlaceType integer,
         
           thumbnailKey varchar(256),

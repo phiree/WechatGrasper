@@ -18,21 +18,21 @@ namespace Domain
         public string endTime { get; set; }
 
         public string detail { get; set; }
-        public string pictureKeyes { get;set;}
-       
+        public string pictureKeyes { get; set; }
+
         public List<string> pictureKeys { get; set; }
 
         public int credits { get; set; }
         public bool isShared { get; set; }
-        public string Version { get;set;}
-        public Activity ConvertToEntity()
+        public string Version { get; set; }
+        public override Entity ConvertToEntity()
         {
-           
+
             this.pictureKeyes = string.Join(",", pictureKeys);
             this.HashCode = GetHashCode();
             return this;
         }
-        public override int GetHashCode()
+        public override string GetHashCode()
         {
             StringBuilder sb = new StringBuilder();
             sb.Append(id)
@@ -42,14 +42,12 @@ namespace Domain
                 .Append(this.detail)
                 .Append(this.endTime)
                 .Append(this.isShared)
-                .Append( this.name)
-               .Append(string.Join(",", this.pictureKeys))
+                .Append(this.name)
+               .Append(string.Join(",", this.pictureKeyes))
                 .Append(this.startTime)
                 .Append(this.thumbnailKey);
-             
-            return sb.ToString().GetHashCode();
+
+            return MD5Helper.CalculateMD5Hash(sb.ToString());
         }
     }
-
 }
-

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 
-namespace WeChatGrasper
+namespace Domain
 {
     public class CookieAwareWebClient : WebClient
     {

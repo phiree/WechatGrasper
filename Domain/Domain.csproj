@@ -8,4 +8,10 @@
     <PackageReference Include="Dapper" Version="2.0.30" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="WebClientEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+  </ItemGroup>
+
 </Project>

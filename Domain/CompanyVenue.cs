@@ -33,16 +33,19 @@ namespace Domain
         #endregion
 
         public string telNumber { get; set; }
-        public   CompanyVenue ConvertToEntity()
+        public override  Entity ConvertToEntity()
         { if(location!=null)
             { 
             this.locations=string.Join(",",location);
             }
+        if(this.pictureKeys!=null)
+            { 
             this.pictureKeyes=string.Join(",",pictureKeys);
+            }
             this.HashCode=GetHashCode();
             return this;
             }
-        public override int GetHashCode()
+        public override string GetHashCode()
         {
            StringBuilder sb=new StringBuilder();
             sb.Append(id)
@@ -53,7 +56,7 @@ namespace Domain
                 .Append(this.isFavorite)
                 .Append(location!=null? string.Join(",",this.location):"")
                 .Append(this.name)
-                .Append(string.Join(",", this.pictureKeys))
+                .Append(pictureKeyes==null?string.Empty: string.Join(",", this.pictureKeys))
                 .Append(this.satisfactionScore)
                 .Append(this.serviceNote)
                 .Append(this.serviceTimeEnd)
@@ -61,7 +64,8 @@ namespace Domain
                 .Append(this.telNumber)
                 .Append(this.thumbnailKey)
                 .Append(this.typeId);
-            return sb.ToString().GetHashCode();
+             
+            return MD5Helper.CalculateMD5Hash( sb.ToString());
         }
     }
 
