@@ -5,11 +5,11 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain
+namespace TourInfo.Infrastracture
 {
-    public class MD5Helper
+    public class MD5Helper : IMD5Helper
     {
-        public static string CalculateMD5Hash(string input)
+        public string CalculateMD5Hash(string input)
         {
             // step 1, calculate MD5 hash from input
             MD5 md5 = System.Security.Cryptography.MD5.Create();

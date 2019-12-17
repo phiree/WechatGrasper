@@ -1,4 +1,4 @@
-﻿namespace Domain
+﻿namespace TourInfo.Domain
 {
     public enum PlaceType
     {

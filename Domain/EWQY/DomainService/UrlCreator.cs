@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace WeChatGrasper
+namespace TourInfo.Domain.EWQY
 {
-    public class UrlCreator : IUrlCreator
+    public class UrlCreator  
     {
         readonly string baseUrl = "https://w.culturedata.com.cn/";
         /// <summary>

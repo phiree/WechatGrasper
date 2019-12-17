@@ -1,9 +1,10 @@
-﻿namespace WeChatGrasper
+﻿namespace TourInfo.Domain
 {
-    public class ResultWrapper
+    public class IsComment
     {
         public int status { get; set; }
         public string msg { get; set; }
+
     }
 
 }

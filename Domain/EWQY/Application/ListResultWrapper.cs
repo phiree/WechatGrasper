@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace WeChatGrasper
+namespace TourInfo.Domain.EWQY
 {
     public class ListResultWrapper<T> : ResultWrapper
     {

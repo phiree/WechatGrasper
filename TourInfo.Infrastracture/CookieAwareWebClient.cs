@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Net;
+using TourInfo.Domain;
 
-namespace Domain
+namespace TourInfo.Infrastracture
 {
-    public class CookieAwareWebClient : WebClient
+    public class CookieAwareWebClient : WebClient 
     {
         public CookieContainer CookieContainer { get; set; }
         public Uri Uri { get; set; }
@@ -17,7 +18,10 @@ namespace Domain
         {
             this.CookieContainer = cookies;
         }
-
+        public string DowloadString(string address)
+        {
+             return base.DownloadString(address);
+        }
         protected override WebRequest GetWebRequest(Uri address)
         {
             WebRequest request = base.GetWebRequest(address);

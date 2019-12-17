@@ -32,7 +32,7 @@ namespace WeChatGrasper
              "company/findCompanyList.action", 
             "activity/findRegionActivityList.action" };
         readonly IList<string> areaCode = new List<string> { "370300" };
-        DataAccess.IRepository repository=new DataAccess.DapperRepository();
+        Domain.IRepository repository=new Domain.DapperRepository();
         public EWQY()
         {
             urlCreator = new UrlCreator();
@@ -75,7 +75,7 @@ namespace WeChatGrasper
         public void GraspePagedList<T>(string basePageUrl
             , int pageIndex, int pageSize
             , int? type = null, int? order = null)
-            where T : Entity
+            where T : EWQYEntity
         {
 
             var pagedUrl = urlCreator.CreatePagedUrl(basePageUrl, pageIndex, pageSize,type,order);
@@ -93,7 +93,7 @@ namespace WeChatGrasper
                 string detailUrl = urlCreator.CreateDetailUrl(basePageUrl, data.id);
                 string detailResult = urlFetcher.FetchAsync(detailUrl).Result;
                 var detail = JsonConvert.DeserializeObject<DetailResultWrapper<T>>(detailResult);
-                CopyValues<T>(detail.data, data);
+                CopyValues(detail.data, data);
                 if (typeof(T) == typeof(CompanyVenue))
                 { 
                     if (basePageUrl == "venue/findVenueList.action")

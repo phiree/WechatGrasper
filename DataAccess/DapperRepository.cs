@@ -8,7 +8,7 @@ using Dapper;
 using DapperExtensions;
 using Dapper.Contrib;
 
-namespace DataAccess
+namespace Domain
 {
     public class DapperRepository : IRepository
     {
@@ -47,9 +47,9 @@ namespace DataAccess
            return allIds;
         }
 
-        public void Save(Entity entity,string version)
+        public void Save(EWQYEntity entity,string version)
         {
-            var entityed=entity.ConvertToEntity();
+            var entityed=entity.ConvertToEWQYEntity();
             //Conn.Insert(entity);
             if (entity is Activity)
             {

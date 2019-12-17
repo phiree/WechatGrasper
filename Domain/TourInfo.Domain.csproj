@@ -6,12 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.30" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="WebClientEx.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
 </Project>

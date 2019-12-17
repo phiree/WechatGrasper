@@ -3,16 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28721.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeChatGrasper", "WeChatGrasper\WeChatGrasper.csproj", "{A1A587AA-D331-401E-8805-A085004165EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TourInfo.Application.DataGrasperConsole", "WeChatGrasper\TourInfo.Application.DataGrasperConsole.csproj", "{A1A587AA-D331-401E-8805-A085004165EC}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8482ED13-3534-4245-99F3-6AAE747BBE29}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TourInfo.Domain", "Domain\TourInfo.Domain.csproj", "{0BF9F610-4CBF-439D-A0FC-C7F842CABF8D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{FC18321A-61A8-4113-AF3D-964C79461F15}"
 	ProjectSection(SolutionItems) = preProject
-		WebClientEx.cs = WebClientEx.cs
+		docs\e文齐韵数据库.sql = docs\e文齐韵数据库.sql
+		docs\旅游资源sql脚本.txt = docs\旅游资源sql脚本.txt
+		docs\旅游资源信息导出接口(2).docx = docs\旅游资源信息导出接口(2).docx
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{4110260E-6DDB-4A72-8E75-BFAAE05FC097}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{0BF9F610-4CBF-439D-A0FC-C7F842CABF8D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TourInfo.Infrastracture", "TourInfo.Infrastracture\TourInfo.Infrastracture.csproj", "{8A493302-C253-4CC1-A53A-4AED1BC204EB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,14 +26,14 @@ Global
 		{A1A587AA-D331-401E-8805-A085004165EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1A587AA-D331-401E-8805-A085004165EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1A587AA-D331-401E-8805-A085004165EC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4110260E-6DDB-4A72-8E75-BFAAE05FC097}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4110260E-6DDB-4A72-8E75-BFAAE05FC097}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4110260E-6DDB-4A72-8E75-BFAAE05FC097}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4110260E-6DDB-4A72-8E75-BFAAE05FC097}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0BF9F610-4CBF-439D-A0FC-C7F842CABF8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0BF9F610-4CBF-439D-A0FC-C7F842CABF8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0BF9F610-4CBF-439D-A0FC-C7F842CABF8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0BF9F610-4CBF-439D-A0FC-C7F842CABF8D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A493302-C253-4CC1-A53A-4AED1BC204EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A493302-C253-4CC1-A53A-4AED1BC204EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A493302-C253-4CC1-A53A-4AED1BC204EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A493302-C253-4CC1-A53A-4AED1BC204EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

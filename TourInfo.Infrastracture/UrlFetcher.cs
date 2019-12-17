@@ -1,14 +1,23 @@
 ﻿using Domain;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
+using TourInfo.Domain;
+using TourInfo.Infrastracture;
 
-namespace WeChatGrasper
+namespace TourInfo.Infrastracture
 {
     public class UrlFetcher : IUrlFetcher
     {
+        
+        public Task<string> FetchAsync(string url)
+        {
+            var webClient = new CookieAwareWebClient();
+            return webClient.DownloadStringTaskAsync(url);
+        }
 
-        public async Task<string> FetchAsync(string url)
+        public async Task<string> FetchWithCookiesAsync(string url, CookieContainer cookieContainer )
         {
             var webClient = new CookieAwareWebClient();
             var cookiesContainer = new CookieContainer();

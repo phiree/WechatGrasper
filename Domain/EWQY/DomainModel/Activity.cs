@@ -2,12 +2,12 @@
 using System.Linq;
 using System.Text;
 
-namespace Domain
+namespace TourInfo.Domain
 {
     /// <summary>
     /// 活动列表项
     /// </summary>
-    public class Activity : Entity
+    public class Activity : EWQYEntity
     {
 
         public string startTime { get; set; }
@@ -25,14 +25,15 @@ namespace Domain
         public int credits { get; set; }
         public bool isShared { get; set; }
         public string Version { get; set; }
-        public override Entity ConvertToEntity()
+        public override EWQYEntity AppendFingerprint()
         {
+       
 
             this.pictureKeyes = string.Join(",", pictureKeys);
-            this.HashCode = GetHashCode();
+            this.Fingerprint = GetHashCode();
             return this;
         }
-        public override string GetHashCode()
+        public override string CalculateFingerprint(IMD5Helper mD5Helper)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append(id)
@@ -47,7 +48,7 @@ namespace Domain
                 .Append(this.startTime)
                 .Append(this.thumbnailKey);
 
-            return MD5Helper.CalculateMD5Hash(sb.ToString());
+            return mD5Helper.CalculateMD5Hash(sb.ToString());
         }
     }
 }

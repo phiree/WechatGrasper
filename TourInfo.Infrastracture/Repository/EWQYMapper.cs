@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
-namespace Domain
+using TourInfo.Domain;
+namespace TourInfo.Infrastracture
 {
-public    class ActivityMapper:DapperExtensions.Mapper.ClassMapper<Domain.Activity>
+public   class ActivityMapper:DapperExtensions.Mapper.ClassMapper< Activity>
     {
        public ActivityMapper()
         { 
@@ -13,7 +13,7 @@ public    class ActivityMapper:DapperExtensions.Mapper.ClassMapper<Domain.Activi
             AutoMap();
             }
     }
-    public class CompanyVenueMapper : DapperExtensions.Mapper.ClassMapper<Domain.CompanyVenue>
+    public class CompanyVenueMapper : DapperExtensions.Mapper.ClassMapper< CompanyVenue>
     {
         public CompanyVenueMapper()
         {

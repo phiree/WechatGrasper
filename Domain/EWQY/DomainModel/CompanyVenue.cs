@@ -2,11 +2,11 @@
 using System.Linq;
 using System.Text;
 
-namespace Domain
+namespace TourInfo.Domain
 {
     //文化企业/场馆列表项
 
-    public class CompanyVenue : Entity
+    public class CompanyVenue : EWQYEntity
     {
 
        // public double distance { get; set; }
@@ -33,7 +33,7 @@ namespace Domain
         #endregion
 
         public string telNumber { get; set; }
-        public override  Entity ConvertToEntity()
+        public override  EWQYEntity AppendFingerprint()
         { if(location!=null)
             { 
             this.locations=string.Join(",",location);
@@ -42,7 +42,7 @@ namespace Domain
             { 
             this.pictureKeyes=string.Join(",",pictureKeys);
             }
-            this.HashCode=GetHashCode();
+            this.Fingerprint=GetHashCode();
             return this;
             }
         public override string GetHashCode()
