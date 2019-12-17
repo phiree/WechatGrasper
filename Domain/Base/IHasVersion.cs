@@ -9,5 +9,6 @@ namespace TourInfo.Domain.Base
         string Version { get;  set;}
         string Fingerprint { get; set; }
         void UpdateVersion(string newFingerprint, string newVersion);
+          string CalculateFingerprint(IMD5Helper mD5Helper);
     }
 }

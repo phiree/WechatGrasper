@@ -4,34 +4,41 @@ using TourInfo.Domain.Base;
 
 namespace TourInfo.Domain.TourNews
 {
-   public  class ZBTAApplication
+    public class ZBTAApplication : IZBTAApplication
     {
         IUrlFetcher urlFetcher;
-        IRepository<ZbtaNews,int> newsRepository;
+        IVersionedRepository<ZbtaNews, string> newsRepository;
         public ZBTAApplication(IUrlFetcher urlFetcher)
         {
-           this.urlFetcher=urlFetcher;
+            this.urlFetcher = urlFetcher;
         }
         const string baseUrl = "http://www.zbta.net/informationW/getInformation.html?page=";
-        public void Graspe() { 
-        bool needContinue = true;
+        public void Graspe(string _dateVersion)
+        {
+            bool needContinue = true;
             int pageIndex = 1;
             while (needContinue)
             {
-                string result =  urlFetcher.FetchAsync(baseUrl + pageIndex).Result;
+                string result = urlFetcher.FetchAsync(baseUrl + pageIndex).Result;
 
+                转换错误,可能是因为json的Id是int类型
                 var jsonResult = Newtonsoft.Json.JsonConvert.DeserializeObject<ZbtaNewsResponse>(result);
-                foreach(var news in jsonResult.TourNews)
-                { 
-                     
-                    
+                foreach (var news in jsonResult.TourNews)
+                {
+                    var existedEntity = newsRepository.Get(news.id);
+                    if (existedEntity != null)
+                    {
+                        //只要发现有存在的id,则不再到下一页
+                        needContinue = false;
                     }
+                    newsRepository.SaveOrUpdate(news, _dateVersion);
+                }
                 //遍历 如果已经发现已经存在，则 needContinue=false,并跳过。
                 pageIndex++;
 
                 //
             }
-                }
+        }
         /*
          http://www.zbta.net/informationW/getInformation.html?page=[pagenumber]
 

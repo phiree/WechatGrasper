@@ -11,9 +11,9 @@ using TourInfo.Infrastracture.Repository.EFCore;
 namespace TourInfo.Infrastracture.Repository.EFCore
 {
     public class BaseEFCoreRepository<T, Key> : IRepository<T, Key>
-        where T : class
+        where T : class  
     {
-        TourInfoDbContext tourInfoDbContext;
+        TourInfoDbContext tourInfoDbContext { get; }
 
         public BaseEFCoreRepository(TourInfoDbContext tourInfoDbContext)
         {

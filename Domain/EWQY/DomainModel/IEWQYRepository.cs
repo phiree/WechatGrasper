@@ -5,8 +5,8 @@ using TourInfo.Domain.Base;
 
 namespace TourInfo.Domain.EWQY.DomainModel
 {
-   public  interface IEWQYRepository:IRepository<EWQYEntity,string>
+   public  interface IEWQYRepository:IVersionedRepository<EWQYEntity, string>
     {
-        void SaveOrUpdate(EWQYEntity eWQYEntity,string newVersion);
+         
     }
 }

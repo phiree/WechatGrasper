@@ -30,7 +30,7 @@ namespace TourInfo.Domain.EWQY
             
 
         }
-        public void Graspe()
+        public void Graspe(string _dateVersion)
         {
 
             foreach (var apiUrl in apiUrls)

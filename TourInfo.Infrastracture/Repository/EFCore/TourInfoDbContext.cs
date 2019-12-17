@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using TourInfo.Domain.Base;
 using TourInfo.Domain;
 using System.Linq;
+using TourInfo.Domain.TourNews;
+
 namespace TourInfo.Infrastracture.Repository.EFCore
 {
     public class TourInfoDbContext:DbContext
@@ -35,9 +37,12 @@ namespace TourInfo.Infrastracture.Repository.EFCore
               );
         }
         public DbSet<Entity> Entities { get; set; }
+        public DbSet<VersionedEntity>  VersionedEntities { get; set; }
         public DbSet<EWQYEntity> EWQYEntities{ get; set; }
         public DbSet<Activity> Activities { get; set; }
         public DbSet<CompanyVenue> CompanyVenues{ get; set; }
+
+        public DbSet<ZbtaNews> ZbtaNews { get; set; }
 
 
     }

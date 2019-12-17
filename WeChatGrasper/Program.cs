@@ -16,7 +16,8 @@ using TourInfo.Domain;
 using TourInfo.Infrastracture;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
- 
+using TourInfo.Domain.TourNews;
+
 namespace WeChatGrasper
 {
     class Program
@@ -34,6 +35,7 @@ namespace WeChatGrasper
             var serviceProvider = new ServiceCollection()
            .AddLogging()
            .AddSingleton<IEWQYApplication, EWQYApplication>()
+             .AddSingleton<IZBTAApplication, ZBTAApplication > ()
            .AddDbContext<TourInfoDbContext>(options => options.UseSqlServer(config.GetConnectionString("TourInfoConnectionString")))
            .AddSingleton(typeof(IRepository<,>), typeof( BaseEFCoreRepository<,>))
            
@@ -44,8 +46,12 @@ namespace WeChatGrasper
            .BuildServiceProvider();
            
             IEWQYApplication eWQYApplication=serviceProvider.GetService<IEWQYApplication>();
+            var zBTAApplication = serviceProvider.GetService<IZBTAApplication>();
             Console.WriteLine("开始抓取EWQY数据");
-            eWQYApplication.Graspe();
+            string _dateVersion = DateTime.Now.ToString("yyyyMMddhhmmss");
+            zBTAApplication.Graspe(_dateVersion);
+            //eWQYApplication.Graspe(_dateVersion);
+
             Console.WriteLine("抓取完毕");
 
         }
