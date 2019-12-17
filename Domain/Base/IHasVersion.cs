@@ -7,6 +7,7 @@ namespace TourInfo.Domain.Base
     public interface IHasVersion
     {
         string Version { get;  set;}
-       void UpdateVersion(string newFingerprint, string newVersion);
+        string Fingerprint { get; set; }
+        void UpdateVersion(string newFingerprint, string newVersion);
     }
 }

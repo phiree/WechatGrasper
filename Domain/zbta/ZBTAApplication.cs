@@ -21,7 +21,13 @@ namespace TourInfo.Domain.TourNews
                 string result =  urlFetcher.FetchAsync(baseUrl + pageIndex).Result;
 
                 var jsonResult = Newtonsoft.Json.JsonConvert.DeserializeObject<ZbtaNewsResponse>(result);
+                foreach(var news in jsonResult.TourNews)
+                { 
+                     
+                    
+                    }
                 //遍历 如果已经发现已经存在，则 needContinue=false,并跳过。
+                pageIndex++;
 
                 //
             }
