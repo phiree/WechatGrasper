@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TourInfo.Domain.Base;
+using TourInfo.Domain.EWQY.DomainModel;
 
 namespace TourInfo.Domain.EWQY
 {
-    public class EWQYApplication
+    public class EWQYApplication : IEWQYApplication
     {
         UrlCreator urlCreator = null;
         IUrlFetcher urlFetcher;
@@ -20,23 +21,24 @@ namespace TourInfo.Domain.EWQY
         static int pageSize = 500;
         Random rm = new Random();
 
-        IRepository<EWQYEntity> repository;
-        public EWQYApplication(IUrlFetcher urlFetcher, IRepository<EWQYEntity> repository)
+        IEWQYRepository eWQYRepository;
+        public EWQYApplication(IUrlFetcher urlFetcher, IEWQYRepository eWQYRepository)
         {
             urlCreator = new UrlCreator();
             this.urlFetcher = urlFetcher;
-            this.repository = repository;
-           
+            this.eWQYRepository = eWQYRepository;
+            
+
         }
         public void Graspe()
         {
-           
+
             foreach (var apiUrl in apiUrls)
             {
                 if (apiUrl == "activity/findRegionActivityList.action")
                 {
-                    GraspePagedList<Activity>(apiUrl, 0, pageSize, type: 0);
-                    GraspePagedList<Activity>(apiUrl, 0, pageSize, type: 1);
+                    GraspePagedList<Activity>(apiUrl, 0, pageSize, type: PlaceType.Venue);
+                    GraspePagedList<Activity>(apiUrl, 0, pageSize, type: PlaceType.Company);
                 }
                 else
                 {
@@ -48,13 +50,13 @@ namespace TourInfo.Domain.EWQY
 
         public void GraspePagedList<T>(string basePageUrl
            , int pageIndex, int pageSize
-           , int? type = null, int? order = null)
+           , PlaceType? type = null, int? order = null)
            where T : EWQYEntity
         {
 
             var pagedUrl = urlCreator.CreatePagedUrl(basePageUrl, pageIndex, pageSize, type, order);
 
-            string result = urlFetcher.FetchAsync(pagedUrl).Result;
+            string result = urlFetcher.FetchEWQYAsync(pagedUrl).Result;
             //  contentHandler.HandlerList(result);
             var jsonResult = Newtonsoft.Json.JsonConvert.DeserializeObject<ListResultWrapper<T>>(result);
             var status = jsonResult.status;// jsonResult["status"];
@@ -65,7 +67,7 @@ namespace TourInfo.Domain.EWQY
             {
                 System.Threading.Thread.Sleep(500 + rm.Next(1, 100));
                 string detailUrl = urlCreator.CreateDetailUrl(basePageUrl, data.id);
-                string detailResult = urlFetcher.FetchAsync(detailUrl).Result;
+                string detailResult = urlFetcher.FetchEWQYAsync(detailUrl).Result;
                 var detail = JsonConvert.DeserializeObject<DetailResultWrapper<T>>(detailResult);
                 CopyValues(detail.data, data);
                 if (typeof(T) == typeof(CompanyVenue))
@@ -76,23 +78,19 @@ namespace TourInfo.Domain.EWQY
                     {
                         detail.data.PlaceType = PlaceType.Company;
                     }
-                    //活动
-                    else if (type.HasValue)
-                    {
-                        if (type.Value == 1)
-                        {
-                            detail.data.PlaceType = PlaceType.Company;
-                        }
-                        else
-                        {
-                            detail.data.PlaceType = PlaceType.Venue;
-                        }
-                    }
                 }
-                repository.SaveOrUpdate(detail.data, _dateVersion);
+                //活动
+                else if (type.HasValue)
+                    {
+                         
+                            detail.data.PlaceType = type.Value;
+                      
+                   
+                }
+                eWQYRepository.SaveOrUpdate(detail.data, _dateVersion);
                 //  contentHandler.HandlerDetail(data.id, detail);
             }
-             
+
 
 
 

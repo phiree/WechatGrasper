@@ -5,13 +5,15 @@ using System.Text;
 
 namespace TourInfo.Domain.Base
 {
-   public  interface IRepository<Entity> 
+    public interface IRepository<T, Key>
     {
-         
-          void SaveOrUpdate(Entity entity,string newVersion);
-         
+
+        void Insert(T entity);
+        bool Update(T entity);
+        T Get(Key id);
+
 
 
     }
-   
+
 }

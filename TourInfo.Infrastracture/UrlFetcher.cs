@@ -17,7 +17,7 @@ namespace TourInfo.Infrastracture
             return webClient.DownloadStringTaskAsync(url);
         }
 
-        public async Task<string> FetchWithCookiesAsync(string url, CookieContainer cookieContainer )
+        public async Task<string> FetchEWQYAsync(string url )
         {
             var webClient = new CookieAwareWebClient();
             var cookiesContainer = new CookieContainer();

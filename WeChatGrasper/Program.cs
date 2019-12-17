@@ -6,162 +6,51 @@ using Newtonsoft.Json.Linq;
 using System.Linq;
 using System.Text;
 using Domain;
-
+using TourInfo.Domain.EWQY;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using TourInfo.Domain.Base;
+using TourInfo.Infrastracture.Repository.EFCore;
+using TourInfo.Domain.EWQY.DomainModel;
+using TourInfo.Domain;
+using TourInfo.Infrastracture;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+ 
 namespace WeChatGrasper
 {
     class Program
     {
+        
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            string environment= Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            environment=environment??"Development";
+            IConfiguration config = new ConfigurationBuilder()
+          .AddJsonFile("appsettings.json", true, true)
+           .AddJsonFile($"appsettings.{environment}.json", true, true)
+         .AddEnvironmentVariables()
+          .Build();
+            var serviceProvider = new ServiceCollection()
+           .AddLogging()
+           .AddSingleton<IEWQYApplication, EWQYApplication>()
+           .AddDbContext<TourInfoDbContext>(options => options.UseSqlServer(config.GetConnectionString("TourInfoConnectionString")))
+           .AddSingleton(typeof(IRepository<,>), typeof( BaseEFCoreRepository<,>))
+           
+            .AddSingleton<IEWQYRepository,EWQYEFCoreRepository>()
+             .AddSingleton<IMD5Helper,  MD5Helper>()
+              .AddSingleton<IUrlFetcher,  UrlFetcher>()
+ 
+           .BuildServiceProvider();
+           
+            IEWQYApplication eWQYApplication=serviceProvider.GetService<IEWQYApplication>();
+            Console.WriteLine("开始抓取EWQY数据");
+            eWQYApplication.Graspe();
+            Console.WriteLine("抓取完毕");
 
-            StringBuilder ss=new StringBuilder();
-            ss.Append("a");
-            Console.WriteLine(ss.ToString().GetHashCode());
-             
-            Console.WriteLine(ss.ToString().GetHashCode());
-            //
-         new EWQY().Graspe();
         }
     }
-    public class EWQY
-    {
-        Random rm = new Random();
-        readonly List<string> apiUrls = new List<string> { 
-            "venue/findVenueList.action", 
-             "company/findCompanyList.action", 
-            "activity/findRegionActivityList.action" };
-        readonly IList<string> areaCode = new List<string> { "370300" };
-        Domain.IRepository repository=new Domain.DapperRepository();
-        public EWQY()
-        {
-            urlCreator = new UrlCreator();
-            urlFetcher = new UrlFetcher();
-            contentHandler = new ContentHandler();
-            contentHandler.FileSaveHandler += ContentHandler_FileSaveHandler;
-            contentHandler.DatabaseSaveHandler += ContentHandler_DatabaseSaveHandler;
-            contentHandler.ImageHandler += ContentHandler_ImageHandler;
-            contentHandler.ParserHandler += ContentHandler_ParserHandler;
-        }
-        IUrlCreator urlCreator;
-        IUrlFetcher urlFetcher;
-        IContentHandler contentHandler;
-        ProgressRepository progressRepository = new ProgressRepository();
-
-       static readonly string _dateVersion=DateTime.Now.ToString("yyyyMMddhhmmss");
-        static int pageSize=500;
-        public void Graspe()
-        {
-            var progressList = progressRepository.Get();
-            foreach (var apiUrl in apiUrls)
-            {
-                int startPageIndex = 0;
-                var existedProgress = progressList.FirstOrDefault(x => x.PagedBaseUrl == apiUrl);
-                if (existedProgress != null)
-                { startPageIndex = existedProgress.PageIndex; }
-                if (apiUrl == "activity/findRegionActivityList.action")
-                {
-                    GraspePagedList<Activity>(apiUrl, 0, pageSize, type: 0);
-                    GraspePagedList<Activity>(apiUrl, 0, pageSize, type: 1);
-                }
-                else
-                {
-                    GraspePagedList<CompanyVenue>(apiUrl, 0, pageSize, order: 0);
-
-                }
-            }
-        }
-
-        public void GraspePagedList<T>(string basePageUrl
-            , int pageIndex, int pageSize
-            , int? type = null, int? order = null)
-            where T : EWQYEntity
-        {
-
-            var pagedUrl = urlCreator.CreatePagedUrl(basePageUrl, pageIndex, pageSize,type,order);
-
-            string result = urlFetcher.FetchAsync(pagedUrl).Result;
-          //  contentHandler.HandlerList(result);
-            var jsonResult = Newtonsoft.Json.JsonConvert.DeserializeObject<ListResultWrapper<T>>(result);
-            var status = jsonResult.status;// jsonResult["status"];
-            if (status != 0)
-            { throw new Exception("接口返回错误"); }
-            var listData = jsonResult.data;
-            foreach (var data in listData)
-            {
-                System.Threading.Thread.Sleep(500 + rm.Next(1, 100));
-                string detailUrl = urlCreator.CreateDetailUrl(basePageUrl, data.id);
-                string detailResult = urlFetcher.FetchAsync(detailUrl).Result;
-                var detail = JsonConvert.DeserializeObject<DetailResultWrapper<T>>(detailResult);
-                CopyValues(detail.data, data);
-                if (typeof(T) == typeof(CompanyVenue))
-                { 
-                    if (basePageUrl == "venue/findVenueList.action")
-                        { detail.data.PlaceType= PlaceType.Venue; } 
-                    else if(basePageUrl== "company/findCompanyList.action")
-                    { 
-                        detail.data.PlaceType= PlaceType.Company;
-                        }
-                    //活动
-                    else if(type.HasValue)
-                    { 
-                        if(type.Value==1)
-                        { 
-                            detail.data.PlaceType= PlaceType.Company;
-                            }
-                        else {
-                            detail.data.PlaceType = PlaceType.Venue;
-                        }
-                        }
-                    }
-                repository.Save(detail.data,_dateVersion);
-              //  contentHandler.HandlerDetail(data.id, detail);
-            }
-            //保存当前状态
-            //progressRepository.Save(new Progress { PagedBaseUrl = basePageUrl, PageIndex = pageIndex });
-            //if (listData.Count == pageSize)
-            //{
-            //    GraspePagedList<T>(basePageUrl, pageIndex + 1, pageSize,type,order);
-            //}
-
-
-
-
-        }
-        public void CopyValues<T>(T target, T source)
-        {
-            Type t = typeof(T);
-
-            var properties = t.GetProperties().Where(prop => prop.CanRead && prop.CanWrite);
-
-            foreach (var prop in properties)
-            {
-                var value = prop.GetValue(source, null);
-                if (value != null)
-                    prop.SetValue(target, value, null);
-            }
-        }
-
-        private void ContentHandler_ParserHandler(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void ContentHandler_ImageHandler(object sender, EventArgs e)
-        {
-            Console.WriteLine("Image:" + ((ContentHandlerEventArgs)e).Result);
-        }
-
-        private void ContentHandler_DatabaseSaveHandler(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void ContentHandler_FileSaveHandler(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-    }
+   
 
 }
 

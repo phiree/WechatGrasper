@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TourInfo.Domain.Base;
 
 namespace TourInfo.Domain
 {
     /// <summary>
     /// 活动列表项
     /// </summary>
-    public class Activity : EWQYEntity
+    public class Activity : EWQYEntity 
     {
 
         public string startTime { get; set; }
@@ -18,21 +19,12 @@ namespace TourInfo.Domain
         public string endTime { get; set; }
 
         public string detail { get; set; }
-        public string pictureKeyes { get; set; }
-
-        public List<string> pictureKeys { get; set; }
+       
+        public string[] pictureKeys { get; set; }
 
         public int credits { get; set; }
         public bool isShared { get; set; }
-        public string Version { get; set; }
-        public override EWQYEntity AppendFingerprint()
-        {
-       
-
-            this.pictureKeyes = string.Join(",", pictureKeys);
-            this.Fingerprint = GetHashCode();
-            return this;
-        }
+         
         public override string CalculateFingerprint(IMD5Helper mD5Helper)
         {
             StringBuilder sb = new StringBuilder();
@@ -44,11 +36,13 @@ namespace TourInfo.Domain
                 .Append(this.endTime)
                 .Append(this.isShared)
                 .Append(this.name)
-               .Append(string.Join(",", this.pictureKeyes))
+               .Append(string.Join(",", this.pictureKeys))
                 .Append(this.startTime)
                 .Append(this.thumbnailKey);
 
             return mD5Helper.CalculateMD5Hash(sb.ToString());
         }
+
+        
     }
 }

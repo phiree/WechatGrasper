@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using TourInfo.Domain;
-namespace TourInfo.Infrastracture
+namespace TourInfo.Infrastracture.Repository.Dapper
 {
 public   class ActivityMapper:DapperExtensions.Mapper.ClassMapper< Activity>
     {

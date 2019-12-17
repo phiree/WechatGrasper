@@ -17,10 +17,10 @@ namespace TourInfo.Domain.EWQY
         {
             return new List<string> { "https://w.culturedata.com.cn/activity/findRegionActivityList.action?type=0&gotCount=0&number=5&regionCode=370300" };
         }
-        public string CreatePagedUrl(string pagedBaseUrl, int pageIndex, int pageSize, int? type = null, int? order = null)
+        public string CreatePagedUrl(string pagedBaseUrl, int pageIndex, int pageSize, PlaceType? type = null, int? order = null)
         {
-            string typeParam = type.HasValue ? $"&type={type.Value}" : string.Empty;
-            string orderParam = order.HasValue ? $"&order={order.Value}" : string.Empty;
+            string typeParam = type.HasValue ? $"&type={(int)type.Value}" : string.Empty;
+            string orderParam = order.HasValue ? $"&order={(int)order.Value}" : string.Empty;
 
             return $"{baseUrl}{pagedBaseUrl}?gotCount={pageIndex}&number={pageSize}&regionCode=370300{typeParam}{orderParam}";
         }

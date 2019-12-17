@@ -9,7 +9,7 @@ namespace TourInfo.Domain
     public interface IUrlFetcher
     {
         Task<string> FetchAsync(string url);
-        Task<string> FetchWithCookiesAsync(string url, CookieContainer cookieContainer);
+        Task<string> FetchEWQYAsync(string url );
     }
 
 }

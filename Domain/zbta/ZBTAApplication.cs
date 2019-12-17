@@ -4,13 +4,13 @@ using TourInfo.Domain.Base;
 
 namespace TourInfo.Domain.TourNews
 {
-    class Class1
+   public  class ZBTAApplication
     {
-        CookieAwareWebClient webClient;
-        IRepository<TourNews> newsRepository;
-        public Class1()
+        IUrlFetcher urlFetcher;
+        IRepository<ZbtaNews,int> newsRepository;
+        public ZBTAApplication(IUrlFetcher urlFetcher)
         {
-            webClient = new CookieAwareWebClient();
+           this.urlFetcher=urlFetcher;
         }
         const string baseUrl = "http://www.zbta.net/informationW/getInformation.html?page=";
         public void Graspe() { 
@@ -18,9 +18,9 @@ namespace TourInfo.Domain.TourNews
             int pageIndex = 1;
             while (needContinue)
             {
-                string result = webClient.DownloadString(baseUrl + pageIndex);
+                string result =  urlFetcher.FetchAsync(baseUrl + pageIndex).Result;
 
-                var jsonResult = Newtonsoft.Json.JsonConvert.DeserializeObject<TourNewsResponse>(result);
+                var jsonResult = Newtonsoft.Json.JsonConvert.DeserializeObject<ZbtaNewsResponse>(result);
                 //遍历 如果已经发现已经存在，则 needContinue=false,并跳过。
 
                 //
