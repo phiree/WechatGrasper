@@ -8,8 +8,9 @@ namespace TourInfo.Domain.TourNews
     {
         IUrlFetcher urlFetcher;
         IVersionedRepository<ZbtaNews, string> newsRepository;
-        public ZBTAApplication(IUrlFetcher urlFetcher)
+        public ZBTAApplication(IUrlFetcher urlFetcher, IVersionedRepository<ZbtaNews, string> newsRepository)
         {
+            this.newsRepository = newsRepository;
             this.urlFetcher = urlFetcher;
         }
         const string baseUrl = "http://www.zbta.net/informationW/getInformation.html?page=";
@@ -21,8 +22,14 @@ namespace TourInfo.Domain.TourNews
             {
                 string result = urlFetcher.FetchAsync(baseUrl + pageIndex).Result;
 
-                转换错误,可能是因为json的Id是int类型
+                //转换错误,可能是因为json的Id是int类型
+               
                 var jsonResult = Newtonsoft.Json.JsonConvert.DeserializeObject<ZbtaNewsResponse>(result);
+                if (jsonResult.TourNews.Count == 0)
+                {
+                    needContinue = false;
+                    continue;
+                }
                 foreach (var news in jsonResult.TourNews)
                 {
                     var existedEntity = newsRepository.Get(news.id);
@@ -30,6 +37,7 @@ namespace TourInfo.Domain.TourNews
                     {
                         //只要发现有存在的id,则不再到下一页
                         needContinue = false;
+                        break;
                     }
                     newsRepository.SaveOrUpdate(news, _dateVersion);
                 }

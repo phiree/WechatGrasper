@@ -1,6 +1,6 @@
 ﻿namespace TourInfo.Domain.Base
 {
-    public abstract class VersionedEntity:Entity,IHasVersion
+    public abstract class VersionedEntity:Entity<string>,IHasVersion
     {
         public string Version { get; set; }
         public string Fingerprint { get; set; }

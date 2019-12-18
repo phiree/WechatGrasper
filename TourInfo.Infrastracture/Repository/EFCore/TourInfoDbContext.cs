@@ -36,7 +36,7 @@ namespace TourInfo.Infrastracture.Repository.EFCore
                     .Select(x=>Convert.ToDouble(x)).ToArray()
               );
         }
-        public DbSet<Entity> Entities { get; set; }
+        public DbSet<Entity<string>> Entities { get; set; }
         public DbSet<VersionedEntity>  VersionedEntities { get; set; }
         public DbSet<EWQYEntity> EWQYEntities{ get; set; }
         public DbSet<Activity> Activities { get; set; }

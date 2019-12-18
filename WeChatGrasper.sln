@@ -10,11 +10,14 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{FC18321A-61A8-4113-AF3D-964C79461F15}"
 	ProjectSection(SolutionItems) = preProject
 		docs\e文齐韵数据库.sql = docs\e文齐韵数据库.sql
+		docs\initdata.json = docs\initdata.json
 		docs\旅游资源sql脚本.txt = docs\旅游资源sql脚本.txt
 		docs\旅游资源信息导出接口(2).docx = docs\旅游资源信息导出接口(2).docx
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TourInfo.Infrastracture", "TourInfo.Infrastracture\TourInfo.Infrastracture.csproj", "{8A493302-C253-4CC1-A53A-4AED1BC204EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TourInfo.Infrastracture", "TourInfo.Infrastracture\TourInfo.Infrastracture.csproj", "{8A493302-C253-4CC1-A53A-4AED1BC204EB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TourInfo.Application.Api", "TourInfo.Application.Api\TourInfo.Application.Api.csproj", "{EE09909A-5266-4E38-8095-C78BB77953FC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,6 +37,10 @@ Global
 		{8A493302-C253-4CC1-A53A-4AED1BC204EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A493302-C253-4CC1-A53A-4AED1BC204EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A493302-C253-4CC1-A53A-4AED1BC204EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE09909A-5266-4E38-8095-C78BB77953FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE09909A-5266-4E38-8095-C78BB77953FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE09909A-5266-4E38-8095-C78BB77953FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE09909A-5266-4E38-8095-C78BB77953FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

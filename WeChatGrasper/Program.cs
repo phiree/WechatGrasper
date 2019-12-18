@@ -38,7 +38,9 @@ namespace WeChatGrasper
              .AddSingleton<IZBTAApplication, ZBTAApplication > ()
            .AddDbContext<TourInfoDbContext>(options => options.UseSqlServer(config.GetConnectionString("TourInfoConnectionString")))
            .AddSingleton(typeof(IRepository<,>), typeof( BaseEFCoreRepository<,>))
+            .AddSingleton(typeof(IVersionedRepository<,>), typeof(VersionedDataEFCoreRepository<,>))
            
+
             .AddSingleton<IEWQYRepository,EWQYEFCoreRepository>()
              .AddSingleton<IMD5Helper,  MD5Helper>()
               .AddSingleton<IUrlFetcher,  UrlFetcher>()

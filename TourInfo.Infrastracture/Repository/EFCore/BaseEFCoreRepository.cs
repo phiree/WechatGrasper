@@ -7,7 +7,7 @@ using TourInfo.Domain.Base;
 using Dapper;
 using DapperExtensions;
 using TourInfo.Infrastracture.Repository.EFCore;
-
+using System.Linq;
 namespace TourInfo.Infrastracture.Repository.EFCore
 {
     public class BaseEFCoreRepository<T, Key> : IRepository<T, Key>
@@ -47,6 +47,14 @@ namespace TourInfo.Infrastracture.Repository.EFCore
                 throw new Exception("update failed." + ex.ToString());
             }
         }
-        
+
+        public IList<T> GetAll()
+        {
+            return tourInfoDbContext.Set<T>().AsList();
+        }
+        public IList<T> FindList(Func<T, bool> predicate)
+        {
+            return tourInfoDbContext.Set<T>().Where(predicate).ToList();
+        }
     }
 }

@@ -3,9 +3,9 @@
     /// <summary>
     /// 基类
     /// </summary>
-    public abstract class Entity
+    public abstract class Entity<Key>
     {
-        public string id { get; set; }
+        public Key id { get; set; }
         /// <summary>
         /// 获取当前对象值的hashcode
         /// </summary>
@@ -13,6 +13,7 @@
        
         
     }
+    
 
 }
 

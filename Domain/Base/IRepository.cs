@@ -11,6 +11,8 @@ namespace TourInfo.Domain.Base
         void Insert(T entity);
         bool Update(T entity);
         T Get(Key id);
+        IList<T> GetAll();
+      
 
 
 

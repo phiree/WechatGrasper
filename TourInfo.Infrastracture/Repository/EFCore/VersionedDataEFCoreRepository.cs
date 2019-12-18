@@ -11,8 +11,9 @@ using TourInfo.Domain;
 
 namespace TourInfo.Infrastracture.Repository.EFCore
 {
-    public class VersionedDataEFCoreRepository<T>: BaseEFCoreRepository<T,string>,IVersionedRepository<T,string>
-        where T: Entity,IHasVersion
+    public class VersionedDataEFCoreRepository<T,Key>: BaseEFCoreRepository<T,Key>,IVersionedRepository<T,Key>
+        where T: Entity<Key>,IHasVersion
+ 
     {
         IMD5Helper md5Helper;
 
@@ -21,6 +22,12 @@ namespace TourInfo.Infrastracture.Repository.EFCore
             :base(tourInfoDbContext)
         { 
             this.md5Helper=md5Helper;
+        }
+
+        public IList<T> GetAllAfterVersion(string version)
+        {
+            Func<T, bool> predicate = x => x.Version.CompareTo(version) > 0;
+            return FindList(predicate);
         }
 
         public void SaveOrUpdate(T entity, string newVersion)

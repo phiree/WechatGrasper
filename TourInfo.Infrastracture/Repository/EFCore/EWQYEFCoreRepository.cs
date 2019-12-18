@@ -10,7 +10,7 @@ using TourInfo.Domain.EWQY.DomainModel;
 
 namespace TourInfo.Infrastracture.Repository.EFCore
 {
-    public class EWQYEFCoreRepository : VersionedDataEFCoreRepository<EWQYEntity>  , IEWQYRepository
+    public class EWQYEFCoreRepository : VersionedDataEFCoreRepository<EWQYEntity,string>  , IEWQYRepository
     {
       
         IMD5Helper mD5Helper;
