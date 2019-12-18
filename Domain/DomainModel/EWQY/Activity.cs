@@ -10,7 +10,7 @@ namespace TourInfo.Domain
     /// </summary>
     public class Activity : EWQYEntity 
     {
-
+        public Activity() { }
         public string startTime { get; set; }
         public string createTime { get; set; }
         public string thumbnailKey { get; set; }
@@ -20,6 +20,7 @@ namespace TourInfo.Domain
 
         public string detail { get; set; }
        
+        
         public string[] pictureKeys { get; set; }
 
         public int credits { get; set; }
