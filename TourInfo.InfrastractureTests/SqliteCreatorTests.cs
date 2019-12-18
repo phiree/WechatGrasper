@@ -22,8 +22,10 @@ namespace TourInfo.Domain.Tests
         public void CreateTableTest()
         {
             SqliteCreator sqliteCreator = new SqliteCreator("tourinfo.db3");
-            sqliteCreator.CreateTable< SqliteTable<Activity>>(new List<SqliteTable< Activity>> {
-            new SqliteActivity{  Version="212"}
+            SqliteTableCreater<Activity> activityTableCreator = new SqliteTableCreater<Activity>(sqliteCreator.database);
+
+            activityTableCreator.CreateTable(new List<SqliteActivity> { 
+            new SqliteActivity{ Version="abcde"}
             });
         }
     }

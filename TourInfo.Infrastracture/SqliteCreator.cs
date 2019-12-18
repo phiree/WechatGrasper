@@ -10,11 +10,10 @@ namespace TourInfo.Domain
 {
     public class SqliteCreator
     {
-        private SQLiteConnection database;
+        public SQLiteConnection database { get; }
         public SqliteCreator(string fileName)
         {
             database = new SQLiteConnection(fileName);
-
 
         }
     }
@@ -34,9 +33,9 @@ namespace TourInfo.Domain
                 foreach (var t in data)
                 {
                
-                t.UpdateFromEntity(t.);
+                
                // var table =  t;  //ConvertFromEntity(t);
-                database.Insert(sqliteTable);
+                database.Insert(t);
                 }
             
         }
