@@ -8,13 +8,15 @@ namespace TourInfo.Domain.DomainModel.DataSync
 {
     public  abstract class SqliteTable<T> where T:Entity<string>
     {
+        public SqliteTable(T t) { Entity = t; }
          
-        
-        public abstract void UpdateFromEntity(T t);
+        [Ignore]
+        public T Entity { get; set; }
+        public abstract void UpdateFromEntity( );
     }
    public class SqliteActivity:SqliteTable<Activity>
     {
-        
+        public SqliteActivity(Activity activity) : base(activity) { }
         public string Version { get; set; }
         public string Fingerprint { get; set; }
         public PlaceType PlaceType { get; set; }
@@ -32,9 +34,9 @@ namespace TourInfo.Domain.DomainModel.DataSync
 
         public int credits { get; set; }
         public bool isShared { get; set; }
-        public override  void UpdateFromEntity(Activity activity )
+        public override  void UpdateFromEntity()
         {
-          //  var activity = Entity;
+           var activity = Entity;
             address = activity.address;
             this.createTime = activity.createTime;
             this.credits = activity.credits;

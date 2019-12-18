@@ -17,7 +17,7 @@ namespace TourInfo.Domain
 
         }
     }
-    public class SqliteTableCreater<T> where T : Entity<string>
+    public class SqliteTableCreater<T,T2> where T : SqliteTable<T2> where T2:Entity<string>
     {
         SQLiteConnection database;
         public SqliteTableCreater(SQLiteConnection database)
@@ -25,15 +25,15 @@ namespace TourInfo.Domain
             this.database = database;
         }
  
-        public void CreateTable (IList<SqliteTable<T>> data)
+        public void CreateTable (IList<T> data) 
         {
            
-            database.CreateTable <SqliteTable<T>>( );
+            database.CreateTable <T>( );
              
                 foreach (var t in data)
                 {
-               
-                
+
+                t.UpdateFromEntity();
                // var table =  t;  //ConvertFromEntity(t);
                 database.Insert(t);
                 }
