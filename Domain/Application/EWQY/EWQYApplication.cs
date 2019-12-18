@@ -88,7 +88,24 @@ namespace TourInfo.Domain.EWQY
                    
                 }
                 eWQYRepository.SaveOrUpdate(detail.data, _dateVersion);
-                //  contentHandler.HandlerDetail(data.id, detail);
+                //图片本地化
+
+                string defaultUrl = "http://aaa.bbb";
+                if (typeof(T) == typeof(CompanyVenue))
+                {
+                    var company =  detail.data as CompanyVenue;
+                    List<string> newImageUrls = new List<string>();
+                    foreach (string picUrl in company.pictureKeys)
+                    {
+
+                        string imageFullUrl = defaultUrl + picUrl;
+                        string fileName = Guid.NewGuid() + ".jpg";
+                        urlFetcher.FetchFile(imageFullUrl, fileName);
+                        newImageUrls.Add(fileName);
+
+
+                    }
+                }
             }
 
 

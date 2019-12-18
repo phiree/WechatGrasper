@@ -25,7 +25,12 @@ namespace TourInfo.Infrastracture.Repository.Dapper
             
 
         }
- 
+
+        public IList<EWQYEntity> GetAllAfterVersion(string version)
+        {
+            throw new NotImplementedException();
+        }
+
         public void SaveOrUpdate(EWQYEntity entity,string newVersion )
         {
 

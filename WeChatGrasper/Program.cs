@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Linq;
 using System.Text;
-using Domain;
+ 
 using TourInfo.Domain.EWQY;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -17,12 +17,14 @@ using TourInfo.Infrastracture;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using TourInfo.Domain.TourNews;
+using System.Threading;
+using System.ComponentModel;
 
 namespace WeChatGrasper
 {
     class Program
     {
-        
+       static ServiceProvider serviceProvider;
         static void Main(string[] args)
         {
             string environment= Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
@@ -32,11 +34,13 @@ namespace WeChatGrasper
            .AddJsonFile($"appsettings.{environment}.json", true, true)
          .AddEnvironmentVariables()
           .Build();
-            var serviceProvider = new ServiceCollection()
+              serviceProvider = new ServiceCollection()
            .AddLogging()
            .AddSingleton<IEWQYApplication, EWQYApplication>()
              .AddSingleton<IZBTAApplication, ZBTAApplication > ()
-           .AddDbContext<TourInfoDbContext>(options => options.UseSqlServer(config.GetConnectionString("TourInfoConnectionString")))
+           .AddDbContext<TourInfoDbContext>(options 
+                => options.UseSqlServer(config.GetConnectionString("TourInfoConnectionString")), ServiceLifetime.Transient)
+           
            .AddSingleton(typeof(IRepository<,>), typeof( BaseEFCoreRepository<,>))
             .AddSingleton(typeof(IVersionedRepository<,>), typeof(VersionedDataEFCoreRepository<,>))
            
@@ -47,15 +51,49 @@ namespace WeChatGrasper
  
            .BuildServiceProvider();
            
-            IEWQYApplication eWQYApplication=serviceProvider.GetService<IEWQYApplication>();
-            var zBTAApplication = serviceProvider.GetService<IZBTAApplication>();
+           
             Console.WriteLine("开始抓取EWQY数据");
             string _dateVersion = DateTime.Now.ToString("yyyyMMddhhmmss");
-            zBTAApplication.Graspe(_dateVersion);
-            //eWQYApplication.Graspe(_dateVersion);
+            BackgroundWorker ewqyWorker = new BackgroundWorker();
+            ewqyWorker.DoWork += (obj, e) => EwqyWorker_DoWork(_dateVersion);
+            ewqyWorker.RunWorkerCompleted += EwqyWorker_RunWorkerCompleted;
+            ewqyWorker.RunWorkerAsync( );
+            BackgroundWorker zbtaWorker = new BackgroundWorker();
+            zbtaWorker.DoWork += (obj, e) => ZbtaWorker_DoWork(_dateVersion);
+            zbtaWorker.RunWorkerCompleted += ZbtaWorker_RunWorkerCompleted;
+            zbtaWorker.RunWorkerAsync(argument: _dateVersion);
 
-            Console.WriteLine("抓取完毕");
+            while(true)
+            {
+                Console.WriteLine("正在抓取");
+                Console.Read();
+            }
+           
 
+        }
+
+        private static void ZbtaWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            Console.WriteLine("zbta抓取完毕");
+        }
+
+        private static void ZbtaWorker_DoWork(string dateVersion)
+        {
+            var zBTAApplication = serviceProvider.GetService<IZBTAApplication>();
+            zBTAApplication.Graspe(dateVersion);
+           
+        }
+
+        private static void EwqyWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            Console.WriteLine("ewqy抓取完毕");
+        }
+
+        private static void EwqyWorker_DoWork(string dateVersion)
+        {
+            var eWQYApplication = serviceProvider.GetService<IEWQYApplication>();
+           
+            eWQYApplication.Graspe(dateVersion);
         }
     }
    

@@ -44,5 +44,10 @@ namespace TourInfo.Infrastracture.Repository.Dapper
         {
             return Conn.Update(entity);
         }
+
+        public IList<T> GetAll()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

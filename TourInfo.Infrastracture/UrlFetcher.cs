@@ -1,4 +1,4 @@
-﻿using Domain;
+﻿ 
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -16,6 +16,13 @@ namespace TourInfo.Infrastracture
             var webClient = new CookieAwareWebClient();
             return webClient.DownloadStringTaskAsync(url);
         }
+        public Task FetchFile(string url,string fileName)
+        {
+            var webClient = new CookieAwareWebClient();
+            webClient.DownloadFileAsync(new Uri(url), fileName);
+            return Task.FromResult(0);
+           // return webClient.DownloadStringTaskAsync(url);
+        }
 
         public async Task<string> FetchEWQYAsync(string url )
         {
@@ -27,8 +34,6 @@ namespace TourInfo.Infrastracture
             var result = await webClient.DownloadStringTaskAsync(new Uri(url));
 
             return result;
-
-
         }
     }
 
