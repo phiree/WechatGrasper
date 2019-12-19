@@ -34,23 +34,9 @@ namespace WeChatGrasper
            .AddJsonFile($"appsettings.{environment}.json", true, true)
          .AddEnvironmentVariables()
           .Build();
-              serviceProvider = new ServiceCollection()
-           .AddLogging()
-           .AddSingleton<IEWQYApplication, EWQYApplication>()
-             .AddSingleton<IZBTAApplication, ZBTAApplication > ()
-           .AddDbContext<TourInfoDbContext>(options 
-                => options.UseSqlServer(config.GetConnectionString("TourInfoConnectionString")), ServiceLifetime.Transient)
-           
-           .AddSingleton(typeof(IRepository<,>), typeof( BaseEFCoreRepository<,>))
-            .AddSingleton(typeof(IVersionedRepository<,>), typeof(VersionedDataEFCoreRepository<,>))
-           
-
-            .AddSingleton<IEWQYRepository,EWQYEFCoreRepository>()
-             .AddSingleton<IMD5Helper,  MD5Helper>()
-              .AddSingleton<IUrlFetcher,  UrlFetcher>()
- 
-           .BuildServiceProvider();
-           
+            ServiceCollection serviceCollection = new ServiceCollection();
+              new  Installer().Install(serviceCollection, config.GetConnectionString("TourInfoConnectionString"));
+            serviceProvider = serviceCollection.BuildServiceProvider();
            
             Console.WriteLine("开始抓取EWQY数据");
             string _dateVersion = DateTime.Now.ToString("yyyyMMddhhmmss");

@@ -21,7 +21,7 @@ namespace TourInfo.Domain.Tests
         [TestMethod()]
         public void CreateTableTest()
         {
-            SqliteCreator sqliteCreator = new SqliteCreator("tourinfo.db3");
+            SqliteDatabaseCreater sqliteCreator = new SqliteDatabaseCreater("tourinfo.db3");
             SqliteTableCreater<SqliteActivity,Activity> activityTableCreator 
                 = new SqliteTableCreater<SqliteActivity,Activity>(sqliteCreator.database);
 
