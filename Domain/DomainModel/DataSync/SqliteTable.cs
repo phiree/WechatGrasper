@@ -1,6 +1,8 @@
-﻿using SQLite;
+﻿using Newtonsoft.Json;
+using SQLite;
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text;
 using TourInfo.Domain.Base;
 using TourInfo.Domain.TourNews;
@@ -9,15 +11,13 @@ namespace TourInfo.Domain.DomainModel.DataSync
 {
     public  abstract class SqliteTable<T> where T:Entity<string>
     {
-        public SqliteTable(T t) { Entity = t; }
-         
-        [Ignore]
-        public T Entity { get; set; }
-        public abstract void UpdateFromEntity( );
+        public string Id { get;set;}
+        public abstract SqliteTable<T> UpdateFromEntity( T t);
+        
     }
    public class SqliteActivity:SqliteTable<Activity>
     {
-        public SqliteActivity(Activity activity) : base(activity) { }
+      
         public string Version { get; set; }
         
         public PlaceType PlaceType { get; set; }
@@ -35,9 +35,10 @@ namespace TourInfo.Domain.DomainModel.DataSync
 
         public int credits { get; set; }
         public bool isShared { get; set; }
-        public override  void UpdateFromEntity()
+        public  override SqliteTable<Activity> UpdateFromEntity( Activity activity)
         {
-           var activity = Entity;
+           //var activity = Entity;
+           Id=activity.id;
             address = activity.address;
             this.createTime = activity.createTime;
             this.credits = activity.credits;
@@ -50,14 +51,16 @@ namespace TourInfo.Domain.DomainModel.DataSync
             this.startTime = activity.startTime;
             this.thumbnailKey = activity.thumbnailKey;
             this.Version = activity.Version;
+            return this;
             
         }
+
+       
     }
 
     public class SqliteCompanyVenue : SqliteTable<CompanyVenue>
     {
-        public SqliteCompanyVenue(CompanyVenue companyVenue) : base(companyVenue) { }
-
+      
         public string Version { get; set; }
         
         public PlaceType PlaceType { get; set; }
@@ -83,8 +86,8 @@ namespace TourInfo.Domain.DomainModel.DataSync
         #endregion
 
         public string telNumber { get; set; }
-        public override void UpdateFromEntity()
-        {
+        public override SqliteTable<CompanyVenue> UpdateFromEntity(CompanyVenue Entity)
+        {Id=Entity.id;
             
            this. address = Entity.address;
             this.introduction = Entity.introduction;
@@ -105,13 +108,15 @@ namespace TourInfo.Domain.DomainModel.DataSync
                 this.thumbnailKey=Entity.thumbnailKey;
                 this.typeId=Entity.typeId;
                 this.Version=Entity.Version;
+            return this;
 
         }
+
+         
     }
     public class SqliteZbtaNews : SqliteTable<ZbtaNews>
     {
-        public SqliteZbtaNews(ZbtaNews zbtaNews) : base(zbtaNews) { }
-
+        
         public string Version { get; set; }
         public string releaseTime { get; set; }
         public string checkState { get; set; }
@@ -122,11 +127,11 @@ namespace TourInfo.Domain.DomainModel.DataSync
         public string back1 { get; set; }
         public string details { get; set; }
         public string createUser { get; set; }
-        public override void UpdateFromEntity()
+        public override SqliteTable<ZbtaNews> UpdateFromEntity(ZbtaNews Entity)
         {
 
 
-
+            Id=Entity.id;
             this.Version=Entity.Version;
         this.releaseTime =Entity.releaseTime;
         this.checkState =Entity.checkState;
@@ -137,8 +142,10 @@ namespace TourInfo.Domain.DomainModel.DataSync
         this.back1 =Entity.back1;
         this.details =Entity.details;
         this.createUser =Entity.createUser;
-
+            return this;
     }
+
+         
     }
 
 }

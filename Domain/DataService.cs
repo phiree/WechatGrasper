@@ -46,34 +46,23 @@ namespace TourInfo.Domain.DomainModel
             
             var sqliteDbConn = sqliteDatabaseCreater.Create($"TourInfo.db3");
             var allActivity = activityRepository.GetAll();
-            sqliteActivityTableCreator.CreateTable(sqliteDbConn, allActivity.Select(x => new SqliteActivity(x)).ToList());
+            sqliteActivityTableCreator.CreateTable(sqliteDbConn, allActivity.Select(x => (SqliteActivity)new SqliteActivity( ).UpdateFromEntity(x)).ToList());
             var allCompanyVenue=companyVenueRepository.GetAll();
-            sqliteCompanyVenueTableCreator.CreateTable(sqliteDbConn,allCompanyVenue.Select(x=>new SqliteCompanyVenue(x)).ToList());
+            sqliteCompanyVenueTableCreator.CreateTable(sqliteDbConn,allCompanyVenue.Select(x=> (SqliteCompanyVenue)new SqliteCompanyVenue().UpdateFromEntity(x )).ToList());
 
             var allZbtaNews=zbtaNewsRepository.GetAll();
-            sqliteZbtaNewsTableCreator.CreateTable(sqliteDbConn, allZbtaNews.Select(x => new SqliteZbtaNews(x)).ToList());
+            sqliteZbtaNewsTableCreator.CreateTable(sqliteDbConn, allZbtaNews.Select(x => (SqliteZbtaNews)new SqliteZbtaNews( ).UpdateFromEntity(x)).ToList());
 
             //数据处理（图片下载）
             //创建图片压缩包
         }
         public dynamic CreateSyncData(string version)
         {
-            var allActivity = activityRepository.GetAllAfterVersion(version).Select(x => new SqliteActivity(x));
-            var allCompanyVenue = companyVenueRepository.GetAllAfterVersion(version).Select(x => new SqliteCompanyVenue(x));
-            var allZbtaNews = zbtaNewsRepository.GetAllAfterVersion(version).Select(x => new SqliteZbtaNews(x));
+            var allActivity = activityRepository.GetAllAfterVersion(version).Select(x => (SqliteActivity) new SqliteActivity( ).UpdateFromEntity(x));
+            var allCompanyVenue = companyVenueRepository.GetAllAfterVersion(version).Select(x => (SqliteCompanyVenue)new SqliteCompanyVenue( ).UpdateFromEntity(x));
+            var allZbtaNews = zbtaNewsRepository.GetAllAfterVersion(version).Select(x => (SqliteZbtaNews)new SqliteZbtaNews().UpdateFromEntity(x));
 
-            foreach(var a in allActivity)
-            { 
-                a.UpdateFromEntity();
-                }
-            foreach (var a in allCompanyVenue)
-            {
-                a.UpdateFromEntity();
-            }
-            foreach (var a in allZbtaNews)
-            {
-                a.UpdateFromEntity();
-            }
+           
             return new SyncDataModel { Activities=allActivity,CompanyVenue=allCompanyVenue,ZbtaNews=allZbtaNews };
         }
 

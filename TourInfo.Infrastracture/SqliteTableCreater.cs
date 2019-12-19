@@ -20,7 +20,7 @@ namespace TourInfo.Domain
             foreach (var t in data)
             {
 
-                t.UpdateFromEntity();
+              //  t.UpdateFromEntity();
                 // var table =  t;  //ConvertFromEntity(t);
                
             }

@@ -26,7 +26,7 @@ namespace TourInfo.Domain.Tests
                 = new SqliteTableCreater<SqliteActivity,Activity>();
 
             activityTableCreator.CreateTable(sqliteConn, new List<SqliteActivity> { 
-            new SqliteActivity(new Activity{ Version="2211"})
+           (SqliteActivity) new SqliteActivity( ).UpdateFromEntity(new Activity{ Version="3"})
             });
         }
     }
