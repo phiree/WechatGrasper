@@ -12,6 +12,7 @@ namespace TourInfo.Domain.EWQY
     {
         UrlCreator urlCreator = null;
         IUrlFetcher urlFetcher;
+        IImageLocalizer imageLocalizer;
         readonly List<string> apiUrls = new List<string> {
             "venue/findVenueList.action",
              "company/findCompanyList.action",
@@ -22,8 +23,9 @@ namespace TourInfo.Domain.EWQY
         Random rm = new Random();
 
         IEWQYRepository eWQYRepository;
-        public EWQYApplication(IUrlFetcher urlFetcher, IEWQYRepository eWQYRepository)
+        public EWQYApplication(IUrlFetcher urlFetcher, IEWQYRepository eWQYRepository, IImageLocalizer imageLocalizer)
         {
+            this.imageLocalizer=imageLocalizer;
             urlCreator = new UrlCreator();
             this.urlFetcher = urlFetcher;
             this.eWQYRepository = eWQYRepository;

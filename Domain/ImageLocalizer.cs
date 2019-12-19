@@ -6,6 +6,11 @@ namespace TourInfo.Domain
 {
     public interface IImageLocalizer
     {
-        string Localize(string picUrl);
+        /// <summary>
+        /// 图片本地化
+        /// </summary>
+        /// <param name="picUrl"></param>
+        /// <returns>本地图片相对路径</returns>
+        string Localize(string prefixUrl, string rawPicUrl);
     }
 }
