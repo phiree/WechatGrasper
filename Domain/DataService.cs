@@ -6,6 +6,8 @@ using TourInfo.Domain.DomainModel.DataSync;
 using TourInfo.Domain.EWQY;
 using TourInfo.Domain.EWQY.DomainModel;
 using System.Linq;
+using TourInfo.Domain.TourNews;
+
 namespace TourInfo.Domain.DomainModel
 {
     public class DataService : IDataService
@@ -14,31 +16,76 @@ namespace TourInfo.Domain.DomainModel
         
         ISqliteDatabaseCreater sqliteDatabaseCreater;
         ISqliteTableCreater<SqliteActivity, Activity> sqliteActivityTableCreator;
-
-        IRepository<Activity, string> activityRepository;
-        public DataService(  IRepository<Activity, string> activityRepository
+        ISqliteTableCreater<SqliteCompanyVenue, CompanyVenue> sqliteCompanyVenueTableCreator;
+        ISqliteTableCreater<SqliteZbtaNews, ZbtaNews> sqliteZbtaNewsTableCreator;
+        IVersionedRepository<Activity, string> activityRepository;
+        IVersionedRepository<CompanyVenue, string> companyVenueRepository;
+        IVersionedRepository<ZbtaNews,string> zbtaNewsRepository;
+        public DataService(IVersionedRepository<Activity, string> activityRepository
             , ISqliteDatabaseCreater sqliteDatabaseCreater,
-        ISqliteTableCreater<SqliteActivity, Activity> sqliteActivityTableCreator)
+             ISqliteTableCreater<SqliteCompanyVenue, CompanyVenue> sqliteCompanyVenueTableCreator,
+        IVersionedRepository<CompanyVenue, string> companyVenueRepository,
+        ISqliteTableCreater<SqliteActivity, Activity> sqliteActivityTableCreator
+            , IVersionedRepository<ZbtaNews, string> zbtaNewsRepository 
+        , ISqliteTableCreater<SqliteZbtaNews, ZbtaNews> sqliteZbtaNewsTableCreator 
+            )
         {
+            this.companyVenueRepository= companyVenueRepository;
             this.sqliteDatabaseCreater = sqliteDatabaseCreater;
             this.sqliteActivityTableCreator = sqliteActivityTableCreator;
             this.activityRepository = activityRepository;
-            
+            this.sqliteCompanyVenueTableCreator=sqliteCompanyVenueTableCreator;
+
+            this.zbtaNewsRepository=zbtaNewsRepository;
+            this.sqliteZbtaNewsTableCreator=sqliteZbtaNewsTableCreator;
         }
         public void CreateInitData()
         {
 
 
+            
+            var sqliteDbConn = sqliteDatabaseCreater.Create($"TourInfo.db3");
             var allActivity = activityRepository.GetAll();
-            var sqliteDbConn = sqliteDatabaseCreater.Create(DateTime.Now.ToString("yyyyMMddHHmmss") + ".db3");
             sqliteActivityTableCreator.CreateTable(sqliteDbConn, allActivity.Select(x => new SqliteActivity(x)).ToList());
+            var allCompanyVenue=companyVenueRepository.GetAll();
+            sqliteCompanyVenueTableCreator.CreateTable(sqliteDbConn,allCompanyVenue.Select(x=>new SqliteCompanyVenue(x)).ToList());
+
+            var allZbtaNews=zbtaNewsRepository.GetAll();
+            sqliteZbtaNewsTableCreator.CreateTable(sqliteDbConn, allZbtaNews.Select(x => new SqliteZbtaNews(x)).ToList());
 
             //数据处理（图片下载）
             //创建图片压缩包
         }
-        public void CreateSyncData()
+        public dynamic CreateSyncData(string version)
         {
+            var allActivity = activityRepository.GetAllAfterVersion(version).Select(x => new SqliteActivity(x));
+            var allCompanyVenue = companyVenueRepository.GetAllAfterVersion(version).Select(x => new SqliteCompanyVenue(x));
+            var allZbtaNews = zbtaNewsRepository.GetAllAfterVersion(version).Select(x => new SqliteZbtaNews(x));
 
+            foreach(var a in allActivity)
+            { 
+                a.UpdateFromEntity();
+                }
+            foreach (var a in allCompanyVenue)
+            {
+                a.UpdateFromEntity();
+            }
+            foreach (var a in allZbtaNews)
+            {
+                a.UpdateFromEntity();
+            }
+            return new SyncDataModel { Activities=allActivity,CompanyVenue=allCompanyVenue,ZbtaNews=allZbtaNews };
         }
+
+        public class SyncDataModel
+        { 
+            public int code { get;set;} 
+            public string msg { get;set;}=string.Empty;
+            public IEnumerable<SqliteActivity> Activities { get;set;}
+            public IEnumerable<SqliteCompanyVenue> CompanyVenue { get; set; }
+
+            public IEnumerable<SqliteZbtaNews> ZbtaNews { get; set; }
+        }
+        
     }
 }

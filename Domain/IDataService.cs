@@ -3,6 +3,7 @@
     public interface IDataService
     {
         void CreateInitData();
-        void CreateSyncData();
+        dynamic CreateSyncData(string version);
+       
     }
 }

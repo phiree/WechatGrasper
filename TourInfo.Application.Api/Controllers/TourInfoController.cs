@@ -23,6 +23,14 @@ namespace TourInfo.Application.Api.Controllers
             dataService.CreateInitData();
             return new ActionResult<string>("初始化成功");
         }
+
+        [HttpGet("SyncData")]
+        public ActionResult<dynamic> SyncData(string version)
+        {
+
+          return  dataService.CreateSyncData(version);
+            
+        }
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()

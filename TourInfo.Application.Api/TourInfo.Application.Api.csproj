@@ -15,4 +15,8 @@
     <ProjectReference Include="..\TourInfo.Infrastracture\TourInfo.Infrastracture.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="InitData\" />
+  </ItemGroup>
+
 </Project>

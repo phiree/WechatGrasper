@@ -5,6 +5,7 @@ namespace TourInfo.Domain.TourNews
 {
     public class ZbtaNews: VersionedEntity
     {
+     
         public string releaseTime { get; set; }
         public string checkState { get; set; }
       
