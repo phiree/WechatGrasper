@@ -11,19 +11,19 @@ namespace TourInfo.Domain.DomainModel
     public class DataService : IDataService
 
     {
-        IEWQYRepository eWQYRepository;
+        
         ISqliteDatabaseCreater sqliteDatabaseCreater;
-        ISqliteTableCreater<SqliteTable<Activity>, Activity> sqliteActivityTableCreator;
+        ISqliteTableCreater<SqliteActivity, Activity> sqliteActivityTableCreator;
 
         IRepository<Activity, string> activityRepository;
-        public DataService(IEWQYRepository eWQYRepository, IRepository<Activity, string> activityRepository
+        public DataService(  IRepository<Activity, string> activityRepository
             , ISqliteDatabaseCreater sqliteDatabaseCreater,
-        ISqliteTableCreater<SqliteTable<Activity>, Activity> sqliteActivityTableCreator)
+        ISqliteTableCreater<SqliteActivity, Activity> sqliteActivityTableCreator)
         {
             this.sqliteDatabaseCreater = sqliteDatabaseCreater;
             this.sqliteActivityTableCreator = sqliteActivityTableCreator;
             this.activityRepository = activityRepository;
-            this.eWQYRepository = eWQYRepository;
+            
         }
         public void CreateInitData()
         {
@@ -31,7 +31,7 @@ namespace TourInfo.Domain.DomainModel
 
             var allActivity = activityRepository.GetAll();
             var sqliteDbConn = sqliteDatabaseCreater.Create(DateTime.Now.ToString("yyyyMMddHHmmss") + ".db3");
-            sqliteActivityTableCreator.CreateTable(allActivity.Select(x => new SqliteActivity(x) as SqliteTable<Activity>).ToList());
+            sqliteActivityTableCreator.CreateTable(sqliteDbConn, allActivity.Select(x => new SqliteActivity(x)).ToList());
 
             //数据处理（图片下载）
             //创建图片压缩包

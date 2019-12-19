@@ -1,4 +1,5 @@
 ﻿using SQLite;
+using TourInfo.Domain.DomainModel.DataSync;
 
 namespace TourInfo.Domain
 {

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using SQLite;
+using System.Collections.Generic;
 using TourInfo.Domain.Base;
 using TourInfo.Domain.DomainModel.DataSync;
 
@@ -9,6 +10,6 @@ namespace TourInfo.Domain.DomainModel.DataSync
         where T : SqliteTable<T2>
         where T2 : Entity<string>
     {
-        void CreateTable(IList<T> data);
+        void CreateTable(SQLiteConnection sqliteConn, IList<T> data);
     }
 }

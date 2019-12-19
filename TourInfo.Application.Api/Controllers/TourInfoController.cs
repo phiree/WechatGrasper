@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using TourInfo.Domain.DomainModel;
 
 namespace TourInfo.Application.Api.Controllers
 {
@@ -10,10 +11,16 @@ namespace TourInfo.Application.Api.Controllers
     [ApiController]
     public class TourInfoController : ControllerBase
     {
-        [HttpPost]
+        IDataService dataService;
+        public TourInfoController(IDataService dataService)
+        {
+            this.dataService = dataService;
+        }
+        [HttpGet("InitData")]
         public ActionResult<string> InitData()
         {
-
+            
+            dataService.CreateInitData();
             return new ActionResult<string>("初始化成功");
         }
         // GET api/values
