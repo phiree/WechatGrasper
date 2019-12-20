@@ -15,6 +15,8 @@ namespace TourInfo.Domain.DomainModel.DataSync
         public abstract SqliteTable<T> UpdateFromEntity( T t);
         
     }
+    
+    [Table("Activity")]
    public class SqliteActivity:SqliteTable<Activity>
     {
       
@@ -57,7 +59,7 @@ namespace TourInfo.Domain.DomainModel.DataSync
 
        
     }
-
+    [Table("CompanyVenue")]
     public class SqliteCompanyVenue : SqliteTable<CompanyVenue>
     {
       
@@ -112,8 +114,9 @@ namespace TourInfo.Domain.DomainModel.DataSync
 
         }
 
-         
+
     }
+    [Table("ZbtaNews")]
     public class SqliteZbtaNews : SqliteTable<ZbtaNews>
     {
         

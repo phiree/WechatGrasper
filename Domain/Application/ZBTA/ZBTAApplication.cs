@@ -32,7 +32,13 @@ namespace TourInfo.Domain.TourNews
                 }
                 foreach (var news in jsonResult.TourNews)
                 {
+                    if (news.releaseTime.CompareTo("2019-12-01 00:00:00") < 0)
+                    {
+                        needContinue = false;
+                        break;
+                    }
                     var existedEntity = newsRepository.Get(news.id);
+                    
                     if (existedEntity != null)
                     {
                         //只要发现有存在的id,则不再到下一页

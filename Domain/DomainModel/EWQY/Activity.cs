@@ -11,19 +11,46 @@ namespace TourInfo.Domain
     public class Activity : EWQYEntity 
     {
         public Activity() { }
+        /// <summary>
+        /// 活动开始时间
+        /// </summary>
         public string startTime { get; set; }
+        /// <summary>
+        /// 活动信息创建时间
+        /// </summary>
         public string createTime { get; set; }
+        /// <summary>
+        /// 活动标题图片
+        /// </summary>
         public string thumbnailKey { get; set; }
+        /// <summary>
+        /// 地址
+        /// </summary>
         public string address { get; set; }
+        /// <summary>
+        /// 名称
+        /// </summary>
         public string name { get; set; }
+        /// <summary>
+        /// 活动结束时间
+        /// </summary>
         public string endTime { get; set; }
-
+        /// <summary>
+        /// 活动详情
+        /// </summary>
         public string detail { get; set; }
        
-        
+        /// <summary>
+        /// 活动图片
+        /// </summary>
         public string[] pictureKeys { get; set; }
-
+        /// <summary>
+        /// 分享积分（暂时不用）
+        /// </summary>
         public int credits { get; set; }
+        /// <summary>
+        /// 是否已经被分享（暂时不用）
+        /// </summary>
         public bool isShared { get; set; }
          
         public override string CalculateFingerprint(IMD5Helper mD5Helper)

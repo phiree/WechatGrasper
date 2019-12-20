@@ -23,9 +23,9 @@ namespace TourInfo.Domain.EWQY
         Random rm = new Random();
 
         IEWQYRepository eWQYRepository;
-        public EWQYApplication(IUrlFetcher urlFetcher, IEWQYRepository eWQYRepository, IImageLocalizer imageLocalizer)
+        public EWQYApplication(IUrlFetcher urlFetcher, IEWQYRepository eWQYRepository )
         {
-            this.imageLocalizer=imageLocalizer;
+            //this.imageLocalizer=imageLocalizer;
             urlCreator = new UrlCreator();
             this.urlFetcher = urlFetcher;
             this.eWQYRepository = eWQYRepository;
