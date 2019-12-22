@@ -40,7 +40,7 @@ namespace WeChatGrasper
 
             string connectionString = Configuration.GetConnectionString("TourinfoConnectionString");
             string zbtaTitleImageBaseUrl = Configuration.GetValue<string>("ImageLocalizer:ZbtaTitleImageBaseUrl");
-            string zbtaDetailImageBaseUrl= Configuration.GetValue<string>("ImageLocalizer:ZbtaTitleImageBaseUrl");
+            string zbtaDetailImageBaseUrl= Configuration.GetValue<string>("ImageLocalizer:ZbtaDetailImageBaseUrl");
             string  ewqyImageBaseUrl = Configuration.GetValue<string>("ImageLocalizer:EwqyImageBaseUrl");
             string zbtaLocalSavedPath = Configuration.GetValue<string>("ImageLocalizer:ZbtaLocalSavedPath");
             string ewqyLocalSavedPath = Configuration.GetValue<string>("ImageLocalizer:EwqyLocalSavedPath");
