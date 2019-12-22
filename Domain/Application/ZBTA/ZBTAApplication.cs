@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Text;
+using System.Text.RegularExpressions;
 using TourInfo.Domain.Base;
+using TourInfo.Domain.DomainModel.ZBTA;
 
 namespace TourInfo.Domain.TourNews
 {
@@ -8,16 +10,18 @@ namespace TourInfo.Domain.TourNews
     {
         IUrlFetcher urlFetcher;
         IImageLocalizer imageLocalizer;
-        string titleImageBaseUrl, detailImageBaseUrl, localSavedPath;
+        IDetailImageLocalizer detailImageLocalizer;
+        string titleImageBaseUrl, localSavedPath;
         IVersionedRepository<ZbtaNews, string> newsRepository;
         public ZBTAApplication(IUrlFetcher urlFetcher,
-            IVersionedRepository<ZbtaNews, string> newsRepository
-            ,string titleImageBaseUrl, string detailImageBaseUrl,string localSavedPath, IImageLocalizer imageLocalizer)
+                    IDetailImageLocalizer detailImageLocalizer,
+        IVersionedRepository<ZbtaNews, string> newsRepository
+            ,string titleImageBaseUrl,string localSavedPath, IImageLocalizer imageLocalizer)
         {
+            this.detailImageLocalizer = detailImageLocalizer;
             this.imageLocalizer = imageLocalizer;
             this.titleImageBaseUrl = titleImageBaseUrl;
-            this.detailImageBaseUrl = detailImageBaseUrl;
-            this.localSavedPath = localSavedPath;
+           this.localSavedPath = localSavedPath;
             this.newsRepository = newsRepository;
             this.urlFetcher = urlFetcher;
         }
@@ -53,7 +57,13 @@ namespace TourInfo.Domain.TourNews
                         needContinue = false;
                         break;
                     }
+                    news.localizedImage = imageLocalizer.Localize(titleImageBaseUrl + news.image, localSavedPath);
+                    //details图片提取及替换
+                    news.localizedDetails = detailImageLocalizer.Localize(news.details);
+
                     newsRepository.SaveOrUpdate(news, _dateVersion);
+
+
                 }
                 //遍历 如果已经发现已经存在，则 needContinue=false,并跳过。
                 pageIndex++;

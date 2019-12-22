@@ -24,10 +24,11 @@ namespace TourInfo.Infrastracture
             {
                 Directory.CreateDirectory(imageLocalDirectory);
             }
-            string imageName =imageLocalDirectory+ Guid.NewGuid() + imgExt;
-
-            urlFetcher.FetchFile(remotePicUrl, imageName);
-            return imageName;            
+            string imageName = Guid.NewGuid() + imgExt;
+            string imageFullName =imageLocalDirectory+imageName;
+            string imageReletiveName = localSavedPath + imageName;
+            urlFetcher.FetchFile(remotePicUrl, imageFullName);
+            return imageReletiveName;            
         }
     }
 

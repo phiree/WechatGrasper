@@ -25,6 +25,7 @@ namespace TourInfo.Domain.TourNews
         /// 首图
         /// </summary>
         public string image { get; set; }
+        public string localizedImage { get;set; }
         /// <summary>
         /// 信息创建时间
         /// </summary>
@@ -37,6 +38,7 @@ namespace TourInfo.Domain.TourNews
         /// 详情（富文本）
         /// </summary>
         public string details { get; set; }
+        public string localizedDetails { get; set; }
         /// <summary>
         /// 创建者（暂时无用）
         /// </summary>

@@ -7,6 +7,7 @@ using TourInfo.Domain;
 using TourInfo.Domain.Base;
 using TourInfo.Domain.DomainModel;
 using TourInfo.Domain.DomainModel.DataSync;
+using TourInfo.Domain.DomainModel.ZBTA;
 using TourInfo.Domain.EWQY;
 using TourInfo.Domain.EWQY.DomainModel;
 using TourInfo.Domain.TourNews;
@@ -34,10 +35,12 @@ namespace TourInfo.Domain
         {
             builder.RegisterType<ZBTAApplication>().As<IZBTAApplication>()
                 .WithParameter("titleImageBaseUrl", zbtaTitleImageBaseUrl)
-                 .WithParameter("detailImageBaseUrl", zbtaDetailImageBaseUrl)
                  .WithParameter("localSavedPath", zbtaLocalSavedPath)
                 ;
-
+            builder.RegisterType<DetailImageLocalizer>().As<IDetailImageLocalizer>()
+                .WithParameter("detailImageBaseUrl", zbtaDetailImageBaseUrl)
+                .WithParameter("localSavedPath", zbtaLocalSavedPath)
+               ;
 
             builder.RegisterType<EWQYApplication>().As<IEWQYApplication>()
           .WithParameter("imageBaseUrl", ewqyImageBaseUrl)
