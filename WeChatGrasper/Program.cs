@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Linq;
 using System.Text;
- 
+
 using TourInfo.Domain.EWQY;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -19,42 +19,52 @@ using Microsoft.Extensions.Configuration;
 using TourInfo.Domain.TourNews;
 using System.Threading;
 using System.ComponentModel;
+using Autofac.Extensions.DependencyInjection;
+using Autofac;
 
 namespace WeChatGrasper
 {
     class Program
     {
-       static ServiceProvider serviceProvider;
+        static IServiceProvider serviceProvider;
         static void Main(string[] args)
         {
-            string environment= Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-            environment=environment??"Development";
+            string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            environment = environment ?? "Development";
             IConfiguration config = new ConfigurationBuilder()
           .AddJsonFile("appsettings.json", true, true)
            .AddJsonFile($"appsettings.{environment}.json", true, true)
          .AddEnvironmentVariables()
           .Build();
+            string connectionString = config.GetConnectionString("TourinfoConnectionString");
+            string zbtaImageBaseUrl = "", ewqyImageBaseUrl = "";
             ServiceCollection serviceCollection = new ServiceCollection();
-              new  Installer().Install(serviceCollection, config.GetConnectionString("TourInfoConnectionString"));
-            serviceProvider = serviceCollection.BuildServiceProvider();
-           
+
+            var containerBuilder = new Autofac.ContainerBuilder();
+            containerBuilder.Populate(serviceCollection);
+            containerBuilder.RegisterModule(new TourInfo.Domain.TourInfoDomainAutofactModel
+                (connectionString, zbtaImageBaseUrl, ewqyImageBaseUrl));
+            var container = containerBuilder.Build();
+            serviceProvider = new AutofacServiceProvider(container);
+
+
             Console.WriteLine("开始抓取EWQY数据");
             string _dateVersion = DateTime.Now.ToString("yyyyMMddhhmmss");
             BackgroundWorker ewqyWorker = new BackgroundWorker();
             ewqyWorker.DoWork += (obj, e) => EwqyWorker_DoWork(_dateVersion);
             ewqyWorker.RunWorkerCompleted += EwqyWorker_RunWorkerCompleted;
-            ewqyWorker.RunWorkerAsync( );
+            ewqyWorker.RunWorkerAsync();
             BackgroundWorker zbtaWorker = new BackgroundWorker();
             zbtaWorker.DoWork += (obj, e) => ZbtaWorker_DoWork(_dateVersion);
             zbtaWorker.RunWorkerCompleted += ZbtaWorker_RunWorkerCompleted;
             zbtaWorker.RunWorkerAsync(argument: _dateVersion);
 
-            while(true)
+            while (true)
             {
                 Console.WriteLine("正在抓取");
                 Console.Read();
             }
-           
+
 
         }
 
@@ -67,7 +77,7 @@ namespace WeChatGrasper
         {
             var zBTAApplication = serviceProvider.GetService<IZBTAApplication>();
             zBTAApplication.Graspe(dateVersion);
-           
+
         }
 
         private static void EwqyWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -78,11 +88,11 @@ namespace WeChatGrasper
         private static void EwqyWorker_DoWork(string dateVersion)
         {
             var eWQYApplication = serviceProvider.GetService<IEWQYApplication>();
-           
+
             eWQYApplication.Graspe(dateVersion);
         }
     }
-   
+
 
 }
 
