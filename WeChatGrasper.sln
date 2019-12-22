@@ -17,9 +17,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{FC18321A-6
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TourInfo.Infrastracture", "TourInfo.Infrastracture\TourInfo.Infrastracture.csproj", "{8A493302-C253-4CC1-A53A-4AED1BC204EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TourInfo.Application.Api", "TourInfo.Application.Api\TourInfo.Application.Api.csproj", "{EE09909A-5266-4E38-8095-C78BB77953FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TourInfo.Application.Api", "TourInfo.Application.Api\TourInfo.Application.Api.csproj", "{EE09909A-5266-4E38-8095-C78BB77953FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TourInfo.InfrastractureTests", "TourInfo.InfrastractureTests\TourInfo.InfrastractureTests.csproj", "{C19348FD-C7B5-4140-856F-D4C083D912AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TourInfo.InfrastractureTests", "TourInfo.InfrastractureTests\TourInfo.InfrastractureTests.csproj", "{C19348FD-C7B5-4140-856F-D4C083D912AC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{874AD062-C7EC-49D2-A86F-33E1F9B71622}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

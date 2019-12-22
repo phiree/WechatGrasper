@@ -31,19 +31,26 @@ namespace WeChatGrasper
         {
             string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
             environment = environment ?? "Development";
-            IConfiguration config = new ConfigurationBuilder()
+            IConfiguration Configuration = new ConfigurationBuilder()
           .AddJsonFile("appsettings.json", true, true)
            .AddJsonFile($"appsettings.{environment}.json", true, true)
          .AddEnvironmentVariables()
           .Build();
-            string connectionString = config.GetConnectionString("TourinfoConnectionString");
-            string zbtaImageBaseUrl = "", ewqyImageBaseUrl = "";
-            ServiceCollection serviceCollection = new ServiceCollection();
+            ServiceCollection services = new ServiceCollection();
 
+            string connectionString = Configuration.GetConnectionString("TourinfoConnectionString");
+            string zbtaTitleImageBaseUrl = Configuration.GetValue<string>("ImageLocalizer:ZbtaTitleImageBaseUrl");
+            string zbtaDetailImageBaseUrl= Configuration.GetValue<string>("ImageLocalizer:ZbtaTitleImageBaseUrl");
+            string  ewqyImageBaseUrl = Configuration.GetValue<string>("ImageLocalizer:EwqyImageBaseUrl");
+            string zbtaLocalSavedPath = Configuration.GetValue<string>("ImageLocalizer:ZbtaLocalSavedPath");
+            string ewqyLocalSavedPath = Configuration.GetValue<string>("ImageLocalizer:EwqyLocalSavedPath");
+           
             var containerBuilder = new Autofac.ContainerBuilder();
-            containerBuilder.Populate(serviceCollection);
+            containerBuilder.Populate(services);
             containerBuilder.RegisterModule(new TourInfo.Domain.TourInfoDomainAutofactModel
-                (connectionString, zbtaImageBaseUrl, ewqyImageBaseUrl));
+                ( zbtaTitleImageBaseUrl,zbtaDetailImageBaseUrl, ewqyImageBaseUrl,ewqyLocalSavedPath,zbtaLocalSavedPath));
+            containerBuilder.RegisterModule(new TourInfo.Infrastracture.TourinfoInstallerAutofacModule
+               (connectionString));
             var container = containerBuilder.Build();
             serviceProvider = new AutofacServiceProvider(container);
 

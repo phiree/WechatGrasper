@@ -48,10 +48,10 @@ namespace TourInfo.Domain.DomainModel.DataSync
             this.endTime = activity.endTime;
             this.isShared = activity.isShared;
             this.name = activity.name;
-            this.pictureKeys = pictureKeys ?? string.Join(";", pictureKeys);
+            this.pictureKeys =activity.localizedPictureKeys==null?string.Empty: string.Join(";", activity.localizedPictureKeys);
             this.PlaceType = activity.PlaceType;
             this.startTime = activity.startTime;
-            this.thumbnailKey = activity.thumbnailKey;
+            this.thumbnailKey = activity.localizedThumbnailKey;
             this.Version = activity.Version;
             return this;
             
@@ -66,6 +66,7 @@ namespace TourInfo.Domain.DomainModel.DataSync
         public string Version { get; set; }
         
         public PlaceType PlaceType { get; set; }
+       
         public string thumbnailKey { get; set; }
         public string location { get;set;}
        // public double[] location { get; set; }
@@ -98,7 +99,7 @@ namespace TourInfo.Domain.DomainModel.DataSync
             this.name = Entity.name;
          
             this.PlaceType = Entity.PlaceType;
-            this.pictureKeys = Entity.pictureKeys==null?string.Empty: string.Join(";", pictureKeys);
+            this.pictureKeys = Entity. pictureKeys==null?string.Empty: string.Join(";", pictureKeys);
          
             this.satisfactionScore = Entity.satisfactionScore;
            

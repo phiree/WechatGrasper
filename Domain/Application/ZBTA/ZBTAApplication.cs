@@ -7,9 +7,17 @@ namespace TourInfo.Domain.TourNews
     public class ZBTAApplication : IZBTAApplication
     {
         IUrlFetcher urlFetcher;
+        IImageLocalizer imageLocalizer;
+        string titleImageBaseUrl, detailImageBaseUrl, localSavedPath;
         IVersionedRepository<ZbtaNews, string> newsRepository;
-        public ZBTAApplication(IUrlFetcher urlFetcher, IVersionedRepository<ZbtaNews, string> newsRepository)
+        public ZBTAApplication(IUrlFetcher urlFetcher,
+            IVersionedRepository<ZbtaNews, string> newsRepository
+            ,string titleImageBaseUrl, string detailImageBaseUrl,string localSavedPath, IImageLocalizer imageLocalizer)
         {
+            this.imageLocalizer = imageLocalizer;
+            this.titleImageBaseUrl = titleImageBaseUrl;
+            this.detailImageBaseUrl = detailImageBaseUrl;
+            this.localSavedPath = localSavedPath;
             this.newsRepository = newsRepository;
             this.urlFetcher = urlFetcher;
         }

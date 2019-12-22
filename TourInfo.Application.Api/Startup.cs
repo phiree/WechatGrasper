@@ -38,21 +38,27 @@ namespace TourInfo.Application.Api
         {
             services.AddMvc(x => x.EnableEndpointRouting = false).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            string connectionString = Configuration.GetConnectionString("TourInfoConnectionString");
+         
+            string connectionString = Configuration.GetConnectionString("TourinfoConnectionString");
+            string zbtaTitleImageBaseUrl = Configuration.GetValue<string>("ImageLocalizer:ZbtaTitleImageBaseUrl");
+            string zbtaDetailImageBaseUrl = Configuration.GetValue<string>("ImageLocalizer:ZbtaTitleImageBaseUrl");
+            string ewqyImageBaseUrl = Configuration.GetValue<string>("ImageLocalizer:EwqyImageBaseUrl");
+            string zbtaLocalSavedPath = Configuration.GetValue<string>("ImageLocalizer:ZbtaLocalSavedPath");
+            string ewqyLocalSavedPath = Configuration.GetValue<string>("ImageLocalizer:EwqyLocalSavedPath");
 
-            string zbtaImageBaseUrl = "", ewqyImageBaseUrl = "";
             var containerBuilder = new Autofac.ContainerBuilder();
             containerBuilder.Populate(services);
             containerBuilder.RegisterModule(new TourInfo.Domain.TourInfoDomainAutofactModel
-                ( zbtaImageBaseUrl, ewqyImageBaseUrl));
+                (zbtaTitleImageBaseUrl, zbtaDetailImageBaseUrl, ewqyImageBaseUrl, ewqyLocalSavedPath, zbtaLocalSavedPath));
             containerBuilder.RegisterModule(new TourInfo.Infrastracture.TourinfoInstallerAutofacModule
-                  (connectionString));
-
+               (connectionString));
             var container = containerBuilder.Build();
-            return new AutofacServiceProvider(container);
-           
-          
-            
+           var serviceProvider = new AutofacServiceProvider(container);
+            return serviceProvider;
+
+
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

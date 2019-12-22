@@ -13,7 +13,7 @@ namespace TourInfo.Domain
        /// <summary>
        /// 首图
        /// </summary>
-        public string thumbnailKey { get; set; }
+       
        /// <summary>
        /// 坐标，第一个值是经度，第二个维度
        /// </summary>
@@ -37,10 +37,6 @@ namespace TourInfo.Domain
         //public IsComment isComment { get; set; }
        
        /// <summary>
-       /// 图片
-       /// </summary>
-        public   string[] pictureKeys { get; set; }
-        /// <summary>
         /// 地址
         /// </summary>
         public string address { get; set; }

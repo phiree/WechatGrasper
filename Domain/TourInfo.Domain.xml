@@ -94,11 +94,6 @@
             活动信息创建时间
             </summary>
         </member>
-        <member name="P:TourInfo.Domain.Activity.thumbnailKey">
-            <summary>
-            活动标题图片
-            </summary>
-        </member>
         <member name="P:TourInfo.Domain.Activity.address">
             <summary>
             地址
@@ -119,11 +114,6 @@
             活动详情
             </summary>
         </member>
-        <member name="P:TourInfo.Domain.Activity.pictureKeys">
-            <summary>
-            活动图片
-            </summary>
-        </member>
         <member name="P:TourInfo.Domain.Activity.credits">
             <summary>
             分享积分（暂时不用）
@@ -139,12 +129,10 @@
             文化场馆或企业
             </summary>
         </member>
-        <member name="P:TourInfo.Domain.CompanyVenue.thumbnailKey">
+        <member name="P:TourInfo.Domain.CompanyVenue.location">
             <summary>
             首图
             </summary>
-        </member>
-        <member name="P:TourInfo.Domain.CompanyVenue.location">
             <summary>
             坐标，第一个值是经度，第二个维度
             </summary>
@@ -167,11 +155,6 @@
         <member name="P:TourInfo.Domain.CompanyVenue.introduction">
             <summary>
             介绍
-            </summary>
-        </member>
-        <member name="P:TourInfo.Domain.CompanyVenue.pictureKeys">
-            <summary>
-            图片
             </summary>
         </member>
         <member name="P:TourInfo.Domain.CompanyVenue.address">
@@ -207,6 +190,26 @@
         <member name="P:TourInfo.Domain.EWQYEntity.PlaceType">
             <summary>
             信息类型 0： 场馆，1：企业
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.EWQYEntity.thumbnailKey">
+            <summary>
+            活动标题图片
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.EWQYEntity.localizedThumbnailKey">
+            <summary>
+            本地存储后的图片路径
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.EWQYEntity.pictureKeys">
+            <summary>
+            图片
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.EWQYEntity.localizedPictureKeys">
+            <summary>
+            活动图片
             </summary>
         </member>
         <member name="M:TourInfo.Domain.IImageLocalizer.Localize(System.String,System.String)">

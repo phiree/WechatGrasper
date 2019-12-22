@@ -28,11 +28,10 @@ namespace TourInfo.Infrastracture
         {
             builder.Register(c =>
             {
-                var config = c.Resolve<IConfiguration>();
-                var opt = new DbContextOptionsBuilder<TourInfoDbContext>();
+                 var opt = new DbContextOptionsBuilder<TourInfoDbContext>();
                 opt.UseSqlServer(connectionString);
                 return new TourInfoDbContext(opt.Options);
-            }).AsSelf().InstancePerLifetimeScope();
+            }).AsSelf().InstancePerDependency();
              
             ;
             builder.RegisterGeneric(typeof(BaseEFCoreRepository<,>)).As(typeof(IRepository<,>))
@@ -50,8 +49,11 @@ namespace TourInfo.Infrastracture
             builder.RegisterType<UrlFetcher>().As<IUrlFetcher>()
                .SingleInstance()
            ;
+            builder.RegisterType<ImageLocalizer>().As<IImageLocalizer>()
+             .SingleInstance()
+         ;
 
-          builder.RegisterGeneric (typeof(SqliteTableCreater<,>)).As( typeof(ISqliteTableCreater<,>))
+            builder.RegisterGeneric (typeof(SqliteTableCreater<,>)).As( typeof(ISqliteTableCreater<,>))
                 .SingleInstance()
                 ;
             builder.RegisterType<SqliteDatabaseCreater>().As<ISqliteDatabaseCreater>();

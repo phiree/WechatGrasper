@@ -19,10 +19,7 @@ namespace TourInfo.Domain
         /// 活动信息创建时间
         /// </summary>
         public string createTime { get; set; }
-        /// <summary>
-        /// 活动标题图片
-        /// </summary>
-        public string thumbnailKey { get; set; }
+       
         /// <summary>
         /// 地址
         /// </summary>
@@ -40,11 +37,7 @@ namespace TourInfo.Domain
         /// </summary>
         public string detail { get; set; }
        
-        /// <summary>
-        /// 活动图片
-        /// </summary>
-        public string[] pictureKeys { get; set; }
-        /// <summary>
+           /// <summary>
         /// 分享积分（暂时不用）
         /// </summary>
         public int credits { get; set; }

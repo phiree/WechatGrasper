@@ -16,21 +16,34 @@ namespace TourInfo.Domain
    
     public class TourInfoDomainAutofactModel : Autofac.Module {
         
-        string zbtaImageBaseUrl;
+        string zbtaTitleImageBaseUrl;
+        string zbtaDetailImageBaseUrl;
         string ewqyImageBaseUrl;
-        public TourInfoDomainAutofactModel(string zbtaImageBaseUrl,string ewqyImageBaseUrl)
+        string ewqyLocalSavedPath;
+        string zbtaLocalSavedPath;
+        public TourInfoDomainAutofactModel(string zbtaTitleImageBaseUrl,string zbtaDetailImageBaseUrl
+            ,string ewqyImageBaseUrl,string ewqyLocalSavedPath,string zbtaLocalSavedPath)
         {
-           this.zbtaImageBaseUrl = zbtaImageBaseUrl;
+           this.zbtaTitleImageBaseUrl = zbtaTitleImageBaseUrl;
+            this.zbtaDetailImageBaseUrl = zbtaDetailImageBaseUrl;
             this.ewqyImageBaseUrl = ewqyImageBaseUrl;
+            this.ewqyLocalSavedPath = ewqyLocalSavedPath;
+            this.zbtaLocalSavedPath = zbtaLocalSavedPath;
         }
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<ZBTAApplication>().As<IZBTAApplication>()
-                .WithParameter("ZbtaImageBaseUrl", zbtaImageBaseUrl);
+                .WithParameter("titleImageBaseUrl", zbtaTitleImageBaseUrl)
+                 .WithParameter("detailImageBaseUrl", zbtaDetailImageBaseUrl)
+                 .WithParameter("localSavedPath", zbtaLocalSavedPath)
+                ;
 
 
             builder.RegisterType<EWQYApplication>().As<IEWQYApplication>()
-          .WithParameter("EwqyImageBaseUrl", ewqyImageBaseUrl);
+          .WithParameter("imageBaseUrl", ewqyImageBaseUrl)
+          .WithParameter("localSavedPath", ewqyLocalSavedPath)
+        
+          ;
             builder.RegisterType<DataService>().As<IDataService>();
 
             base.Load(builder);
