@@ -4,33 +4,64 @@ using System.Text;
 
 namespace TourInfo.Domain
 {
-    //文化企业/场馆列表项
-
+    /// <summary>
+    /// 文化场馆或企业
+    /// </summary>
     public class CompanyVenue : EWQYEntity
     {
 
-       // public double distance { get; set; }
-        public string thumbnailKey { get; set; }
+       /// <summary>
+       /// 首图
+       /// </summary>
        
+       /// <summary>
+       /// 坐标，第一个值是经度，第二个维度
+       /// </summary>
         public  double[] location { get; set; }
+        /// <summary>
+        /// 名称
+        /// </summary>
         public string name { get; set; }
+        /// <summary>
+        /// 满意度得分
+        /// </summary>
         public string satisfactionScore { get; set; }
+        /// <summary>
+        /// 类型Id（暂时不用）
+        /// </summary>
         public string typeId { get; set; }
+        /// <summary>
+        /// 介绍
+        /// </summary>
         public string introduction { get; set; }
         //public IsComment isComment { get; set; }
        
-       
-        public   string[] pictureKeys { get; set; }
+       /// <summary>
+        /// 地址
+        /// </summary>
         public string address { get; set; }
+        /// <summary>
+        /// 是否收藏（暂时不用）
+        /// </summary>
         public string isFavorite { get; set; }
         
         #region 场馆独有属性
+        /// <summary>
+        /// 场馆开门时间
+        /// </summary>
         public string serviceTimeStart { get; set; }
-
+        /// <summary>
+        /// 场馆服务备注
+        /// </summary>
         public string serviceNote { get; set; }
+        /// <summary>
+        /// 场馆打烊时间
+        /// </summary>
         public string serviceTimeEnd { get; set; }
         #endregion
-
+        /// <summary>
+        /// 联系电话
+        /// </summary>
         public string telNumber { get; set; }
         
         public  override string CalculateFingerprint(IMD5Helper mD5Helper)

@@ -44,7 +44,7 @@ namespace TourInfo.Domain.DomainModel
 
 
             
-            var sqliteDbConn = sqliteDatabaseCreater.Create($"TourInfo.db3");
+            var sqliteDbConn = sqliteDatabaseCreater.Create(Environment.CurrentDirectory+"\\TourInfo.db3");
             var allActivity = activityRepository.GetAll();
             sqliteActivityTableCreator.CreateTable(sqliteDbConn, allActivity.Select(x => (SqliteActivity)new SqliteActivity( ).UpdateFromEntity(x)).ToList());
             var allCompanyVenue=companyVenueRepository.GetAll();
@@ -63,15 +63,20 @@ namespace TourInfo.Domain.DomainModel
             var allZbtaNews = zbtaNewsRepository.GetAllAfterVersion(version).Select(x => (SqliteZbtaNews)new SqliteZbtaNews().UpdateFromEntity(x));
 
            
-            return new SyncDataModel { Activities=allActivity,CompanyVenue=allCompanyVenue,ZbtaNews=allZbtaNews };
+            return new SyncDataModel { data=new SyncDataModelData { Activities = allActivity, CompanyVenues = allCompanyVenue, ZbtaNews = allZbtaNews } };
         }
 
         public class SyncDataModel
         { 
             public int code { get;set;} 
             public string msg { get;set;}=string.Empty;
-            public IEnumerable<SqliteActivity> Activities { get;set;}
-            public IEnumerable<SqliteCompanyVenue> CompanyVenue { get; set; }
+
+            public SyncDataModelData data { get; set; }
+        }
+        public class SyncDataModelData
+        {
+            public IEnumerable<SqliteActivity> Activities { get; set; }
+            public IEnumerable<SqliteCompanyVenue> CompanyVenues { get; set; }
 
             public IEnumerable<SqliteZbtaNews> ZbtaNews { get; set; }
         }

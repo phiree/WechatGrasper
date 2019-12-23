@@ -5,7 +5,6 @@ using System.Data.SqlClient;
 using System.Text;
 using TourInfo.Domain.Base;
 using Dapper;
-using DapperExtensions;
 using TourInfo.Infrastracture.Repository.EFCore;
 using System.Linq;
 namespace TourInfo.Infrastracture.Repository.EFCore

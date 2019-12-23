@@ -15,6 +15,8 @@ namespace TourInfo.Domain.DomainModel.DataSync
         public abstract SqliteTable<T> UpdateFromEntity( T t);
         
     }
+    
+    [Table("Activity")]
    public class SqliteActivity:SqliteTable<Activity>
     {
       
@@ -46,10 +48,10 @@ namespace TourInfo.Domain.DomainModel.DataSync
             this.endTime = activity.endTime;
             this.isShared = activity.isShared;
             this.name = activity.name;
-            this.pictureKeys = pictureKeys ?? string.Join(";", pictureKeys);
+            this.pictureKeys =activity.localizedPictureKeys==null?string.Empty: string.Join(";", activity.localizedPictureKeys);
             this.PlaceType = activity.PlaceType;
             this.startTime = activity.startTime;
-            this.thumbnailKey = activity.thumbnailKey;
+            this.thumbnailKey = activity.localizedThumbnailKey;
             this.Version = activity.Version;
             return this;
             
@@ -57,13 +59,14 @@ namespace TourInfo.Domain.DomainModel.DataSync
 
        
     }
-
+    [Table("CompanyVenue")]
     public class SqliteCompanyVenue : SqliteTable<CompanyVenue>
     {
       
         public string Version { get; set; }
         
         public PlaceType PlaceType { get; set; }
+       
         public string thumbnailKey { get; set; }
         public string location { get;set;}
        // public double[] location { get; set; }
@@ -96,7 +99,7 @@ namespace TourInfo.Domain.DomainModel.DataSync
             this.name = Entity.name;
          
             this.PlaceType = Entity.PlaceType;
-            this.pictureKeys = Entity.pictureKeys==null?string.Empty: string.Join(";", pictureKeys);
+            this.pictureKeys = Entity. localizedPictureKeys==null?string.Empty: string.Join(";",Entity.localizedPictureKeys);
          
             this.satisfactionScore = Entity.satisfactionScore;
            
@@ -105,15 +108,16 @@ namespace TourInfo.Domain.DomainModel.DataSync
             this.serviceTimeEnd=serviceTimeEnd;
                 this.serviceTimeStart=Entity.serviceTimeStart;
                 this.telNumber=Entity.telNumber;
-                this.thumbnailKey=Entity.thumbnailKey;
+                this.thumbnailKey=Entity.localizedThumbnailKey;
                 this.typeId=Entity.typeId;
                 this.Version=Entity.Version;
             return this;
 
         }
 
-         
+
     }
+    [Table("ZbtaNews")]
     public class SqliteZbtaNews : SqliteTable<ZbtaNews>
     {
         
@@ -126,6 +130,7 @@ namespace TourInfo.Domain.DomainModel.DataSync
         public string created { get; set; }
         public string back1 { get; set; }
         public string details { get; set; }
+        public string localizedDetails { get; set; }
         public string createUser { get; set; }
         public override SqliteTable<ZbtaNews> UpdateFromEntity(ZbtaNews Entity)
         {
@@ -137,10 +142,10 @@ namespace TourInfo.Domain.DomainModel.DataSync
         this.checkState =Entity.checkState;
 
         this.titles =Entity.titles;
-        this.image =Entity.image;
+        this.image =Entity.localizedImage;
         this.created =Entity.created;
         this.back1 =Entity.back1;
-        this.details =Entity.details;
+        this.details =Entity.localizedDetails;
         this.createUser =Entity.createUser;
             return this;
     }

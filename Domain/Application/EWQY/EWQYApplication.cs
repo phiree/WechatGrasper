@@ -13,6 +13,7 @@ namespace TourInfo.Domain.EWQY
         UrlCreator urlCreator = null;
         IUrlFetcher urlFetcher;
         IImageLocalizer imageLocalizer;
+
         readonly List<string> apiUrls = new List<string> {
             "venue/findVenueList.action",
              "company/findCompanyList.action",
@@ -23,13 +24,17 @@ namespace TourInfo.Domain.EWQY
         Random rm = new Random();
 
         IEWQYRepository eWQYRepository;
-        public EWQYApplication(IUrlFetcher urlFetcher, IEWQYRepository eWQYRepository, IImageLocalizer imageLocalizer)
+        string imageBaseUrl, localSavedPath;
+        public EWQYApplication(IUrlFetcher urlFetcher, IEWQYRepository eWQYRepository
+            , string imageBaseUrl, string localSavedPath,IImageLocalizer imageLocalizer)
         {
-            this.imageLocalizer=imageLocalizer;
+            this.localSavedPath = localSavedPath;
+            this.imageLocalizer = imageLocalizer;
             urlCreator = new UrlCreator();
             this.urlFetcher = urlFetcher;
             this.eWQYRepository = eWQYRepository;
-            
+            this.imageBaseUrl = imageBaseUrl;
+
 
         }
         public void Graspe(string _dateVersion)
@@ -83,31 +88,23 @@ namespace TourInfo.Domain.EWQY
                 }
                 //活动
                 else if (type.HasValue)
-                    {
-                         
-                            detail.data.PlaceType = type.Value;
-                      
-                   
+                {
+
+                    detail.data.PlaceType = type.Value;
+
+
                 }
                 eWQYRepository.SaveOrUpdate(detail.data, _dateVersion);
                 //图片本地化
-
-                string defaultUrl = "http://aaa.bbb";
-                if (typeof(T) == typeof(CompanyVenue))
+                var ewqyEntity =detail.data;
+                ewqyEntity.localizedThumbnailKey = imageLocalizer.Localize(imageBaseUrl + ewqyEntity.thumbnailKey, localSavedPath);
+                var localizedPictureKeyList = new List<string>();
+                foreach (string url in ewqyEntity.pictureKeys)
                 {
-                    var company =  detail.data as CompanyVenue;
-                    List<string> newImageUrls = new List<string>();
-                    foreach (string picUrl in company.pictureKeys)
-                    {
-
-                        string imageFullUrl = defaultUrl + picUrl;
-                        string fileName = Guid.NewGuid() + ".jpg";
-                        urlFetcher.FetchFile(imageFullUrl, fileName);
-                        newImageUrls.Add(fileName);
-
-
-                    }
+                    localizedPictureKeyList.Add(imageLocalizer.Localize(imageBaseUrl + url, localSavedPath));
                 }
+                ewqyEntity.localizedPictureKeys = localizedPictureKeyList.ToArray();
+
             }
 
 

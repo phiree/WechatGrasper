@@ -22,11 +22,11 @@ namespace TourInfo.Infrastracture.Repository.EFCore
 
           
             
-            modelBuilder.Entity<Activity>()
+            modelBuilder.Entity<EWQYEntity>()
                 .Property(x => x.pictureKeys)
               .HasConversion(v => string.Join(";", v), v => v.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries));
-            modelBuilder.Entity<CompanyVenue>()
-               .Property(x => x.pictureKeys)
+            modelBuilder.Entity<EWQYEntity>()
+               .Property(x => x. localizedPictureKeys)
              .HasConversion(v => string.Join(";", v), v => v.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries));
 
             modelBuilder.Entity<CompanyVenue>()

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -32,43 +34,30 @@ namespace TourInfo.Application.Api
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            //new TourInfo.Infrastracture.Installer().Install(services
-            //    , Configuration.GetConnectionString("TourInfoConnectionString"));
-            string connectionString = Configuration.GetConnectionString("TourInfoConnectionString");
-            services
-            .AddLogging();
-              services
-           .AddSingleton<IEWQYApplication, EWQYApplication>()
-            ;
-            services.AddScoped<IZBTAApplication, ZBTAApplication>()
-            ;
-            services.AddDbContext<TourInfoDbContext>(options
-                  => options.UseSqlServer(connectionString), ServiceLifetime.Transient)
-
-            ;
-            services.AddScoped(typeof(IRepository<,>), typeof(BaseEFCoreRepository<,>))
-            ;
-            services.AddScoped(typeof(IVersionedRepository<,>), typeof(VersionedDataEFCoreRepository<,>))
-
-
-            ;
-            services.AddScoped<IEWQYRepository, EWQYEFCoreRepository>()
-             ;
-            services.AddSingleton<IMD5Helper, MD5Helper>()
-               ;
-            services.AddSingleton<IUrlFetcher, UrlFetcher>()
-               ;
-            services.AddSingleton(typeof(ISqliteTableCreater<,>), typeof(SqliteTableCreater<,>))
-                ;
-            services.AddSingleton<ISqliteDatabaseCreater, SqliteDatabaseCreater>()
-               ;
-            services.AddScoped<IDataService, DataService>();
             services.AddMvc(x => x.EnableEndpointRouting = false).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            var dataService = services.BuildServiceProvider().GetService<ISqliteDatabaseCreater>();
-            var dataService2 = services.BuildServiceProvider().GetService<IDataService>();
+         
+            string connectionString = Configuration.GetConnectionString("TourinfoConnectionString");
+            string zbtaTitleImageBaseUrl = Configuration.GetValue<string>("ImageLocalizer:ZbtaTitleImageBaseUrl");
+            string zbtaDetailImageBaseUrl = Configuration.GetValue<string>("ImageLocalizer:ZbtaTitleImageBaseUrl");
+            string ewqyImageBaseUrl = Configuration.GetValue<string>("ImageLocalizer:EwqyImageBaseUrl");
+            string zbtaLocalSavedPath = Configuration.GetValue<string>("ImageLocalizer:ZbtaLocalSavedPath");
+            string ewqyLocalSavedPath = Configuration.GetValue<string>("ImageLocalizer:EwqyLocalSavedPath");
+
+            var containerBuilder = new Autofac.ContainerBuilder();
+            containerBuilder.Populate(services);
+            containerBuilder.RegisterModule(new TourInfo.Domain.TourInfoDomainAutofactModel
+                (zbtaTitleImageBaseUrl, zbtaDetailImageBaseUrl, ewqyImageBaseUrl, ewqyLocalSavedPath, zbtaLocalSavedPath));
+            containerBuilder.RegisterModule(new TourInfo.Infrastracture.TourinfoInstallerAutofacModule
+               (connectionString));
+            var container = containerBuilder.Build();
+           var serviceProvider = new AutofacServiceProvider(container);
+            return serviceProvider;
+
+
+
 
         }
 

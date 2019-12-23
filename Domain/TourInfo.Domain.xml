@@ -1,0 +1,229 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TourInfo.Domain</name>
+    </assembly>
+    <members>
+        <member name="F:TourInfo.Domain.EWQY.UrlCreator.PagedDetailUrlMap">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:TourInfo.Domain.Application.TourInfoApplication.InitData">
+            <summary>
+            创建初始化数据
+            </summary>
+        </member>
+        <member name="M:TourInfo.Domain.Application.TourInfoApplication.SyncData">
+            <summary>
+            增量更新数据
+            </summary>
+        </member>
+        <member name="T:TourInfo.Domain.TourNews.ZbtaNews">
+            <summary>
+            zbta旅游资讯
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.TourNews.ZbtaNews.releaseTime">
+            <summary>
+            发布时间
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.TourNews.ZbtaNews.checkState">
+            <summary>
+            审核状态（暂时不用）
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.TourNews.ZbtaNews.titles">
+            <summary>
+            标题
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.TourNews.ZbtaNews.image">
+            <summary>
+            首图
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.TourNews.ZbtaNews.created">
+            <summary>
+            信息创建时间
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.TourNews.ZbtaNews.back1">
+            <summary>
+            概要
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.TourNews.ZbtaNews.details">
+            <summary>
+            详情（富文本）
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.TourNews.ZbtaNews.createUser">
+            <summary>
+            创建者（暂时无用）
+            </summary>
+        </member>
+        <member name="T:TourInfo.Domain.Base.Entity`1">
+            <summary>
+            基类
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.Base.VersionedEntity.Version">
+            <summary>
+            数据版本，格式yyyyMMddHHmmss
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.Base.VersionedEntity.Fingerprint">
+            <summary>
+            数据指纹，用于判断内容是否变更
+            </summary>
+        </member>
+        <member name="T:TourInfo.Domain.Activity">
+            <summary>
+            活动列表项
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.Activity.startTime">
+            <summary>
+            活动开始时间
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.Activity.createTime">
+            <summary>
+            活动信息创建时间
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.Activity.address">
+            <summary>
+            地址
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.Activity.name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.Activity.endTime">
+            <summary>
+            活动结束时间
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.Activity.detail">
+            <summary>
+            活动详情
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.Activity.credits">
+            <summary>
+            分享积分（暂时不用）
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.Activity.isShared">
+            <summary>
+            是否已经被分享（暂时不用）
+            </summary>
+        </member>
+        <member name="T:TourInfo.Domain.CompanyVenue">
+            <summary>
+            文化场馆或企业
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.CompanyVenue.location">
+            <summary>
+            首图
+            </summary>
+            <summary>
+            坐标，第一个值是经度，第二个维度
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.CompanyVenue.name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.CompanyVenue.satisfactionScore">
+            <summary>
+            满意度得分
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.CompanyVenue.typeId">
+            <summary>
+            类型Id（暂时不用）
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.CompanyVenue.introduction">
+            <summary>
+            介绍
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.CompanyVenue.address">
+            <summary>
+            地址
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.CompanyVenue.isFavorite">
+            <summary>
+            是否收藏（暂时不用）
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.CompanyVenue.serviceTimeStart">
+            <summary>
+            场馆开门时间
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.CompanyVenue.serviceNote">
+            <summary>
+            场馆服务备注
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.CompanyVenue.serviceTimeEnd">
+            <summary>
+            场馆打烊时间
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.CompanyVenue.telNumber">
+            <summary>
+            联系电话
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.EWQYEntity.PlaceType">
+            <summary>
+            信息类型 0： 场馆，1：企业
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.EWQYEntity.thumbnailKey">
+            <summary>
+            活动标题图片
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.EWQYEntity.localizedThumbnailKey">
+            <summary>
+            本地存储后的图片路径
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.EWQYEntity.pictureKeys">
+            <summary>
+            图片
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.EWQYEntity.localizedPictureKeys">
+            <summary>
+            活动图片
+            </summary>
+        </member>
+        <member name="M:TourInfo.Domain.IImageLocalizer.Localize(System.String,System.String)">
+            <summary>
+            图片本地化
+            </summary>
+            <param name="remotePicUrl">远程图片地址</param>
+            <param name="localSavedPath">本地保存绝对路径</param>
+            <returns>本地图片相对地址</returns>
+        </member>
+        <member name="T:TourInfo.Domain.IUrlFetcher">
+             <summary>
+            Url抓取 
+             </summary>
+        </member>
+    </members>
+</doc>
