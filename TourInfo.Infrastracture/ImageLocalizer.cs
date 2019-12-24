@@ -16,8 +16,13 @@ namespace TourInfo.Infrastracture
         {
             this.urlFetcher = urlFetcher;
         }
-        public string Localize(string remotePicUrl, string localSavedPath)
+        public string Localize(string remotePicUrl, string localSavedPath,string existedPicName)
         {
+            if (!string.IsNullOrEmpty(existedPicName))
+            {
+                File.Delete(Environment.CurrentDirectory + "\\" + localSavedPath + existedPicName);
+            }
+
             string imgExt=Path.GetExtension(remotePicUrl);
             string imageLocalDirectory = Environment.CurrentDirectory + "\\" + localSavedPath;
             if (!Directory.Exists(imageLocalDirectory))

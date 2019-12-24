@@ -69,6 +69,11 @@
             基类
             </summary>
         </member>
+        <member name="T:TourInfo.Domain.Base.VersionedDataUpdateType">
+            <summary>
+            带版本数据的变化情况
+            </summary>
+        </member>
         <member name="P:TourInfo.Domain.Base.VersionedEntity.Version">
             <summary>
             数据版本，格式yyyyMMddHHmmss

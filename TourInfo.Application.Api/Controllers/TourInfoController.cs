@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using TourInfo.Domain.Base;
 using TourInfo.Domain.DomainModel;
+using TourInfo.Domain.TourNews;
 
 namespace TourInfo.Application.Api.Controllers
 {
@@ -12,8 +14,10 @@ namespace TourInfo.Application.Api.Controllers
     public class TourInfoController : ControllerBase
     {
         IDataService dataService;
-        public TourInfoController(IDataService dataService)
+        IRepository<ZbtaNews, string> zbtanewsRepository;
+        public TourInfoController(IDataService dataService, IRepository<ZbtaNews, string> zbtanewsRepository)
         {
+            this.zbtanewsRepository = zbtanewsRepository;
             this.dataService = dataService;
         }
         [HttpGet("InitData")]
@@ -22,6 +26,11 @@ namespace TourInfo.Application.Api.Controllers
             
             dataService.CreateInitData();
             return new ActionResult<string>("初始化成功");
+        }
+        public ActionResult<string> ZbtaNewsDetail(string newsId)
+        {
+            var zbtaNews = zbtanewsRepository.Get(newsId);
+            return Content(zbtaNews.details);
         }
 
         [HttpGet("SyncData")]

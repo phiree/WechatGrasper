@@ -14,17 +14,18 @@ namespace TourInfo.Domain.DomainModel.ZBTA
             this.detailImageBaseUrl = detailImageBaseUrl;
             this.localSavedPath = localSavedPath;
         }
-        public string Localize(string zbtaNewsDetail)
+        public string Localize(string zbtaNewsDetail,string zbtaNewsReplacedDetail)
         {
             string pattern = "(?<=<img[^>]+src=\")[^\">]+(?=\")";
 
 
             var matches = Regex.Matches(zbtaNewsDetail, pattern);
+            var replacedMatches = Regex.Matches(zbtaNewsReplacedDetail, pattern);
             string replacedDetail = zbtaNewsDetail;
             for (int i = 0; i < matches.Count; i++)
             {
                 var m = matches[i];
-                string localImage = imageLocalizer.Localize(detailImageBaseUrl + m.Value, localSavedPath);
+                string localImage = imageLocalizer.Localize(detailImageBaseUrl + m.Value, localSavedPath,replacedMatches[i].Value);
                 replacedDetail = replacedDetail.Replace(m.Value, localImage);
 
             }

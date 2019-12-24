@@ -28,8 +28,8 @@ namespace TourInfo.Infrastracture.Repository.EFCore
             Func<T, bool> predicate = x => x.Version.CompareTo(version) > 0;
             return FindList(predicate);
         }
-
-        public void SaveOrUpdate(T entity, string newVersion)
+        //insert new , update exists, no change.
+        public VersionedDataUpdateType SaveOrUpdate(T entity, string newVersion)
         {
             var existedEntity = Get(entity.id);
             string fingerprint = entity.CalculateFingerprint(md5Helper);
@@ -38,6 +38,7 @@ namespace TourInfo.Infrastracture.Repository.EFCore
             {
                 entity.UpdateVersion(fingerprint, newVersion);
                 Insert(entity);
+                return VersionedDataUpdateType.Added;
             }
             else
             {
@@ -47,6 +48,10 @@ namespace TourInfo.Infrastracture.Repository.EFCore
 
                     existedEntity.UpdateVersion(fingerprint, newVersion);
                     Update(existedEntity);
+                    return VersionedDataUpdateType.Updated;
+                }
+                else {
+                    return VersionedDataUpdateType.NoChange;
                 }
             }
         }

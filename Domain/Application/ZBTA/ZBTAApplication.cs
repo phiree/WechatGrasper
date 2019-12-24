@@ -16,12 +16,12 @@ namespace TourInfo.Domain.TourNews
         public ZBTAApplication(IUrlFetcher urlFetcher,
                     IDetailImageLocalizer detailImageLocalizer,
         IVersionedRepository<ZbtaNews, string> newsRepository
-            ,string titleImageBaseUrl,string localSavedPath, IImageLocalizer imageLocalizer)
+            , string titleImageBaseUrl, string localSavedPath, IImageLocalizer imageLocalizer)
         {
             this.detailImageLocalizer = detailImageLocalizer;
             this.imageLocalizer = imageLocalizer;
             this.titleImageBaseUrl = titleImageBaseUrl;
-           this.localSavedPath = localSavedPath;
+            this.localSavedPath = localSavedPath;
             this.newsRepository = newsRepository;
             this.urlFetcher = urlFetcher;
         }
@@ -35,7 +35,7 @@ namespace TourInfo.Domain.TourNews
                 string result = urlFetcher.FetchAsync(baseUrl + pageIndex).Result;
 
                 //转换错误,可能是因为json的Id是int类型
-               
+
                 var jsonResult = Newtonsoft.Json.JsonConvert.DeserializeObject<ZbtaNewsResponse>(result);
                 if (jsonResult.TourNews.Count == 0)
                 {
@@ -50,18 +50,26 @@ namespace TourInfo.Domain.TourNews
                         break;
                     }
                     var existedEntity = newsRepository.Get(news.id);
-                    
+
                     if (existedEntity != null)
                     {
                         //只要发现有存在的id,则不再到下一页
                         needContinue = false;
                         break;
                     }
-                    news.localizedImage = imageLocalizer.Localize(titleImageBaseUrl + news.image, localSavedPath);
-                    //details图片提取及替换
-                    news.localizedDetails = detailImageLocalizer.Localize(news.details);
+                    var updatedType = newsRepository.SaveOrUpdate(news, _dateVersion);
+                    if (updatedType == VersionedDataUpdateType.Updated)
+                    {
 
-                    newsRepository.SaveOrUpdate(news, _dateVersion);
+                    }
+                    if (updatedType == VersionedDataUpdateType.Added)
+
+                    {
+                        news.localizedImage = imageLocalizer.Localize(titleImageBaseUrl + news.image, localSavedPath,news.image);
+                        //details图片提取及替换
+                        news.localizedDetails = detailImageLocalizer.Localize(news.details);
+                    }
+
 
 
                 }

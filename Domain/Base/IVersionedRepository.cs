@@ -9,7 +9,7 @@ namespace TourInfo.Domain.Base
         
         
     {
-          void SaveOrUpdate(T entity, string newVersion);
+        VersionedDataUpdateType SaveOrUpdate(T entity, string newVersion);
           IList<T> GetAllAfterVersion(string version);
     }
 
