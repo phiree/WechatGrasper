@@ -9,16 +9,6 @@
             
             </summary>
         </member>
-        <member name="M:TourInfo.Domain.Application.TourInfoApplication.InitData">
-            <summary>
-            创建初始化数据
-            </summary>
-        </member>
-        <member name="M:TourInfo.Domain.Application.TourInfoApplication.SyncData">
-            <summary>
-            增量更新数据
-            </summary>
-        </member>
         <member name="T:TourInfo.Domain.TourNews.ZbtaNews">
             <summary>
             zbta旅游资讯

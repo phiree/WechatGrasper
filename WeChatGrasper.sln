@@ -11,6 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{FC18321A-6
 	ProjectSection(SolutionItems) = preProject
 		docs\e文齐韵数据库.sql = docs\e文齐韵数据库.sql
 		docs\initdata.json = docs\initdata.json
+		rapi_Json.json = rapi_Json.json
 		docs\旅游资源sql脚本.txt = docs\旅游资源sql脚本.txt
 		docs\旅游资源信息导出接口(2).docx = docs\旅游资源信息导出接口(2).docx
 	EndProjectSection
@@ -26,7 +27,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TourInfo.DomainTests", "TourInfo.DomainTests\TourInfo.DomainTests.csproj", "{392C719B-5857-4D4C-B636-D4F148D8775A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TourInfo.DomainTests", "TourInfo.DomainTests\TourInfo.DomainTests.csproj", "{392C719B-5857-4D4C-B636-D4F148D8775A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
