@@ -14,7 +14,15 @@ namespace TourInfo.Infrastracture
         public Task<string> FetchAsync(string url)
         {
             var webClient = new CookieAwareWebClient();
+            
             return webClient.DownloadStringTaskAsync(url);
+        }
+        public string PostWithJsonAsync(string url,string postJson)
+        {
+            var cli = new WebClient();
+            cli.Headers[HttpRequestHeader.ContentType] = "application/json";
+            var response = cli.UploadString(url, postJson);
+            return response;
         }
         public Task FetchFile(string url,string fileName)
         {

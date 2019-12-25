@@ -6,7 +6,13 @@ namespace TourInfo.Domain.Application.Rapi
 {
    public  class RapiApplication
     {
-        public void RequestInitData() { }
-        public void RequestSyncData() { }
+        public void Graspe(string _dateVersion) {
+
+            //
+        
+        }
+        public void RequestSyncData() {
+        
+        }
     }
 }

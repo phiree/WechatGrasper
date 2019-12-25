@@ -11,6 +11,7 @@ namespace TourInfo.Domain
         Task<string> FetchAsync(string url);
         Task<string> FetchEWQYAsync(string url );
         Task FetchFile(string url, string fileName);
+        string PostWithJsonAsync(string url, string postJson);
     }
 
 }

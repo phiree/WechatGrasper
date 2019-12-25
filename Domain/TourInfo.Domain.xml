@@ -69,6 +69,11 @@
             数据指纹，用于判断内容是否变更
             </summary>
         </member>
+        <member name="T:TourInfo.Domain.DomainModel.Rapi.IRapiGraspeService">
+            <summary>
+            抓取数据
+            </summary>
+        </member>
         <member name="T:TourInfo.Domain.Activity">
             <summary>
             活动列表项

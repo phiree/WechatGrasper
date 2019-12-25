@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TourInfo.Domain.Base;
 
 namespace TourInfo.Domain.DomainModel.Rapi
 {
-    public class Projectinfo
+    public class Projectinfo:Entity<int>
     {
-        public int pid { get; set; }
+        public int pid { get { return id; }  set { id = value; } }
         public string pname { get; set; }
         public object homeurl { get; set; }
         public string areacode { get; set; }

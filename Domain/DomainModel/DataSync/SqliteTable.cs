@@ -5,11 +5,12 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
 using TourInfo.Domain.Base;
+using TourInfo.Domain.DomainModel.Rapi;
 using TourInfo.Domain.TourNews;
 
 namespace TourInfo.Domain.DomainModel.DataSync
 {
-    public  abstract class SqliteTable<T> where T:Entity<string>
+    public  abstract class SqliteTable<T> //where T:Entity<string>
     {
         public string Id { get;set;}
         public abstract SqliteTable<T> UpdateFromEntity( T t);
@@ -152,5 +153,34 @@ namespace TourInfo.Domain.DomainModel.DataSync
 
          
     }
+
+    public class SqliteProjectinfo:SqliteTable<Projectinfo>
+    {
+        public int pid { get; set; }
+        public string pname { get; set; }
+        public object homeurl { get; set; }
+        public string areacode { get; set; }
+        public object desc { get; set; }
+        public string topvideourl { get; set; }
+        public string toppicurl { get; set; }
+        public string topjumpurl { get; set; }
+        public string detailhead { get; set; }
+        public string detailfoot { get; set; }
+        public string topresourceurl { get; set; }
+        public object wapbgimg { get; set; }
+        public object appid { get; set; }
+        public object defaultlogo { get; set; }
+        public int subpid { get; set; }
+        public bool iscomment { get; set; }
+        public DateTime crtdate { get; set; }
+        public DateTime updatetime { get; set; }
+        public bool deleteflag { get; set; }
+
+        public override SqliteTable<Projectinfo> UpdateFromEntity(Projectinfo t)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
 
 }

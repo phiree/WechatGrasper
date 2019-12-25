@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using TourInfo.Domain.DomainModel.Rapi;
 
-namespace TourInfo.Domain.Application.Rapi
+namespace TourInfo.Domain.DomainModel.Rapi
 {
     public class RapiResponse 
     { 
