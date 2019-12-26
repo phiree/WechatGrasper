@@ -43,6 +43,17 @@ namespace TourInfo.Infrastracture
 
             return result;
         }
+
+        public async Task<string> FetchWithHeaderAsync(string url, IDictionary<string, string> header)
+        {
+            var webClient = new CookieAwareWebClient();
+            foreach(var kvp in header)
+            {
+                webClient.Headers.Add(kvp.Key, kvp.Value);
+            }
+            var result = await webClient.DownloadStringTaskAsync(new Uri(url));
+            return result;
+        }
     }
 
 }

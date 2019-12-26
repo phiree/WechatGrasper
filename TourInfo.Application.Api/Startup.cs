@@ -38,22 +38,29 @@ namespace TourInfo.Application.Api
         {
             services.AddMvc(x => x.EnableEndpointRouting = false).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-         
+
             string connectionString = Configuration.GetConnectionString("TourinfoConnectionString");
             string zbtaTitleImageBaseUrl = Configuration.GetValue<string>("ImageLocalizer:ZbtaTitleImageBaseUrl");
-            string zbtaDetailImageBaseUrl = Configuration.GetValue<string>("ImageLocalizer:ZbtaTitleImageBaseUrl");
+            string zbtaDetailImageBaseUrl = Configuration.GetValue<string>("ImageLocalizer:ZbtaDetailImageBaseUrl");
             string ewqyImageBaseUrl = Configuration.GetValue<string>("ImageLocalizer:EwqyImageBaseUrl");
             string zbtaLocalSavedPath = Configuration.GetValue<string>("ImageLocalizer:ZbtaLocalSavedPath");
             string ewqyLocalSavedPath = Configuration.GetValue<string>("ImageLocalizer:EwqyLocalSavedPath");
 
+            string rapi_appid = Configuration.GetValue<string>("Rapi:appid");
+            string rapi_secret = Configuration.GetValue<string>("Rapi:appsecret");
+            string rapi_tokenurl = Configuration.GetValue<string>("Rapi:tokenurl");
+            string rapi_initurl = Configuration.GetValue<string>("Rapi:initurl");
+            string rapi_syncurl = Configuration.GetValue<string>("Rapi:syncurl");
+
             var containerBuilder = new Autofac.ContainerBuilder();
             containerBuilder.Populate(services);
             containerBuilder.RegisterModule(new TourInfo.Domain.TourInfoDomainAutofactModel
-                (zbtaTitleImageBaseUrl, zbtaDetailImageBaseUrl, ewqyImageBaseUrl, ewqyLocalSavedPath, zbtaLocalSavedPath));
+                (zbtaTitleImageBaseUrl, zbtaDetailImageBaseUrl, ewqyImageBaseUrl, ewqyLocalSavedPath, zbtaLocalSavedPath
+                , rapi_initurl, rapi_syncurl, rapi_tokenurl, rapi_appid, rapi_secret));
             containerBuilder.RegisterModule(new TourInfo.Infrastracture.TourinfoInstallerAutofacModule
                (connectionString));
             var container = containerBuilder.Build();
-           var serviceProvider = new AutofacServiceProvider(container);
+            var serviceProvider = new AutofacServiceProvider(container);
             return serviceProvider;
 
 

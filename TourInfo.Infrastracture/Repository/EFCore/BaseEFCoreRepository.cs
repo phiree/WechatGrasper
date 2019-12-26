@@ -7,6 +7,10 @@ using TourInfo.Domain.Base;
 using Dapper;
 using TourInfo.Infrastracture.Repository.EFCore;
 using System.Linq;
+using EFCore.BulkExtensions;
+using Microsoft.EntityFrameworkCore;
+using TourInfo.Infrastracture.Repository.ADONET;
+
 namespace TourInfo.Infrastracture.Repository.EFCore
 {
     public class BaseEFCoreRepository<T, Key> : IRepository<T, Key>
@@ -24,9 +28,11 @@ namespace TourInfo.Infrastracture.Repository.EFCore
 
         public void Insert(T entity)
         {
+           
             tourInfoDbContext.Add(entity);
             tourInfoDbContext.SaveChanges();
         }
+
 
         public T Get(Key id)
         {
@@ -54,6 +60,37 @@ namespace TourInfo.Infrastracture.Repository.EFCore
         public IList<T> FindList(Func<T, bool> predicate)
         {
             return tourInfoDbContext.Set<T>().Where(predicate).ToList();
+        }
+
+        public void SaveChanges()
+        {
+            tourInfoDbContext.SaveChanges();
+        }
+
+       
+
+        public void BulkInsert(DataTable dataTable, string tableName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void BulkInsert(IList<T> list)
+        {
+             
+            using (var connection=(SqlConnection)tourInfoDbContext.Database.GetDbConnection())
+            {
+                connection.Open();
+                var bulkCopy = new SqlBulkCopy(connection.ConnectionString);
+                bulkCopy.DestinationTableName = typeof(T).Name + "s";
+                bulkCopy.WriteToServer(list.ConvertGenericListToDataTable());
+                connection.Close();
+            }
+        }
+
+        public void ExecuteRawSql(string sql)
+        {
+            tourInfoDbContext.Database.ExecuteSqlCommand(sql);
+               
         }
     }
 }

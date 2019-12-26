@@ -12,6 +12,7 @@ using TourInfo.Domain.DomainModel.DataSync;
 using TourInfo.Domain.EWQY;
 using TourInfo.Domain.EWQY.DomainModel;
 using TourInfo.Domain.TourNews;
+using TourInfo.Infrastracture.Repository.ADONET;
 using TourInfo.Infrastracture.Repository.EFCore;
 
 namespace TourInfo.Infrastracture
@@ -37,6 +38,9 @@ namespace TourInfo.Infrastracture
             builder.RegisterGeneric(typeof(BaseEFCoreRepository<,>)).As(typeof(IRepository<,>))
                 .InstancePerLifetimeScope()
             ;
+           // builder.RegisterGeneric(typeof(AdoNetRepository<,>)).As(typeof(IRepository<,>))
+           //    .InstancePerLifetimeScope()
+           //;
             builder.RegisterGeneric(typeof(VersionedDataEFCoreRepository<,>)).As(typeof(IVersionedRepository<,>))
                 .InstancePerLifetimeScope()
             ;

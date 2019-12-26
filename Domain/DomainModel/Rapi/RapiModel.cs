@@ -7,20 +7,20 @@ namespace TourInfo.Domain.DomainModel.Rapi
 {
     public class Projectinfo:Entity<int>
     {
-        public int pid { get { return id; }  set { id = value; } }
+        public int pid { get; set; }
         public string pname { get; set; }
-        public object homeurl { get; set; }
+        public string homeurl { get; set; }
         public string areacode { get; set; }
-        public object desc { get; set; }
+        public string desc { get; set; }
         public string topvideourl { get; set; }
         public string toppicurl { get; set; }
         public string topjumpurl { get; set; }
         public string detailhead { get; set; }
         public string detailfoot { get; set; }
         public string topresourceurl { get; set; }
-        public object wapbgimg { get; set; }
-        public object appid { get; set; }
-        public object defaultlogo { get; set; }
+        public string wapbgimg { get; set; }
+        public string appid { get; set; }
+        public string defaultlogo { get; set; }
         public int subpid { get; set; }
         public bool iscomment { get; set; }
         public DateTime crtdate { get; set; }
@@ -28,13 +28,13 @@ namespace TourInfo.Domain.DomainModel.Rapi
         public bool deleteflag { get; set; }
     }
 
-    public class Typeinfo
+    public class Typeinfo 
     {
         public int typeid { get; set; }
         public int pid { get; set; }
-        public int orderno { get; set; }
+        public float orderno { get; set; }
         public string typename { get; set; }
-        public object editurl { get; set; }
+        public string editurl { get; set; }
         public string showurl { get; set; }
         public string mobilememo { get; set; }
         public int ptypeid { get; set; }
@@ -53,7 +53,7 @@ namespace TourInfo.Domain.DomainModel.Rapi
         public int id { get; set; }
         public int pid { get; set; }
         public int typeid { get; set; }
-        public int orderno { get; set; }
+        public float orderno { get; set; }
         public string fieldname { get; set; }
         public string fieldtype { get; set; }
         public string groupname { get; set; }
@@ -71,7 +71,7 @@ namespace TourInfo.Domain.DomainModel.Rapi
         public int id { get; set; }
         public int pid { get; set; }
         public int typeid { get; set; }
-        public int orderno { get; set; }
+        public float orderno { get; set; }
         public string groupname { get; set; }
         public string tagname { get; set; }
         public DateTime crtdate { get; set; }
@@ -84,7 +84,7 @@ namespace TourInfo.Domain.DomainModel.Rapi
         public int id { get; set; }
         public int pid { get; set; }
         public int typeid { get; set; }
-        public int orderno { get; set; }
+        public float orderno { get; set; }
         public string groupname { get; set; }
         public int mediatypeid { get; set; }
         public string mediatypename { get; set; }
@@ -93,7 +93,7 @@ namespace TourInfo.Domain.DomainModel.Rapi
         public bool deleteflag { get; set; }
     }
 
-    public class Pubinfounit
+    public class Pubinfounit 
     {
         public int unitid { get; set; }
         public int pid { get; set; }
@@ -101,8 +101,8 @@ namespace TourInfo.Domain.DomainModel.Rapi
         public string areacode { get; set; }
         public string areaname { get; set; }
         public string unitname { get; set; }
-        public object shortname { get; set; }
-        public int orderno { get; set; }
+        public string shortname { get; set; }
+        public float orderno { get; set; }
         public string gpsbd { get; set; }
         public string gps { get; set; }
         public string gpsgd { get; set; }
@@ -111,7 +111,7 @@ namespace TourInfo.Domain.DomainModel.Rapi
         public string zonecode { get; set; }
         public string telephone { get; set; }
         public string infotel { get; set; }
-        public object booktel { get; set; }
+        public string booktel { get; set; }
         public string complainttel { get; set; }
         public string fax { get; set; }
         public string url { get; set; }
@@ -121,56 +121,56 @@ namespace TourInfo.Domain.DomainModel.Rapi
         public string publictrafic { get; set; }
         public string memo { get; set; }
         public string desc { get; set; }
-        public object manager { get; set; }
-        public object managertel { get; set; }
-        public object businesslicense { get; set; }
+        public string manager { get; set; }
+        public string managertel { get; set; }
+        public string businesslicense { get; set; }
         public string businesstime { get; set; }
         public int level { get; set; }
         public int sourcefrom { get; set; }
-        public object opentime { get; set; }
-        public object decorationtime { get; set; }
-        public object tips { get; set; }
+        public string opentime { get; set; }
+        public string decorationtime { get; set; }
+        public string tips { get; set; }
         public string favouredpolicy { get; set; }
         public string innertrafic { get; set; }
         public int maxcapacity { get; set; }
-        public int ticketprice { get; set; }
+        public float ticketprice { get; set; }
         public string pricedesc { get; set; }
         public int id5a { get; set; }
-        public object name5a { get; set; }
+        public string name5a { get; set; }
         public int roomcount { get; set; }
         public int bedcount { get; set; }
-        public int roomprice { get; set; }
+        public float roomprice { get; set; }
         public int boxcount { get; set; }
         public int seatcount { get; set; }
-        public int personprice { get; set; }
-        public object licenseno { get; set; }
-        public object mainline { get; set; }
-        public object poitypename { get; set; }
-        public object poitypetag { get; set; }
-        public object detailurl { get; set; }
-        public object overallrating { get; set; }
-        public object servicerating { get; set; }
-        public object environmentrating { get; set; }
-        public object facilityrating { get; set; }
-        public object hygienerating { get; set; }
+        public float personprice { get; set; }
+        public string licenseno { get; set; }
+        public string mainline { get; set; }
+        public string poitypename { get; set; }
+        public string poitypetag { get; set; }
+        public string detailurl { get; set; }
+        public string overallrating { get; set; }
+        public string servicerating { get; set; }
+        public string environmentrating { get; set; }
+        public string facilityrating { get; set; }
+        public string hygienerating { get; set; }
         public int imgnum { get; set; }
         public int commentnum { get; set; }
-        public object reservefield1 { get; set; }
-        public object reservefield2 { get; set; }
-        public object reservefield3 { get; set; }
-        public object reservefield4 { get; set; }
-        public object reservefield5 { get; set; }
-        public object reservefield6 { get; set; }
-        public object reservefield7 { get; set; }
-        public object reservefield8 { get; set; }
-        public object reservefield9 { get; set; }
+        public string reservefield1 { get; set; }
+        public string reservefield2 { get; set; }
+        public string reservefield3 { get; set; }
+        public string reservefield4 { get; set; }
+        public string reservefield5 { get; set; }
+        public string reservefield6 { get; set; }
+        public string reservefield7 { get; set; }
+        public string reservefield8 { get; set; }
+        public string reservefield9 { get; set; }
         public int state { get; set; }
         public DateTime crtdate { get; set; }
         public DateTime updatetime { get; set; }
         public bool deleteflag { get; set; }
     }
 
-    public class Pubunittag
+    public class Pubunittag 
     {
         public int unittagid { get; set; }
         public int pid { get; set; }
@@ -179,19 +179,19 @@ namespace TourInfo.Domain.DomainModel.Rapi
         public string tagvalue { get; set; }
     }
 
-    public class Pubmediainfo
+    public class Pubmediainfo 
     {
         public int mediaid { get; set; }
         public bool topshow { get; set; }
         public int unitid { get; set; }
         public int typepicid { get; set; }
         public int pid { get; set; }
-        public int orderno { get; set; }
+        public float orderno { get; set; }
         public string medianame { get; set; }
-        public object desc { get; set; }
+        public string desc { get; set; }
         public string memo { get; set; }
         public string mediaurl { get; set; }
-        public object videourl { get; set; }
+        public string videourl { get; set; }
         public bool isshow { get; set; }
         public int mediatypeid { get; set; }
         public DateTime crtdate { get; set; }
@@ -199,22 +199,22 @@ namespace TourInfo.Domain.DomainModel.Rapi
         public bool deleteflag { get; set; }
     }
 
-    public class Pubinfounitchild
+    public class Pubinfounitchild 
     {
         public int childid { get; set; }
         public int pid { get; set; }
         public int unitid { get; set; }
         public string childname { get; set; }
-        public int orderno { get; set; }
+        public float orderno { get; set; }
         public string flagurl { get; set; }
         public string price { get; set; }
         public string desc { get; set; }
         public string memo { get; set; }
-        public object guidevoice { get; set; }
-        public object guidetext { get; set; }
-        public object gpsbd { get; set; }
-        public object gps { get; set; }
-        public object gpsgd { get; set; }
+        public string guidevoice { get; set; }
+        public string guidetext { get; set; }
+        public string gpsbd { get; set; }
+        public string gps { get; set; }
+        public string gpsgd { get; set; }
         public bool isshow { get; set; }
         public DateTime crtdate { get; set; }
         public DateTime updatetime { get; set; }

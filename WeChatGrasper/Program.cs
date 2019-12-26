@@ -21,6 +21,7 @@ using System.Threading;
 using System.ComponentModel;
 using Autofac.Extensions.DependencyInjection;
 using Autofac;
+using TourInfo.Domain.Application.Rapi;
 
 namespace WeChatGrasper
 {
@@ -44,11 +45,18 @@ namespace WeChatGrasper
             string  ewqyImageBaseUrl = Configuration.GetValue<string>("ImageLocalizer:EwqyImageBaseUrl");
             string zbtaLocalSavedPath = Configuration.GetValue<string>("ImageLocalizer:ZbtaLocalSavedPath");
             string ewqyLocalSavedPath = Configuration.GetValue<string>("ImageLocalizer:EwqyLocalSavedPath");
-           
+
+            string rapi_appid = Configuration.GetValue<string>("Rapi:appid");
+            string rapi_secret = Configuration.GetValue<string>("Rapi:appsecret");
+            string rapi_tokenurl= Configuration.GetValue<string>("Rapi:tokenurl");
+            string rapi_initurl = Configuration.GetValue<string>("Rapi:initurl");
+            string rapi_syncurl = Configuration.GetValue<string>("Rapi:syncurl");
+
             var containerBuilder = new Autofac.ContainerBuilder();
             containerBuilder.Populate(services);
             containerBuilder.RegisterModule(new TourInfo.Domain.TourInfoDomainAutofactModel
-                ( zbtaTitleImageBaseUrl,zbtaDetailImageBaseUrl, ewqyImageBaseUrl,ewqyLocalSavedPath,zbtaLocalSavedPath));
+               (zbtaTitleImageBaseUrl,zbtaDetailImageBaseUrl, ewqyImageBaseUrl,ewqyLocalSavedPath,zbtaLocalSavedPath
+                ,rapi_initurl, rapi_syncurl,rapi_tokenurl,rapi_appid,rapi_secret));
             containerBuilder.RegisterModule(new TourInfo.Infrastracture.TourinfoInstallerAutofacModule
                (connectionString));
             var container = containerBuilder.Build();
@@ -66,6 +74,11 @@ namespace WeChatGrasper
             zbtaWorker.RunWorkerCompleted += ZbtaWorker_RunWorkerCompleted;
             zbtaWorker.RunWorkerAsync(argument: _dateVersion);
 
+            BackgroundWorker rapiWorker = new BackgroundWorker();
+            rapiWorker.DoWork += (obj, e) => RapiWorker_DoWork(_dateVersion);
+            rapiWorker.RunWorkerCompleted += RapiWorker_RunWorkerCompleted;
+            rapiWorker.RunWorkerAsync(argument: _dateVersion);
+
             while (true)
             {
                 Console.WriteLine("正在抓取");
@@ -73,6 +86,17 @@ namespace WeChatGrasper
             }
 
 
+        }
+
+        private static void RapiWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            Console.WriteLine("rapi抓取完毕");
+        }
+
+        private static void RapiWorker_DoWork(string dataVersion)
+        {
+            var rapiApplication = serviceProvider.GetService<IRapiApplication>();
+            rapiApplication.Graspe(dataVersion);
         }
 
         private static void ZbtaWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

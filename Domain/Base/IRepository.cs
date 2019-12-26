@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
 
 namespace TourInfo.Domain.Base
@@ -12,7 +13,11 @@ namespace TourInfo.Domain.Base
         bool Update(T entity);
         T Get(Key id);
         IList<T> GetAll();
-      
+        void SaveChanges();
+          void BulkInsert(DataTable dataTable, string tableName);
+        void BulkInsert(IList<T> list);
+        void ExecuteRawSql(string sql);
+
 
 
 
