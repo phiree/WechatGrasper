@@ -5,7 +5,7 @@ using TourInfo.Domain.Base;
 
 namespace TourInfo.Domain.DomainModel.Rapi
 {
-    public class Projectinfo:Entity<int>
+    public class Projectinfo 
     {
         public int pid { get; set; }
         public string pname { get; set; }
@@ -179,7 +179,7 @@ namespace TourInfo.Domain.DomainModel.Rapi
         public string tagvalue { get; set; }
     }
 
-    public class Pubmediainfo 
+    public class Pubmediainfo
     {
         public int mediaid { get; set; }
         public bool topshow { get; set; }

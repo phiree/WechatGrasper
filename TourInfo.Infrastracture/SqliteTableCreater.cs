@@ -8,7 +8,7 @@ using TourInfo.Domain.Base;
 using System.Linq;
 namespace TourInfo.Domain
 {
-    public class SqliteTableCreater<T, T2> : ISqliteTableCreater<T, T2> where T : SqliteTable<T2> where T2 : Entity<string>
+    public class SqliteTableCreater<T> : ISqliteTableCreater<T> 
     {
         
 

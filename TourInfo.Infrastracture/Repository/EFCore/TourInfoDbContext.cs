@@ -39,9 +39,9 @@ namespace TourInfo.Infrastracture.Repository.EFCore
 
 
             modelBuilder.Entity<Projectinfo>()
-              .HasKey(x => x.id);
+              .HasKey(x => x.pid);
             modelBuilder.Entity<Projectinfo>()
-            .Property(x => x.id).ValueGeneratedNever();
+            .Property(x => x.pid).ValueGeneratedNever();
 
             modelBuilder.Entity<Typeinfo>()
              .HasKey(x => x.typeid);
@@ -77,18 +77,16 @@ namespace TourInfo.Infrastracture.Repository.EFCore
              .HasKey(x => x.mediaid);
             modelBuilder.Entity<Pubmediainfo>()
             .Property(x => x.mediaid).ValueGeneratedNever();
-            modelBuilder.Entity<Pubmediainfo>()
-          .HasIndex(x => x.mediaid).ForSqlServerIsClustered(false);
+            //modelBuilder.Entity<Pubmediainfo>()
+            //.HasIndex(x => x.mediaid).ForSqlServerIsClustered(false);
 
             modelBuilder.Entity<Pubinfounitchild>()
              .HasKey(x => x.childid);
             modelBuilder.Entity<Pubinfounitchild>()
-            .Property(x => x.childid).ValueGeneratedNever()
-           ;
+            .Property(x => x.childid).ValueGeneratedNever() ;
             modelBuilder.Entity<Pubinfounitchild>()
-           
-          ;
-            
+                .HasIndex(x => x.childid);
+
 
 
         }

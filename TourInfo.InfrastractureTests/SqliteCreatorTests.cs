@@ -22,12 +22,10 @@ namespace TourInfo.Domain.Tests
         public void CreateTableTest()
         {
             var sqliteConn = new SqliteDatabaseCreater().Create("tourinfo.db3");
-            SqliteTableCreater<SqliteActivity,Activity> activityTableCreator 
-                = new SqliteTableCreater<SqliteActivity,Activity>();
+            SqliteTableCreater<SqliteActivity> activityTableCreator 
+                = new SqliteTableCreater<SqliteActivity>();
 
-            activityTableCreator.CreateTable(sqliteConn, new List<SqliteActivity> { 
-           (SqliteActivity) new SqliteActivity( ).UpdateFromEntity(new Activity{ Version="3"})
-            });
+           
         }
     }
 }

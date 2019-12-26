@@ -57,7 +57,7 @@ namespace TourInfo.Infrastracture
              .SingleInstance()
          ;
 
-            builder.RegisterGeneric (typeof(SqliteTableCreater<,>)).As( typeof(ISqliteTableCreater<,>))
+            builder.RegisterGeneric (typeof(SqliteTableCreater<>)).As( typeof(ISqliteTableCreater<>))
                 .SingleInstance()
                 ;
             builder.RegisterType<SqliteDatabaseCreater>().As<ISqliteDatabaseCreater>();
