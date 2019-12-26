@@ -1,4 +1,6 @@
-﻿namespace TourInfo.Domain.Base
+﻿using System.Text;
+
+namespace TourInfo.Domain.Base
 {
     public abstract class VersionedEntity:Entity<string>,IHasVersion
     {
@@ -11,7 +13,11 @@
         /// </summary>
         public string Fingerprint { get; set; }
 
-        public abstract string CalculateFingerprint(IMD5Helper mD5Helper);
+        public virtual string CalculateFingerprint(IMD5Helper mD5Helper){
+            StringBuilder sb = new StringBuilder();
+            sb.Append(id);
+            return mD5Helper.CalculateMD5Hash(sb.ToString());
+        }
         public void UpdateVersion(string newFingerprint, string newVersion)
         {
             this.Version = newVersion;

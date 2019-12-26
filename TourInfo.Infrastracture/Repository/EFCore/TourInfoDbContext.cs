@@ -69,9 +69,9 @@ namespace TourInfo.Infrastracture.Repository.EFCore
             .Property(x => x.unitid).ValueGeneratedNever();
 
             modelBuilder.Entity<Pubunittag>()
-             .HasKey(x => x.tagid);
+             .HasKey(x => x.unittagid);
             modelBuilder.Entity<Pubunittag>()
-            .Property(x => x.tagid).ValueGeneratedNever();
+            .Property(x => x.unittagid).ValueGeneratedNever();
 
             modelBuilder.Entity<Pubmediainfo>()
              .HasKey(x => x.mediaid);

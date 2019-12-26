@@ -82,6 +82,10 @@ namespace TourInfo.Infrastracture.Repository.EFCore
                 connection.Open();
                 var bulkCopy = new SqlBulkCopy(connection.ConnectionString);
                 bulkCopy.DestinationTableName = typeof(T).Name + "s";
+                var tableData= list.ConvertGenericListToDataTable();
+                tableData.Columns.Cast<DataColumn>().ToList().ForEach(x =>
+     bulkCopy.ColumnMappings.Add(new SqlBulkCopyColumnMapping(x.ColumnName, x.ColumnName)));
+
                 bulkCopy.WriteToServer(list.ConvertGenericListToDataTable());
                 connection.Close();
             }

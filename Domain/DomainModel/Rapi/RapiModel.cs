@@ -5,7 +5,7 @@ using TourInfo.Domain.Base;
 
 namespace TourInfo.Domain.DomainModel.Rapi
 {
-    public class Projectinfo 
+    public class Projectinfo :VersionedEntity
     {
         public int pid { get; set; }
         public string pname { get; set; }
@@ -28,7 +28,7 @@ namespace TourInfo.Domain.DomainModel.Rapi
         public bool deleteflag { get; set; }
     }
 
-    public class Typeinfo 
+    public class Typeinfo : VersionedEntity
     {
         public int typeid { get; set; }
         public int pid { get; set; }
@@ -48,7 +48,7 @@ namespace TourInfo.Domain.DomainModel.Rapi
         public bool deleteflag { get; set; }
     }
 
-    public class Typefield
+    public class Typefield : VersionedEntity
     {
         public int id { get; set; }
         public int pid { get; set; }
@@ -66,7 +66,7 @@ namespace TourInfo.Domain.DomainModel.Rapi
         public bool deleteflag { get; set; }
     }
 
-    public class Typetag
+    public class Typetag : VersionedEntity
     {
         public int id { get; set; }
         public int pid { get; set; }
@@ -79,7 +79,7 @@ namespace TourInfo.Domain.DomainModel.Rapi
         public bool deleteflag { get; set; }
     }
 
-    public class Typepic
+    public class Typepic : VersionedEntity
     {
         public int id { get; set; }
         public int pid { get; set; }
@@ -93,7 +93,7 @@ namespace TourInfo.Domain.DomainModel.Rapi
         public bool deleteflag { get; set; }
     }
 
-    public class Pubinfounit 
+    public class Pubinfounit :VersionedEntity
     {
         public int unitid { get; set; }
         public int pid { get; set; }
@@ -170,7 +170,7 @@ namespace TourInfo.Domain.DomainModel.Rapi
         public bool deleteflag { get; set; }
     }
 
-    public class Pubunittag 
+    public class Pubunittag :VersionedEntity
     {
         public int unittagid { get; set; }
         public int pid { get; set; }
@@ -179,7 +179,7 @@ namespace TourInfo.Domain.DomainModel.Rapi
         public string tagvalue { get; set; }
     }
 
-    public class Pubmediainfo
+    public class Pubmediainfo : VersionedEntity
     {
         public int mediaid { get; set; }
         public bool topshow { get; set; }
@@ -199,7 +199,7 @@ namespace TourInfo.Domain.DomainModel.Rapi
         public bool deleteflag { get; set; }
     }
 
-    public class Pubinfounitchild 
+    public class Pubinfounitchild : VersionedEntity
     {
         public int childid { get; set; }
         public int pid { get; set; }

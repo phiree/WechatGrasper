@@ -25,11 +25,11 @@ namespace TourInfo.Domain
         string ewqyImageBaseUrl;
         string ewqyLocalSavedPath;
         string zbtaLocalSavedPath;
-        string rapi_initurl, rapi_syncurl, rapi_tokenurl, rapi_appid, rapi_appsecret;
+        string rapi_initurl, rapi_syncurl, rapi_tokenurl, rapi_appid, rapi_appsecret, rapi_localsavedpath;
         public TourInfoDomainAutofactModel(string zbtaTitleImageBaseUrl, string zbtaDetailImageBaseUrl
             , string ewqyImageBaseUrl, string ewqyLocalSavedPath, string zbtaLocalSavedPath,
             string rapi_initurl, string rapi_syncurl, string rapi_tokenurl, string rapi_appid,
-            string rapi_appsecret)
+            string rapi_appsecret,string rapi_localsavedpath)
         {
             this.zbtaTitleImageBaseUrl = zbtaTitleImageBaseUrl;
             this.zbtaDetailImageBaseUrl = zbtaDetailImageBaseUrl;
@@ -41,6 +41,7 @@ namespace TourInfo.Domain
             this.rapi_initurl = rapi_initurl;
             this.rapi_syncurl = rapi_syncurl;
             this.rapi_tokenurl = rapi_tokenurl;
+            this.rapi_localsavedpath= rapi_localsavedpath;
         }
         protected override void Load(ContainerBuilder builder)
         {
@@ -64,6 +65,7 @@ namespace TourInfo.Domain
             builder.RegisterType<RapiGraspeService>().As<IRapiGraspeService>()
                     .WithParameter("initUrl", rapi_initurl)
                     .WithParameter("syncUrl", rapi_syncurl)
+                    .WithParameter("localSavedPath", rapi_localsavedpath)
                     ;
             builder.RegisterType<TokenManager>().As<ITokenManager>()
                    .WithParameter("appid", rapi_appid)

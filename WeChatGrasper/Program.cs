@@ -51,12 +51,12 @@ namespace WeChatGrasper
             string rapi_tokenurl= Configuration.GetValue<string>("Rapi:tokenurl");
             string rapi_initurl = Configuration.GetValue<string>("Rapi:initurl");
             string rapi_syncurl = Configuration.GetValue<string>("Rapi:syncurl");
-
+            string RapiLocalSavedPath = Configuration.GetValue<string>("Rapi:RapiLocalSavedPath");
             var containerBuilder = new Autofac.ContainerBuilder();
             containerBuilder.Populate(services);
             containerBuilder.RegisterModule(new TourInfo.Domain.TourInfoDomainAutofactModel
                (zbtaTitleImageBaseUrl,zbtaDetailImageBaseUrl, ewqyImageBaseUrl,ewqyLocalSavedPath,zbtaLocalSavedPath
-                ,rapi_initurl, rapi_syncurl,rapi_tokenurl,rapi_appid,rapi_secret));
+                ,rapi_initurl, rapi_syncurl,rapi_tokenurl,rapi_appid,rapi_secret, RapiLocalSavedPath));
             containerBuilder.RegisterModule(new TourInfo.Infrastracture.TourinfoInstallerAutofacModule
                (connectionString));
             var container = containerBuilder.Build();

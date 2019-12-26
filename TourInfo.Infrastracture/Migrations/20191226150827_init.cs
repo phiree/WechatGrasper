@@ -7,7 +7,6 @@ namespace TourInfo.Infrastracture.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            
             migrationBuilder.CreateTable(
                 name: "EWQYEntity",
                 columns: table => new
@@ -50,8 +49,10 @@ namespace TourInfo.Infrastracture.Migrations
                 name: "Projectinfos",
                 columns: table => new
                 {
-                    id = table.Column<int>(nullable: false),
                     pid = table.Column<int>(nullable: false),
+                    id = table.Column<string>(nullable: true),
+                    Version = table.Column<string>(nullable: true),
+                    Fingerprint = table.Column<string>(nullable: true),
                     pname = table.Column<string>(nullable: true),
                     homeurl = table.Column<string>(nullable: true),
                     areacode = table.Column<string>(nullable: true),
@@ -73,7 +74,7 @@ namespace TourInfo.Infrastracture.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Projectinfos", x => x.id);
+                    table.PrimaryKey("PK_Projectinfos", x => x.pid);
                 });
 
             migrationBuilder.CreateTable(
@@ -81,6 +82,9 @@ namespace TourInfo.Infrastracture.Migrations
                 columns: table => new
                 {
                     childid = table.Column<int>(nullable: false),
+                    id = table.Column<string>(nullable: true),
+                    Version = table.Column<string>(nullable: true),
+                    Fingerprint = table.Column<string>(nullable: true),
                     pid = table.Column<int>(nullable: false),
                     unitid = table.Column<int>(nullable: false),
                     childname = table.Column<string>(nullable: true),
@@ -109,6 +113,9 @@ namespace TourInfo.Infrastracture.Migrations
                 columns: table => new
                 {
                     unitid = table.Column<int>(nullable: false),
+                    id = table.Column<string>(nullable: true),
+                    Version = table.Column<string>(nullable: true),
+                    Fingerprint = table.Column<string>(nullable: true),
                     pid = table.Column<int>(nullable: false),
                     typeid = table.Column<int>(nullable: false),
                     areacode = table.Column<string>(nullable: true),
@@ -192,6 +199,9 @@ namespace TourInfo.Infrastracture.Migrations
                 columns: table => new
                 {
                     mediaid = table.Column<int>(nullable: false),
+                    id = table.Column<string>(nullable: true),
+                    Version = table.Column<string>(nullable: true),
+                    Fingerprint = table.Column<string>(nullable: true),
                     topshow = table.Column<bool>(nullable: false),
                     unitid = table.Column<int>(nullable: false),
                     typepicid = table.Column<int>(nullable: false),
@@ -217,15 +227,18 @@ namespace TourInfo.Infrastracture.Migrations
                 name: "Pubunittags",
                 columns: table => new
                 {
-                    tagid = table.Column<int>(nullable: false),
                     unittagid = table.Column<int>(nullable: false),
+                    id = table.Column<string>(nullable: true),
+                    Version = table.Column<string>(nullable: true),
+                    Fingerprint = table.Column<string>(nullable: true),
                     pid = table.Column<int>(nullable: false),
                     unitid = table.Column<int>(nullable: false),
+                    tagid = table.Column<int>(nullable: false),
                     tagvalue = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Pubunittags", x => x.tagid);
+                    table.PrimaryKey("PK_Pubunittags", x => x.unittagid);
                 });
 
             migrationBuilder.CreateTable(
@@ -233,6 +246,8 @@ namespace TourInfo.Infrastracture.Migrations
                 columns: table => new
                 {
                     id = table.Column<int>(nullable: false),
+                    Version = table.Column<string>(nullable: true),
+                    Fingerprint = table.Column<string>(nullable: true),
                     pid = table.Column<int>(nullable: false),
                     typeid = table.Column<int>(nullable: false),
                     orderno = table.Column<float>(nullable: false),
@@ -257,6 +272,9 @@ namespace TourInfo.Infrastracture.Migrations
                 columns: table => new
                 {
                     typeid = table.Column<int>(nullable: false),
+                    id = table.Column<string>(nullable: true),
+                    Version = table.Column<string>(nullable: true),
+                    Fingerprint = table.Column<string>(nullable: true),
                     pid = table.Column<int>(nullable: false),
                     orderno = table.Column<float>(nullable: false),
                     typename = table.Column<string>(nullable: true),
@@ -283,6 +301,8 @@ namespace TourInfo.Infrastracture.Migrations
                 columns: table => new
                 {
                     id = table.Column<int>(nullable: false),
+                    Version = table.Column<string>(nullable: true),
+                    Fingerprint = table.Column<string>(nullable: true),
                     pid = table.Column<int>(nullable: false),
                     typeid = table.Column<int>(nullable: false),
                     orderno = table.Column<float>(nullable: false),
@@ -303,6 +323,8 @@ namespace TourInfo.Infrastracture.Migrations
                 columns: table => new
                 {
                     id = table.Column<int>(nullable: false),
+                    Version = table.Column<string>(nullable: true),
+                    Fingerprint = table.Column<string>(nullable: true),
                     pid = table.Column<int>(nullable: false),
                     typeid = table.Column<int>(nullable: false),
                     orderno = table.Column<float>(nullable: false),
@@ -339,6 +361,11 @@ namespace TourInfo.Infrastracture.Migrations
                 {
                     table.PrimaryKey("PK_ZbtaNews", x => x.id);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Pubinfounitchilds_childid",
+                table: "Pubinfounitchilds",
+                column: "childid");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

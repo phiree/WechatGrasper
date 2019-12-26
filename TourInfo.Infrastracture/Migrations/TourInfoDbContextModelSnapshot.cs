@@ -21,7 +21,11 @@ namespace TourInfo.Infrastracture.Migrations
 
             modelBuilder.Entity("TourInfo.Domain.DomainModel.Rapi.Projectinfo", b =>
                 {
-                    b.Property<int>("id");
+                    b.Property<int>("pid");
+
+                    b.Property<string>("Fingerprint");
+
+                    b.Property<string>("Version");
 
                     b.Property<string>("appid");
 
@@ -41,9 +45,9 @@ namespace TourInfo.Infrastracture.Migrations
 
                     b.Property<string>("homeurl");
 
-                    b.Property<bool>("iscomment");
+                    b.Property<string>("id");
 
-                    b.Property<int>("pid");
+                    b.Property<bool>("iscomment");
 
                     b.Property<string>("pname");
 
@@ -61,7 +65,7 @@ namespace TourInfo.Infrastracture.Migrations
 
                     b.Property<string>("wapbgimg");
 
-                    b.HasKey("id");
+                    b.HasKey("pid");
 
                     b.ToTable("Projectinfos");
                 });
@@ -69,6 +73,10 @@ namespace TourInfo.Infrastracture.Migrations
             modelBuilder.Entity("TourInfo.Domain.DomainModel.Rapi.Pubinfounit", b =>
                 {
                     b.Property<int>("unitid");
+
+                    b.Property<string>("Fingerprint");
+
+                    b.Property<string>("Version");
 
                     b.Property<string>("address");
 
@@ -117,6 +125,8 @@ namespace TourInfo.Infrastracture.Migrations
                     b.Property<string>("gpsgd");
 
                     b.Property<string>("hygienerating");
+
+                    b.Property<string>("id");
 
                     b.Property<int>("id5a");
 
@@ -223,6 +233,10 @@ namespace TourInfo.Infrastracture.Migrations
                 {
                     b.Property<int>("childid");
 
+                    b.Property<string>("Fingerprint");
+
+                    b.Property<string>("Version");
+
                     b.Property<string>("childname");
 
                     b.Property<DateTime>("crtdate");
@@ -243,6 +257,8 @@ namespace TourInfo.Infrastracture.Migrations
 
                     b.Property<string>("guidevoice");
 
+                    b.Property<string>("id");
+
                     b.Property<bool>("isshow");
 
                     b.Property<string>("memo");
@@ -259,6 +275,8 @@ namespace TourInfo.Infrastracture.Migrations
 
                     b.HasKey("childid");
 
+                    b.HasIndex("childid");
+
                     b.ToTable("Pubinfounitchilds");
                 });
 
@@ -266,11 +284,17 @@ namespace TourInfo.Infrastracture.Migrations
                 {
                     b.Property<int>("mediaid");
 
+                    b.Property<string>("Fingerprint");
+
+                    b.Property<string>("Version");
+
                     b.Property<DateTime>("crtdate");
 
                     b.Property<bool>("deleteflag");
 
                     b.Property<string>("desc");
+
+                    b.Property<string>("id");
 
                     b.Property<bool>("isshow");
 
@@ -298,25 +322,28 @@ namespace TourInfo.Infrastracture.Migrations
 
                     b.HasKey("mediaid");
 
-                    b.HasIndex("mediaid")
-                        .HasAnnotation("SqlServer:Clustered", false);
-
                     b.ToTable("Pubmediainfos");
                 });
 
             modelBuilder.Entity("TourInfo.Domain.DomainModel.Rapi.Pubunittag", b =>
                 {
-                    b.Property<int>("tagid");
+                    b.Property<int>("unittagid");
+
+                    b.Property<string>("Fingerprint");
+
+                    b.Property<string>("Version");
+
+                    b.Property<string>("id");
 
                     b.Property<int>("pid");
+
+                    b.Property<int>("tagid");
 
                     b.Property<string>("tagvalue");
 
                     b.Property<int>("unitid");
 
-                    b.Property<int>("unittagid");
-
-                    b.HasKey("tagid");
+                    b.HasKey("unittagid");
 
                     b.ToTable("Pubunittags");
                 });
@@ -324,6 +351,10 @@ namespace TourInfo.Infrastracture.Migrations
             modelBuilder.Entity("TourInfo.Domain.DomainModel.Rapi.Typefield", b =>
                 {
                     b.Property<int>("id");
+
+                    b.Property<string>("Fingerprint");
+
+                    b.Property<string>("Version");
 
                     b.Property<DateTime>("crtdate");
 
@@ -360,6 +391,10 @@ namespace TourInfo.Infrastracture.Migrations
                 {
                     b.Property<int>("typeid");
 
+                    b.Property<string>("Fingerprint");
+
+                    b.Property<string>("Version");
+
                     b.Property<DateTime>("crtdate");
 
                     b.Property<bool>("deleteflag");
@@ -371,6 +406,8 @@ namespace TourInfo.Infrastracture.Migrations
                     b.Property<bool>("existsroom");
 
                     b.Property<bool>("existsscenic");
+
+                    b.Property<string>("id");
 
                     b.Property<bool>("isshow");
 
@@ -399,6 +436,10 @@ namespace TourInfo.Infrastracture.Migrations
                 {
                     b.Property<int>("id");
 
+                    b.Property<string>("Fingerprint");
+
+                    b.Property<string>("Version");
+
                     b.Property<DateTime>("crtdate");
 
                     b.Property<bool>("deleteflag");
@@ -425,6 +466,10 @@ namespace TourInfo.Infrastracture.Migrations
             modelBuilder.Entity("TourInfo.Domain.DomainModel.Rapi.Typetag", b =>
                 {
                     b.Property<int>("id");
+
+                    b.Property<string>("Fingerprint");
+
+                    b.Property<string>("Version");
 
                     b.Property<DateTime>("crtdate");
 

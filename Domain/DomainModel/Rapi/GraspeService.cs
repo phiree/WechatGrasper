@@ -20,6 +20,7 @@ namespace TourInfo.Domain.DomainModel.Rapi
         ITokenManager tokenManager;
         string initUrl = "";
         string syncUrl = "";
+        IImageLocalizer imageLocalizer;
       
         IUrlFetcher urlFetcher;
         IRepository<Projectinfo,int> repositoryProjectInfo;
@@ -31,9 +32,11 @@ namespace TourInfo.Domain.DomainModel.Rapi
         IRepository<Pubunittag, int> repositoryPubunittag;
         IRepository<Pubmediainfo, int> repositoryPubmediainfo;
         IRepository<Pubinfounitchild, int> repositoryPubinfounitchild;
-
-        public RapiGraspeService(ITokenManager tokenManager, string initUrl, string syncUrl,  IUrlFetcher urlFetcher, IRepository<Projectinfo, int> repositoryProjectInfo, IRepository<Typeinfo, int> repositoryTypeinfo, IRepository<Typefield, int> repositoryTypefield, IRepository<Typetag, int> repositoryTypetag, IRepository<Typepic, int> repositoryTypepic, IRepository<Pubinfounit, int> repositoryPubinfounit, IRepository<Pubunittag, int> repositoryPubunittag, IRepository<Pubmediainfo, int> repositoryPubmediainfo, IRepository<Pubinfounitchild, int> repositoryPubinfounitchild)
+        string localSavedPath;
+        public RapiGraspeService(string localSavedPath, IImageLocalizer imageLocalizer, ITokenManager tokenManager, string initUrl, string syncUrl,  IUrlFetcher urlFetcher, IRepository<Projectinfo, int> repositoryProjectInfo, IRepository<Typeinfo, int> repositoryTypeinfo, IRepository<Typefield, int> repositoryTypefield, IRepository<Typetag, int> repositoryTypetag, IRepository<Typepic, int> repositoryTypepic, IRepository<Pubinfounit, int> repositoryPubinfounit, IRepository<Pubunittag, int> repositoryPubunittag, IRepository<Pubmediainfo, int> repositoryPubmediainfo, IRepository<Pubinfounitchild, int> repositoryPubinfounitchild)
         {
+            this.localSavedPath = localSavedPath;
+            this.imageLocalizer=imageLocalizer;
             this.initUrl = initUrl;
             this.syncUrl = syncUrl;
             this.tokenManager = tokenManager;
@@ -64,44 +67,43 @@ namespace TourInfo.Domain.DomainModel.Rapi
             var responseModel = JsonConvert.DeserializeObject<RapiResponse>(result);
             if(responseModel.data.projectinfo!=null)
             { 
+                
             repositoryProjectInfo.Insert(responseModel.data.projectinfo);
             repositoryProjectInfo.SaveChanges();
             }
 
-            //foreach (var pubinfounit in responseModel.data.pubinfounits)
-            //{
-            //    repositoryPubinfounit.Insert(pubinfounit);
-            //}
-          //  repositoryPubmediainfo.ExecuteRawSql(" ALTER INDEX [PK_Pubmediainfos] on Pubmediainfos DISABLE");
-            repositoryPubmediainfo.BulkInsert(responseModel.data.pubmediainfoes);
-            //repositoryPubmediainfo.ExecuteRawSql(" ALTER INDEX [PK_Pubmediainfos] on Pubmediainfos Rebuild");
+            var allPubmediainfos=new List<Pubmediainfo>();
+            foreach(var mediainfo in responseModel.data.pubmediainfoes)
+            { 
+                 string localImage= imageLocalizer.Localize(mediainfo.mediaurl, localSavedPath);
+                mediainfo.mediaurl=localImage;
+                allPubmediainfos.Add(mediainfo);
+                }
 
-            repositoryPubinfounit.BulkInsert(responseModel.data.pubinfounits);
-           
-            //foreach (var pubinfounitchild in responseModel.data.pubinfounitchilds)
-            //{
-            //    repositoryPubinfounitchild.Insert(pubinfounitchild);
-            //}
-         ////  repositoryPubinfounit.ExecuteRawSql(" ALTER INDEX [PK_Pubinfounits] on Pubinfounits DISABLE");
-            repositoryPubinfounitchild.BulkInsert(responseModel.data.pubinfounitchilds);
-            //repositoryPubinfounit.ExecuteRawSql(" ALTER INDEX [PK_Pubinfounits] on Pubinfounits Rebuild");
+            var alltypeinfoes = new List<Typeinfo>();
+            foreach (var item in responseModel.data.typeinfoes)
+            {
+                string localImage = imageLocalizer.Localize(item.wapshowimg, localSavedPath);
+                item.wapshowimg = localImage;
+                alltypeinfoes.Add(item);
+            }
 
-            //foreach (var pubmediainfo in responseModel.data.pubmediainfoes)
-            //{
-            //    repositoryPubmediainfo.Insert(pubmediainfo);
-            //}
+            var allPubinfounit = new List<Pubinfounit>();
+            foreach (var item in responseModel.data.pubinfounits)
+            {
+                string localImage = imageLocalizer.Localize(item.flagpic, localSavedPath);
+                item.flagpic = localImage;
+                allPubinfounit.Add(item);
+            }
+            repositoryPubmediainfo.BulkInsert(allPubmediainfos.Select(x => { x.Version = dataVersion; return x; }).ToList());
+            repositoryPubinfounit.BulkInsert(allPubinfounit.Select(x=>{x.Version=dataVersion;return x;}).ToList());
+            repositoryPubinfounitchild.BulkInsert(responseModel.data.pubinfounitchilds.Select(x => { x.Version = dataVersion; return x; }).ToList());
+            repositoryPubunittag.BulkInsert(responseModel.data.pubunittags.Select(x => { x.Version = dataVersion; return x; }).ToList());
+            repositoryTypefield.BulkInsert(responseModel.data.typefields.Select(x => { x.Version = dataVersion; return x; }).ToList());
+            repositoryTypepic.BulkInsert( responseModel.data.typepics.Select(x => { x.Version = dataVersion; return x; }).ToList());
+            repositoryTypeinfo.BulkInsert(alltypeinfoes.Select(x => { x.Version = dataVersion; return x; }).ToList());
+            repositoryTypetag.BulkInsert(responseModel.data.typetags.Select(x => { x.Version = dataVersion; return x; }).ToList());
 
-            repositoryPubunittag.BulkInsert(responseModel.data.pubunittags);
-
-            repositoryTypefield.BulkInsert(responseModel.data.typefields);
-
-            repositoryTypepic.BulkInsert( responseModel.data.typepics);
-
-            repositoryTypeinfo.BulkInsert( responseModel.data.typeinfoes);
-           
-            
-            repositoryTypetag.BulkInsert(responseModel.data.typetags);
-             
 
         }
 

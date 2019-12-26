@@ -15,7 +15,7 @@ namespace TourInfo.Domain.Application.Rapi
         public void Graspe(string _dateVersion)
         {
 
-            string dataVersion = DateTime.Now.ToString("yyyyMMddhhmmss");
+            
             rapiGraspeService.Graspe(_dateVersion);
 
         }
