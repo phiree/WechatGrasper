@@ -77,6 +77,8 @@ namespace TourInfo.Infrastracture.Repository.EFCore
              .HasKey(x => x.mediaid);
             modelBuilder.Entity<Pubmediainfo>()
             .Property(x => x.mediaid).ValueGeneratedNever();
+            modelBuilder.Entity<Pubmediainfo>()
+          .HasIndex(x => x.mediaid).ForSqlServerIsClustered(false);
 
             modelBuilder.Entity<Pubinfounitchild>()
              .HasKey(x => x.childid);
