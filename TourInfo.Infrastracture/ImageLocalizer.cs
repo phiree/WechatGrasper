@@ -20,7 +20,7 @@ namespace TourInfo.Infrastracture
         {
             string imgExt=Path.GetExtension(remotePicUrl);
             imgExt=string.IsNullOrEmpty(imgExt)?".jpg":imgExt;
-            string imageLocalDirectory = Environment.CurrentDirectory + "\\" + localSavedPath;
+            string imageLocalDirectory = Environment.CurrentDirectory + $"\\InitializeImages\\{DateTime.Now.ToString("YYYYMMddHHmmss")}" + localSavedPath;
             if (!Directory.Exists(imageLocalDirectory))
             {
                 Directory.CreateDirectory(imageLocalDirectory);
