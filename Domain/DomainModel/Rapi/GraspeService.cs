@@ -5,6 +5,9 @@ using Newtonsoft.Json;
 using TourInfo.Domain.Base;
 using System.Linq;
 using System.Net;
+using System.Threading;
+//using FastMember;
+using System.Collections;
 
 namespace TourInfo.Domain.DomainModel.Rapi
 {
@@ -72,14 +75,25 @@ namespace TourInfo.Domain.DomainModel.Rapi
             repositoryProjectInfo.SaveChanges();
             }
 
+            foreach (var item in responseModel.data.pubmediainfoes)
+            { 
+                //string localImage = imageLocalizer.Localize(item.mediaurl, localSavedPath);
+                //item.mediaurl = localImage;
+                //item.Version = dataVersion;
+                //// allPubmediainfos.Add(mediainfo);
+                //repositoryPubmediainfo.Insert(item);
+            }
+
             //var allPubmediainfos=new List<Pubmediainfo>();
-           new  System.Threading.Thread(()=>{
-               foreach (var mediainfo in responseModel.data.pubmediainfoes)
+            new  System.Threading.Thread(()=>{
+               foreach (var item in responseModel.data.pubmediainfoes)
                {
-                   string localImage = imageLocalizer.Localize(mediainfo.mediaurl, localSavedPath);
-                   mediainfo.mediaurl = localImage;
-                   // allPubmediainfos.Add(mediainfo);
-                   repositoryPubmediainfo.Insert(mediainfo);
+
+                   //string localImage = imageLocalizer.Localize(item.mediaurl, localSavedPath);
+                   //item.mediaurl = localImage;
+                   //item.Version = dataVersion;
+                   //// allPubmediainfos.Add(mediainfo);
+                   //repositoryPubmediainfo.Insert(item);
                }
            }).Start();
 
@@ -88,7 +102,8 @@ namespace TourInfo.Domain.DomainModel.Rapi
                 {
                     string localImage = imageLocalizer.Localize(item.wapshowimg, localSavedPath);
                     item.wapshowimg = localImage;
-                   // alltypeinfoes.Add(item);
+                    item.Version = dataVersion;
+                    // alltypeinfoes.Add(item);
                     repositoryTypeinfo.Insert(item);
                 }
             }).Start();
@@ -99,15 +114,27 @@ namespace TourInfo.Domain.DomainModel.Rapi
                 {
                     string localImage = imageLocalizer.Localize(item.flagpic, localSavedPath);
                     item.flagpic = localImage;
+                    item.Version = dataVersion;
                     //     allPubinfounit.Add(item);
                     repositoryPubinfounit.Insert(item);
                 }
             }).Start();
+
+            new System.Threading.Thread(() => {
+                foreach (var item in responseModel.data.pubinfounitchilds)
+                {
+                    string localImage = imageLocalizer.Localize(item.flagurl, localSavedPath);
+                    item.flagurl = localImage;
+                    item.Version = dataVersion;
+                    //     allPubinfounit.Add(item);
+                    repositoryPubinfounitchild.Insert(item);
+                }
+            }).Start();
             //     var allPubinfounit = new List<Pubinfounit>();
-           
-         //   repositoryPubmediainfo.BulkInsert(allPubmediainfos.Select(x => { x.Version = dataVersion; return x; }).ToList());
-        //    repositoryPubinfounit.BulkInsert(allPubinfounit.Select(x=>{x.Version=dataVersion;return x;}).ToList());
-            repositoryPubinfounitchild.BulkInsert(responseModel.data.pubinfounitchilds.Select(x => { x.Version = dataVersion; return x; }).ToList());
+
+            //   repositoryPubmediainfo.BulkInsert(allPubmediainfos.Select(x => { x.Version = dataVersion; return x; }).ToList());
+            //    repositoryPubinfounit.BulkInsert(allPubinfounit.Select(x=>{x.Version=dataVersion;return x;}).ToList());
+           // repositoryPubinfounitchild.BulkInsert(responseModel.data.pubinfounitchilds.Select(x => { x.Version = dataVersion; return x; }).ToList());
             repositoryPubunittag.BulkInsert(responseModel.data.pubunittags.Select(x => { x.Version = dataVersion; return x; }).ToList());
             repositoryTypefield.BulkInsert(responseModel.data.typefields.Select(x => { x.Version = dataVersion; return x; }).ToList());
             repositoryTypepic.BulkInsert( responseModel.data.typepics.Select(x => { x.Version = dataVersion; return x; }).ToList());
@@ -117,6 +144,29 @@ namespace TourInfo.Domain.DomainModel.Rapi
 
         }
 
+         
         
+    }
+    public class InfoLocalizer<T>
+    {
+        IImageLocalizer imageLocalizer;
+
+        public InfoLocalizer(IImageLocalizer imageLocalizer)
+        {
+            this.imageLocalizer = imageLocalizer;
+        }
+
+        public void Localizer(T t,string localSavedPath)
+        {
+            var members = t.GetType().GetMembers();
+            foreach (var p in t.GetType().GetProperties())
+            {
+                if (p.PropertyType != typeof(ImageUrl)) { continue; }
+                
+                var imageUrl = (ImageUrl)p.GetValue(t);
+               string localizedImage= imageLocalizer.Localize(imageUrl.OriginalUrl, localSavedPath);
+                p.SetValue(t, new ImageUrl(imageUrl.OriginalUrl, localizedImage));
+            }
+        }
     }
 }

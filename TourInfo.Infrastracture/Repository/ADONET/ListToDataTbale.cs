@@ -11,11 +11,11 @@ namespace TourInfo.Infrastracture.Repository.ADONET
         public static DataTable ConvertGenericListToDataTable<T>(this IList<T> inputList)
         {
             var dt = new DataTable();
-            dt = ListToDataTbale2.ConvertToDataTable<T>(inputList);
-            //using (var reader = ObjectReader.Create(inputList))
-            //{
-            //    dt.Load(reader);
-            //}
+            // dt = ListToDataTbale2.ConvertToDataTable<T>(inputList);
+            using (var reader = ObjectReader.Create(inputList))
+            {
+                dt.Load(reader);
+            }
             return dt;
         }
     }

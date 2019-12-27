@@ -179,7 +179,7 @@ namespace TourInfo.Domain.DomainModel.Rapi
         public string tagvalue { get; set; }
     }
 
-    public class Pubmediainfo : VersionedEntity
+    public class Pubmediainfo : VersionedEntity 
     {
         public int mediaid { get; set; }
         public bool topshow { get; set; }
@@ -190,13 +190,14 @@ namespace TourInfo.Domain.DomainModel.Rapi
         public string medianame { get; set; }
         public string desc { get; set; }
         public string memo { get; set; }
-        public string mediaurl { get; set; }
+        public ImageUrl mediaurl { get; set; }
         public string videourl { get; set; }
         public bool isshow { get; set; }
         public int mediatypeid { get; set; }
         public DateTime crtdate { get; set; }
         public DateTime updatetime { get; set; }
         public bool deleteflag { get; set; }
+        
     }
 
     public class Pubinfounitchild : VersionedEntity

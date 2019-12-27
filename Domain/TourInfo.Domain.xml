@@ -59,6 +59,12 @@
             基类
             </summary>
         </member>
+        <member name="P:TourInfo.Domain.Base.IHaveImage.ImageUrlPropertyMap">
+            <summary>
+            图片源路径属性 和  本地化路径 属性对应关系
+            如果不需要保存源地址，则key和value可以设置到同一个字段。
+            </summary>
+        </member>
         <member name="P:TourInfo.Domain.Base.VersionedEntity.Version">
             <summary>
             数据版本，格式yyyyMMddHHmmss

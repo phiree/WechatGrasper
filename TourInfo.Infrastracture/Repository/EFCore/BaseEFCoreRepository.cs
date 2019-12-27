@@ -86,7 +86,7 @@ namespace TourInfo.Infrastracture.Repository.EFCore
                 tableData.Columns.Cast<DataColumn>().ToList().ForEach(x =>
      bulkCopy.ColumnMappings.Add(new SqlBulkCopyColumnMapping(x.ColumnName, x.ColumnName)));
 
-                bulkCopy.WriteToServer(list.ConvertGenericListToDataTable());
+                bulkCopy.WriteToServer(tableData);//.ConvertGenericListToDataTable());
                 connection.Close();
             }
         }
