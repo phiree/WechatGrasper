@@ -9,6 +9,7 @@ using TourInfo.Domain;
 using TourInfo.Domain.Base;
 using TourInfo.Domain.DomainModel;
 using TourInfo.Domain.DomainModel.DataSync;
+using TourInfo.Domain.DomainModel.Rapi;
 using TourInfo.Domain.EWQY;
 using TourInfo.Domain.EWQY.DomainModel;
 using TourInfo.Domain.TourNews;
@@ -56,7 +57,9 @@ namespace TourInfo.Infrastracture
             builder.RegisterType<ImageLocalizer>().As<IImageLocalizer>()
              .SingleInstance()
          ;
-
+            builder.RegisterGeneric(typeof(InfoLocalizer< >)) .As(typeof(IInfoLocalizer<>))
+           .SingleInstance()
+       ;
             builder.RegisterGeneric (typeof(SqliteTableCreater<>)).As( typeof(ISqliteTableCreater<>))
                 .SingleInstance()
                 ;

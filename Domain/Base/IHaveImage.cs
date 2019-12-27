@@ -14,12 +14,16 @@ namespace TourInfo.Domain.Base
     }
     public class ImageUrl
     {
+        public ImageUrl(string originalUrl) : this(originalUrl, string.Empty) { }
         public ImageUrl(string originalUrl, string localizedUrl)
         {
             OriginalUrl = originalUrl;
             LocalizedUrl = localizedUrl;
         }
-
+        public void UpdateLocalizedUrl(string localizedUrl)
+        { 
+            this.LocalizedUrl=localizedUrl;
+            }
         public string OriginalUrl { get; protected  set; }
         public string LocalizedUrl { get; protected set; }
         

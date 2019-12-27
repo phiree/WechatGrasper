@@ -31,7 +31,10 @@ namespace TourInfo.Domain
             CreateMap<Rapi.Projectinfo, SqliteProjectinfo>();
             CreateMap<Rapi.Pubinfounit, SqlitePubinfounit>();
             CreateMap<Rapi.Pubinfounitchild, SqlitePubinfounitchild>();
-            CreateMap<Rapi.Pubmediainfo, SqlitePubmediainfo>();
+            CreateMap<Rapi.Pubmediainfo, SqlitePubmediainfo>()
+                 .ForMember(x => x.mediaurl, c => c.MapFrom(d => d.mediaurl.LocalizedUrl))
+                .ForMember(x => x.mediaurlOriginal, c => c.MapFrom(d => d.mediaurl.OriginalUrl));
+            ;
             CreateMap<Rapi.Pubunittag, SqlitePubunittag>();
             CreateMap<Rapi.Typeinfo, SqliteTypeinfo>();
             CreateMap<Rapi.Typefield, SqliteTypefield>();

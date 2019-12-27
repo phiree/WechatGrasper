@@ -286,6 +286,7 @@ namespace TourInfo.Domain.DomainModel.DataSync
         public string desc { get; set; }
         public string memo { get; set; }
         public string mediaurl { get; set; }
+        public string mediaurlOriginal { get; set; }
         public string videourl { get; set; }
         public bool isshow { get; set; }
         public int mediatypeid { get; set; }
