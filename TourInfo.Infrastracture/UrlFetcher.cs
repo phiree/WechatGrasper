@@ -27,7 +27,9 @@ namespace TourInfo.Infrastracture
         public Task FetchFile(string url,string fileName)
         {
             var webClient = new CookieAwareWebClient();
-             webClient.DownloadFile(new Uri(url), fileName) ;
+            if(!string.IsNullOrEmpty(url))
+            { webClient.DownloadFile(new Uri(url), fileName) ; }
+
             return Task.FromResult(0);
         
            // return webClient.DownloadStringTaskAsync(url);
