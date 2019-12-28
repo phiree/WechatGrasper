@@ -14,7 +14,7 @@ using TourInfo.Infrastracture.Repository.ADONET;
 namespace TourInfo.Infrastracture.Repository.EFCore
 {
     public class BaseEFCoreRepository<T, Key> : IRepository<T, Key>
-        where T : class  
+        where T : Entity<Key>  
     {
         TourInfoDbContext tourInfoDbContext { get; }
 
@@ -32,7 +32,13 @@ namespace TourInfo.Infrastracture.Repository.EFCore
             tourInfoDbContext.Add(entity);
             tourInfoDbContext.SaveChanges();
         }
-
+        public void InsertOrUpdate(T entity)
+        {
+            var existed=tourInfoDbContext.Find<T>(entity.id);
+            if (existed != null) { return;}
+            tourInfoDbContext.Add(entity);
+            tourInfoDbContext.SaveChanges();
+        }
 
         public T Get(Key id)
         {

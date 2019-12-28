@@ -32,23 +32,12 @@ namespace TourInfo.Infrastracture.Repository.EFCore
         public void SaveOrUpdate(T entity, string newVersion)
         {
             var existedEntity = Get(entity.id);
-            string fingerprint = entity.CalculateFingerprint(md5Helper);
-            /**/
-            if (existedEntity == null)
-            {
-                entity.UpdateVersion(fingerprint, newVersion);
+            
+            if (existedEntity != null) { return;}
+             //不再计算fingerprint,直接判断id是否存在
+                entity.UpdateVersion(string.Empty, newVersion);
                 Insert(entity);
-            }
-            else
-            {
-
-                if (fingerprint != existedEntity.Fingerprint)
-                {
-
-                    existedEntity.UpdateVersion(fingerprint, newVersion);
-                    Update(existedEntity);
-                }
-            }
+            
         }
     }
 }

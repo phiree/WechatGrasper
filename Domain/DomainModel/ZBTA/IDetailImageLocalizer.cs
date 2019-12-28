@@ -2,6 +2,6 @@
 {
     public interface IDetailImageLocalizer
     {
-        string Localize(string zbtaNewsDetail);
+        string Localize(string zbtaNewsDetail,string version);
     }
 }

@@ -15,10 +15,8 @@ namespace TourInfo.Infrastracture.Migrations
                     Version = table.Column<string>(nullable: true),
                     Fingerprint = table.Column<string>(nullable: true),
                     PlaceType = table.Column<int>(nullable: false),
-                    thumbnailKey = table.Column<string>(nullable: true),
-                    localizedThumbnailKey = table.Column<string>(nullable: true),
-                    pictureKeys = table.Column<string>(nullable: true),
-                    localizedPictureKeys = table.Column<string>(nullable: true),
+                    thumbnailKey_OriginalUrl = table.Column<string>(nullable: true),
+                    thumbnailKey_LocalizedUrl = table.Column<string>(nullable: true),
                     Discriminator = table.Column<string>(nullable: false),
                     startTime = table.Column<string>(nullable: true),
                     createTime = table.Column<string>(nullable: true),
@@ -50,7 +48,7 @@ namespace TourInfo.Infrastracture.Migrations
                 columns: table => new
                 {
                     pid = table.Column<int>(nullable: false),
-                    id = table.Column<string>(nullable: true),
+                    id = table.Column<int>(nullable: false),
                     Version = table.Column<string>(nullable: true),
                     Fingerprint = table.Column<string>(nullable: true),
                     pname = table.Column<string>(nullable: true),
@@ -82,14 +80,15 @@ namespace TourInfo.Infrastracture.Migrations
                 columns: table => new
                 {
                     childid = table.Column<int>(nullable: false),
-                    id = table.Column<string>(nullable: true),
+                    id = table.Column<int>(nullable: false),
                     Version = table.Column<string>(nullable: true),
                     Fingerprint = table.Column<string>(nullable: true),
                     pid = table.Column<int>(nullable: false),
                     unitid = table.Column<int>(nullable: false),
                     childname = table.Column<string>(nullable: true),
                     orderno = table.Column<float>(nullable: false),
-                    flagurl = table.Column<string>(nullable: true),
+                    flagurl_OriginalUrl = table.Column<string>(nullable: true),
+                    flagurl_LocalizedUrl = table.Column<string>(nullable: true),
                     price = table.Column<string>(nullable: true),
                     desc = table.Column<string>(nullable: true),
                     memo = table.Column<string>(nullable: true),
@@ -113,7 +112,7 @@ namespace TourInfo.Infrastracture.Migrations
                 columns: table => new
                 {
                     unitid = table.Column<int>(nullable: false),
-                    id = table.Column<string>(nullable: true),
+                    id = table.Column<int>(nullable: false),
                     Version = table.Column<string>(nullable: true),
                     Fingerprint = table.Column<string>(nullable: true),
                     pid = table.Column<int>(nullable: false),
@@ -137,7 +136,8 @@ namespace TourInfo.Infrastracture.Migrations
                     url = table.Column<string>(nullable: true),
                     url360 = table.Column<string>(nullable: true),
                     logopic = table.Column<string>(nullable: true),
-                    flagpic = table.Column<string>(nullable: true),
+                    flagpic_OriginalUrl = table.Column<string>(nullable: true),
+                    flagpic_LocalizedUrl = table.Column<string>(nullable: true),
                     publictrafic = table.Column<string>(nullable: true),
                     memo = table.Column<string>(nullable: true),
                     desc = table.Column<string>(nullable: true),
@@ -199,7 +199,7 @@ namespace TourInfo.Infrastracture.Migrations
                 columns: table => new
                 {
                     mediaid = table.Column<int>(nullable: false),
-                    id = table.Column<string>(nullable: true),
+                    id = table.Column<int>(nullable: false),
                     Version = table.Column<string>(nullable: true),
                     Fingerprint = table.Column<string>(nullable: true),
                     topshow = table.Column<bool>(nullable: false),
@@ -210,7 +210,8 @@ namespace TourInfo.Infrastracture.Migrations
                     medianame = table.Column<string>(nullable: true),
                     desc = table.Column<string>(nullable: true),
                     memo = table.Column<string>(nullable: true),
-                    mediaurl = table.Column<string>(nullable: true),
+                    mediaurl_OriginalUrl = table.Column<string>(nullable: true),
+                    mediaurl_LocalizedUrl = table.Column<string>(nullable: true),
                     videourl = table.Column<string>(nullable: true),
                     isshow = table.Column<bool>(nullable: false),
                     mediatypeid = table.Column<int>(nullable: false),
@@ -228,7 +229,7 @@ namespace TourInfo.Infrastracture.Migrations
                 columns: table => new
                 {
                     unittagid = table.Column<int>(nullable: false),
-                    id = table.Column<string>(nullable: true),
+                    id = table.Column<int>(nullable: false),
                     Version = table.Column<string>(nullable: true),
                     Fingerprint = table.Column<string>(nullable: true),
                     pid = table.Column<int>(nullable: false),
@@ -272,7 +273,7 @@ namespace TourInfo.Infrastracture.Migrations
                 columns: table => new
                 {
                     typeid = table.Column<int>(nullable: false),
-                    id = table.Column<string>(nullable: true),
+                    id = table.Column<int>(nullable: false),
                     Version = table.Column<string>(nullable: true),
                     Fingerprint = table.Column<string>(nullable: true),
                     pid = table.Column<int>(nullable: false),
@@ -286,7 +287,8 @@ namespace TourInfo.Infrastracture.Migrations
                     existschild = table.Column<bool>(nullable: false),
                     existsroom = table.Column<bool>(nullable: false),
                     existsscenic = table.Column<bool>(nullable: false),
-                    wapshowimg = table.Column<string>(nullable: true),
+                    wapshowimg_OriginalUrl = table.Column<string>(nullable: true),
+                    wapshowimg_LocalizedUrl = table.Column<string>(nullable: true),
                     crtdate = table.Column<DateTime>(nullable: false),
                     updatetime = table.Column<DateTime>(nullable: false),
                     deleteflag = table.Column<bool>(nullable: false)
@@ -349,8 +351,8 @@ namespace TourInfo.Infrastracture.Migrations
                     releaseTime = table.Column<string>(nullable: true),
                     checkState = table.Column<string>(nullable: true),
                     titles = table.Column<string>(nullable: true),
-                    image = table.Column<string>(nullable: true),
-                    localizedImage = table.Column<string>(nullable: true),
+                    image_OriginalUrl = table.Column<string>(nullable: true),
+                    image_LocalizedUrl = table.Column<string>(nullable: true),
                     created = table.Column<string>(nullable: true),
                     back1 = table.Column<string>(nullable: true),
                     details = table.Column<string>(nullable: true),
@@ -362,6 +364,30 @@ namespace TourInfo.Infrastracture.Migrations
                     table.PrimaryKey("PK_ZbtaNews", x => x.id);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "EWQYEntity_pictureKeys",
+                columns: table => new
+                {
+                    OriginalUrl = table.Column<string>(nullable: false),
+                    id = table.Column<string>(nullable: false),
+                    LocalizedUrl = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EWQYEntity_pictureKeys", x => new { x.OriginalUrl, x.id });
+                    table.ForeignKey(
+                        name: "FK_EWQYEntity_pictureKeys_EWQYEntity_id",
+                        column: x => x.id,
+                        principalTable: "EWQYEntity",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EWQYEntity_pictureKeys_id",
+                table: "EWQYEntity_pictureKeys",
+                column: "id");
+
             migrationBuilder.CreateIndex(
                 name: "IX_Pubinfounitchilds_childid",
                 table: "Pubinfounitchilds",
@@ -371,7 +397,7 @@ namespace TourInfo.Infrastracture.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "EWQYEntity");
+                name: "EWQYEntity_pictureKeys");
 
             migrationBuilder.DropTable(
                 name: "Projectinfos");
@@ -402,6 +428,9 @@ namespace TourInfo.Infrastracture.Migrations
 
             migrationBuilder.DropTable(
                 name: "ZbtaNews");
+
+            migrationBuilder.DropTable(
+                name: "EWQYEntity");
         }
     }
 }

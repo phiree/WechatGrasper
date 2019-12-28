@@ -2,6 +2,7 @@
 using System.Text;
 using System.Text.RegularExpressions;
 using TourInfo.Domain.Base;
+using TourInfo.Domain.DomainModel.Rapi;
 using TourInfo.Domain.DomainModel.ZBTA;
 
 namespace TourInfo.Domain.TourNews
@@ -11,13 +12,15 @@ namespace TourInfo.Domain.TourNews
         IUrlFetcher urlFetcher;
         IImageLocalizer imageLocalizer;
         IDetailImageLocalizer detailImageLocalizer;
+        IInfoLocalizer<ZbtaNews,string> infoLocalizerZbtaNews;
         string titleImageBaseUrl, localSavedPath;
         IVersionedRepository<ZbtaNews, string> newsRepository;
         public ZBTAApplication(IUrlFetcher urlFetcher,
                     IDetailImageLocalizer detailImageLocalizer,
         IVersionedRepository<ZbtaNews, string> newsRepository
-            ,string titleImageBaseUrl,string localSavedPath, IImageLocalizer imageLocalizer)
+            ,string titleImageBaseUrl,string localSavedPath, IImageLocalizer imageLocalizer, IInfoLocalizer<ZbtaNews,string> infoLocalizerZbtaNews)
         {
+            this.infoLocalizerZbtaNews=infoLocalizerZbtaNews;
             this.detailImageLocalizer = detailImageLocalizer;
             this.imageLocalizer = imageLocalizer;
             this.titleImageBaseUrl = titleImageBaseUrl;
@@ -36,7 +39,7 @@ namespace TourInfo.Domain.TourNews
 
                 //转换错误,可能是因为json的Id是int类型
                
-                var jsonResult = Newtonsoft.Json.JsonConvert.DeserializeObject<ZbtaNewsResponse>(result);
+                var jsonResult = Newtonsoft.Json.JsonConvert.DeserializeObject<ZbtaNewsResponse>(result,new ImageUrlJsonConverter());
                 if (jsonResult.TourNews.Count == 0)
                 {
                     needContinue = false;
@@ -49,21 +52,8 @@ namespace TourInfo.Domain.TourNews
                         needContinue = false;
                         break;
                     }
-                    var existedEntity = newsRepository.Get(news.id);
-                    
-                    if (existedEntity != null)
-                    {
-                        //只要发现有存在的id,则不再到下一页
-                        needContinue = false;
-                        break;
-                    }
-                    news.localizedImage = imageLocalizer.Localize(titleImageBaseUrl + news.image, localSavedPath);
-                    //details图片提取及替换
-                    news.localizedDetails = detailImageLocalizer.Localize(news.details);
-
-                    newsRepository.SaveOrUpdate(news, _dateVersion);
-
-
+                   
+                    infoLocalizerZbtaNews.Localize(news,titleImageBaseUrl, localSavedPath,_dateVersion);
                 }
                 //遍历 如果已经发现已经存在，则 needContinue=false,并跳过。
                 pageIndex++;

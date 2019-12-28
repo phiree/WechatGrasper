@@ -24,29 +24,39 @@ namespace TourInfo.Infrastracture.Repository.EFCore
           
             
             modelBuilder.Entity<EWQYEntity>()
-                .Property(x => x.pictureKeys)
-              .HasConversion(v => string.Join(";", v), v => v.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries));
-            modelBuilder.Entity<EWQYEntity>()
-               .Property(x => x. localizedPictureKeys)
-             .HasConversion(v => string.Join(";", v), v => v.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries));
-
+                .OwnsMany(x=>x.pictureKeys,key=>{ 
+                    key.HasForeignKey("id");
+                    key.Property<string>("OriginalUrl");
+                    key.HasKey("OriginalUrl","id");
+                })
+                ;
+               modelBuilder.Entity<EWQYEntity>()
+               .OwnsOne(x=>x.thumbnailKey);
+            
             modelBuilder.Entity<CompanyVenue>()
                 .Property(x => x.location)
               .HasConversion(v => string.Join(";", v)
               , v => v.Split(new char[] { ';' } , StringSplitOptions.RemoveEmptyEntries)
                     .Select(x=>Convert.ToDouble(x)).ToArray()
               );
-
+            modelBuilder.Entity<ZbtaNews>()
+                .OwnsOne(x => x.image);
+           
 
             modelBuilder.Entity<Projectinfo>()
               .HasKey(x => x.pid);
             modelBuilder.Entity<Projectinfo>()
             .Property(x => x.pid).ValueGeneratedNever();
+             
 
             modelBuilder.Entity<Typeinfo>()
              .HasKey(x => x.typeid);
             modelBuilder.Entity<Typeinfo>()
             .Property(x => x.typeid).ValueGeneratedNever();
+
+            modelBuilder.Entity<Typeinfo>()
+          .OwnsOne(x => x.wapshowimg) ;
+
 
             modelBuilder.Entity<Typefield>()
              .HasKey(x => x.id);
@@ -67,6 +77,12 @@ namespace TourInfo.Infrastracture.Repository.EFCore
              .HasKey(x => x.unitid);
             modelBuilder.Entity<Pubinfounit>()
             .Property(x => x.unitid).ValueGeneratedNever();
+            modelBuilder.Entity<Pubinfounit>()
+          .OwnsOne(x=>x.flagpic);
+
+            modelBuilder.Entity<Pubinfounitchild>()
+        .OwnsOne(x => x.flagurl);
+
 
             modelBuilder.Entity<Pubunittag>()
              .HasKey(x => x.unittagid);

@@ -57,7 +57,7 @@ namespace TourInfo.Infrastracture
             builder.RegisterType<ImageLocalizer>().As<IImageLocalizer>()
              .SingleInstance()
          ;
-            builder.RegisterGeneric(typeof(InfoLocalizer< >)) .As(typeof(IInfoLocalizer<>))
+            builder.RegisterGeneric(typeof(InfoLocalizer<,>)) .As(typeof(IInfoLocalizer<,>))
            .SingleInstance()
        ;
             builder.RegisterGeneric (typeof(SqliteTableCreater<>)).As( typeof(ISqliteTableCreater<>))

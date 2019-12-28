@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TourInfo.Domain.Base;
+using TourInfo.Domain.DomainModel.Rapi;
 using TourInfo.Domain.EWQY.DomainModel;
 
 namespace TourInfo.Domain.EWQY
@@ -13,21 +14,22 @@ namespace TourInfo.Domain.EWQY
         UrlCreator urlCreator = null;
         IUrlFetcher urlFetcher;
         IImageLocalizer imageLocalizer;
-
+        IInfoLocalizer<EWQYEntity,string> infoLocalizer;
         readonly List<string> apiUrls = new List<string> {
             "venue/findVenueList.action",
              "company/findCompanyList.action",
             "activity/findRegionActivityList.action" };
         readonly IList<string> areaCode = new List<string> { "370300" };
-        static readonly string _dateVersion = DateTime.Now.ToString("yyyyMMddhhmmss");
+            string _dateVersion  ;
         static int pageSize = 500;
         Random rm = new Random();
 
         IEWQYRepository eWQYRepository;
         string imageBaseUrl, localSavedPath;
         public EWQYApplication(IUrlFetcher urlFetcher, IEWQYRepository eWQYRepository
-            , string imageBaseUrl, string localSavedPath,IImageLocalizer imageLocalizer)
+            , string imageBaseUrl, string localSavedPath,IImageLocalizer imageLocalizer, IInfoLocalizer<EWQYEntity,string> infoLocalizer)
         {
+            this.infoLocalizer=infoLocalizer;
             this.localSavedPath = localSavedPath;
             this.imageLocalizer = imageLocalizer;
             urlCreator = new UrlCreator();
@@ -39,7 +41,7 @@ namespace TourInfo.Domain.EWQY
         }
         public void Graspe(string _dateVersion)
         {
-
+           this._dateVersion=_dateVersion;
             foreach (var apiUrl in apiUrls)
             {
                 if (apiUrl == "activity/findRegionActivityList.action")
@@ -65,7 +67,7 @@ namespace TourInfo.Domain.EWQY
 
             string result = urlFetcher.FetchEWQYAsync(pagedUrl).Result;
             //  contentHandler.HandlerList(result);
-            var jsonResult = Newtonsoft.Json.JsonConvert.DeserializeObject<ListResultWrapper<T>>(result);
+            var jsonResult = Newtonsoft.Json.JsonConvert.DeserializeObject<ListResultWrapper<T>>(result, new ImageUrlJsonConverter());
             var status = jsonResult.status;// jsonResult["status"];
             if (status != 0)
             { throw new Exception("接口返回错误"); }
@@ -75,7 +77,7 @@ namespace TourInfo.Domain.EWQY
                 System.Threading.Thread.Sleep(500 + rm.Next(1, 100));
                 string detailUrl = urlCreator.CreateDetailUrl(basePageUrl, data.id);
                 string detailResult = urlFetcher.FetchEWQYAsync(detailUrl).Result;
-                var detail = JsonConvert.DeserializeObject<DetailResultWrapper<T>>(detailResult);
+                var detail = JsonConvert.DeserializeObject<DetailResultWrapper<T>>(detailResult, new ImageUrlJsonConverter());
                 CopyValues(detail.data, data);
                 if (typeof(T) == typeof(CompanyVenue))
                 {
@@ -89,21 +91,10 @@ namespace TourInfo.Domain.EWQY
                 //活动
                 else if (type.HasValue)
                 {
-
                     detail.data.PlaceType = type.Value;
-
-
                 }
-                eWQYRepository.SaveOrUpdate(detail.data, _dateVersion);
-                //图片本地化
-                var ewqyEntity =detail.data;
-                ewqyEntity.localizedThumbnailKey = imageLocalizer.Localize(imageBaseUrl + ewqyEntity.thumbnailKey, localSavedPath);
-                var localizedPictureKeyList = new List<string>();
-                foreach (string url in ewqyEntity.pictureKeys)
-                {
-                    localizedPictureKeyList.Add(imageLocalizer.Localize(imageBaseUrl + url, localSavedPath));
-                }
-                ewqyEntity.localizedPictureKeys = localizedPictureKeyList.ToArray();
+                infoLocalizer.Localize(detail.data, imageBaseUrl, localSavedPath,_dateVersion);
+              
 
             }
 

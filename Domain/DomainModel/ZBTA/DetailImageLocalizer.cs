@@ -14,7 +14,7 @@ namespace TourInfo.Domain.DomainModel.ZBTA
             this.detailImageBaseUrl = detailImageBaseUrl;
             this.localSavedPath = localSavedPath;
         }
-        public string Localize(string zbtaNewsDetail)
+        public string Localize(string zbtaNewsDetail,string version)
         {
             string pattern = "(?<=<img[^>]+src=\")[^\">]+(?=\")";
 
@@ -24,7 +24,7 @@ namespace TourInfo.Domain.DomainModel.ZBTA
             for (int i = 0; i < matches.Count; i++)
             {
                 var m = matches[i];
-                string localImage = imageLocalizer.Localize(detailImageBaseUrl + m.Value, localSavedPath);
+                string localImage = imageLocalizer.Localize( detailImageBaseUrl + m.Value, localSavedPath);
                 replacedDetail = replacedDetail.Replace(m.Value, localImage);
 
             }

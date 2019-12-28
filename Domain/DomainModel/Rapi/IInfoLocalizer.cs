@@ -2,9 +2,9 @@
 
 namespace TourInfo.Domain.DomainModel.Rapi
 {
-    public interface IInfoLocalizer<T>
+    public interface IInfoLocalizer<T,Key>
     {
-        void Localize(T t, string localSavedPath);
+        void Localize(T t, string imageBaseUrl, string localSavedPath,string version);
         
 
 

@@ -10,7 +10,7 @@ using TourInfo.Infrastracture.Repository.EFCore;
 namespace TourInfo.Infrastracture.Migrations
 {
     [DbContext(typeof(TourInfoDbContext))]
-    [Migration("20191226150827_init")]
+    [Migration("20191228141646_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,7 +47,7 @@ namespace TourInfo.Infrastracture.Migrations
 
                     b.Property<string>("homeurl");
 
-                    b.Property<string>("id");
+                    b.Property<int>("id");
 
                     b.Property<bool>("iscomment");
 
@@ -118,8 +118,6 @@ namespace TourInfo.Infrastracture.Migrations
 
                     b.Property<string>("fax");
 
-                    b.Property<string>("flagpic");
-
                     b.Property<string>("gps");
 
                     b.Property<string>("gpsbd");
@@ -128,7 +126,7 @@ namespace TourInfo.Infrastracture.Migrations
 
                     b.Property<string>("hygienerating");
 
-                    b.Property<string>("id");
+                    b.Property<int>("id");
 
                     b.Property<int>("id5a");
 
@@ -247,8 +245,6 @@ namespace TourInfo.Infrastracture.Migrations
 
                     b.Property<string>("desc");
 
-                    b.Property<string>("flagurl");
-
                     b.Property<string>("gps");
 
                     b.Property<string>("gpsbd");
@@ -259,7 +255,7 @@ namespace TourInfo.Infrastracture.Migrations
 
                     b.Property<string>("guidevoice");
 
-                    b.Property<string>("id");
+                    b.Property<int>("id");
 
                     b.Property<bool>("isshow");
 
@@ -296,15 +292,13 @@ namespace TourInfo.Infrastracture.Migrations
 
                     b.Property<string>("desc");
 
-                    b.Property<string>("id");
+                    b.Property<int>("id");
 
                     b.Property<bool>("isshow");
 
                     b.Property<string>("medianame");
 
                     b.Property<int>("mediatypeid");
-
-                    b.Property<string>("mediaurl");
 
                     b.Property<string>("memo");
 
@@ -335,7 +329,7 @@ namespace TourInfo.Infrastracture.Migrations
 
                     b.Property<string>("Version");
 
-                    b.Property<string>("id");
+                    b.Property<int>("id");
 
                     b.Property<int>("pid");
 
@@ -409,7 +403,7 @@ namespace TourInfo.Infrastracture.Migrations
 
                     b.Property<bool>("existsscenic");
 
-                    b.Property<string>("id");
+                    b.Property<int>("id");
 
                     b.Property<bool>("isshow");
 
@@ -426,8 +420,6 @@ namespace TourInfo.Infrastracture.Migrations
                     b.Property<string>("typename");
 
                     b.Property<DateTime>("updatetime");
-
-                    b.Property<string>("wapshowimg");
 
                     b.HasKey("typeid");
 
@@ -508,14 +500,6 @@ namespace TourInfo.Infrastracture.Migrations
 
                     b.Property<string>("Version");
 
-                    b.Property<string>("localizedPictureKeys");
-
-                    b.Property<string>("localizedThumbnailKey");
-
-                    b.Property<string>("pictureKeys");
-
-                    b.Property<string>("thumbnailKey");
-
                     b.HasKey("id");
 
                     b.ToTable("EWQYEntity");
@@ -542,11 +526,7 @@ namespace TourInfo.Infrastracture.Migrations
 
                     b.Property<string>("details");
 
-                    b.Property<string>("image");
-
                     b.Property<string>("localizedDetails");
-
-                    b.Property<string>("localizedImage");
 
                     b.Property<string>("releaseTime");
 
@@ -609,6 +589,152 @@ namespace TourInfo.Infrastracture.Migrations
                     b.Property<string>("typeId");
 
                     b.HasDiscriminator().HasValue("CompanyVenue");
+                });
+
+            modelBuilder.Entity("TourInfo.Domain.DomainModel.Rapi.Pubinfounit", b =>
+                {
+                    b.OwnsOne("TourInfo.Domain.Base.ImageUrl", "flagpic", b1 =>
+                        {
+                            b1.Property<int>("Pubinfounitunitid");
+
+                            b1.Property<string>("LocalizedUrl");
+
+                            b1.Property<string>("OriginalUrl");
+
+                            b1.HasKey("Pubinfounitunitid");
+
+                            b1.ToTable("Pubinfounits");
+
+                            b1.HasOne("TourInfo.Domain.DomainModel.Rapi.Pubinfounit")
+                                .WithOne("flagpic")
+                                .HasForeignKey("TourInfo.Domain.Base.ImageUrl", "Pubinfounitunitid")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
+                });
+
+            modelBuilder.Entity("TourInfo.Domain.DomainModel.Rapi.Pubinfounitchild", b =>
+                {
+                    b.OwnsOne("TourInfo.Domain.Base.ImageUrl", "flagurl", b1 =>
+                        {
+                            b1.Property<int>("Pubinfounitchildchildid");
+
+                            b1.Property<string>("LocalizedUrl");
+
+                            b1.Property<string>("OriginalUrl");
+
+                            b1.HasKey("Pubinfounitchildchildid");
+
+                            b1.ToTable("Pubinfounitchilds");
+
+                            b1.HasOne("TourInfo.Domain.DomainModel.Rapi.Pubinfounitchild")
+                                .WithOne("flagurl")
+                                .HasForeignKey("TourInfo.Domain.Base.ImageUrl", "Pubinfounitchildchildid")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
+                });
+
+            modelBuilder.Entity("TourInfo.Domain.DomainModel.Rapi.Pubmediainfo", b =>
+                {
+                    b.OwnsOne("TourInfo.Domain.Base.ImageUrl", "mediaurl", b1 =>
+                        {
+                            b1.Property<int>("Pubmediainfomediaid");
+
+                            b1.Property<string>("LocalizedUrl");
+
+                            b1.Property<string>("OriginalUrl");
+
+                            b1.HasKey("Pubmediainfomediaid");
+
+                            b1.ToTable("Pubmediainfos");
+
+                            b1.HasOne("TourInfo.Domain.DomainModel.Rapi.Pubmediainfo")
+                                .WithOne("mediaurl")
+                                .HasForeignKey("TourInfo.Domain.Base.ImageUrl", "Pubmediainfomediaid")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
+                });
+
+            modelBuilder.Entity("TourInfo.Domain.DomainModel.Rapi.Typeinfo", b =>
+                {
+                    b.OwnsOne("TourInfo.Domain.Base.ImageUrl", "wapshowimg", b1 =>
+                        {
+                            b1.Property<int>("Typeinfotypeid");
+
+                            b1.Property<string>("LocalizedUrl");
+
+                            b1.Property<string>("OriginalUrl");
+
+                            b1.HasKey("Typeinfotypeid");
+
+                            b1.ToTable("Typeinfos");
+
+                            b1.HasOne("TourInfo.Domain.DomainModel.Rapi.Typeinfo")
+                                .WithOne("wapshowimg")
+                                .HasForeignKey("TourInfo.Domain.Base.ImageUrl", "Typeinfotypeid")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
+                });
+
+            modelBuilder.Entity("TourInfo.Domain.EWQYEntity", b =>
+                {
+                    b.OwnsMany("TourInfo.Domain.Base.ImageUrl", "pictureKeys", b1 =>
+                        {
+                            b1.Property<string>("OriginalUrl");
+
+                            b1.Property<string>("id");
+
+                            b1.Property<string>("LocalizedUrl");
+
+                            b1.HasKey("OriginalUrl", "id");
+
+                            b1.HasIndex("id");
+
+                            b1.ToTable("EWQYEntity_pictureKeys");
+
+                            b1.HasOne("TourInfo.Domain.EWQYEntity")
+                                .WithMany("pictureKeys")
+                                .HasForeignKey("id")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
+
+                    b.OwnsOne("TourInfo.Domain.Base.ImageUrl", "thumbnailKey", b1 =>
+                        {
+                            b1.Property<string>("EWQYEntityid");
+
+                            b1.Property<string>("LocalizedUrl");
+
+                            b1.Property<string>("OriginalUrl");
+
+                            b1.HasKey("EWQYEntityid");
+
+                            b1.ToTable("EWQYEntity");
+
+                            b1.HasOne("TourInfo.Domain.EWQYEntity")
+                                .WithOne("thumbnailKey")
+                                .HasForeignKey("TourInfo.Domain.Base.ImageUrl", "EWQYEntityid")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
+                });
+
+            modelBuilder.Entity("TourInfo.Domain.TourNews.ZbtaNews", b =>
+                {
+                    b.OwnsOne("TourInfo.Domain.Base.ImageUrl", "image", b1 =>
+                        {
+                            b1.Property<string>("ZbtaNewsid");
+
+                            b1.Property<string>("LocalizedUrl");
+
+                            b1.Property<string>("OriginalUrl");
+
+                            b1.HasKey("ZbtaNewsid");
+
+                            b1.ToTable("ZbtaNews");
+
+                            b1.HasOne("TourInfo.Domain.TourNews.ZbtaNews")
+                                .WithOne("image")
+                                .HasForeignKey("TourInfo.Domain.Base.ImageUrl", "ZbtaNewsid")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
                 });
 #pragma warning restore 612, 618
         }

@@ -27,6 +27,7 @@ namespace TourInfo.Domain.DomainModel.DataSync
         public string startTime { get; set; }
         public string createTime { get; set; }
         public string thumbnailKey { get; set; }
+        public string thumbnailKeyOriginal { get;set;}
         public string address { get; set; }
         public string name { get; set; }
         public string endTime { get; set; }
@@ -35,6 +36,7 @@ namespace TourInfo.Domain.DomainModel.DataSync
 
 
         public string pictureKeys { get; set; }
+        public string pictureKeysOriginal { get; set; }
 
         public int credits { get; set; }
         public bool isShared { get; set; }
@@ -52,6 +54,7 @@ namespace TourInfo.Domain.DomainModel.DataSync
         public PlaceType PlaceType { get; set; }
 
         public string thumbnailKey { get; set; }
+        public string thumbnailKeyOriginal { get; set; }
         public string location { get; set; }
         // public double[] location { get; set; }
         public string name { get; set; }
@@ -61,6 +64,7 @@ namespace TourInfo.Domain.DomainModel.DataSync
         //public IsComment isComment { get; set; }
 
         public string pictureKeys { get; set; }
+        public string pictureKeysOriginal { get; set; }
         //  public string[] pictureKeys { get; set; }
         public string address { get; set; }
         public string isFavorite { get; set; }
@@ -88,6 +92,7 @@ namespace TourInfo.Domain.DomainModel.DataSync
 
         public string titles { get; set; }
         public string image { get; set; }
+        public string imageOriginal { get; set; }
         public string created { get; set; }
         public string back1 { get; set; }
         public string details { get; set; }
@@ -125,6 +130,8 @@ namespace TourInfo.Domain.DomainModel.DataSync
     }
     public class SqliteTypeinfo
     {
+        internal object wapshowimgOriginal;
+
         public int typeid { get; set; }
         public int pid { get; set; }
         public float orderno { get; set; }
@@ -213,6 +220,7 @@ namespace TourInfo.Domain.DomainModel.DataSync
         public string url360 { get; set; }
         public string logopic { get; set; }
         public string flagpic { get; set; }
+        public string flagpicOriginal { get; set; }
         public string publictrafic { get; set; }
         public string memo { get; set; }
         public string desc { get; set; }
@@ -303,6 +311,7 @@ namespace TourInfo.Domain.DomainModel.DataSync
         public string childname { get; set; }
         public float orderno { get; set; }
         public string flagurl { get; set; }
+        public string flagurlOriginal { get; set; }
         public string price { get; set; }
         public string desc { get; set; }
         public string memo { get; set; }

@@ -75,7 +75,7 @@ namespace TourInfo.Domain
                 .Append(this.isFavorite)
                 .Append(location!=null? string.Join(",",this.location):"")
                 .Append(this.name)
-                .Append(pictureKeys==null?string.Empty: string.Join(",", this.pictureKeys))
+               
                 .Append(this.satisfactionScore)
                 .Append(this.serviceNote)
                 .Append(this.serviceTimeEnd)

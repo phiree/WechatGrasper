@@ -57,7 +57,7 @@ namespace TourInfo.Domain
                 .Append(this.endTime)
                 .Append(this.isShared)
                 .Append(this.name)
-               .Append(string.Join(",", this.pictureKeys))
+              
                 .Append(this.startTime)
                 .Append(this.thumbnailKey);
 

@@ -20,16 +20,18 @@ namespace TourInfo.Domain.DomainModel.Rapi.Tests
             var mediaInfo = fixture.Freeze<DemoInfo>();
             var imageLocalizer = fixture.Freeze<Mock<IImageLocalizer>>();
             string localSavedPath = "download/img/";
-            imageLocalizer.Setup(x => x.Localize(It.IsAny<string>(),localSavedPath))
+           
+            imageLocalizer.Setup(x => x.Localize( It.IsAny<string>(),localSavedPath))
                 .Returns("downloadimage/folder1/1.jpg");
 
-            var InfoLocalizer = fixture.Create<InfoLocalizer<DemoInfo>>();
-            InfoLocalizer.Localize (mediaInfo, localSavedPath);
+            var InfoLocalizer = fixture.Create<InfoLocalizer<DemoInfo,string>>();
+            InfoLocalizer.Localize ( mediaInfo, string.Empty, localSavedPath,"version1");
             Assert.AreEqual("downloadimage/folder1/1.jpg",mediaInfo.TitlePic.LocalizedUrl);
             Assert.AreEqual("downloadimage/folder1/1.jpg",mediaInfo.DetailPics[0].LocalizedUrl);
 
         }
-        public class DemoInfo
+
+        public class DemoInfo:VersionedEntity<string>
         {
             public string Name { get; set; }
             public ImageUrl TitlePic { get; set; }

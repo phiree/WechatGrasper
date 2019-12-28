@@ -24,13 +24,13 @@ namespace TourInfo.Domain.DomainModel.Rapi
         string initUrl = "";
         string syncUrl = "";
         IImageLocalizer imageLocalizer;
-        IInfoLocalizer<Pubmediainfo> infoLocalizerPubMediaInfo;
-        IInfoLocalizer<Typeinfo> infoLocalizerTypeinfo;
-        IInfoLocalizer<Pubinfounit> infoLocalizerPubinfounit;
-        IInfoLocalizer<Pubinfounitchild> infoLocalizerPubinfounitchild;
-        
+        IInfoLocalizer<Pubmediainfo,int> infoLocalizerPubMediaInfo;
+        IInfoLocalizer<Typeinfo, int> infoLocalizerTypeinfo;
+        IInfoLocalizer<Pubinfounit, int> infoLocalizerPubinfounit;
+        IInfoLocalizer<Pubinfounitchild, int> infoLocalizerPubinfounitchild;
+
         IUrlFetcher urlFetcher;
-        IRepository<Projectinfo,int> repositoryProjectInfo;
+        IRepository<Projectinfo, int> repositoryProjectInfo;
         IRepository<Typeinfo, int> repositoryTypeinfo;
         IRepository<Typefield, int> repositoryTypefield;
         IRepository<Typetag, int> repositoryTypetag;
@@ -42,30 +42,30 @@ namespace TourInfo.Domain.DomainModel.Rapi
         string localSavedPath;
         public RapiGraspeService(string localSavedPath,
             IImageLocalizer imageLocalizer, ITokenManager tokenManager,
-            string initUrl, string syncUrl,  IUrlFetcher urlFetcher,
+            string initUrl, string syncUrl, IUrlFetcher urlFetcher,
             IRepository<Projectinfo, int> repositoryProjectInfo,
-            IRepository<Typeinfo, int> repositoryTypeinfo, 
+            IRepository<Typeinfo, int> repositoryTypeinfo,
             IRepository<Typefield, int> repositoryTypefield,
             IRepository<Typetag, int> repositoryTypetag,
             IRepository<Typepic, int> repositoryTypepic,
             IRepository<Pubinfounit, int> repositoryPubinfounit,
             IRepository<Pubunittag, int> repositoryPubunittag,
-            IRepository<Pubmediainfo, int> repositoryPubmediainfo, 
+            IRepository<Pubmediainfo, int> repositoryPubmediainfo,
             IRepository<Pubinfounitchild, int> repositoryPubinfounitchild,
-        IInfoLocalizer<Pubmediainfo> infoLocalizerPubMediaInfo,
-        IInfoLocalizer<Typeinfo> infoLocalizerTypeinfo,
-        IInfoLocalizer<Pubinfounit> infoLocalizerPubinfounit,
-        IInfoLocalizer<Pubinfounitchild> infoLocalizerPubinfounitchild 
-            
+        IInfoLocalizer<Pubmediainfo, int> infoLocalizerPubMediaInfo,
+        IInfoLocalizer<Typeinfo, int> infoLocalizerTypeinfo,
+        IInfoLocalizer<Pubinfounit, int> infoLocalizerPubinfounit,
+        IInfoLocalizer<Pubinfounitchild, int> infoLocalizerPubinfounitchild
+
             )
         {
-             
-            this.infoLocalizerPubinfounit=infoLocalizerPubinfounit;
-            this.infoLocalizerPubinfounitchild= infoLocalizerPubinfounitchild;
-            this.infoLocalizerPubMediaInfo=infoLocalizerPubMediaInfo;
-            this.infoLocalizerTypeinfo=infoLocalizerTypeinfo;
+
+            this.infoLocalizerPubinfounit = infoLocalizerPubinfounit;
+            this.infoLocalizerPubinfounitchild = infoLocalizerPubinfounitchild;
+            this.infoLocalizerPubMediaInfo = infoLocalizerPubMediaInfo;
+            this.infoLocalizerTypeinfo = infoLocalizerTypeinfo;
             this.localSavedPath = localSavedPath;
-            this.imageLocalizer=imageLocalizer;
+            this.imageLocalizer = imageLocalizer;
             this.initUrl = initUrl;
             this.syncUrl = syncUrl;
             this.tokenManager = tokenManager;
@@ -84,136 +84,77 @@ namespace TourInfo.Domain.DomainModel.Rapi
         public void Graspe(string dataVersion)
         {
             string token = tokenManager.GetToken();
-            
+
             //if database is empty, init, else  sync
             string targetUrl = syncUrl;
             var existedData = repositoryProjectInfo.GetAll();
-            if (!existedData.Any()) {
+            if (!existedData.Any())
+            {
                 targetUrl = initUrl;
             }
             string result = urlFetcher.FetchWithHeaderAsync(targetUrl
-                ,new Dictionary<string, string> { { HttpRequestHeader.Authorization.ToString(),token } } ).Result;
+                , new Dictionary<string, string> { { HttpRequestHeader.Authorization.ToString(), token } }).Result;
 
-            JsonSerializerSettings settings=new JsonSerializerSettings();
- 
-            var responseModel = JsonConvert.DeserializeObject<RapiResponse>(result,new ImageUrlJsonConverter());
-            if(responseModel.data.projectinfo!=null)
-            { 
-                
-            repositoryProjectInfo.Insert(responseModel.data.projectinfo);
-            repositoryProjectInfo.SaveChanges();
-            }
-            foreach (var item in responseModel.data.pubmediainfoes)
+            JsonSerializerSettings settings = new JsonSerializerSettings();
+
+            var responseModel = JsonConvert.DeserializeObject<RapiResponse>(result, new ImageUrlJsonConverter(), new ImageUrlJsonConverter());
+            if (responseModel.data.projectinfo != null)
             {
-                
-                var c=new C<Pubmediainfo,int>(repositoryPubmediainfo,infoLocalizerPubMediaInfo,item,dataVersion,localSavedPath);
-                 int workerThreads,     completionPortThreads;
-                 ThreadPool.GetMaxThreads(out workerThreads,out completionPortThreads);
 
-                Console.WriteLine($"pubmediainfoes:workerThreads:{workerThreads},completionPortThreads{completionPortThreads}");
-                ThreadPool.QueueUserWorkItem((object stateinfo)=>{
-                infoLocalizerPubMediaInfo.Localize(item, localSavedPath);
-                 
-                    item.Version = dataVersion;
-                    // alltypeinfoes.Add(item);
-                    repositoryPubmediainfo.Insert(item);
-
-                });
-                
-
-               
-                
+                repositoryProjectInfo.Insert(responseModel.data.projectinfo);
+                repositoryProjectInfo.SaveChanges();
             }
+            new System.Threading.Thread(() => {
+                foreach (var item in responseModel.data.pubmediainfoes)
+                {
 
-            //var allPubmediainfos=new List<Pubmediainfo>();
-            new  System.Threading.Thread(()=>{
-               foreach (var item in responseModel.data.pubmediainfoes)
-               {
+                    infoLocalizerPubMediaInfo.Localize(item,string.Empty, localSavedPath, dataVersion);
+                  
 
-                   //string localImage = imageLocalizer.Localize(item.mediaurl, localSavedPath);
-                   //item.mediaurl = localImage;
-                   //item.Version = dataVersion;
-                   //// allPubmediainfos.Add(mediainfo);
-                   //repositoryPubmediainfo.Insert(item);
-               }
-           }).Start();
+                }
+            }).Start();
+
 
             new System.Threading.Thread(() => {
                 foreach (var item in responseModel.data.typeinfoes)
                 {
-                    string localImage = imageLocalizer.Localize(item.wapshowimg, localSavedPath);
-                    item.wapshowimg = localImage;
-                    item.Version = dataVersion;
-                    // alltypeinfoes.Add(item);
-                    repositoryTypeinfo.Insert(item);
+                    infoLocalizerTypeinfo.Localize(item,string.Empty, localSavedPath,dataVersion);
+                    
                 }
             }).Start();
             var alltypeinfoes = new List<Typeinfo>();
-           
+
             new System.Threading.Thread(() => {
                 foreach (var item in responseModel.data.pubinfounits)
                 {
-                    string localImage = imageLocalizer.Localize(item.flagpic, localSavedPath);
-                    item.flagpic = localImage;
-                    item.Version = dataVersion;
-                    //     allPubinfounit.Add(item);
-                    repositoryPubinfounit.Insert(item);
+                    infoLocalizerPubinfounit.Localize(item, string.Empty, localSavedPath, dataVersion);
+                   
                 }
             }).Start();
 
             new System.Threading.Thread(() => {
                 foreach (var item in responseModel.data.pubinfounitchilds)
                 {
-                    string localImage = imageLocalizer.Localize(item.flagurl, localSavedPath);
-                    item.flagurl = localImage;
-                    item.Version = dataVersion;
-                    //     allPubinfounit.Add(item);
-                    repositoryPubinfounitchild.Insert(item);
+                 
+                    infoLocalizerPubinfounitchild.Localize(item, string.Empty, localSavedPath,dataVersion);
+                   
                 }
             }).Start();
-            //     var allPubinfounit = new List<Pubinfounit>();
-
-            //   repositoryPubmediainfo.BulkInsert(allPubmediainfos.Select(x => { x.Version = dataVersion; return x; }).ToList());
-            //    repositoryPubinfounit.BulkInsert(allPubinfounit.Select(x=>{x.Version=dataVersion;return x;}).ToList());
-           // repositoryPubinfounitchild.BulkInsert(responseModel.data.pubinfounitchilds.Select(x => { x.Version = dataVersion; return x; }).ToList());
             repositoryPubunittag.BulkInsert(responseModel.data.pubunittags.Select(x => { x.Version = dataVersion; return x; }).ToList());
             repositoryTypefield.BulkInsert(responseModel.data.typefields.Select(x => { x.Version = dataVersion; return x; }).ToList());
-            repositoryTypepic.BulkInsert( responseModel.data.typepics.Select(x => { x.Version = dataVersion; return x; }).ToList());
-         //   repositoryTypeinfo.BulkInsert(alltypeinfoes.Select(x => { x.Version = dataVersion; return x; }).ToList());
+            repositoryTypepic.BulkInsert(responseModel.data.typepics.Select(x => { x.Version = dataVersion; return x; }).ToList());
             repositoryTypetag.BulkInsert(responseModel.data.typetags.Select(x => { x.Version = dataVersion; return x; }).ToList());
 
 
         }
-       
+
         private void M(Object stateInfo)
         { }
-      
 
-         
-        
+
+
+
     }
-    public class C<T, Key>  where T : VersionedEntity
-    {
-          IRepository<T, Key> repository;
-        IInfoLocalizer<T> infoLocalizer;
-        T item; string dataVersion; string localSavedPath;
-
-        
-        public C(IRepository<T, Key> repository, IInfoLocalizer<T> infoLocalizer, T item, string dataVersion, string localSavedPath)
-        {
-            this.repository = repository;
-            this.infoLocalizer = infoLocalizer;
-            this.item = item;
-            this.dataVersion = dataVersion;
-            this.localSavedPath = localSavedPath;
-        }
-
-        public void M()
-        {
-            item.Version = dataVersion;
-            infoLocalizer.Localize(item, localSavedPath);
-            repository.Insert(item);
-        }
-    }
+    
 
 }

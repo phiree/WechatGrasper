@@ -5,36 +5,43 @@ using TourInfo.Domain.Base;
 
 namespace TourInfo.Domain.DomainModel.Rapi
 {
-    public class InfoLocalizer<T > : IInfoLocalizer<T> 
+    public class InfoLocalizer<T,Key > : IInfoLocalizer<T,Key> where T:VersionedEntity<Key>
     {
+        IRepository<T,Key> repository;
         IImageLocalizer imageLocalizer;
         
-        public InfoLocalizer(IImageLocalizer imageLocalizer
+        
+        public InfoLocalizer(IImageLocalizer imageLocalizer,IRepository<T,Key> repository
              )
         {
+            this.repository=repository;
             this.imageLocalizer = imageLocalizer;
             
         }
          
-        public void Localize(T t, string localSavedPath)
+        public void Localize(T t,string originImageRootUrl, string localSavedPath,string version )
         {
+            var existed=repository.Get(t.id);
+            if (existed!=null) { return ;}
             var members = t.GetType().GetMembers();
             foreach (var p in t.GetType().GetProperties())
             {
                 if (p.PropertyType == typeof(ImageUrl))
                 {
                     var imageUrl = (ImageUrl)p.GetValue(t);
-                    imageUrl.UpdateLocalizedUrl(imageLocalizer.Localize(imageUrl.OriginalUrl, localSavedPath));
+                    imageUrl.UpdateLocalizedUrl(imageLocalizer.Localize(originImageRootUrl+imageUrl.OriginalUrl, localSavedPath));
                     p.SetValue(t, imageUrl);
                 }
-                else if (p.PropertyType.IsArray && p.PropertyType.GetElementType() == typeof(ImageUrl))
+                else if (p.PropertyType.IsAssignableFrom(typeof(IList<ImageUrl>)) 
+                    
+                    )
                 {
-                    var arrayP = (Array)p.GetValue(t);
+                    var arrayP = (IList<ImageUrl>)p.GetValue(t);
                     var imageUrls = new List<ImageUrl>();
                     foreach (var itemP in arrayP)
                     {
                         var imageUrl = (ImageUrl)itemP;
-                        imageUrl.UpdateLocalizedUrl(imageLocalizer.Localize(imageUrl.OriginalUrl, localSavedPath));
+                        imageUrl.UpdateLocalizedUrl(imageLocalizer.Localize(originImageRootUrl+imageUrl.OriginalUrl, localSavedPath));
                         //string localizedImage = imageLocalizer.Localize(imageUrl.OriginalUrl, localSavedPath);
                         //p.SetValue(t, new ImageUrl(imageUrl.OriginalUrl, localizedImage));
                         imageUrls.Add(imageUrl);
@@ -42,6 +49,9 @@ namespace TourInfo.Domain.DomainModel.Rapi
                     p.SetValue(t, imageUrls.ToArray());
                 }
             }
+            t.Version=version;
+            repository.Insert(t);
+            
             
             
             

@@ -13,7 +13,7 @@ namespace TourInfo.Domain.DomainModel.Rapi.Tests
         public void RapiResponse_JsonParseTest()
         {
             string json = System.IO.File.ReadAllText(Environment.CurrentDirectory + "\\DomainModel\\Rapi\\initdata.json");
-            var response = Newtonsoft.Json.JsonConvert.DeserializeObject<RapiResponse>(json);
+            var response = Newtonsoft.Json.JsonConvert.DeserializeObject<RapiResponse>(json, new ImageUrlJsonConverter());
 
         }
     }

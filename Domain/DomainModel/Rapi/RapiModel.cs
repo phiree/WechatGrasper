@@ -5,9 +5,9 @@ using TourInfo.Domain.Base;
 
 namespace TourInfo.Domain.DomainModel.Rapi
 {
-    public class Projectinfo :VersionedEntity
+    public class Projectinfo :VersionedEntity<int>
     {
-        public int pid { get; set; }
+        public int pid { get{ return id;}set{ id=value;} }
         public string pname { get; set; }
         public string homeurl { get; set; }
         public string areacode { get; set; }
@@ -28,9 +28,9 @@ namespace TourInfo.Domain.DomainModel.Rapi
         public bool deleteflag { get; set; }
     }
 
-    public class Typeinfo : VersionedEntity
+    public class Typeinfo : VersionedEntity<int>
     {
-        public int typeid { get; set; }
+        public int typeid { get { return id; } set { id = value; } }
         public int pid { get; set; }
         public float orderno { get; set; }
         public string typename { get; set; }
@@ -42,15 +42,15 @@ namespace TourInfo.Domain.DomainModel.Rapi
         public bool existschild { get; set; }
         public bool existsroom { get; set; }
         public bool existsscenic { get; set; }
-        public string wapshowimg { get; set; }
+        public ImageUrl wapshowimg { get; set; }
         public DateTime crtdate { get; set; }
         public DateTime updatetime { get; set; }
         public bool deleteflag { get; set; }
     }
 
-    public class Typefield : VersionedEntity
+    public class Typefield : VersionedEntity<int>
     {
-        public int id { get; set; }
+     
         public int pid { get; set; }
         public int typeid { get; set; }
         public float orderno { get; set; }
@@ -66,9 +66,9 @@ namespace TourInfo.Domain.DomainModel.Rapi
         public bool deleteflag { get; set; }
     }
 
-    public class Typetag : VersionedEntity
+    public class Typetag : VersionedEntity<int>
     {
-        public int id { get; set; }
+        
         public int pid { get; set; }
         public int typeid { get; set; }
         public float orderno { get; set; }
@@ -79,9 +79,9 @@ namespace TourInfo.Domain.DomainModel.Rapi
         public bool deleteflag { get; set; }
     }
 
-    public class Typepic : VersionedEntity
+    public class Typepic : VersionedEntity<int>
     {
-        public int id { get; set; }
+       
         public int pid { get; set; }
         public int typeid { get; set; }
         public float orderno { get; set; }
@@ -93,9 +93,9 @@ namespace TourInfo.Domain.DomainModel.Rapi
         public bool deleteflag { get; set; }
     }
 
-    public class Pubinfounit :VersionedEntity
+    public class Pubinfounit :VersionedEntity<int>
     {
-        public int unitid { get; set; }
+        public int unitid { get { return id; } set { id = value; } }
         public int pid { get; set; }
         public int typeid { get; set; }
         public string areacode { get; set; }
@@ -117,7 +117,7 @@ namespace TourInfo.Domain.DomainModel.Rapi
         public string url { get; set; }
         public string url360 { get; set; }
         public string logopic { get; set; }
-        public string flagpic { get; set; }
+        public ImageUrl flagpic { get; set; }
         public string publictrafic { get; set; }
         public string memo { get; set; }
         public string desc { get; set; }
@@ -170,18 +170,18 @@ namespace TourInfo.Domain.DomainModel.Rapi
         public bool deleteflag { get; set; }
     }
 
-    public class Pubunittag :VersionedEntity
+    public class Pubunittag :VersionedEntity<int>
     {
-        public int unittagid { get; set; }
+        public int unittagid { get { return id; } set { id = value; } }
         public int pid { get; set; }
         public int unitid { get; set; }
         public int tagid { get; set; }
         public string tagvalue { get; set; }
     }
 
-    public class Pubmediainfo : VersionedEntity 
+    public class Pubmediainfo : VersionedEntity<int>
     {
-        public int mediaid { get; set; }
+        public int mediaid { get { return id; } set { id = value; } }
         public bool topshow { get; set; }
         public int unitid { get; set; }
         public int typepicid { get; set; }
@@ -200,14 +200,14 @@ namespace TourInfo.Domain.DomainModel.Rapi
         
     }
 
-    public class Pubinfounitchild : VersionedEntity
+    public class Pubinfounitchild : VersionedEntity<int>
     {
-        public int childid { get; set; }
+        public int childid { get { return id; } set { id = value; } }
         public int pid { get; set; }
         public int unitid { get; set; }
         public string childname { get; set; }
         public float orderno { get; set; }
-        public string flagurl { get; set; }
+        public ImageUrl flagurl { get; set; }
         public string price { get; set; }
         public string desc { get; set; }
         public string memo { get; set; }

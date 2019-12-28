@@ -6,7 +6,7 @@ namespace TourInfo.Domain.TourNews
     /// <summary>
     /// zbta旅游资讯
     /// </summary>
-    public class ZbtaNews: VersionedEntity
+    public class ZbtaNews: VersionedEntity<string>
     {
      
         /// <summary>
@@ -24,8 +24,8 @@ namespace TourInfo.Domain.TourNews
         /// <summary>
         /// 首图
         /// </summary>
-        public string image { get; set; }
-        public string localizedImage { get;set; }
+        public ImageUrl image { get; set; }
+        
         /// <summary>
         /// 信息创建时间
         /// </summary>
