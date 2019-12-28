@@ -32,10 +32,17 @@ namespace WeChatGrasper
         {
             string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
             environment = environment ?? "Development";
-            IConfiguration Configuration = new ConfigurationBuilder()
+            IConfigurationBuilder ConfigurationBuilder = new ConfigurationBuilder()
           .AddJsonFile("appsettings.json", true, true)
-           .AddJsonFile($"appsettings.{environment}.json", true, true)
-         .AddEnvironmentVariables()
+         
+         .AddEnvironmentVariables();
+            Console.WriteLine("是否更新到远程?是=1,否=0");
+          if(Console.ReadLine()=="0")
+            {
+                ConfigurationBuilder= ConfigurationBuilder.AddJsonFile($"appsettings.{environment}.json", true, true);
+
+                }
+            var  Configuration = ConfigurationBuilder
           .Build();
             ServiceCollection services = new ServiceCollection();
 
