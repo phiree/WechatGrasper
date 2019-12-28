@@ -20,6 +20,11 @@ namespace TourInfo.Domain.DomainModel.DataSync
     [Table("Activity")]
     public class SqliteActivity  
     {
+        bool isUpdate;string rootImageUrl;
+        public SqliteActivity(bool isUpdate,string rootImageUrl)
+        { 
+            
+            }
 
         public string Version { get; set; }
 

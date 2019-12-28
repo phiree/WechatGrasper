@@ -22,15 +22,15 @@ namespace TourInfo.Domain.DomainModel
         IVersionedRepository<Activity, string> activityRepository;
         IVersionedRepository<CompanyVenue, string> companyVenueRepository;
         IVersionedRepository<ZbtaNews, string> zbtaNewsRepository;
-        IRepository<Projectinfo, int> projectinfoRepository;
-        IRepository<Pubmediainfo, int> PubmediainfoRepository;
-        IRepository<Pubinfounit, int> PubinfounitRepository;
-        IRepository<Pubinfounitchild, int> PubinfounitchildRepository;
-        IRepository<Pubunittag, int> PubunittagRepository;
-        IRepository<Typefield, int> TypefieldRepository;
-        IRepository<Typeinfo, int> TypeinfoRepository;
-        IRepository<Typepic, int> TypepicRepository;
-        IRepository<Typetag, int> TypetagRepository;
+        IVersionedRepository<Projectinfo, int> projectinfoRepository;
+        IVersionedRepository<Pubmediainfo, int> PubmediainfoRepository;
+        IVersionedRepository<Pubinfounit, int> PubinfounitRepository;
+        IVersionedRepository<Pubinfounitchild, int> PubinfounitchildRepository;
+        IVersionedRepository<Pubunittag, int> PubunittagRepository;
+        IVersionedRepository<Typefield, int> TypefieldRepository;
+        IVersionedRepository<Typeinfo, int> TypeinfoRepository;
+        IVersionedRepository<Typepic, int> TypepicRepository;
+        IVersionedRepository<Typetag, int> TypetagRepository;
 
 
 
@@ -49,16 +49,20 @@ namespace TourInfo.Domain.DomainModel
 
 
         IMapper _mapper;
+
+        string imageBaseUrl_Ewqy, imageBaseUrl_Zbta;
+
         public DataService(
-             IRepository<Projectinfo, int> projectinfoRepository,
-        IRepository<Pubmediainfo, int> PubmediainfoRepository,
-        IRepository<Pubinfounit, int> PubinfounitRepository,
-        IRepository<Pubinfounitchild, int> PubinfounitchildRepository,
-        IRepository<Pubunittag, int> PubunittagRepository,
-        IRepository<Typefield, int> TypefieldRepository,
-        IRepository<Typeinfo, int> TypeinfoRepository,
-        IRepository<Typepic, int> TypepicRepository,
-        IRepository<Typetag, int> TypetagRepository,
+            string imageBaseUrl_Ewqy,string imageBaseUrl_Zbta,
+        IVersionedRepository<Projectinfo, int> projectinfoRepository,
+        IVersionedRepository<Pubmediainfo, int> PubmediainfoRepository,
+        IVersionedRepository<Pubinfounit, int> PubinfounitRepository,
+        IVersionedRepository<Pubinfounitchild, int> PubinfounitchildRepository,
+        IVersionedRepository<Pubunittag, int> PubunittagRepository,
+        IVersionedRepository<Typefield, int> TypefieldRepository,
+        IVersionedRepository<Typeinfo, int> TypeinfoRepository,
+        IVersionedRepository<Typepic, int> TypepicRepository,
+        IVersionedRepository<Typetag, int> TypetagRepository,
 
 
         IVersionedRepository<Activity, string> activityRepository
@@ -81,6 +85,8 @@ namespace TourInfo.Domain.DomainModel
             , IMapper _mapper
             )
         {
+            this.imageBaseUrl_Ewqy=imageBaseUrl_Ewqy;
+            this.imageBaseUrl_Zbta=imageBaseUrl_Zbta;
             this._mapper = _mapper;
             this.companyVenueRepository = companyVenueRepository;
             this.sqliteDatabaseCreater = sqliteDatabaseCreater;
@@ -137,10 +143,13 @@ namespace TourInfo.Domain.DomainModel
         public dynamic CreateSyncData(string version)
         {
             var allActivity = activityRepository.GetAllAfterVersion(version).Select(x =>_mapper.Map<SqliteActivity>(x)  );
-            var allCompanyVenue = companyVenueRepository.GetAllAfterVersion(version).Select(x => _mapper.Map<SqliteCompanyVenue>(x) );
+         //如果是同步 则需要加上图片跟路径
+            allActivity= allActivity.Select(x=>{x.thumbnailKey=imageBaseUrl_Ewqy+x.thumbnailKey;return x;});
+            var allCompanyVenue = companyVenueRepository.GetAllAfterVersion(version).Select(x => _mapper.Map<SqliteCompanyVenue>(x));
+            allCompanyVenue = allCompanyVenue.Select(x => { x.thumbnailKey = imageBaseUrl_Ewqy + x.thumbnailKey; return x; });
             var allZbtaNews = zbtaNewsRepository.GetAllAfterVersion(version).Select(x => _mapper.Map<SqliteZbtaNews>(x) );
-
-
+            allZbtaNews = allZbtaNews.Select(x => { x.imageOriginal = imageBaseUrl_Zbta + x.imageOriginal; return x; });
+            
 
 
             return new SyncDataModel
@@ -150,16 +159,16 @@ namespace TourInfo.Domain.DomainModel
                     Activities = allActivity,
                     CompanyVenues = allCompanyVenue,
                     ZbtaNews = allZbtaNews,
-                    Projectinfos = _mapper.Map<IEnumerable<SqliteProjectinfo>>(projectinfoRepository.GetAll()),
+                    Projectinfos = _mapper.Map<IEnumerable<SqliteProjectinfo>>(projectinfoRepository.GetAllAfterVersion(version)),
 
-                    Pubinfounitchilds = _mapper.Map<IList<SqlitePubinfounitchild>>(PubinfounitchildRepository.GetAll()),
-                    Pubinfounits = _mapper.Map<IList<SqlitePubinfounit>>(PubinfounitRepository.GetAll()),
-                    Pubmediainfos = _mapper.Map<IList<SqlitePubmediainfo>>(PubmediainfoRepository.GetAll()),
-                    Pubunittags = _mapper.Map<IList<SqlitePubunittag>>(PubunittagRepository.GetAll()),
-                    Typefields = _mapper.Map<IList<SqliteTypefield>>(TypefieldRepository.GetAll()),
-                    Typeinfos = _mapper.Map<IList<SqliteTypeinfo>>(TypeinfoRepository.GetAll()),
-                    Typepics = _mapper.Map<IList<SqliteTypepic>>(TypepicRepository.GetAll()),
-                    Typetags = _mapper.Map<IList<SqliteTypetag>>(TypetagRepository.GetAll())
+                    Pubinfounitchilds = _mapper.Map<IList<SqlitePubinfounitchild>>(PubinfounitchildRepository.GetAllAfterVersion(version)),
+                    Pubinfounits = _mapper.Map<IList<SqlitePubinfounit>>(PubinfounitRepository.GetAllAfterVersion(version)),
+                    Pubmediainfos = _mapper.Map<IList<SqlitePubmediainfo>>(PubmediainfoRepository.GetAllAfterVersion(version)),
+                    Pubunittags = _mapper.Map<IList<SqlitePubunittag>>(PubunittagRepository.GetAllAfterVersion(version)),
+                    Typefields = _mapper.Map<IList<SqliteTypefield>>(TypefieldRepository.GetAllAfterVersion(version)),
+                    Typeinfos = _mapper.Map<IList<SqliteTypeinfo>>(TypeinfoRepository.GetAllAfterVersion(version)),
+                    Typepics = _mapper.Map<IList<SqliteTypepic>>(TypepicRepository.GetAllAfterVersion(version)),
+                    Typetags = _mapper.Map<IList<SqliteTypetag>>(TypetagRepository.GetAllAfterVersion(version))
                 }
             };
         }

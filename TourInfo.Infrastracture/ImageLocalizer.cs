@@ -11,10 +11,11 @@ namespace TourInfo.Infrastracture
     public class ImageLocalizer : IImageLocalizer
     {
         IUrlFetcher urlFetcher;
-      
-        public ImageLocalizer(IUrlFetcher urlFetcher)
+     
+        public ImageLocalizer(IUrlFetcher urlFetcher )
         {
             this.urlFetcher = urlFetcher;
+            
         }
         public string Localize( string remotePicUrl, string localSavedPath)
         {
