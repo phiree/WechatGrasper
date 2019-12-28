@@ -19,54 +19,55 @@ using TourInfo.Infrastracture.Repository.EFCore;
 namespace TourInfo.Infrastracture
 {
 
-    public class TourinfoInstallerAutofacModule : Module {
+    public class TourinfoInstallerAutofacModule : Module
+    {
         string connectionString;
-         public TourinfoInstallerAutofacModule(string connectionString)
+        public TourinfoInstallerAutofacModule(string connectionString)
         {
             this.connectionString = connectionString;
-            
+
         }
         protected override void Load(ContainerBuilder builder)
         {
             builder.Register(c =>
             {
-                 var opt = new DbContextOptionsBuilder<TourInfoDbContext>();
+                var opt = new DbContextOptionsBuilder<TourInfoDbContext>();
                 opt.UseSqlServer(connectionString);
                 return new TourInfoDbContext(opt.Options);
-            }).AsSelf().InstancePerRequest();
-             
+            }).AsSelf().InstancePerDependency();
+
             ;
             builder.RegisterGeneric(typeof(BaseEFCoreRepository<,>)).As(typeof(IRepository<,>))
-                .InstancePerRequest()
+                .InstancePerLifetimeScope()
             ;
-           // builder.RegisterGeneric(typeof(AdoNetRepository<,>)).As(typeof(IRepository<,>))
-           //    .InstancePerLifetimeScope()
-           //;
+            // builder.RegisterGeneric(typeof(AdoNetRepository<,>)).As(typeof(IRepository<,>))
+            //    .InstancePerLifetimeScope()
+            //;
             builder.RegisterGeneric(typeof(VersionedDataEFCoreRepository<,>)).As(typeof(IVersionedRepository<,>))
-                .InstancePerRequest()
+                .InstancePerLifetimeScope()
             ;
             builder.RegisterType<EWQYEFCoreRepository>().As<IEWQYRepository>()
-                .InstancePerRequest()
+                .InstancePerLifetimeScope()
             ;
             builder.RegisterType<MD5Helper>().As<IMD5Helper>()
-               .InstancePerRequest()
+               .SingleInstance()
            ;
             builder.RegisterType<UrlFetcher>().As<IUrlFetcher>()
-              .InstancePerLifetimeScope()
+               .SingleInstance()
            ;
             builder.RegisterType<ImageLocalizer>().As<IImageLocalizer>()
-             .InstancePerLifetimeScope()
+             .SingleInstance()
          ;
-            builder.RegisterGeneric(typeof(InfoLocalizer<,>)) .As(typeof(IInfoLocalizer<,>))
-           .InstancePerRequest()
+            builder.RegisterGeneric(typeof(InfoLocalizer<,>)).As(typeof(IInfoLocalizer<,>))
+           .SingleInstance()
        ;
-            builder.RegisterGeneric (typeof(SqliteTableCreater<>)).As( typeof(ISqliteTableCreater<>))
-                .InstancePerRequest()
+            builder.RegisterGeneric(typeof(SqliteTableCreater<>)).As(typeof(ISqliteTableCreater<>))
+                .SingleInstance()
                 ;
-            builder.RegisterType<SqliteDatabaseCreater>().As<ISqliteDatabaseCreater>().InstancePerRequest();
-          
+            builder.RegisterType<SqliteDatabaseCreater>().As<ISqliteDatabaseCreater>();
+
             base.Load(builder);
         }
     }
-   
+
 }
