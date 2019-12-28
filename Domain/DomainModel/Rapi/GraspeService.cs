@@ -105,7 +105,7 @@ namespace TourInfo.Domain.DomainModel.Rapi
             var responseModel = JsonConvert.DeserializeObject<RapiResponse>(result, new ImageUrlJsonConverter(), new ImageUrlJsonConverter());
             if (responseModel.data.projectinfo != null)
             {
-
+                 responseModel.data.projectinfo.UpdateVersion(string.Empty, dataVersion);
                 repositoryProjectInfo.InsertOrUpdate(responseModel.data.projectinfo);
                 
             }

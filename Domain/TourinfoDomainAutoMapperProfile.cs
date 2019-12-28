@@ -6,6 +6,8 @@ using TourInfo.Domain.DomainModel.DataSync;
 using Rapi=TourInfo.Domain.DomainModel.Rapi;
 using TourInfo.Domain.TourNews;
 using System.Linq;
+using TourInfo.Domain.DomainModel.EWQY;
+
 namespace TourInfo.Domain
 {
     public class TourinfoDomainAutoMapperProfile:Profile
@@ -22,7 +24,7 @@ namespace TourInfo.Domain
 
                 .ForMember(x=>x.thumbnailKey,c=>c.MapFrom(d=>d.thumbnailKey.LocalizedUrl)) 
             .ForMember(x => x.thumbnailKeyOriginal, c => c.MapFrom(d => d.thumbnailKey.OriginalUrl));
-
+            CreateMap<CompanyVenueType, SqliteCompanyVenueType>();
             CreateMap<CompanyVenue, SqliteCompanyVenue>()
                 .ForMember(x => x.pictureKeys,
                            c => c.MapFrom(

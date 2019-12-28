@@ -9,6 +9,7 @@ using System.Linq;
 using TourInfo.Domain.TourNews;
 using TourInfo.Domain.DomainModel.Rapi;
 using AutoMapper;
+using TourInfo.Domain.DomainModel.EWQY;
 
 namespace TourInfo.Domain.DomainModel
 {
@@ -21,6 +22,7 @@ namespace TourInfo.Domain.DomainModel
 
         IVersionedRepository<Activity, string> activityRepository;
         IVersionedRepository<CompanyVenue, string> companyVenueRepository;
+        IVersionedRepository<CompanyVenueType, string> companyVenueTypeRepository;
         IVersionedRepository<ZbtaNews, string> zbtaNewsRepository;
         IVersionedRepository<Projectinfo, int> projectinfoRepository;
         IVersionedRepository<Pubmediainfo, int> PubmediainfoRepository;
@@ -65,8 +67,8 @@ namespace TourInfo.Domain.DomainModel
         IVersionedRepository<Typetag, int> TypetagRepository,
 
 
-        IVersionedRepository<Activity, string> activityRepository
-
+        IVersionedRepository<Activity, string> activityRepository,
+            IVersionedRepository<CompanyVenueType, string> companyVenueTypeRepository
             , ISqliteDatabaseCreater sqliteDatabaseCreater,
              ISqliteTableCreater<SqliteCompanyVenue> sqliteCompanyVenueTableCreator,
         IVersionedRepository<CompanyVenue, string> companyVenueRepository,
@@ -89,6 +91,7 @@ namespace TourInfo.Domain.DomainModel
             this.imageBaseUrl_Zbta=imageBaseUrl_Zbta;
             this._mapper = _mapper;
             this.companyVenueRepository = companyVenueRepository;
+            this.companyVenueTypeRepository=companyVenueTypeRepository;
             this.sqliteDatabaseCreater = sqliteDatabaseCreater;
             this.sqliteActivityTableCreator = sqliteActivityTableCreator;
             this.activityRepository = activityRepository;
@@ -143,11 +146,15 @@ namespace TourInfo.Domain.DomainModel
         public dynamic CreateSyncData(string version)
         {
             var allActivity = activityRepository.GetAllAfterVersion(version).Select(x =>_mapper.Map<SqliteActivity>(x)  );
+
          //如果是同步 则需要加上图片跟路径
             allActivity= allActivity.Select(x=>{x.thumbnailKey=imageBaseUrl_Ewqy+x.thumbnailKey;return x;});
             var allCompanyVenue = companyVenueRepository.GetAllAfterVersion(version).Select(x => _mapper.Map<SqliteCompanyVenue>(x));
             allCompanyVenue = allCompanyVenue.Select(x => { x.thumbnailKey = imageBaseUrl_Ewqy + x.thumbnailKey; return x; });
             var allZbtaNews = zbtaNewsRepository.GetAllAfterVersion(version).Select(x => _mapper.Map<SqliteZbtaNews>(x) );
+            var allCompanyVenueType = companyVenueTypeRepository.GetAllAfterVersion(version).Select(x => _mapper.Map<SqliteCompanyVenueType>(x));
+
+
             allZbtaNews = allZbtaNews.Select(x => { x.imageOriginal = imageBaseUrl_Zbta + x.imageOriginal; return x; });
             
 
@@ -158,6 +165,7 @@ namespace TourInfo.Domain.DomainModel
                 {
                     Activities = allActivity,
                     CompanyVenues = allCompanyVenue,
+                    CompanyVenueTypes= allCompanyVenueType,
                     ZbtaNews = allZbtaNews,
                     Projectinfos = _mapper.Map<IEnumerable<SqliteProjectinfo>>(projectinfoRepository.GetAllAfterVersion(version)),
 
@@ -184,7 +192,7 @@ namespace TourInfo.Domain.DomainModel
         {
             public IEnumerable<SqliteActivity> Activities { get; set; }
             public IEnumerable<SqliteCompanyVenue> CompanyVenues { get; set; }
-
+            public IEnumerable<SqliteCompanyVenueType> CompanyVenueTypes { get; set; }
             public IEnumerable<SqliteZbtaNews> ZbtaNews { get; set; }
 
             public IEnumerable<SqliteProjectinfo> Projectinfos { get; set; }

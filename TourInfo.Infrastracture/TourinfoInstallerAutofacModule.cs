@@ -33,37 +33,37 @@ namespace TourInfo.Infrastracture
                  var opt = new DbContextOptionsBuilder<TourInfoDbContext>();
                 opt.UseSqlServer(connectionString);
                 return new TourInfoDbContext(opt.Options);
-            }).AsSelf().InstancePerDependency();
+            }).AsSelf().InstancePerRequest();
              
             ;
             builder.RegisterGeneric(typeof(BaseEFCoreRepository<,>)).As(typeof(IRepository<,>))
-                .InstancePerLifetimeScope()
+                .InstancePerRequest()
             ;
            // builder.RegisterGeneric(typeof(AdoNetRepository<,>)).As(typeof(IRepository<,>))
            //    .InstancePerLifetimeScope()
            //;
             builder.RegisterGeneric(typeof(VersionedDataEFCoreRepository<,>)).As(typeof(IVersionedRepository<,>))
-                .InstancePerLifetimeScope()
+                .InstancePerRequest()
             ;
             builder.RegisterType<EWQYEFCoreRepository>().As<IEWQYRepository>()
-                .InstancePerLifetimeScope()
+                .InstancePerRequest()
             ;
             builder.RegisterType<MD5Helper>().As<IMD5Helper>()
-               .SingleInstance()
+               .InstancePerRequest()
            ;
             builder.RegisterType<UrlFetcher>().As<IUrlFetcher>()
-               .SingleInstance()
+              .InstancePerLifetimeScope()
            ;
             builder.RegisterType<ImageLocalizer>().As<IImageLocalizer>()
-             .SingleInstance()
+             .InstancePerLifetimeScope()
          ;
             builder.RegisterGeneric(typeof(InfoLocalizer<,>)) .As(typeof(IInfoLocalizer<,>))
-           .SingleInstance()
+           .InstancePerRequest()
        ;
             builder.RegisterGeneric (typeof(SqliteTableCreater<>)).As( typeof(ISqliteTableCreater<>))
-                .SingleInstance()
+                .InstancePerRequest()
                 ;
-            builder.RegisterType<SqliteDatabaseCreater>().As<ISqliteDatabaseCreater>();
+            builder.RegisterType<SqliteDatabaseCreater>().As<ISqliteDatabaseCreater>().InstancePerRequest();
           
             base.Load(builder);
         }

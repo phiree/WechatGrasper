@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
 using TourInfo.Domain.Base;
+using TourInfo.Domain.DomainModel.EWQY;
 using TourInfo.Domain.DomainModel.Rapi;
 using TourInfo.Domain.TourNews;
 
@@ -85,6 +86,17 @@ namespace TourInfo.Domain.DomainModel.DataSync
         public string Id { get; set; }
         
 
+
+    }
+
+    [Table("CompanyVenueType")]
+    public class SqliteCompanyVenueType : SqliteTable<CompanyVenueType>
+    {
+
+        public string name { get; set; }
+        public string id { get;set;}
+
+        
 
     }
     [Table("ZbtaNews")]
