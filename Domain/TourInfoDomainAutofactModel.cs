@@ -58,7 +58,9 @@ namespace TourInfo.Domain
           .WithParameter("imageBaseUrl", ewqyImageBaseUrl)
           .WithParameter("localSavedPath", ewqyLocalSavedPath)
           ;
-            builder.RegisterType<DataService>().As<IDataService>();
+            builder.RegisterType<DataService>().As<IDataService>()
+                 .WithParameter("imageBaseUrl_Ewqy", ewqyImageBaseUrl)
+          .WithParameter("imageBaseUrl_Zbta", zbtaTitleImageBaseUrl);
 
             builder.RegisterType<RapiApplication>().As<IRapiApplication>();
 
