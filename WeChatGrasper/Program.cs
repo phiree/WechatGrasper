@@ -96,7 +96,7 @@ namespace WeChatGrasper
         private static void RapiWorker_DoWork(string dataVersion)
         {
             var rapiApplication = serviceProvider.GetService<IRapiApplication>();
-            rapiApplication.Graspe(dataVersion);
+            rapiApplication.Graspe(dataVersion,true);
         }
 
         private static void ZbtaWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

@@ -16,7 +16,12 @@ namespace TourInfo.Domain.DomainModel.Rapi
     /// </summary>
     public interface IRapiGraspeService
     {
-        void Graspe(string dataVersion);
+        /// <summary>
+        /// 拉取rapi数据
+        /// </summary>
+        /// <param name="dataVersion"></param>
+        /// <param name="forceInit">因为rapi提供了sync接口</param>
+        void Graspe(string dataVersion,bool forceInit);
     }
     public class RapiGraspeService : IRapiGraspeService
     {
@@ -81,14 +86,14 @@ namespace TourInfo.Domain.DomainModel.Rapi
             this.repositoryPubinfounitchild = repositoryPubinfounitchild;
         }
 
-        public void Graspe(string dataVersion)
+        public void Graspe(string dataVersion,bool forceInit)
         {
             string token = tokenManager.GetToken();
 
             //if database is empty, init, else  sync
             string targetUrl = syncUrl;
             var existedData = repositoryProjectInfo.GetAll();
-            if (!existedData.Any())
+            if (forceInit||!existedData.Any())
             {
                 targetUrl = initUrl;
             }
@@ -101,8 +106,8 @@ namespace TourInfo.Domain.DomainModel.Rapi
             if (responseModel.data.projectinfo != null)
             {
 
-                repositoryProjectInfo.Insert(responseModel.data.projectinfo);
-                repositoryProjectInfo.SaveChanges();
+                repositoryProjectInfo.InsertOrUpdate(responseModel.data.projectinfo);
+                
             }
             new System.Threading.Thread(() => {
                 foreach (var item in responseModel.data.pubmediainfoes)
@@ -140,10 +145,10 @@ namespace TourInfo.Domain.DomainModel.Rapi
                    
                 }
             }).Start();
-            repositoryPubunittag.BulkInsert(responseModel.data.pubunittags.Select(x => { x.Version = dataVersion; return x; }).ToList());
-            repositoryTypefield.BulkInsert(responseModel.data.typefields.Select(x => { x.Version = dataVersion; return x; }).ToList());
-            repositoryTypepic.BulkInsert(responseModel.data.typepics.Select(x => { x.Version = dataVersion; return x; }).ToList());
-            repositoryTypetag.BulkInsert(responseModel.data.typetags.Select(x => { x.Version = dataVersion; return x; }).ToList());
+            repositoryPubunittag.InsertOrUpdate(responseModel.data.pubunittags.Select(x => { x.Version = dataVersion; return x; }).ToList());
+            repositoryTypefield.InsertOrUpdate(responseModel.data.typefields.Select(x => { x.Version = dataVersion; return x; }).ToList());
+            repositoryTypepic.InsertOrUpdate(responseModel.data.typepics.Select(x => { x.Version = dataVersion; return x; }).ToList());
+            repositoryTypetag.InsertOrUpdate(responseModel.data.typetags.Select(x => { x.Version = dataVersion; return x; }).ToList());
 
 
         }

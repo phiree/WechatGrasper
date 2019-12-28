@@ -7,6 +7,7 @@ using TourInfo.Domain;
 using System.Linq;
 using TourInfo.Domain.TourNews;
 using TourInfo.Domain.DomainModel.Rapi;
+using TourInfo.Domain.DomainModel.EWQY;
 
 namespace TourInfo.Infrastracture.Repository.EFCore
 {
@@ -116,8 +117,10 @@ namespace TourInfo.Infrastracture.Repository.EFCore
         // public DbSet<Entity<string>> Entities { get; set; }
         //public DbSet<VersionedEntity>  VersionedEntities { get; set; }
         // public DbSet<EWQYEntity> EWQYEntities{ get; set; }
+        public DbSet<EWQYPlaceTypeEntity> EWQYPlaceTypeEntities { get; set; }
         public DbSet<Activity> Activities { get; set; }
         public DbSet<CompanyVenue> CompanyVenues{ get; set; }
+        public DbSet<CompanyVenueType> CompanyVenueTypes { get; set; }
         public DbSet<ZbtaNews> ZbtaNews { get; set; }
         public DbSet<Projectinfo> Projectinfos { get; set; }
         public DbSet<Typeinfo> Typeinfos { get; set; }

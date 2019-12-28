@@ -5,7 +5,7 @@ using TourInfo.Domain.Base;
 
 namespace TourInfo.Domain.EWQY.DomainModel
 {
-   public  interface IEWQYRepository:IVersionedRepository<EWQYEntity, string>
+   public  interface IEWQYRepository:IVersionedRepository<EWQYPlaceTypeEntity, string>
     {
          
     }

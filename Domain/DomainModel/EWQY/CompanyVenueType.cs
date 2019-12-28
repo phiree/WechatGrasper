@@ -1,9 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TourInfo.Domain.Base;
 
 namespace TourInfo.Domain.DomainModel.EWQY
 {
+
+    public class CompanyVenueType:EWQYPlaceTypeEntity 
+        {
+     public string name { get;set;}
+    }
     /*
 文化场馆:
 {"status":0,"data":[
@@ -27,7 +33,5 @@ namespace TourInfo.Domain.DomainModel.EWQY
 
 
          */
-    class CompanyVenueType
-    {
-    }
+  
 }

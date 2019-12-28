@@ -12,11 +12,11 @@ namespace TourInfo.Domain.Application.Rapi
         {
             this.rapiGraspeService = rapiGraspeService;
         }
-        public void Graspe(string _dateVersion)
+        public void Graspe(string _dateVersion,bool forceInit)
         {
 
             
-            rapiGraspeService.Graspe(_dateVersion);
+            rapiGraspeService.Graspe(_dateVersion,forceInit);
 
         }
 

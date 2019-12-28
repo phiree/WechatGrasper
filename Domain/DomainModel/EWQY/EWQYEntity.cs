@@ -3,12 +3,16 @@ using TourInfo.Domain.Base;
 
 namespace TourInfo.Domain
 {
-    public  abstract  class EWQYEntity:VersionedEntity<string>
+    public abstract class EWQYPlaceTypeEntity:VersionedEntity<string>
+    {
+        public PlaceType PlaceType { get; set; }
+    }
+    public  abstract  class EWQYEntity: EWQYPlaceTypeEntity 
     {
      /// <summary>
      /// 信息类型 0： 场馆，1：企业
      /// </summary>
-        public PlaceType PlaceType { get; set; }
+       
    
         /// <summary>
         /// 活动标题图片

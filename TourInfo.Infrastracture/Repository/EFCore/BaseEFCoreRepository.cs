@@ -39,7 +39,14 @@ namespace TourInfo.Infrastracture.Repository.EFCore
             tourInfoDbContext.Add(entity);
             tourInfoDbContext.SaveChanges();
         }
-
+        public void InsertOrUpdate(IList<T> list)
+        {
+            foreach(var t in list)
+            { 
+                InsertOrUpdate(t);
+                }
+           
+        }
         public T Get(Key id)
         {
             return tourInfoDbContext.Find<T>(id);

@@ -18,6 +18,9 @@ namespace TourInfo.Domain.Base
         void BulkInsert(IList<T> list);
         void ExecuteRawSql(string sql);
 
+          void InsertOrUpdate(T entity);
+          void InsertOrUpdate(IList<T> list);
+
 
 
 
