@@ -14,6 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{FC18321A-6
 		rapi_Json.json = rapi_Json.json
 		docs\旅游资源sql脚本.txt = docs\旅游资源sql脚本.txt
 		docs\旅游资源信息导出接口(2).docx = docs\旅游资源信息导出接口(2).docx
+		说明文档.txt = 说明文档.txt
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TourInfo.Infrastracture", "TourInfo.Infrastracture\TourInfo.Infrastracture.csproj", "{8A493302-C253-4CC1-A53A-4AED1BC204EB}"
@@ -28,6 +29,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TourInfo.DomainTests", "TourInfo.DomainTests\TourInfo.DomainTests.csproj", "{392C719B-5857-4D4C-B636-D4F148D8775A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrasperService", "GrasperService\GrasperService.csproj", "{70A0655B-1BD5-41BB-855D-E5799B0C58D7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +62,10 @@ Global
 		{392C719B-5857-4D4C-B636-D4F148D8775A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{392C719B-5857-4D4C-B636-D4F148D8775A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{392C719B-5857-4D4C-B636-D4F148D8775A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70A0655B-1BD5-41BB-855D-E5799B0C58D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70A0655B-1BD5-41BB-855D-E5799B0C58D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70A0655B-1BD5-41BB-855D-E5799B0C58D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70A0655B-1BD5-41BB-855D-E5799B0C58D7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

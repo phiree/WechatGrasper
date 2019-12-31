@@ -1,15 +1,13 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
-
-namespace TourInfo.Application.Api
+namespace GrasperService
 {
     public class Program
     {
@@ -20,6 +18,11 @@ namespace TourInfo.Application.Api
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+                .ConfigureServices((hostContext, services) =>
+                {
+                    services.AddHostedService<Worker>();
+                })
+              .UseStartup<Startup>();
+            
     }
 }

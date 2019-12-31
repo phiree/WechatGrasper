@@ -1,0 +1,126 @@
+1  sqlite 数据库结构
+
+
+
+1.1 文化活动表 :Activity 
+     
+       Version :版本号
+        PlaceType :活动类型 0:文化场馆活动  1: 文化企业活动.
+       startTime :活动开始时间
+       createTime :信息创建时间
+       thumbnailKey :本地图片路径:活动缩略图.
+       thumbnailKeyOriginal :远程图片绝对路径.
+       address :活动举办地址
+       name :活动名称
+       endTime :活动结束时间
+       detail :活动详情,
+       pictureKeys :本地图片:活动相关图片, 多张图片用分号分隔
+       pictureKeysOriginal :远程图片: 多张图片用分号分隔
+        credits :(暂时忽略)信用点
+        isShared :(暂时忽略)是否已分享
+       Id :活动Id
+        
+
+
+1.2 企业/场馆表:CompanyVenue
+    
+       Version :数据版本号
+       PlaceType :类型 0:文化场馆  1: 文化企业.
+       thumbnailKey :本地图片路径:活动缩略图.
+       thumbnailKeyOriginal :远程图片绝对路径.
+       location :长度为2的数组, 表示经纬度, 第一个是经度,第二个维度
+       name :名称
+       satisfactionScore :满意度得分
+       typeId :类型id,见1.4
+       introduction :介绍
+       pictureKeys :相关图片,本地路径,多个图片分号分隔.
+       pictureKeysOriginal :相关图片, 远程绝对路径,多个图片分号分隔
+       address :地址
+       isFavorite :(暂时无用)
+       serviceTimeStart :服务开始时间.
+       serviceNote :服务说明
+       serviceTimeEnd :服务结束时间
+       telNumber :电话号码
+       Id :Id
+
+
+
+1.3 zbta网站的旅游资讯表:ZbtaNews
+
+       Version :数据版本
+       releaseTime :发布时间
+       checkState :(暂时无用)
+       titles :标题
+       image :标题图片,本地路路径
+       imageOriginal :标题图片,远程绝对路径
+       created :创建人
+       back1 :概要
+       details :富文本详情, 其中的图片地址是远程绝对路径
+       localizedDetails :富文本详情,其中的图片地址是本地相对路径
+       createUser :创建者
+       Id :id
+
+1.4 企业场馆类型 id名称对应表
+    文化场馆:
+
+    {"id":"4a369ffb7fc445cea92a7902ef567d2a","name":"文化馆"}
+    ,{"id":"58ca91603e4e4ae1b083a32c10e554d4","name":"美术馆"}
+    ,{"id":"9350ad5edf4e494cbd2e60eb05f004f8","name":"图书馆"}
+    ,{"id":"abbc301846db4f20ac4513e50daebe38","name":"博物馆"}
+
+    文化企业:
+    {"id":"0f7df083ef084c39ab0147bab9b2bd64","name":"图书报刊"}
+    ,{"id":"438d490f19de40f588d2a0713db955cc","name":"电影电视"}
+    ,{"id":"20aa67edf4fb4a4ab6d26e5618800f59","name":"文艺演出"}
+    ,{"id":"aeab5fb4462942818abbd03e97ee7ddb","name":"文创衍生"}
+    ,{"id":"d1d6bf990c3d49e5af207a6f9d5b7031","name":"文化旅游"}
+    ,{"id":"8fb92226c0224ff7bb3b57998973451a","name":"艺术培训"}
+    ,{"id":"dce5543ea9c04729bc9633ebd0a1e011","name":"文化用品"}]
+
+
+
+2 数据同步接口
+
+2.1 接口url: 服务器地址/api/tourinfo/syncdata?version=[version]
+
+2.2 参数说明: version表示获取大于该version的数据.
+
+2.3 返回结构:
+    {
+     code:0,//0 表示成功,否则失败
+     msg:"",//错误消息.如果code为0 则空
+     data:{
+            Activities:[活动列表],
+            CompanyVenues:[企业场馆]
+            ZbtaNews:[旅游资讯],
+            TourResource:{
+                    Pubinfounitchilds :[资源相关信息],
+                    Pubinfounits  :[资源相关信息],
+                    Pubmediainfos :[资源相关信息],
+                    Pubunittags  :[资源相关信息],
+                    Typefields  :[资源相关信息],
+                    Typeinfos  :[资源相关信息],
+                    Typepics  :[资源相关信息],
+                    Typetags :[资源相关信息],
+            },
+            Weather:{
+                "weather":"多云转阴",
+                "wind":"南风微风",
+                "temperature":"7 ~ -3℃"
+            }
+        }
+    }
+
+2.4 返回数据说明:
+    活动,场馆,资讯的信息结构和表结构一样.
+    
+
+
+ 
+
+
+        
+ /// <summary>\r\n\s+///\s(.+)?\r\n\s+///\s</summary>\r\n\s+public\sstring\s(.+){\s+get;\s*set;\s*} 
+
+
+    
