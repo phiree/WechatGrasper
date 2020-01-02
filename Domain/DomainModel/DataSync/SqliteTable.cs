@@ -62,6 +62,8 @@ namespace TourInfo.Domain.DomainModel.DataSync
         public string thumbnailKey { get; set; }
         public string thumbnailKeyOriginal { get; set; }
         public string location { get; set; }
+        public double? longtitude { get; set; }
+        public double? latitude { get; set; }
         // public double[] location { get; set; }
         public string name { get; set; }
         public string satisfactionScore { get; set; }

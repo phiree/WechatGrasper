@@ -75,6 +75,11 @@
             数据指纹，用于判断内容是否变更
             </summary>
         </member>
+        <member name="T:TourInfo.Domain.DomainModel.DataSync.LocationLongtitudeAutoMapResolver">
+            <summary>
+            location 从 引号分隔的字符串 映射为 经纬度 两个double类型字段.,
+            </summary>
+        </member>
         <member name="T:TourInfo.Domain.DomainModel.Rapi.IRapiGraspeService">
             <summary>
             抓取数据

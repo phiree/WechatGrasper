@@ -34,8 +34,12 @@ namespace TourInfo.Domain
                                d => d.pictureKeys == null ? string.Empty : string.Join(";", d.pictureKeys.Select(x => x.OriginalUrl))))
 
                 .ForMember(x => x.thumbnailKey, c => c.MapFrom(d => d.thumbnailKey.LocalizedUrl))
-            .ForMember(x => x.thumbnailKeyOriginal, c => c.MapFrom(d => d.thumbnailKey.OriginalUrl));
-
+            .ForMember(x => x.thumbnailKeyOriginal, c => c.MapFrom(d => d.thumbnailKey.OriginalUrl))
+            .ForMember(x => x.longtitude, c => c.MapFrom(d => d.location[0]))
+            .ForMember(x => x.latitude, c => c.MapFrom(d => d.location[1]))
+            ;
+            ;
+            
             
             CreateMap<ZbtaNews, SqliteZbtaNews>()
                 .ForMember(x => x.image, c => c.MapFrom( d =>d.image.LocalizedUrl))
