@@ -46,6 +46,12 @@ namespace TourInfo.Application.Api
             services.AddDbContext<TourInfoDbContext>(options =>
                options.UseSqlServer(connectionString),
 
+           
+          
+               // By registering the DbContext as transient, we can get unique instances
+               // for each thread worker (even within a single scope), as demonstrated in
+               // Fix #1 in BooksController.cs.
+               ServiceLifetime.Transient);
             services.AddMvc(x => x.EnableEndpointRouting = false).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddLogging(loggingBuilder =>
             {
@@ -55,13 +61,7 @@ namespace TourInfo.Application.Api
                 loggingBuilder.AddNLog(Configuration);
             });
 
-            string connectionString = Configuration.GetConnectionString("TourinfoConnectionString");
-               // By registering the DbContext as transient, we can get unique instances
-               // for each thread worker (even within a single scope), as demonstrated in
-               // Fix #1 in BooksController.cs.
-               ServiceLifetime.Transient);
 
-          
             string zbtaTitleImageBaseUrl = Configuration.GetValue<string>("ImageLocalizer:ZbtaTitleImageBaseUrl");
             string zbtaDetailImageBaseUrl = Configuration.GetValue<string>("ImageLocalizer:ZbtaDetailImageBaseUrl");
             string ewqyImageBaseUrl = Configuration.GetValue<string>("ImageLocalizer:EwqyImageBaseUrl");
