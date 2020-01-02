@@ -21,31 +21,66 @@ namespace TourInfo.Domain.DomainModel.DataSync
     [Table("Activity")]
     public class SqliteActivity  
     {
-        bool isUpdate;string rootImageUrl;
-        public SqliteActivity(bool isUpdate,string rootImageUrl)
-        { 
-            
-            }
-
+       /// <summary>
+       /// 版本号
+       /// </summary>
         public string Version { get; set; }
-
+        /// <summary>
+        /// 活动类型 0:文化场馆活动  1: 文化企业活动.
+        /// </summary>
         public PlaceType PlaceType { get; set; }
+        /// <summary>
+        /// 活动开始时间
+        /// </summary>
         public string startTime { get; set; }
+        /// <summary>
+        /// 信息创建时间
+        /// </summary>
         public string createTime { get; set; }
+        /// <summary>
+        /// 本地图片路径:活动缩略图.
+        /// </summary>
         public string thumbnailKey { get; set; }
+        /// <summary>
+        /// 远程图片绝对路径.
+        /// </summary>
         public string thumbnailKeyOriginal { get;set;}
+        /// <summary>
+        /// 活动举办地址
+        /// </summary>
         public string address { get; set; }
+        /// <summary>
+        /// 活动名称
+        /// </summary>
         public string name { get; set; }
+        /// <summary>
+        /// 活动结束时间
+        /// </summary>
         public string endTime { get; set; }
-
+        /// <summary>
+        /// 活动详情,
+        /// </summary>
         public string detail { get; set; }
 
-
+        /// <summary>
+        /// 本地图片:活动相关图片, 多张图片用分号分隔
+        /// </summary>
         public string pictureKeys { get; set; }
+        /// <summary>
+        /// 远程图片: 多张图片用分号分隔
+        /// </summary>
         public string pictureKeysOriginal { get; set; }
-
+        /// <summary>
+        /// (暂时忽略)信用点
+        /// </summary>
         public int credits { get; set; }
+        /// <summary>
+        /// (暂时忽略)是否已分享
+        /// </summary>
         public bool isShared { get; set; }
+        /// <summary>
+        /// 活动Id
+        /// </summary>
         public string Id { get;set;}
         
 
@@ -54,69 +89,166 @@ namespace TourInfo.Domain.DomainModel.DataSync
     [Table("CompanyVenue")]
     public class SqliteCompanyVenue : SqliteTable<CompanyVenue>
     {
-
+        /// <summary>
+        /// 数据版本号
+        /// </summary>
         public string Version { get; set; }
-
+        /// <summary>
+        /// 类型 0:文化场馆  1: 文化企业.
+        /// </summary>
         public PlaceType PlaceType { get; set; }
-
+        /// <summary>
+        /// 本地图片路径:活动缩略图.
+        /// </summary>
         public string thumbnailKey { get; set; }
+        /// <summary>
+        /// 远程图片绝对路径.
+        /// </summary>
         public string thumbnailKeyOriginal { get; set; }
+        /// <summary>
+        /// 长度为2的数组, 表示经纬度, 第一个是经度,第二个维度
+        /// </summary>
         public string location { get; set; }
         public double? longtitude { get; set; }
         public double? latitude { get; set; }
         // public double[] location { get; set; }
+        
+        /// <summary>
+        /// 名称
+        /// </summary>
         public string name { get; set; }
+        /// <summary>
+        /// 满意度得分
+        /// </summary>
         public string satisfactionScore { get; set; }
+        /// <summary>
+        /// 类型id, 等于企业场馆类型表(CompanyVenueType)里的typeid
+        /// </summary>
         public string typeId { get; set; }
+        /// <summary>
+        /// 介绍
+        /// </summary>
         public string introduction { get; set; }
         //public IsComment isComment { get; set; }
-
+        /// <summary>
+        /// 相关图片,本地路径,多个图片分号分隔.
+        /// </summary>
         public string pictureKeys { get; set; }
+        /// <summary>
+        /// 相关图片, 远程绝对路径,多个图片分号分隔
+        /// </summary>
         public string pictureKeysOriginal { get; set; }
         //  public string[] pictureKeys { get; set; }
+        /// <summary>
+        /// 地址
+        /// </summary>
         public string address { get; set; }
+        /// <summary>
+        /// (暂时无用)
+        /// </summary>
         public string isFavorite { get; set; }
 
         #region 场馆独有属性
+        /// <summary>
+        /// 服务开始时间.
+        /// </summary>
         public string serviceTimeStart { get; set; }
-
+        /// <summary>
+        /// 服务说明
+        /// </summary>
         public string serviceNote { get; set; }
+        /// <summary>
+        /// 服务结束时间
+        /// </summary>
         public string serviceTimeEnd { get; set; }
         #endregion
-
+        /// <summary>
+        /// 电话号码
+        /// </summary>
         public string telNumber { get; set; }
+        /// <summary>
+        /// Id
+        /// </summary>
         public string Id { get; set; }
+        
         
 
 
     }
 
+
+    /// <summary>
+    /// 企业/场馆类型
+    /// </summary>
     [Table("CompanyVenueType")]
     public class SqliteCompanyVenueType : SqliteTable<CompanyVenueType>
     {
-
+        /// <summary>
+        /// 分类名称
+        /// </summary>
         public string name { get; set; }
+        /// <summary>
+        /// 分类Id
+        /// </summary>
         public string id { get;set;}
 
         
 
     }
+    /// <summary>
+    /// zbta网站的旅游资讯
+    /// </summary>
     [Table("ZbtaNews")]
     public class SqliteZbtaNews : SqliteTable<ZbtaNews>
     {
+        /// <summary>
+        /// 数据版本
+        /// </summary>
 
         public string Version { get; set; }
+        /// <summary>
+        /// 发布时间
+        /// </summary>
         public string releaseTime { get; set; }
+        /// <summary>
+        /// (暂时无用)
+        /// </summary>
         public string checkState { get; set; }
-
+        /// <summary>
+        /// 标题
+        /// </summary>
         public string titles { get; set; }
+        /// <summary>
+        /// 标题图片,本地路路径
+        /// </summary>
         public string image { get; set; }
+        /// <summary>
+        /// 标题图片,远程绝对路径
+        /// </summary>
         public string imageOriginal { get; set; }
+        /// <summary>
+        /// 创建人
+        /// </summary>
         public string created { get; set; }
+        /// <summary>
+        /// 概要
+        /// </summary>
         public string back1 { get; set; }
+        /// <summary>
+        /// 富文本详情, 其中的图片地址是远程绝对路径
+        /// </summary>
         public string details { get; set; }
+        /// <summary>
+        /// 富文本详情,其中的图片地址是本地相对路径
+        /// </summary>
         public string localizedDetails { get; set; }
+        /// <summary>
+        /// 创建者
+        /// </summary>
         public string createUser { get; set; }
+        /// <summary>
+        /// id
+        /// </summary>
         public string Id { get; set; }
         
 

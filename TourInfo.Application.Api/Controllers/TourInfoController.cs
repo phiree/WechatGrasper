@@ -8,24 +8,25 @@ using TourInfo.Domain.Application.Rapi;
 using TourInfo.Domain.DomainModel;
 using TourInfo.Domain.EWQY;
 using TourInfo.Domain.TourNews;
-
+using Microsoft.Extensions.DependencyInjection;
 namespace TourInfo.Application.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class TourInfoController : ControllerBase
     {
-        IRapiApplication rapiApplication;
+       
         IZBTAApplication zBTAApplication;
         IEWQYApplication eWQYApplication;
         IDataService dataService;
-
-        public TourInfoController(IRapiApplication rapiApplication, IZBTAApplication zBTAApplication, IEWQYApplication eWQYApplication, IDataService dataService)
+        IServiceProvider serviceProvider;
+        public TourInfoController(IServiceProvider serviceProvider, IRapiApplication rapiApplication, IZBTAApplication zBTAApplication, IEWQYApplication eWQYApplication, IDataService dataService)
         {
-            this.rapiApplication = rapiApplication;
+           // this.rapiApplication = rapiApplication;
             this.zBTAApplication = zBTAApplication;
             this.eWQYApplication = eWQYApplication;
             this.dataService = dataService;
+            this.serviceProvider=serviceProvider;
         }
 
         [HttpGet("InitData")]
@@ -47,20 +48,25 @@ namespace TourInfo.Application.Api.Controllers
         public ActionResult<dynamic> GraspeData( )
         {
 
-            string _dateVersion = DateTime.Now.ToString("yyyyMMddhhmmss");
-            BackgroundWorker ewqyWorker = new BackgroundWorker();
-            ewqyWorker.DoWork += (obj, e) => EwqyWorker_DoWork(_dateVersion);
-            ewqyWorker.RunWorkerCompleted += EwqyWorker_RunWorkerCompleted;
-            ewqyWorker.RunWorkerAsync();
-            BackgroundWorker zbtaWorker = new BackgroundWorker();
-            zbtaWorker.DoWork += (obj, e) => ZbtaWorker_DoWork(_dateVersion);
-            zbtaWorker.RunWorkerCompleted += ZbtaWorker_RunWorkerCompleted;
-            zbtaWorker.RunWorkerAsync(argument: _dateVersion);
 
-            BackgroundWorker rapiWorker = new BackgroundWorker();
-            rapiWorker.DoWork += (obj, e) => RapiWorker_DoWork(_dateVersion);
-            rapiWorker.RunWorkerCompleted += RapiWorker_RunWorkerCompleted;
-            rapiWorker.RunWorkerAsync(argument: _dateVersion);
+
+            string _dateVersion = DateTime.Now.ToString("yyyyMMddhhmmss");
+
+            var rapiApplication = serviceProvider.GetService<IRapiApplication>();
+            rapiApplication.Graspe(_dateVersion, true);
+            //BackgroundWorker ewqyWorker = new BackgroundWorker();
+            //ewqyWorker.DoWork += (obj, e) => EwqyWorker_DoWork(_dateVersion);
+            //ewqyWorker.RunWorkerCompleted += EwqyWorker_RunWorkerCompleted;
+            //ewqyWorker.RunWorkerAsync();
+            //BackgroundWorker zbtaWorker = new BackgroundWorker();
+            //zbtaWorker.DoWork += (obj, e) => ZbtaWorker_DoWork(_dateVersion);
+            //zbtaWorker.RunWorkerCompleted += ZbtaWorker_RunWorkerCompleted;
+            //zbtaWorker.RunWorkerAsync(argument: _dateVersion);
+
+            //BackgroundWorker rapiWorker = new BackgroundWorker();
+            //rapiWorker.DoWork += (obj, e) => RapiWorker_DoWork(_dateVersion);
+            //rapiWorker.RunWorkerCompleted += RapiWorker_RunWorkerCompleted;
+            //rapiWorker.RunWorkerAsync(argument: _dateVersion);
 
             return Content("已在后台执行");
 
@@ -72,7 +78,7 @@ namespace TourInfo.Application.Api.Controllers
        
         private   void RapiWorker_DoWork(string dataVersion)
         {
-           
+            var rapiApplication = serviceProvider.GetService<IRapiApplication>();
             rapiApplication.Graspe(dataVersion, true);
         }
 
@@ -84,7 +90,7 @@ namespace TourInfo.Application.Api.Controllers
         private   void ZbtaWorker_DoWork(string dateVersion)
         {
           
-            zBTAApplication.Graspe(dateVersion);
+          //  zBTAApplication.Graspe(dateVersion);
 
         }
 
@@ -97,7 +103,7 @@ namespace TourInfo.Application.Api.Controllers
         {
             
 
-            eWQYApplication.Graspe(dateVersion);
+           // eWQYApplication.Graspe(dateVersion);
         }
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()

@@ -39,7 +39,12 @@ namespace TourInfo.Application.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddAutoMapper(System.Reflection.Assembly.GetAssembly(typeof(TourinfoDomainAutoMapperProfile))); 
+            
+            services.AddMvc(x => x.EnableEndpointRouting = false).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddAutoMapper(System.Reflection.Assembly.GetAssembly(typeof(TourinfoDomainAutoMapperProfile)));
+            string connectionString = Configuration.GetConnectionString("TourinfoConnectionString");
+            services.AddDbContext<TourInfoDbContext>(options =>
+               options.UseSqlServer(connectionString),
 
             services.AddMvc(x => x.EnableEndpointRouting = false).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddLogging(loggingBuilder =>
@@ -51,6 +56,12 @@ namespace TourInfo.Application.Api
             });
 
             string connectionString = Configuration.GetConnectionString("TourinfoConnectionString");
+               // By registering the DbContext as transient, we can get unique instances
+               // for each thread worker (even within a single scope), as demonstrated in
+               // Fix #1 in BooksController.cs.
+               ServiceLifetime.Transient);
+
+          
             string zbtaTitleImageBaseUrl = Configuration.GetValue<string>("ImageLocalizer:ZbtaTitleImageBaseUrl");
             string zbtaDetailImageBaseUrl = Configuration.GetValue<string>("ImageLocalizer:ZbtaDetailImageBaseUrl");
             string ewqyImageBaseUrl = Configuration.GetValue<string>("ImageLocalizer:EwqyImageBaseUrl");
@@ -65,10 +76,10 @@ namespace TourInfo.Application.Api
             string RapiLocalSavedPath = Configuration.GetValue<string>("Rapi:RapiLocalSavedPath");
             var containerBuilder = new Autofac.ContainerBuilder();
             containerBuilder.Populate(services);
-            containerBuilder.RegisterModule(new TourInfo.Domain.TourInfoDomainAutofactModel
+            containerBuilder.RegisterModule(new TourInfo.Domain.TourInfoDomainAutofactModel_Web
                (zbtaTitleImageBaseUrl, zbtaDetailImageBaseUrl, ewqyImageBaseUrl, ewqyLocalSavedPath, zbtaLocalSavedPath
                 , rapi_initurl, rapi_syncurl, rapi_tokenurl, rapi_appid, rapi_secret, RapiLocalSavedPath));
-            containerBuilder.RegisterModule(new TourInfo.Infrastracture.TourinfoInstallerAutofacModule
+            containerBuilder.RegisterModule(new TourInfo.Infrastracture.TourinfoInstallerAutofacModule_Web
                (connectionString));
             var container = containerBuilder.Build();
             var serviceProvider = new AutofacServiceProvider(container);
