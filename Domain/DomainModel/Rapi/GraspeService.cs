@@ -8,6 +8,7 @@ using System.Threading;
 //using FastMember;
 using System.Collections;
 using System;
+using Microsoft.Extensions.Logging;
 
 namespace TourInfo.Domain.DomainModel.Rapi
 {
@@ -25,6 +26,7 @@ namespace TourInfo.Domain.DomainModel.Rapi
     }
     public class RapiGraspeService : IRapiGraspeService
     {
+        ILogger logger;
         ITokenManager tokenManager;
         string initUrl = "";
         string syncUrl = "";
@@ -60,11 +62,11 @@ namespace TourInfo.Domain.DomainModel.Rapi
         IInfoLocalizer<Pubmediainfo, int> infoLocalizerPubMediaInfo,
         IInfoLocalizer<Typeinfo, int> infoLocalizerTypeinfo,
         IInfoLocalizer<Pubinfounit, int> infoLocalizerPubinfounit,
-        IInfoLocalizer<Pubinfounitchild, int> infoLocalizerPubinfounitchild
-
+        IInfoLocalizer<Pubinfounitchild, int> infoLocalizerPubinfounitchild,
+ ILogger logger 
             )
         {
-
+            this.logger = logger;
             this.infoLocalizerPubinfounit = infoLocalizerPubinfounit;
             this.infoLocalizerPubinfounitchild = infoLocalizerPubinfounitchild;
             this.infoLocalizerPubMediaInfo = infoLocalizerPubMediaInfo;
@@ -109,42 +111,58 @@ namespace TourInfo.Domain.DomainModel.Rapi
                 repositoryProjectInfo.InsertOrUpdate(responseModel.data.projectinfo);
                 
             }
-            new System.Threading.Thread(() => {
+            var pubmediaThread = new System.Threading.Thread(() => {
+                logger.LogInformation("开始抓取pubmediainfo");
                 foreach (var item in responseModel.data.pubmediainfoes)
                 {
 
-                    infoLocalizerPubMediaInfo.Localize(item,string.Empty, localSavedPath, dataVersion);
-                  
+                    infoLocalizerPubMediaInfo.Localize(item, string.Empty, localSavedPath, dataVersion);
+
 
                 }
-            }).Start();
+            });
+            
+            pubmediaThread.Start();
+            pubmediaThread.Join();
 
 
-            new System.Threading.Thread(() => {
+
+
+            var typeInfoThread =new  System.Threading.Thread(() => {
+                logger.LogInformation("开始抓取typeInfoT");
                 foreach (var item in responseModel.data.typeinfoes)
                 {
-                    infoLocalizerTypeinfo.Localize(item,string.Empty, localSavedPath,dataVersion);
-                    
-                }
-            }).Start();
-            var alltypeinfoes = new List<Typeinfo>();
+                    infoLocalizerTypeinfo.Localize(item, string.Empty, localSavedPath, dataVersion);
 
-            new System.Threading.Thread(() => {
+                }
+            });
+            typeInfoThread.Start();
+            typeInfoThread.Join();
+
+
+
+            var pubinfounitThread = new System.Threading.Thread(() => {
+                logger.LogInformation("开始抓取pubinfounit");
                 foreach (var item in responseModel.data.pubinfounits)
                 {
                     infoLocalizerPubinfounit.Localize(item, string.Empty, localSavedPath, dataVersion);
-                   
-                }
-            }).Start();
 
-            new System.Threading.Thread(() => {
+                }
+            });
+            pubinfounitThread.Start();
+            pubinfounitThread.Join();
+
+            var pubinfounitchildThread = new System.Threading.Thread(() => {
+                logger.LogInformation("开始抓取pubinfounitchild");
                 foreach (var item in responseModel.data.pubinfounitchilds)
                 {
-                 
-                    infoLocalizerPubinfounitchild.Localize(item, string.Empty, localSavedPath,dataVersion);
-                   
+
+                    infoLocalizerPubinfounitchild.Localize(item, string.Empty, localSavedPath, dataVersion);
+
                 }
-            }).Start();
+            });
+            pubinfounitchildThread.Start();
+            pubinfounitchildThread.Join();
             repositoryPubunittag.InsertOrUpdate(responseModel.data.pubunittags.Select(x => { x.Version = dataVersion; return x; }).ToList());
             repositoryTypefield.InsertOrUpdate(responseModel.data.typefields.Select(x => { x.Version = dataVersion; return x; }).ToList());
             repositoryTypepic.InsertOrUpdate(responseModel.data.typepics.Select(x => { x.Version = dataVersion; return x; }).ToList());

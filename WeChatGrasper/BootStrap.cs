@@ -1,47 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Autofac;
+﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using AutoMapper;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using NLog.Extensions.Logging;
-using NLog.Web;
-using TourInfo.Domain;
-using TourInfo.Domain.Base;
-using TourInfo.Domain.DomainModel;
-using TourInfo.Domain.DomainModel.DataSync;
-using TourInfo.Domain.EWQY;
-using TourInfo.Domain.EWQY.DomainModel;
-using TourInfo.Domain.TourNews;
-using TourInfo.Infrastracture;
-using TourInfo.Infrastracture.Repository.EFCore;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace TourInfo.Application.Api
+namespace TourInfo.Application.DataGrasperConsole
 {
-    public class Startup
+    public class BootStrap
     {
-        public Startup(IConfiguration configuration)
+        public static IServiceProvider serviceProvider { get; private set; }
+        public static void Boot(IConfiguration Configuration)
         {
-            Configuration = configuration;
-        }
-
-        public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public IServiceProvider ConfigureServices(IServiceCollection services)
-        {
-            services.AddAutoMapper(System.Reflection.Assembly.GetAssembly(typeof(TourinfoDomainAutoMapperProfile))); 
-
-            services.AddMvc(x => x.EnableEndpointRouting = false).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            ServiceCollection services = new ServiceCollection();
             services.AddLogging(loggingBuilder =>
             {
                 // configure Logging with NLog
@@ -50,6 +24,10 @@ namespace TourInfo.Application.Api
                 loggingBuilder.AddNLog(Configuration);
             });
 
+           
+            var containerBuilder = new Autofac.ContainerBuilder();
+            containerBuilder.Populate(services);
+            //register modules
             string connectionString = Configuration.GetConnectionString("TourinfoConnectionString");
             string zbtaTitleImageBaseUrl = Configuration.GetValue<string>("ImageLocalizer:ZbtaTitleImageBaseUrl");
             string zbtaDetailImageBaseUrl = Configuration.GetValue<string>("ImageLocalizer:ZbtaDetailImageBaseUrl");
@@ -63,31 +41,15 @@ namespace TourInfo.Application.Api
             string rapi_initurl = Configuration.GetValue<string>("Rapi:initurl");
             string rapi_syncurl = Configuration.GetValue<string>("Rapi:syncurl");
             string RapiLocalSavedPath = Configuration.GetValue<string>("Rapi:RapiLocalSavedPath");
-            var containerBuilder = new Autofac.ContainerBuilder();
-            containerBuilder.Populate(services);
             containerBuilder.RegisterModule(new TourInfo.Domain.TourInfoDomainAutofactModel
                (zbtaTitleImageBaseUrl, zbtaDetailImageBaseUrl, ewqyImageBaseUrl, ewqyLocalSavedPath, zbtaLocalSavedPath
                 , rapi_initurl, rapi_syncurl, rapi_tokenurl, rapi_appid, rapi_secret, RapiLocalSavedPath));
-            containerBuilder.RegisterModule(new TourInfo.Infrastracture.TourinfoInstallerAutofacModule
+            containerBuilder.RegisterModule(new  Infrastracture.TourinfoInstallerAutofacModule
                (connectionString));
             var container = containerBuilder.Build();
-            var serviceProvider = new AutofacServiceProvider(container);
-            return serviceProvider;
 
 
-
-
-        }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
-            app.UseMvc();
+            serviceProvider = new AutofacServiceProvider(container);
         }
     }
 }

@@ -65,12 +65,12 @@
             如果不需要保存源地址，则key和value可以设置到同一个字段。
             </summary>
         </member>
-        <member name="P:TourInfo.Domain.Base.VersionedEntity.Version">
+        <member name="P:TourInfo.Domain.Base.VersionedEntity`1.Version">
             <summary>
             数据版本，格式yyyyMMddHHmmss
             </summary>
         </member>
-        <member name="P:TourInfo.Domain.Base.VersionedEntity.Fingerprint">
+        <member name="P:TourInfo.Domain.Base.VersionedEntity`1.Fingerprint">
             <summary>
             数据指纹，用于判断内容是否变更
             </summary>
@@ -79,6 +79,13 @@
             <summary>
             抓取数据
             </summary>
+        </member>
+        <member name="M:TourInfo.Domain.DomainModel.Rapi.IRapiGraspeService.Graspe(System.String,System.Boolean)">
+            <summary>
+            拉取rapi数据
+            </summary>
+            <param name="dataVersion"></param>
+            <param name="forceInit">因为rapi提供了sync接口</param>
         </member>
         <member name="T:TourInfo.Domain.Activity">
             <summary>
@@ -188,29 +195,17 @@
             联系电话
             </summary>
         </member>
-        <member name="P:TourInfo.Domain.EWQYEntity.PlaceType">
+        <member name="P:TourInfo.Domain.EWQYEntity.thumbnailKey">
             <summary>
             信息类型 0： 场馆，1：企业
             </summary>
-        </member>
-        <member name="P:TourInfo.Domain.EWQYEntity.thumbnailKey">
             <summary>
             活动标题图片
-            </summary>
-        </member>
-        <member name="P:TourInfo.Domain.EWQYEntity.localizedThumbnailKey">
-            <summary>
-            本地存储后的图片路径
             </summary>
         </member>
         <member name="P:TourInfo.Domain.EWQYEntity.pictureKeys">
             <summary>
             图片
-            </summary>
-        </member>
-        <member name="P:TourInfo.Domain.EWQYEntity.localizedPictureKeys">
-            <summary>
-            活动图片
             </summary>
         </member>
         <member name="M:TourInfo.Domain.IImageLocalizer.Localize(System.String,System.String)">
