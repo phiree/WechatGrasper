@@ -80,6 +80,251 @@
             location 从 引号分隔的字符串 映射为 经纬度 两个double类型字段.,
             </summary>
         </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteActivity.Version">
+            <summary>
+            版本号
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteActivity.PlaceType">
+            <summary>
+            活动类型 0:文化场馆活动  1: 文化企业活动.
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteActivity.startTime">
+            <summary>
+            活动开始时间
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteActivity.createTime">
+            <summary>
+            信息创建时间
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteActivity.thumbnailKey">
+            <summary>
+            本地图片路径:活动缩略图.
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteActivity.thumbnailKeyOriginal">
+            <summary>
+            远程图片绝对路径.
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteActivity.address">
+            <summary>
+            活动举办地址
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteActivity.name">
+            <summary>
+            活动名称
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteActivity.endTime">
+            <summary>
+            活动结束时间
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteActivity.detail">
+            <summary>
+            活动详情,
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteActivity.pictureKeys">
+            <summary>
+            本地图片:活动相关图片, 多张图片用分号分隔
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteActivity.pictureKeysOriginal">
+            <summary>
+            远程图片: 多张图片用分号分隔
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteActivity.credits">
+            <summary>
+            (暂时忽略)信用点
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteActivity.isShared">
+            <summary>
+            (暂时忽略)是否已分享
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteActivity.Id">
+            <summary>
+            活动Id
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteCompanyVenue.Version">
+            <summary>
+            数据版本号
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteCompanyVenue.PlaceType">
+            <summary>
+            类型 0:文化场馆  1: 文化企业.
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteCompanyVenue.thumbnailKey">
+            <summary>
+            本地图片路径:活动缩略图.
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteCompanyVenue.thumbnailKeyOriginal">
+            <summary>
+            远程图片绝对路径.
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteCompanyVenue.location">
+            <summary>
+            长度为2的数组, 表示经纬度, 第一个是经度,第二个维度
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteCompanyVenue.name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteCompanyVenue.satisfactionScore">
+            <summary>
+            满意度得分
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteCompanyVenue.typeId">
+            <summary>
+            类型id, 等于企业场馆类型表(CompanyVenueType)里的typeid
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteCompanyVenue.introduction">
+            <summary>
+            介绍
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteCompanyVenue.pictureKeys">
+            <summary>
+            相关图片,本地路径,多个图片分号分隔.
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteCompanyVenue.pictureKeysOriginal">
+            <summary>
+            相关图片, 远程绝对路径,多个图片分号分隔
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteCompanyVenue.address">
+            <summary>
+            地址
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteCompanyVenue.isFavorite">
+            <summary>
+            (暂时无用)
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteCompanyVenue.serviceTimeStart">
+            <summary>
+            服务开始时间.
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteCompanyVenue.serviceNote">
+            <summary>
+            服务说明
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteCompanyVenue.serviceTimeEnd">
+            <summary>
+            服务结束时间
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteCompanyVenue.telNumber">
+            <summary>
+            电话号码
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteCompanyVenue.Id">
+            <summary>
+            Id
+            </summary>
+        </member>
+        <member name="T:TourInfo.Domain.DomainModel.DataSync.SqliteCompanyVenueType">
+            <summary>
+            企业/场馆类型
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteCompanyVenueType.name">
+            <summary>
+            分类名称
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteCompanyVenueType.id">
+            <summary>
+            分类Id
+            </summary>
+        </member>
+        <member name="T:TourInfo.Domain.DomainModel.DataSync.SqliteZbtaNews">
+            <summary>
+            zbta网站的旅游资讯
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteZbtaNews.Version">
+            <summary>
+            数据版本
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteZbtaNews.releaseTime">
+            <summary>
+            发布时间
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteZbtaNews.checkState">
+            <summary>
+            (暂时无用)
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteZbtaNews.titles">
+            <summary>
+            标题
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteZbtaNews.image">
+            <summary>
+            标题图片,本地路路径
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteZbtaNews.imageOriginal">
+            <summary>
+            标题图片,远程绝对路径
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteZbtaNews.created">
+            <summary>
+            创建人
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteZbtaNews.back1">
+            <summary>
+            概要
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteZbtaNews.details">
+            <summary>
+            富文本详情, 其中的图片地址是远程绝对路径
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteZbtaNews.localizedDetails">
+            <summary>
+            富文本详情,其中的图片地址是本地相对路径
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteZbtaNews.createUser">
+            <summary>
+            创建者
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteZbtaNews.Id">
+            <summary>
+            id
+            </summary>
+        </member>
         <member name="T:TourInfo.Domain.DomainModel.Rapi.IRapiGraspeService">
             <summary>
             抓取数据

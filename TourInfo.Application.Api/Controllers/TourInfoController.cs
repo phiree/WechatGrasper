@@ -50,10 +50,10 @@ namespace TourInfo.Application.Api.Controllers
 
 
 
-            string _dateVersion = DateTime.Now.ToString("yyyyMMddhhmmss");
+            //string _dateVersion = DateTime.Now.ToString("yyyyMMddhhmmss");
 
-            var rapiApplication = serviceProvider.GetService<IRapiApplication>();
-            rapiApplication.Graspe(_dateVersion, true);
+            //var rapiApplication = serviceProvider.GetService<IRapiApplication>();
+            //rapiApplication.Graspe(_dateVersion, true);
             //BackgroundWorker ewqyWorker = new BackgroundWorker();
             //ewqyWorker.DoWork += (obj, e) => EwqyWorker_DoWork(_dateVersion);
             //ewqyWorker.RunWorkerCompleted += EwqyWorker_RunWorkerCompleted;

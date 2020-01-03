@@ -12,6 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{FC18321A-6
 		docs\e文齐韵数据库.sql = docs\e文齐韵数据库.sql
 		docs\initdata.json = docs\initdata.json
 		rapi_Json.json = rapi_Json.json
+		数据结构及接口文档.txt = 数据结构及接口文档.txt
 		docs\旅游资源sql脚本.txt = docs\旅游资源sql脚本.txt
 		docs\旅游资源信息导出接口(2).docx = docs\旅游资源信息导出接口(2).docx
 		说明文档.txt = 说明文档.txt

@@ -52,8 +52,7 @@ namespace TourInfo.Application.Api
                // for each thread worker (even within a single scope), as demonstrated in
                // Fix #1 in BooksController.cs.
                ServiceLifetime.Transient);
-            services.AddMvc(x => x.EnableEndpointRouting = false).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddLogging(loggingBuilder =>
+              services.AddLogging(loggingBuilder =>
             {
                 // configure Logging with NLog
                 loggingBuilder.ClearProviders();
@@ -76,10 +75,10 @@ namespace TourInfo.Application.Api
             string RapiLocalSavedPath = Configuration.GetValue<string>("Rapi:RapiLocalSavedPath");
             var containerBuilder = new Autofac.ContainerBuilder();
             containerBuilder.Populate(services);
-            containerBuilder.RegisterModule(new TourInfo.Domain.TourInfoDomainAutofactModel_Web
+            containerBuilder.RegisterModule(new TourInfo.Domain.TourInfoDomainAutofactModel
                (zbtaTitleImageBaseUrl, zbtaDetailImageBaseUrl, ewqyImageBaseUrl, ewqyLocalSavedPath, zbtaLocalSavedPath
                 , rapi_initurl, rapi_syncurl, rapi_tokenurl, rapi_appid, rapi_secret, RapiLocalSavedPath));
-            containerBuilder.RegisterModule(new TourInfo.Infrastracture.TourinfoInstallerAutofacModule_Web
+            containerBuilder.RegisterModule(new TourInfo.Infrastracture.TourinfoInstallerAutofacModule
                (connectionString));
             var container = containerBuilder.Build();
             var serviceProvider = new AutofacServiceProvider(container);
