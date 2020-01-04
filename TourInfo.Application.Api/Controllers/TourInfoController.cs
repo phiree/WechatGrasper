@@ -9,6 +9,8 @@ using TourInfo.Domain.DomainModel;
 using TourInfo.Domain.EWQY;
 using TourInfo.Domain.TourNews;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+
 namespace TourInfo.Application.Api.Controllers
 {
     [Route("api/[controller]")]
@@ -20,8 +22,10 @@ namespace TourInfo.Application.Api.Controllers
         IEWQYApplication eWQYApplication;
         IDataService dataService;
         IServiceProvider serviceProvider;
-        public TourInfoController(IServiceProvider serviceProvider, IRapiApplication rapiApplication, IZBTAApplication zBTAApplication, IEWQYApplication eWQYApplication, IDataService dataService)
+        ILogger<TourInfoController> logger;
+        public TourInfoController(ILogger<TourInfoController> logger, IServiceProvider serviceProvider, IRapiApplication rapiApplication, IZBTAApplication zBTAApplication, IEWQYApplication eWQYApplication, IDataService dataService)
         {
+            this.logger=logger;
            // this.rapiApplication = rapiApplication;
             this.zBTAApplication = zBTAApplication;
             this.eWQYApplication = eWQYApplication;
@@ -47,16 +51,22 @@ namespace TourInfo.Application.Api.Controllers
         [HttpGet("GraspeData")]
         public ActionResult<dynamic> GraspeData( )
         {
+            string _dateVersion = DateTime.Now.ToString("yyyyMMddhhmmss");
+
+            var rapiApplication = serviceProvider.GetService<IRapiApplication>();
+            rapiApplication.Graspe(_dateVersion, false);
+
+            logger.LogInformation("typeInfoT抓取完毕");
+            //var typeInfoThread = new System.Threading.Thread(() => {
+
+               
+            //});
+            //typeInfoThread.Start();
 
 
-
-            //string _dateVersion = DateTime.Now.ToString("yyyyMMddhhmmss");
-
-            //var rapiApplication = serviceProvider.GetService<IRapiApplication>();
-            //rapiApplication.Graspe(_dateVersion, true);
-            //BackgroundWorker ewqyWorker = new BackgroundWorker();
-            //ewqyWorker.DoWork += (obj, e) => EwqyWorker_DoWork(_dateVersion);
-            //ewqyWorker.RunWorkerCompleted += EwqyWorker_RunWorkerCompleted;
+          //  BackgroundWorker ewqyWorker = new BackgroundWorker();
+           // ewqyWorker.DoWork += (obj, e) => EwqyWorker_DoWork(_dateVersion);
+           // ewqyWorker.RunWorkerCompleted += EwqyWorker_RunWorkerCompleted;
             //ewqyWorker.RunWorkerAsync();
             //BackgroundWorker zbtaWorker = new BackgroundWorker();
             //zbtaWorker.DoWork += (obj, e) => ZbtaWorker_DoWork(_dateVersion);

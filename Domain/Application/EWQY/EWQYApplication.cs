@@ -28,10 +28,12 @@ namespace TourInfo.Domain.EWQY
 
         IEWQYRepository eWQYRepository;
         string imageBaseUrl, localSavedPath;
-        ILogger<LocationJsonConverter> locationJsonConverterLogger;
-        public EWQYApplication(IUrlFetcher urlFetcher, IEWQYRepository eWQYRepository, ILogger<LocationJsonConverter> locationJsonConverterLogger
+        ILoggerFactory loggerFactory;
+        ILogger<LocationStringJsonConverter> locationJsonConverterLogger;
+        public EWQYApplication(ILoggerFactory loggerFactory,IUrlFetcher urlFetcher, IEWQYRepository eWQYRepository, ILogger<LocationStringJsonConverter> locationJsonConverterLogger
             , string imageBaseUrl, string localSavedPath, IImageLocalizer imageLocalizer, IInfoLocalizer<EWQYPlaceTypeEntity, string> infoLocalizer)
         {
+            this.loggerFactory=loggerFactory;
             this.locationJsonConverterLogger=locationJsonConverterLogger;
             this.infoLocalizer = infoLocalizer;
             this.localSavedPath = localSavedPath;
@@ -75,7 +77,7 @@ namespace TourInfo.Domain.EWQY
 
             //  contentHandler.HandlerList(result);
             var jsonResult = Newtonsoft.Json.JsonConvert.DeserializeObject<ListResultWrapper<T>>(result,
-                new ImageUrlJsonConverter()
+                new ImageUrlJsonConverter(), new LocationDoubleArrayJsonConverter(loggerFactory,true)
                 );
             var status = jsonResult.status;// jsonResult["status"];
             if (status != 0)
@@ -97,7 +99,7 @@ namespace TourInfo.Domain.EWQY
                     string detailResult = urlFetcher.FetchEWQYAsync(detailUrl).Result;
                     var detail = JsonConvert.DeserializeObject<DetailResultWrapper<T>>(detailResult
                         , new ImageUrlJsonConverter(),
-                       new LocationJsonConverter(locationJsonConverterLogger, true, ';')
+                       new LocationStringJsonConverter(locationJsonConverterLogger, true, ';')
                         );
                     CopyValues(detail.data, data);
 

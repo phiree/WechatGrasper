@@ -26,7 +26,7 @@ namespace TourInfo.Domain.DomainModel.Rapi
     }
     public class RapiGraspeService : IRapiGraspeService
     {
-        ILogger<LocationJsonConverter> locationJsonConverterLogger;
+        ILogger<LocationStringJsonConverter> locationJsonConverterLogger;
         ILogger<RapiGraspeService> logger;
         ITokenManager tokenManager;
         string initUrl = "";
@@ -65,7 +65,7 @@ namespace TourInfo.Domain.DomainModel.Rapi
         IInfoLocalizer<Pubinfounit, int> infoLocalizerPubinfounit,
         IInfoLocalizer<Pubinfounitchild, int> infoLocalizerPubinfounitchild,
  ILogger<RapiGraspeService> logger,
- ILogger<LocationJsonConverter> locationJsonConverterLogger
+ ILogger<LocationStringJsonConverter> locationJsonConverterLogger
             )
         {
             this.locationJsonConverterLogger = locationJsonConverterLogger;
@@ -107,7 +107,7 @@ namespace TourInfo.Domain.DomainModel.Rapi
 
             JsonSerializerSettings settings = new JsonSerializerSettings();
             var responseModel = JsonConvert.DeserializeObject<RapiResponse>(result,
-                new ImageUrlJsonConverter(), new LocationJsonConverter(locationJsonConverterLogger,false,',')
+                new ImageUrlJsonConverter(), new LocationStringJsonConverter(locationJsonConverterLogger,false,',')
                 );
             if (responseModel.data.projectinfo != null)
             {

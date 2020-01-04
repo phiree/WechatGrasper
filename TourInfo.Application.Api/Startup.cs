@@ -43,15 +43,15 @@ namespace TourInfo.Application.Api
             services.AddMvc(x => x.EnableEndpointRouting = false).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddAutoMapper(System.Reflection.Assembly.GetAssembly(typeof(TourinfoDomainAutoMapperProfile)));
             string connectionString = Configuration.GetConnectionString("TourinfoConnectionString");
-            services.AddDbContext<TourInfoDbContext>(options =>
-               options.UseSqlServer(connectionString),
+            //services.AddDbContext<TourInfoDbContext>(options =>
+            //   options.UseSqlServer(connectionString),
 
            
           
-               // By registering the DbContext as transient, we can get unique instances
-               // for each thread worker (even within a single scope), as demonstrated in
-               // Fix #1 in BooksController.cs.
-               ServiceLifetime.Transient);
+            //   // By registering the DbContext as transient, we can get unique instances
+            //   // for each thread worker (even within a single scope), as demonstrated in
+            //   // Fix #1 in BooksController.cs.
+            //   ServiceLifetime.Transient);
               services.AddLogging(loggingBuilder =>
             {
                 // configure Logging with NLog
