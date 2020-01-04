@@ -2,7 +2,6 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TourInfo.Infrastracture.Repository.EFCore;
@@ -10,16 +9,14 @@ using TourInfo.Infrastracture.Repository.EFCore;
 namespace TourInfo.Infrastracture.Migrations
 {
     [DbContext(typeof(TourInfoDbContext))]
-    [Migration("20191228141646_init")]
+    [Migration("20200104164155_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079");
 
             modelBuilder.Entity("TourInfo.Domain.DomainModel.Rapi.Projectinfo", b =>
                 {
@@ -117,12 +114,6 @@ namespace TourInfo.Infrastracture.Migrations
                     b.Property<string>("favouredpolicy");
 
                     b.Property<string>("fax");
-
-                    b.Property<string>("gps");
-
-                    b.Property<string>("gpsbd");
-
-                    b.Property<string>("gpsgd");
 
                     b.Property<string>("hygienerating");
 
@@ -244,12 +235,6 @@ namespace TourInfo.Infrastracture.Migrations
                     b.Property<bool>("deleteflag");
 
                     b.Property<string>("desc");
-
-                    b.Property<string>("gps");
-
-                    b.Property<string>("gpsbd");
-
-                    b.Property<string>("gpsgd");
 
                     b.Property<string>("guidetext");
 
@@ -486,7 +471,7 @@ namespace TourInfo.Infrastracture.Migrations
                     b.ToTable("Typetags");
                 });
 
-            modelBuilder.Entity("TourInfo.Domain.EWQYEntity", b =>
+            modelBuilder.Entity("TourInfo.Domain.EWQYPlaceTypeEntity", b =>
                 {
                     b.Property<string>("id")
                         .ValueGeneratedOnAdd();
@@ -502,9 +487,9 @@ namespace TourInfo.Infrastracture.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("EWQYEntity");
+                    b.ToTable("EWQYPlaceTypeEntities");
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("EWQYEntity");
+                    b.HasDiscriminator<string>("Discriminator").HasValue("EWQYPlaceTypeEntity");
                 });
 
             modelBuilder.Entity("TourInfo.Domain.TourNews.ZbtaNews", b =>
@@ -535,6 +520,23 @@ namespace TourInfo.Infrastracture.Migrations
                     b.HasKey("id");
 
                     b.ToTable("ZbtaNews");
+                });
+
+            modelBuilder.Entity("TourInfo.Domain.DomainModel.EWQY.CompanyVenueType", b =>
+                {
+                    b.HasBaseType("TourInfo.Domain.EWQYPlaceTypeEntity");
+
+                    b.Property<string>("name")
+                        .HasColumnName("CompanyVenueType_name");
+
+                    b.HasDiscriminator().HasValue("CompanyVenueType");
+                });
+
+            modelBuilder.Entity("TourInfo.Domain.EWQYEntity", b =>
+                {
+                    b.HasBaseType("TourInfo.Domain.EWQYPlaceTypeEntity");
+
+                    b.HasDiscriminator().HasValue("EWQYEntity");
                 });
 
             modelBuilder.Entity("TourInfo.Domain.Activity", b =>
@@ -571,8 +573,6 @@ namespace TourInfo.Infrastracture.Migrations
 
                     b.Property<string>("isFavorite");
 
-                    b.Property<string>("location");
-
                     b.Property<string>("name")
                         .HasColumnName("CompanyVenue_name");
 
@@ -595,19 +595,73 @@ namespace TourInfo.Infrastracture.Migrations
                 {
                     b.OwnsOne("TourInfo.Domain.Base.ImageUrl", "flagpic", b1 =>
                         {
-                            b1.Property<int>("Pubinfounitunitid");
+                            b1.Property<int?>("Pubinfounitid");
 
                             b1.Property<string>("LocalizedUrl");
 
                             b1.Property<string>("OriginalUrl");
+
+                            b1.HasKey("Pubinfounitid");
+
+                            b1.ToTable("Pubinfounits");
+
+                            b1.HasOne("TourInfo.Domain.DomainModel.Rapi.Pubinfounit")
+                                .WithOne("flagpic")
+                                .HasForeignKey("TourInfo.Domain.Base.ImageUrl", "Pubinfounitid")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
+
+                    b.OwnsOne("TourInfo.Domain.DomainModel.Rapi.Location", "gps", b1 =>
+                        {
+                            b1.Property<int>("Pubinfounitunitid");
+
+                            b1.Property<double>("Latitude");
+
+                            b1.Property<double>("Longitude");
 
                             b1.HasKey("Pubinfounitunitid");
 
                             b1.ToTable("Pubinfounits");
 
                             b1.HasOne("TourInfo.Domain.DomainModel.Rapi.Pubinfounit")
-                                .WithOne("flagpic")
-                                .HasForeignKey("TourInfo.Domain.Base.ImageUrl", "Pubinfounitunitid")
+                                .WithOne("gps")
+                                .HasForeignKey("TourInfo.Domain.DomainModel.Rapi.Location", "Pubinfounitunitid")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
+
+                    b.OwnsOne("TourInfo.Domain.DomainModel.Rapi.Location", "gpsbd", b1 =>
+                        {
+                            b1.Property<int>("Pubinfounitunitid");
+
+                            b1.Property<double>("Latitude");
+
+                            b1.Property<double>("Longitude");
+
+                            b1.HasKey("Pubinfounitunitid");
+
+                            b1.ToTable("Pubinfounits");
+
+                            b1.HasOne("TourInfo.Domain.DomainModel.Rapi.Pubinfounit")
+                                .WithOne("gpsbd")
+                                .HasForeignKey("TourInfo.Domain.DomainModel.Rapi.Location", "Pubinfounitunitid")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
+
+                    b.OwnsOne("TourInfo.Domain.DomainModel.Rapi.Location", "gpsgd", b1 =>
+                        {
+                            b1.Property<int>("Pubinfounitunitid");
+
+                            b1.Property<double>("Latitude");
+
+                            b1.Property<double>("Longitude");
+
+                            b1.HasKey("Pubinfounitunitid");
+
+                            b1.ToTable("Pubinfounits");
+
+                            b1.HasOne("TourInfo.Domain.DomainModel.Rapi.Pubinfounit")
+                                .WithOne("gpsgd")
+                                .HasForeignKey("TourInfo.Domain.DomainModel.Rapi.Location", "Pubinfounitunitid")
                                 .OnDelete(DeleteBehavior.Cascade);
                         });
                 });
@@ -629,6 +683,60 @@ namespace TourInfo.Infrastracture.Migrations
                             b1.HasOne("TourInfo.Domain.DomainModel.Rapi.Pubinfounitchild")
                                 .WithOne("flagurl")
                                 .HasForeignKey("TourInfo.Domain.Base.ImageUrl", "Pubinfounitchildchildid")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
+
+                    b.OwnsOne("TourInfo.Domain.DomainModel.Rapi.Location", "gps", b1 =>
+                        {
+                            b1.Property<int>("Pubinfounitchildchildid");
+
+                            b1.Property<double>("Latitude");
+
+                            b1.Property<double>("Longitude");
+
+                            b1.HasKey("Pubinfounitchildchildid");
+
+                            b1.ToTable("Pubinfounitchilds");
+
+                            b1.HasOne("TourInfo.Domain.DomainModel.Rapi.Pubinfounitchild")
+                                .WithOne("gps")
+                                .HasForeignKey("TourInfo.Domain.DomainModel.Rapi.Location", "Pubinfounitchildchildid")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
+
+                    b.OwnsOne("TourInfo.Domain.DomainModel.Rapi.Location", "gpsbd", b1 =>
+                        {
+                            b1.Property<int>("Pubinfounitchildchildid");
+
+                            b1.Property<double>("Latitude");
+
+                            b1.Property<double>("Longitude");
+
+                            b1.HasKey("Pubinfounitchildchildid");
+
+                            b1.ToTable("Pubinfounitchilds");
+
+                            b1.HasOne("TourInfo.Domain.DomainModel.Rapi.Pubinfounitchild")
+                                .WithOne("gpsbd")
+                                .HasForeignKey("TourInfo.Domain.DomainModel.Rapi.Location", "Pubinfounitchildchildid")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
+
+                    b.OwnsOne("TourInfo.Domain.DomainModel.Rapi.Location", "gpsgd", b1 =>
+                        {
+                            b1.Property<int>("Pubinfounitchildchildid");
+
+                            b1.Property<double>("Latitude");
+
+                            b1.Property<double>("Longitude");
+
+                            b1.HasKey("Pubinfounitchildchildid");
+
+                            b1.ToTable("Pubinfounitchilds");
+
+                            b1.HasOne("TourInfo.Domain.DomainModel.Rapi.Pubinfounitchild")
+                                .WithOne("gpsgd")
+                                .HasForeignKey("TourInfo.Domain.DomainModel.Rapi.Location", "Pubinfounitchildchildid")
                                 .OnDelete(DeleteBehavior.Cascade);
                         });
                 });
@@ -675,47 +783,6 @@ namespace TourInfo.Infrastracture.Migrations
                         });
                 });
 
-            modelBuilder.Entity("TourInfo.Domain.EWQYEntity", b =>
-                {
-                    b.OwnsMany("TourInfo.Domain.Base.ImageUrl", "pictureKeys", b1 =>
-                        {
-                            b1.Property<string>("OriginalUrl");
-
-                            b1.Property<string>("id");
-
-                            b1.Property<string>("LocalizedUrl");
-
-                            b1.HasKey("OriginalUrl", "id");
-
-                            b1.HasIndex("id");
-
-                            b1.ToTable("EWQYEntity_pictureKeys");
-
-                            b1.HasOne("TourInfo.Domain.EWQYEntity")
-                                .WithMany("pictureKeys")
-                                .HasForeignKey("id")
-                                .OnDelete(DeleteBehavior.Cascade);
-                        });
-
-                    b.OwnsOne("TourInfo.Domain.Base.ImageUrl", "thumbnailKey", b1 =>
-                        {
-                            b1.Property<string>("EWQYEntityid");
-
-                            b1.Property<string>("LocalizedUrl");
-
-                            b1.Property<string>("OriginalUrl");
-
-                            b1.HasKey("EWQYEntityid");
-
-                            b1.ToTable("EWQYEntity");
-
-                            b1.HasOne("TourInfo.Domain.EWQYEntity")
-                                .WithOne("thumbnailKey")
-                                .HasForeignKey("TourInfo.Domain.Base.ImageUrl", "EWQYEntityid")
-                                .OnDelete(DeleteBehavior.Cascade);
-                        });
-                });
-
             modelBuilder.Entity("TourInfo.Domain.TourNews.ZbtaNews", b =>
                 {
                     b.OwnsOne("TourInfo.Domain.Base.ImageUrl", "image", b1 =>
@@ -733,6 +800,68 @@ namespace TourInfo.Infrastracture.Migrations
                             b1.HasOne("TourInfo.Domain.TourNews.ZbtaNews")
                                 .WithOne("image")
                                 .HasForeignKey("TourInfo.Domain.Base.ImageUrl", "ZbtaNewsid")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
+                });
+
+            modelBuilder.Entity("TourInfo.Domain.EWQYEntity", b =>
+                {
+                    b.OwnsMany("TourInfo.Domain.Base.ImageUrl", "pictureKeys", b1 =>
+                        {
+                            b1.Property<string>("OriginalUrl");
+
+                            b1.Property<string>("id");
+
+                            b1.Property<string>("LocalizedUrl");
+
+                            b1.HasKey("OriginalUrl", "id");
+
+                            b1.HasIndex("id");
+
+                            b1.ToTable("EWQYPlaceTypeEntities_pictureKeys");
+
+                            b1.HasOne("TourInfo.Domain.EWQYEntity")
+                                .WithMany("pictureKeys")
+                                .HasForeignKey("id")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
+
+                    b.OwnsOne("TourInfo.Domain.Base.ImageUrl", "thumbnailKey", b1 =>
+                        {
+                            b1.Property<string>("EWQYEntityid");
+
+                            b1.Property<string>("LocalizedUrl");
+
+                            b1.Property<string>("OriginalUrl");
+
+                            b1.HasKey("EWQYEntityid");
+
+                            b1.ToTable("EWQYPlaceTypeEntities");
+
+                            b1.HasOne("TourInfo.Domain.EWQYEntity")
+                                .WithOne("thumbnailKey")
+                                .HasForeignKey("TourInfo.Domain.Base.ImageUrl", "EWQYEntityid")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
+                });
+
+            modelBuilder.Entity("TourInfo.Domain.CompanyVenue", b =>
+                {
+                    b.OwnsOne("TourInfo.Domain.DomainModel.Rapi.Location", "location", b1 =>
+                        {
+                            b1.Property<string>("CompanyVenueid");
+
+                            b1.Property<double>("Latitude");
+
+                            b1.Property<double>("Longitude");
+
+                            b1.HasKey("CompanyVenueid");
+
+                            b1.ToTable("CompanyVanueLocations");
+
+                            b1.HasOne("TourInfo.Domain.CompanyVenue")
+                                .WithOne("location")
+                                .HasForeignKey("TourInfo.Domain.DomainModel.Rapi.Location", "CompanyVenueid")
                                 .OnDelete(DeleteBehavior.Cascade);
                         });
                 });

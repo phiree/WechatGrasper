@@ -8,16 +8,17 @@ namespace TourInfo.Infrastracture.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "EWQYEntity",
+                name: "EWQYPlaceTypeEntities",
                 columns: table => new
                 {
                     id = table.Column<string>(nullable: false),
                     Version = table.Column<string>(nullable: true),
                     Fingerprint = table.Column<string>(nullable: true),
                     PlaceType = table.Column<int>(nullable: false),
+                    Discriminator = table.Column<string>(nullable: false),
+                    CompanyVenueType_name = table.Column<string>(nullable: true),
                     thumbnailKey_OriginalUrl = table.Column<string>(nullable: true),
                     thumbnailKey_LocalizedUrl = table.Column<string>(nullable: true),
-                    Discriminator = table.Column<string>(nullable: false),
                     startTime = table.Column<string>(nullable: true),
                     createTime = table.Column<string>(nullable: true),
                     address = table.Column<string>(nullable: true),
@@ -26,7 +27,6 @@ namespace TourInfo.Infrastracture.Migrations
                     detail = table.Column<string>(nullable: true),
                     credits = table.Column<int>(nullable: true),
                     isShared = table.Column<bool>(nullable: true),
-                    location = table.Column<string>(nullable: true),
                     CompanyVenue_name = table.Column<string>(nullable: true),
                     satisfactionScore = table.Column<string>(nullable: true),
                     typeId = table.Column<string>(nullable: true),
@@ -40,7 +40,7 @@ namespace TourInfo.Infrastracture.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EWQYEntity", x => x.id);
+                    table.PrimaryKey("PK_EWQYPlaceTypeEntities", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -94,9 +94,12 @@ namespace TourInfo.Infrastracture.Migrations
                     memo = table.Column<string>(nullable: true),
                     guidevoice = table.Column<string>(nullable: true),
                     guidetext = table.Column<string>(nullable: true),
-                    gpsbd = table.Column<string>(nullable: true),
-                    gps = table.Column<string>(nullable: true),
-                    gpsgd = table.Column<string>(nullable: true),
+                    gpsbd_Longitude = table.Column<double>(nullable: false),
+                    gpsbd_Latitude = table.Column<double>(nullable: false),
+                    gps_Longitude = table.Column<double>(nullable: false),
+                    gps_Latitude = table.Column<double>(nullable: false),
+                    gpsgd_Longitude = table.Column<double>(nullable: false),
+                    gpsgd_Latitude = table.Column<double>(nullable: false),
                     isshow = table.Column<bool>(nullable: false),
                     crtdate = table.Column<DateTime>(nullable: false),
                     updatetime = table.Column<DateTime>(nullable: false),
@@ -122,9 +125,12 @@ namespace TourInfo.Infrastracture.Migrations
                     unitname = table.Column<string>(nullable: true),
                     shortname = table.Column<string>(nullable: true),
                     orderno = table.Column<float>(nullable: false),
-                    gpsbd = table.Column<string>(nullable: true),
-                    gps = table.Column<string>(nullable: true),
-                    gpsgd = table.Column<string>(nullable: true),
+                    gpsbd_Longitude = table.Column<double>(nullable: false),
+                    gpsbd_Latitude = table.Column<double>(nullable: false),
+                    gps_Longitude = table.Column<double>(nullable: false),
+                    gps_Latitude = table.Column<double>(nullable: false),
+                    gpsgd_Longitude = table.Column<double>(nullable: false),
+                    gpsgd_Latitude = table.Column<double>(nullable: false),
                     address = table.Column<string>(nullable: true),
                     postcode = table.Column<string>(nullable: true),
                     zonecode = table.Column<string>(nullable: true),
@@ -365,7 +371,26 @@ namespace TourInfo.Infrastracture.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EWQYEntity_pictureKeys",
+                name: "CompanyVanueLocations",
+                columns: table => new
+                {
+                    CompanyVenueid = table.Column<string>(nullable: false),
+                    Longitude = table.Column<double>(nullable: false),
+                    Latitude = table.Column<double>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CompanyVanueLocations", x => x.CompanyVenueid);
+                    table.ForeignKey(
+                        name: "FK_CompanyVanueLocations_EWQYPlaceTypeEntities_CompanyVenueid",
+                        column: x => x.CompanyVenueid,
+                        principalTable: "EWQYPlaceTypeEntities",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EWQYPlaceTypeEntities_pictureKeys",
                 columns: table => new
                 {
                     OriginalUrl = table.Column<string>(nullable: false),
@@ -374,18 +399,18 @@ namespace TourInfo.Infrastracture.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EWQYEntity_pictureKeys", x => new { x.OriginalUrl, x.id });
+                    table.PrimaryKey("PK_EWQYPlaceTypeEntities_pictureKeys", x => new { x.OriginalUrl, x.id });
                     table.ForeignKey(
-                        name: "FK_EWQYEntity_pictureKeys_EWQYEntity_id",
+                        name: "FK_EWQYPlaceTypeEntities_pictureKeys_EWQYPlaceTypeEntities_id",
                         column: x => x.id,
-                        principalTable: "EWQYEntity",
+                        principalTable: "EWQYPlaceTypeEntities",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_EWQYEntity_pictureKeys_id",
-                table: "EWQYEntity_pictureKeys",
+                name: "IX_EWQYPlaceTypeEntities_pictureKeys_id",
+                table: "EWQYPlaceTypeEntities_pictureKeys",
                 column: "id");
 
             migrationBuilder.CreateIndex(
@@ -397,7 +422,10 @@ namespace TourInfo.Infrastracture.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "EWQYEntity_pictureKeys");
+                name: "CompanyVanueLocations");
+
+            migrationBuilder.DropTable(
+                name: "EWQYPlaceTypeEntities_pictureKeys");
 
             migrationBuilder.DropTable(
                 name: "Projectinfos");
@@ -430,7 +458,7 @@ namespace TourInfo.Infrastracture.Migrations
                 name: "ZbtaNews");
 
             migrationBuilder.DropTable(
-                name: "EWQYEntity");
+                name: "EWQYPlaceTypeEntities");
         }
     }
 }

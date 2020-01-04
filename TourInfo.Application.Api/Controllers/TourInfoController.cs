@@ -20,27 +20,26 @@ namespace TourInfo.Application.Api.Controllers
        
         IZBTAApplication zBTAApplication;
         IEWQYApplication eWQYApplication;
+        IRapiApplication  rapiApplication;
         IDataService dataService;
         IServiceProvider serviceProvider;
         ILogger<TourInfoController> logger;
-        public TourInfoController(ILogger<TourInfoController> logger, IServiceProvider serviceProvider, IRapiApplication rapiApplication, IZBTAApplication zBTAApplication, IEWQYApplication eWQYApplication, IDataService dataService)
+        public TourInfoController(ILogger<TourInfoController> logger, IServiceProvider serviceProvider, 
+            IRapiApplication rapiApplication, 
+            IZBTAApplication zBTAApplication, 
+            IEWQYApplication eWQYApplication,
+            
+            IDataService dataService)
         {
             this.logger=logger;
-           // this.rapiApplication = rapiApplication;
+           this.rapiApplication = rapiApplication;
             this.zBTAApplication = zBTAApplication;
             this.eWQYApplication = eWQYApplication;
             this.dataService = dataService;
             this.serviceProvider=serviceProvider;
         }
 
-        [HttpGet("InitData")]
-        public ActionResult<string> InitData()
-        {
-            
-            dataService.CreateInitData();
-            return new ActionResult<string>("初始化成功");
-        }
-
+         
         [HttpGet("SyncData")]
         public ActionResult<dynamic> SyncData(string version)
         {
@@ -53,9 +52,11 @@ namespace TourInfo.Application.Api.Controllers
         {
             string _dateVersion = DateTime.Now.ToString("yyyyMMddhhmmss");
 
-            var rapiApplication = serviceProvider.GetService<IRapiApplication>();
+          //  var rapiApplication = serviceProvider.GetService<IRapiApplication>();
             rapiApplication.Graspe(_dateVersion, false);
-
+          //  var rapiApplication = serviceProvider.GetService<IRapiApplication>();
+            zBTAApplication.Graspe(_dateVersion);
+            eWQYApplication.Graspe(_dateVersion);
             logger.LogInformation("typeInfoT抓取完毕");
             //var typeInfoThread = new System.Threading.Thread(() => {
 
@@ -100,7 +101,7 @@ namespace TourInfo.Application.Api.Controllers
         private   void ZbtaWorker_DoWork(string dateVersion)
         {
           
-          //  zBTAApplication.Graspe(dateVersion);
+          // 
 
         }
 
@@ -113,7 +114,7 @@ namespace TourInfo.Application.Api.Controllers
         {
             
 
-           // eWQYApplication.Graspe(dateVersion);
+           // 
         }
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()

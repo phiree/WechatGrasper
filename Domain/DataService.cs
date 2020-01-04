@@ -53,8 +53,9 @@ namespace TourInfo.Domain.DomainModel
         IMapper _mapper;
 
         string imageBaseUrl_Ewqy, imageBaseUrl_Zbta;
-
+        Weather.IWeatherApplication weatherApplication;
         public DataService(
+            Weather.IWeatherApplication weatherApplication,
             string imageBaseUrl_Ewqy,string imageBaseUrl_Zbta,
         IVersionedRepository<Projectinfo, int> projectinfoRepository,
         IVersionedRepository<Pubmediainfo, int> PubmediainfoRepository,
@@ -87,6 +88,7 @@ namespace TourInfo.Domain.DomainModel
             , IMapper _mapper
             )
         {
+            this.weatherApplication=weatherApplication;
             this.imageBaseUrl_Ewqy=imageBaseUrl_Ewqy;
             this.imageBaseUrl_Zbta=imageBaseUrl_Zbta;
             this._mapper = _mapper;
@@ -156,7 +158,7 @@ namespace TourInfo.Domain.DomainModel
 
 
             allZbtaNews = allZbtaNews.Select(x => { x.imageOriginal = imageBaseUrl_Zbta + x.imageOriginal; return x; });
-            
+            var weather=weatherApplication.GetWeather();
 
 
             return new SyncDataModel
@@ -167,6 +169,7 @@ namespace TourInfo.Domain.DomainModel
                     CompanyVenues = allCompanyVenue,
                     CompanyVenueTypes= allCompanyVenueType,
                     ZbtaNews = allZbtaNews,
+                    Weather=weather,
                     Projectinfos = _mapper.Map<IEnumerable<SqliteProjectinfo>>(projectinfoRepository.GetAllAfterVersion(version)),
 
                     Pubinfounitchilds = _mapper.Map<IList<SqlitePubinfounitchild>>(PubinfounitchildRepository.GetAllAfterVersion(version)),
@@ -190,6 +193,7 @@ namespace TourInfo.Domain.DomainModel
         }
         public class SyncDataModelData
         {
+            public Weather.WeatherModel Weather { get;set;}
             public IEnumerable<SqliteActivity> Activities { get; set; }
             public IEnumerable<SqliteCompanyVenue> CompanyVenues { get; set; }
             public IEnumerable<SqliteCompanyVenueType> CompanyVenueTypes { get; set; }

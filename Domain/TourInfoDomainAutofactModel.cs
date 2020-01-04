@@ -9,6 +9,7 @@ using TourInfo.Domain.Base;
 using TourInfo.Domain.DomainModel;
 using TourInfo.Domain.DomainModel.DataSync;
 using TourInfo.Domain.DomainModel.Rapi;
+using TourInfo.Domain.DomainModel.Weather;
 using TourInfo.Domain.DomainModel.ZBTA;
 using TourInfo.Domain.EWQY;
 using TourInfo.Domain.EWQY.DomainModel;
@@ -45,6 +46,8 @@ namespace TourInfo.Domain
         }
         protected override void Load(ContainerBuilder builder)
         {
+            builder.RegisterType<WeatherApplication>().As<IWeatherApplication>()
+                 ;
             builder.RegisterType<ZBTAApplication>().As<IZBTAApplication>()
                 .WithParameter("titleImageBaseUrl", zbtaTitleImageBaseUrl)
                  .WithParameter("localSavedPath", zbtaLocalSavedPath)

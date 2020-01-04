@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Domain\TourInfo.Domain.csproj" />
+    <ProjectReference Include="..\TourInfo.Infrastracture\TourInfo.Infrastracture.csproj" />
   </ItemGroup>
 
   <ItemGroup>
