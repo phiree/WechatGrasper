@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TourInfo.Domain.DomainModel.Rapi;
 
 namespace TourInfo.Domain
 {
@@ -17,7 +18,7 @@ namespace TourInfo.Domain
        /// <summary>
        /// 坐标，第一个值是经度，第二个维度
        /// </summary>
-        public  double[] location { get; set; }
+        public  Location location { get; set; }
         /// <summary>
         /// 名称
         /// </summary>

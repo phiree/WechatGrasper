@@ -108,8 +108,8 @@ namespace TourInfo.Domain.DomainModel.DataSync
         /// <summary>
         /// 长度为2的数组, 表示经纬度, 第一个是经度,第二个维度
         /// </summary>
-        public string location { get; set; }
-        public double? longtitude { get; set; }
+        
+        public double? longitude { get; set; }
         public double? latitude { get; set; }
         // public double[] location { get; set; }
         
@@ -356,9 +356,13 @@ namespace TourInfo.Domain.DomainModel.DataSync
         public string unitname { get; set; }
         public string shortname { get; set; }
         public float orderno { get; set; }
-        public string gpsbd { get; set; }
-        public string gps { get; set; }
-        public string gpsgd { get; set; }
+        public double gpsbd_longitude { get; set; }
+        public double gpsbd_latitude { get; set; }
+        public double gps_longitude { get; set; }
+        public double gps_latitude { get; set; }
+        public double gpsgd_longitude { get; set; }
+        public double gpsgd_latitude { get; set; }
+       
         public string address { get; set; }
         public string postcode { get; set; }
         public string zonecode { get; set; }
@@ -468,9 +472,18 @@ namespace TourInfo.Domain.DomainModel.DataSync
         public string memo { get; set; }
         public string guidevoice { get; set; }
         public string guidetext { get; set; }
+        [Ignore]
         public string gpsbd { get; set; }
+        public double gpsbd_longitude { get;set;}
+        public double gpsbd_latitude { get; set; }
+        [Ignore]
         public string gps { get; set; }
+        public double gps_longitude { get; set; }
+        public double gps_latitude { get; set; }
+        [Ignore]
         public string gpsgd { get; set; }
+        public double gpsgd_longitude { get; set; }
+        public double gpsgd_latitude { get; set; }
         public bool isshow { get; set; }
         public DateTime crtdate { get; set; }
         public DateTime updatetime { get; set; }

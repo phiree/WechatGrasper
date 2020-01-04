@@ -31,7 +31,9 @@ namespace TourInfo.Infrastracture
         {
             builder.Register(c =>
             {
+                 
                 var opt = new DbContextOptionsBuilder<TourInfoDbContext>();
+                opt.EnableSensitiveDataLogging();
                 opt.UseSqlServer(connectionString);
                 return new TourInfoDbContext(opt.Options);
             }).AsSelf().InstancePerDependency();

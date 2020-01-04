@@ -8,10 +8,11 @@ using System.Linq;
 using TourInfo.Domain.TourNews;
 using TourInfo.Domain.DomainModel.Rapi;
 using TourInfo.Domain.DomainModel.EWQY;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace TourInfo.Infrastracture.Repository.EFCore
 {
-    public class TourInfoDbContext:DbContext
+    public class TourInfoDbContext : DbContext
     {
         protected TourInfoDbContext() { }
         public TourInfoDbContext(DbContextOptions<TourInfoDbContext> options)
@@ -21,34 +22,32 @@ namespace TourInfo.Infrastracture.Repository.EFCore
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+             
 
-          
-            
             modelBuilder.Entity<EWQYEntity>()
-                .OwnsMany(x=>x.pictureKeys,key=>{ 
+                .OwnsMany(x => x.pictureKeys, key =>
+                {
                     key.HasForeignKey("id");
                     key.Property<string>("OriginalUrl");
-                    key.HasKey("OriginalUrl","id");
+                    key.HasKey("OriginalUrl", "id");
                 })
                 ;
-               modelBuilder.Entity<EWQYEntity>()
-               .OwnsOne(x=>x.thumbnailKey);
-            
+            modelBuilder.Entity<EWQYEntity>()
+            .OwnsOne(x => x.thumbnailKey);
+
             modelBuilder.Entity<CompanyVenue>()
-                .Property(x => x.location)
-              .HasConversion(v => string.Join(";", v)
-              , v => v.Split(new char[] { ';' } , StringSplitOptions.RemoveEmptyEntries)
-                    .Select(x=>Convert.ToDouble(x)).ToArray()
-              );
+                .OwnsOne(x => x.location).ToTable("CompanyVanueLocations");
+            
+              
             modelBuilder.Entity<ZbtaNews>()
                 .OwnsOne(x => x.image);
-           
+
 
             modelBuilder.Entity<Projectinfo>()
               .HasKey(x => x.pid);
             modelBuilder.Entity<Projectinfo>()
             .Property(x => x.pid).ValueGeneratedNever();
-             
+
 
             modelBuilder.Entity<Typeinfo>()
              .HasKey(x => x.typeid);
@@ -56,7 +55,7 @@ namespace TourInfo.Infrastracture.Repository.EFCore
             .Property(x => x.typeid).ValueGeneratedNever();
 
             modelBuilder.Entity<Typeinfo>()
-          .OwnsOne(x => x.wapshowimg) ;
+          .OwnsOne(x => x.wapshowimg);
 
 
             modelBuilder.Entity<Typefield>()
@@ -78,11 +77,29 @@ namespace TourInfo.Infrastracture.Repository.EFCore
              .HasKey(x => x.unitid);
             modelBuilder.Entity<Pubinfounit>()
             .Property(x => x.unitid).ValueGeneratedNever();
+
             modelBuilder.Entity<Pubinfounit>()
-          .OwnsOne(x=>x.flagpic);
+       .OwnsOne(x => x.flagpic);
+
+            modelBuilder.Entity<Pubinfounit>()
+                .OwnsOne(x=>x.gps);
+            modelBuilder.Entity<Pubinfounit>()
+               .OwnsOne(x => x.gpsbd);
+            modelBuilder.Entity<Pubinfounit>()
+               .OwnsOne(x => x.gpsgd);
+
+
+
 
             modelBuilder.Entity<Pubinfounitchild>()
         .OwnsOne(x => x.flagurl);
+            modelBuilder.Entity<Pubinfounitchild>()
+              .OwnsOne(x => x.gps);
+            modelBuilder.Entity<Pubinfounitchild>()
+               .OwnsOne(x => x.gpsbd);
+            modelBuilder.Entity<Pubinfounitchild>()
+               .OwnsOne(x => x.gpsgd);
+
 
 
             modelBuilder.Entity<Pubunittag>()
@@ -107,7 +124,7 @@ namespace TourInfo.Infrastracture.Repository.EFCore
             modelBuilder.Entity<Pubinfounitchild>()
              .HasKey(x => x.childid);
             modelBuilder.Entity<Pubinfounitchild>()
-            .Property(x => x.childid).ValueGeneratedNever() ;
+            .Property(x => x.childid).ValueGeneratedNever();
             modelBuilder.Entity<Pubinfounitchild>()
                 .HasIndex(x => x.childid);
 
@@ -119,7 +136,7 @@ namespace TourInfo.Infrastracture.Repository.EFCore
         // public DbSet<EWQYEntity> EWQYEntities{ get; set; }
         public DbSet<EWQYPlaceTypeEntity> EWQYPlaceTypeEntities { get; set; }
         public DbSet<Activity> Activities { get; set; }
-        public DbSet<CompanyVenue> CompanyVenues{ get; set; }
+        public DbSet<CompanyVenue> CompanyVenues { get; set; }
         public DbSet<CompanyVenueType> CompanyVenueTypes { get; set; }
         public DbSet<ZbtaNews> ZbtaNews { get; set; }
         public DbSet<Projectinfo> Projectinfos { get; set; }
@@ -131,7 +148,7 @@ namespace TourInfo.Infrastracture.Repository.EFCore
         public DbSet<Pubunittag> Pubunittags { get; set; }
         public DbSet<Pubmediainfo> Pubmediainfos { get; set; }
         public DbSet<Pubinfounitchild> Pubinfounitchilds { get; set; }
- 
+
 
     }
 }

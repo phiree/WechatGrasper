@@ -35,10 +35,10 @@ namespace TourInfo.Domain
 
                 .ForMember(x => x.thumbnailKey, c => c.MapFrom(d => d.thumbnailKey.LocalizedUrl))
             .ForMember(x => x.thumbnailKeyOriginal, c => c.MapFrom(d => d.thumbnailKey.OriginalUrl))
-            .ForMember(x => x.longtitude, c => c.MapFrom(d => d.location[0]))
-            .ForMember(x => x.latitude, c => c.MapFrom(d => d.location[1]))
+            .ForMember(x => x.longitude, c => c.MapFrom(d => d.location.Longitude))
+            .ForMember(x => x.latitude, c => c.MapFrom(d => d.location.Latitude))
             ;
-            ;
+            
             
             
             CreateMap<ZbtaNews, SqliteZbtaNews>()
@@ -51,13 +51,25 @@ namespace TourInfo.Domain
 
             CreateMap<Rapi.Pubinfounit, SqlitePubinfounit>()
                  .ForMember(x => x.flagpic, c => c.MapFrom(d => d.flagpic.LocalizedUrl))
-                .ForMember(x => x.flagpicOriginal, c => c.MapFrom(d => d.flagpic.OriginalUrl));
-              
+                .ForMember(x => x.flagpicOriginal, c => c.MapFrom(d => d.flagpic.OriginalUrl))
+
+               .ForMember(x => x.gpsbd_longitude, c => c.MapFrom(d => d.gpsbd.Longitude))
+             .ForMember(x => x.gpsbd_latitude, c => c.MapFrom(d => d.gpsbd.Latitude))
+             .ForMember(x => x.gps_longitude, c => c.MapFrom(d => d.gps.Longitude))
+             .ForMember(x => x.gps_latitude, c => c.MapFrom(d => d.gps.Latitude))
+             .ForMember(x => x.gpsgd_longitude, c => c.MapFrom(d => d.gpsgd.Longitude))
+             .ForMember(x => x.gpsgd_latitude, c => c.MapFrom(d => d.gpsgd.Latitude));
 
 
             CreateMap<Rapi.Pubinfounitchild, SqlitePubinfounitchild>()
                   .ForMember(x => x.flagurl, c => c.MapFrom(d => d.flagurl.LocalizedUrl))
-                .ForMember(x => x.flagurlOriginal, c => c.MapFrom(d => d.flagurl.OriginalUrl)); 
+                .ForMember(x => x.flagurlOriginal, c => c.MapFrom(d => d.flagurl.OriginalUrl))
+                  .ForMember(x => x.gpsbd_longitude, c => c.MapFrom(d => d.gpsbd.Longitude))
+             .ForMember(x => x.gpsbd_latitude, c => c.MapFrom(d => d.gpsbd.Latitude))
+             .ForMember(x => x.gps_longitude, c => c.MapFrom(d => d.gps.Longitude))
+             .ForMember(x => x.gps_latitude, c => c.MapFrom(d => d.gps.Latitude))
+             .ForMember(x => x.gpsgd_longitude, c => c.MapFrom(d => d.gpsgd.Longitude))
+             .ForMember(x => x.gpsgd_latitude, c => c.MapFrom(d => d.gpsgd.Latitude));
 
             CreateMap<Rapi.Pubmediainfo, SqlitePubmediainfo>()
                  .ForMember(x => x.mediaurl, c => c.MapFrom(d => d.mediaurl.LocalizedUrl))

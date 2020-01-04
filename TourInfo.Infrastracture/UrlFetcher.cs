@@ -1,4 +1,5 @@
-﻿ 
+﻿
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -10,7 +11,11 @@ namespace TourInfo.Infrastracture
 {
     public class UrlFetcher : IUrlFetcher
     {
-        
+        ILogger<UrlFetcher> logger;
+        public UrlFetcher(ILogger<UrlFetcher> logger)
+        { 
+            this.logger=logger;
+            }
         public Task<string> FetchAsync(string url)
         {
             var webClient = new CookieAwareWebClient();
@@ -27,8 +32,17 @@ namespace TourInfo.Infrastracture
         public Task FetchFile(string url,string fileName)
         {
             var webClient = new CookieAwareWebClient();
-            if(!string.IsNullOrEmpty(url))
-            { webClient.DownloadFile(new Uri(url), fileName) ; }
+            if(!string.IsNullOrEmpty(url)
+                )
+            {
+                try { 
+                webClient.DownloadFile(new Uri(url), fileName) ; 
+                    }
+                catch(System.Net.WebException webEx)
+                { 
+                    logger.LogError($"Web请求失败.url:[{url}],ex:[{webEx.Message}]");
+                    }
+                }
 
             return Task.FromResult(0);
         

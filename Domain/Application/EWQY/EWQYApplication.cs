@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,9 +28,11 @@ namespace TourInfo.Domain.EWQY
 
         IEWQYRepository eWQYRepository;
         string imageBaseUrl, localSavedPath;
-        public EWQYApplication(IUrlFetcher urlFetcher, IEWQYRepository eWQYRepository
+        ILogger<LocationJsonConverter> locationJsonConverterLogger;
+        public EWQYApplication(IUrlFetcher urlFetcher, IEWQYRepository eWQYRepository, ILogger<LocationJsonConverter> locationJsonConverterLogger
             , string imageBaseUrl, string localSavedPath, IImageLocalizer imageLocalizer, IInfoLocalizer<EWQYPlaceTypeEntity, string> infoLocalizer)
         {
+            this.locationJsonConverterLogger=locationJsonConverterLogger;
             this.infoLocalizer = infoLocalizer;
             this.localSavedPath = localSavedPath;
             this.imageLocalizer = imageLocalizer;
@@ -42,16 +45,17 @@ namespace TourInfo.Domain.EWQY
         }
         public void Graspe(string _dateVersion)
         {
-            this._dateVersion = _dateVersion;
+            this._dateVersion = _dateVersion; 
+            GraspePagedList<CompanyVenue>("venue/findVenueList.action", true, 0, pageSize, order: 0, type: PlaceType.Venue);
+            GraspePagedList<CompanyVenue>("company/findCompanyList.action", true, 0, pageSize, order: 0, type: PlaceType.Company);
+
             GraspePagedList<CompanyVenueType>("venue/findVenueTypeList.action", false, 0, pageSize, order: 0, type: PlaceType.Venue);
             GraspePagedList<CompanyVenueType>("company/findAllType.action", false, 0, pageSize, order: 0, type: PlaceType.Company);
 
             GraspePagedList<Activity>("activity/findRegionActivityList.action", true, 0, pageSize, type: PlaceType.Venue);
             GraspePagedList<Activity>("activity/findRegionActivityList.action", true, 0, pageSize, type: PlaceType.Company);
 
-            GraspePagedList<CompanyVenue>("venue/findVenueList.action", true, 0, pageSize, order: 0, type: PlaceType.Venue);
-            GraspePagedList<CompanyVenue>("company/findCompanyList.action", true, 0, pageSize, order: 0, type: PlaceType.Company);
-
+            
 
         }
 
@@ -70,7 +74,9 @@ namespace TourInfo.Domain.EWQY
 
 
             //  contentHandler.HandlerList(result);
-            var jsonResult = Newtonsoft.Json.JsonConvert.DeserializeObject<ListResultWrapper<T>>(result, new ImageUrlJsonConverter());
+            var jsonResult = Newtonsoft.Json.JsonConvert.DeserializeObject<ListResultWrapper<T>>(result,
+                new ImageUrlJsonConverter()
+                );
             var status = jsonResult.status;// jsonResult["status"];
             if (status != 0)
             { throw new Exception("接口返回错误"); }
@@ -85,15 +91,19 @@ namespace TourInfo.Domain.EWQY
                 }
                 else
                 {
-                 
+                   var existed=eWQYRepository.Get(data.id);
+                    if (existed != null) { break;}
                     string detailUrl = urlCreator.CreateDetailUrl(basePageUrl, data.id);
                     string detailResult = urlFetcher.FetchEWQYAsync(detailUrl).Result;
-                    var detail = JsonConvert.DeserializeObject<DetailResultWrapper<T>>(detailResult, new ImageUrlJsonConverter());
+                    var detail = JsonConvert.DeserializeObject<DetailResultWrapper<T>>(detailResult
+                        , new ImageUrlJsonConverter(),
+                       new LocationJsonConverter(locationJsonConverterLogger, true, ';')
+                        );
                     CopyValues(detail.data, data);
 
                     detail.data.PlaceType = type.Value;
-
-                    infoLocalizer.Localize(detail.data, imageBaseUrl, localSavedPath, _dateVersion);
+                    bool isExisted=false;
+                   infoLocalizer.Localize(detail.data,imageBaseUrl,localSavedPath,_dateVersion,out isExisted);
                 }
 
             }

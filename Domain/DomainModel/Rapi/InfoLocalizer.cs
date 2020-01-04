@@ -19,10 +19,11 @@ namespace TourInfo.Domain.DomainModel.Rapi
             
         }
          
-        public void Localize(T t,string originImageRootUrl, string localSavedPath,string version )
+        public void Localize(T t,string originImageRootUrl, string localSavedPath,string version,out bool isExisted )
         {
-            var existed=repository.Get(t.id);
-            if (existed!=null) { return ;}
+            isExisted=false;
+            var  existed=repository.Get(t.id);
+            if (existed!=null) {isExisted=true; return ;}
             var members = t.GetType().GetMembers();
             foreach (var p in t.GetType().GetProperties())
             {

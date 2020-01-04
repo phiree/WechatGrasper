@@ -103,9 +103,10 @@ namespace TourInfo.Domain.DomainModel.Rapi
         public string unitname { get; set; }
         public string shortname { get; set; }
         public float orderno { get; set; }
-        public string gpsbd { get; set; }
-        public string gps { get; set; }
-        public string gpsgd { get; set; }
+        public Location gpsbd { get; set; }
+          
+        public Location gps { get; set; }
+        public Location gpsgd { get; set; }
         public string address { get; set; }
         public string postcode { get; set; }
         public string zonecode { get; set; }
@@ -213,9 +214,9 @@ namespace TourInfo.Domain.DomainModel.Rapi
         public string memo { get; set; }
         public string guidevoice { get; set; }
         public string guidetext { get; set; }
-        public string gpsbd { get; set; }
-        public string gps { get; set; }
-        public string gpsgd { get; set; }
+        public Location gpsbd { get; set; }
+        public Location gps { get; set; }
+        public Location gpsgd { get; set; }
         public bool isshow { get; set; }
         public DateTime crtdate { get; set; }
         public DateTime updatetime { get; set; }
@@ -223,6 +224,17 @@ namespace TourInfo.Domain.DomainModel.Rapi
     }
 
     
-
+    public class Location { 
+        public static Location Null {
+            get { return new Location(0,0);}
+            }
+        public Location(double longitude,double latitude)
+        { 
+            this.Longitude=longitude;
+            this.Latitude=latitude;
+            }
+        public double Longitude { get;set;}=0;
+        public double Latitude { get;set;}=0;
+        }
 
 }

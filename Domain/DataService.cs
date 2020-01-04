@@ -128,9 +128,9 @@ namespace TourInfo.Domain.DomainModel
 
 
             var sqliteDbConn = sqliteDatabaseCreater.Create(Environment.CurrentDirectory + "\\TourInfo.db3");
-
+            var allCompanyVenues=companyVenueRepository.GetAll();
             sqliteActivityTableCreator.CreateTable(sqliteDbConn, _mapper.Map<IList<SqliteActivity>>(activityRepository.GetAll()));
-            sqliteCompanyVenueTableCreator.CreateTable(sqliteDbConn, _mapper.Map<IList<SqliteCompanyVenue>>(companyVenueRepository.GetAll()));
+            sqliteCompanyVenueTableCreator.CreateTable(sqliteDbConn, _mapper.Map<IList<SqliteCompanyVenue>>(allCompanyVenues));
             sqliteZbtaNewsTableCreator.CreateTable(sqliteDbConn, _mapper.Map<IList<SqliteZbtaNews>>(zbtaNewsRepository.GetAll()));
 
             SqliteProjectinfoCreator.CreateTable(sqliteDbConn, _mapper.Map<IList<SqliteProjectinfo>>(projectinfoRepository.GetAll()));

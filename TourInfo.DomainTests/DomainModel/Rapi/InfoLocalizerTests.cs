@@ -25,7 +25,8 @@ namespace TourInfo.Domain.DomainModel.Rapi.Tests
                 .Returns("downloadimage/folder1/1.jpg");
 
             var InfoLocalizer = fixture.Create<InfoLocalizer<DemoInfo,string>>();
-            InfoLocalizer.Localize ( mediaInfo, string.Empty, localSavedPath,"version1");
+            bool isExisted;
+            InfoLocalizer.Localize ( mediaInfo, string.Empty, localSavedPath,"version1",out isExisted);
             Assert.AreEqual("downloadimage/folder1/1.jpg",mediaInfo.TitlePic.LocalizedUrl);
             Assert.AreEqual("downloadimage/folder1/1.jpg",mediaInfo.DetailPics[0].LocalizedUrl);
 

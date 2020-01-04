@@ -26,7 +26,8 @@ namespace TourInfo.Domain.DomainModel.Rapi
     }
     public class RapiGraspeService : IRapiGraspeService
     {
-        ILogger logger;
+        ILogger<LocationJsonConverter> locationJsonConverterLogger;
+        ILogger<RapiGraspeService> logger;
         ITokenManager tokenManager;
         string initUrl = "";
         string syncUrl = "";
@@ -63,9 +64,11 @@ namespace TourInfo.Domain.DomainModel.Rapi
         IInfoLocalizer<Typeinfo, int> infoLocalizerTypeinfo,
         IInfoLocalizer<Pubinfounit, int> infoLocalizerPubinfounit,
         IInfoLocalizer<Pubinfounitchild, int> infoLocalizerPubinfounitchild,
- ILogger logger 
+ ILogger<RapiGraspeService> logger,
+ ILogger<LocationJsonConverter> locationJsonConverterLogger
             )
         {
+            this.locationJsonConverterLogger = locationJsonConverterLogger;
             this.logger = logger;
             this.infoLocalizerPubinfounit = infoLocalizerPubinfounit;
             this.infoLocalizerPubinfounitchild = infoLocalizerPubinfounitchild;
@@ -103,8 +106,9 @@ namespace TourInfo.Domain.DomainModel.Rapi
                 , new Dictionary<string, string> { { HttpRequestHeader.Authorization.ToString(), token } }).Result;
 
             JsonSerializerSettings settings = new JsonSerializerSettings();
-
-            var responseModel = JsonConvert.DeserializeObject<RapiResponse>(result, new ImageUrlJsonConverter(), new ImageUrlJsonConverter());
+            var responseModel = JsonConvert.DeserializeObject<RapiResponse>(result,
+                new ImageUrlJsonConverter(), new LocationJsonConverter(locationJsonConverterLogger,false,',')
+                );
             if (responseModel.data.projectinfo != null)
             {
                  responseModel.data.projectinfo.UpdateVersion(string.Empty, dataVersion);
@@ -112,18 +116,20 @@ namespace TourInfo.Domain.DomainModel.Rapi
                 
             }
             var pubmediaThread = new System.Threading.Thread(() => {
-                logger.LogInformation("开始抓取pubmediainfo");
+                
                 foreach (var item in responseModel.data.pubmediainfoes)
                 {
-
-                    infoLocalizerPubMediaInfo.Localize(item, string.Empty, localSavedPath, dataVersion);
+                    bool isExisted=false;
+                    infoLocalizerPubMediaInfo.Localize(item, string.Empty, localSavedPath, dataVersion,out isExisted);
+                    if (isExisted) { break;}
 
 
                 }
+                logger.LogInformation(" pubmediainfo抓取完毕");
             });
             
             pubmediaThread.Start();
-            pubmediaThread.Join();
+           
 
 
 
@@ -132,12 +138,15 @@ namespace TourInfo.Domain.DomainModel.Rapi
                 logger.LogInformation("开始抓取typeInfoT");
                 foreach (var item in responseModel.data.typeinfoes)
                 {
-                    infoLocalizerTypeinfo.Localize(item, string.Empty, localSavedPath, dataVersion);
+                    bool isExisted;
+                    infoLocalizerTypeinfo.Localize(item, string.Empty, localSavedPath, dataVersion,out isExisted);
+                    if (isExisted) { break;}
 
                 }
+                logger.LogInformation("typeInfoT抓取完毕");
             });
             typeInfoThread.Start();
-            typeInfoThread.Join();
+           
 
 
 
@@ -145,24 +154,28 @@ namespace TourInfo.Domain.DomainModel.Rapi
                 logger.LogInformation("开始抓取pubinfounit");
                 foreach (var item in responseModel.data.pubinfounits)
                 {
-                    infoLocalizerPubinfounit.Localize(item, string.Empty, localSavedPath, dataVersion);
+                    bool isExisted;
+                    infoLocalizerPubinfounit.Localize(item, string.Empty, localSavedPath, dataVersion,out isExisted);
+                    if (isExisted) { break;}
 
                 }
+                logger.LogInformation(" pubinfounit抓取完毕");
             });
             pubinfounitThread.Start();
-            pubinfounitThread.Join();
+           
 
             var pubinfounitchildThread = new System.Threading.Thread(() => {
                 logger.LogInformation("开始抓取pubinfounitchild");
                 foreach (var item in responseModel.data.pubinfounitchilds)
                 {
-
-                    infoLocalizerPubinfounitchild.Localize(item, string.Empty, localSavedPath, dataVersion);
+                    bool isExisted;
+                    infoLocalizerPubinfounitchild.Localize(item, string.Empty, localSavedPath, dataVersion,out isExisted);
 
                 }
+                logger.LogInformation("pubinfounitchild抓取完毕");
             });
             pubinfounitchildThread.Start();
-            pubinfounitchildThread.Join();
+          
             repositoryPubunittag.InsertOrUpdate(responseModel.data.pubunittags.Select(x => { x.Version = dataVersion; return x; }).ToList());
             repositoryTypefield.InsertOrUpdate(responseModel.data.typefields.Select(x => { x.Version = dataVersion; return x; }).ToList());
             repositoryTypepic.InsertOrUpdate(responseModel.data.typepics.Select(x => { x.Version = dataVersion; return x; }).ToList());

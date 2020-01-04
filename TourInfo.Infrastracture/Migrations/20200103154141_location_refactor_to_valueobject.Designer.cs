@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TourInfo.Infrastracture.Repository.EFCore;
 
 namespace TourInfo.Infrastracture.Migrations
 {
     [DbContext(typeof(TourInfoDbContext))]
-    partial class TourInfoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200103154141_location_refactor_to_valueobject")]
+    partial class location_refactor_to_valueobject
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -616,9 +618,9 @@ namespace TourInfo.Infrastracture.Migrations
                         {
                             b1.Property<int>("Pubinfounitunitid");
 
-                            b1.Property<double>("Latitude");
+                            b1.Property<double?>("Latitude");
 
-                            b1.Property<double>("Longitude");
+                            b1.Property<double?>("Longitude");
 
                             b1.HasKey("Pubinfounitunitid");
 
@@ -634,9 +636,9 @@ namespace TourInfo.Infrastracture.Migrations
                         {
                             b1.Property<int>("Pubinfounitunitid");
 
-                            b1.Property<double>("Latitude");
+                            b1.Property<double?>("Latitude");
 
-                            b1.Property<double>("Longitude");
+                            b1.Property<double?>("Longitude");
 
                             b1.HasKey("Pubinfounitunitid");
 
@@ -652,9 +654,9 @@ namespace TourInfo.Infrastracture.Migrations
                         {
                             b1.Property<int>("Pubinfounitunitid");
 
-                            b1.Property<double>("Latitude");
+                            b1.Property<double?>("Latitude");
 
-                            b1.Property<double>("Longitude");
+                            b1.Property<double?>("Longitude");
 
                             b1.HasKey("Pubinfounitunitid");
 
@@ -691,9 +693,9 @@ namespace TourInfo.Infrastracture.Migrations
                         {
                             b1.Property<int>("Pubinfounitchildchildid");
 
-                            b1.Property<double>("Latitude");
+                            b1.Property<double?>("Latitude");
 
-                            b1.Property<double>("Longitude");
+                            b1.Property<double?>("Longitude");
 
                             b1.HasKey("Pubinfounitchildchildid");
 
@@ -709,9 +711,9 @@ namespace TourInfo.Infrastracture.Migrations
                         {
                             b1.Property<int>("Pubinfounitchildchildid");
 
-                            b1.Property<double>("Latitude");
+                            b1.Property<double?>("Latitude");
 
-                            b1.Property<double>("Longitude");
+                            b1.Property<double?>("Longitude");
 
                             b1.HasKey("Pubinfounitchildchildid");
 
@@ -727,9 +729,9 @@ namespace TourInfo.Infrastracture.Migrations
                         {
                             b1.Property<int>("Pubinfounitchildchildid");
 
-                            b1.Property<double>("Latitude");
+                            b1.Property<double?>("Latitude");
 
-                            b1.Property<double>("Longitude");
+                            b1.Property<double?>("Longitude");
 
                             b1.HasKey("Pubinfounitchildchildid");
 
@@ -852,13 +854,13 @@ namespace TourInfo.Infrastracture.Migrations
                         {
                             b1.Property<string>("CompanyVenueid");
 
-                            b1.Property<double>("Latitude");
+                            b1.Property<double?>("Latitude");
 
-                            b1.Property<double>("Longitude");
+                            b1.Property<double?>("Longitude");
 
                             b1.HasKey("CompanyVenueid");
 
-                            b1.ToTable("CompanyVanueLocations");
+                            b1.ToTable("EWQYPlaceTypeEntities");
 
                             b1.HasOne("TourInfo.Domain.CompanyVenue")
                                 .WithOne("location")

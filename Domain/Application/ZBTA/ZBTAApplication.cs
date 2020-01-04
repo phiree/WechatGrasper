@@ -52,8 +52,13 @@ namespace TourInfo.Domain.TourNews
                         needContinue = false;
                         break;
                     }
-                   
-                    infoLocalizerZbtaNews.Localize(news,titleImageBaseUrl, localSavedPath,_dateVersion);
+                   bool isExisted=false;
+                    infoLocalizerZbtaNews.Localize(news,titleImageBaseUrl, localSavedPath,_dateVersion,out isExisted);
+                    if(isExisted)
+                    {
+                        needContinue=false;
+                        break;
+                        }
                 }
                 //遍历 如果已经发现已经存在，则 needContinue=false,并跳过。
                 pageIndex++;

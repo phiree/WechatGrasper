@@ -33,7 +33,7 @@ namespace TourInfo.Application.DataGrasperConsole
       static  ILogger    logger = LogManager.GetCurrentClassLogger();
         static void Main(string[] args)
         {
-           
+          
             string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
             environment = environment ?? "Development";
             IConfigurationBuilder ConfigurationBuilder = new ConfigurationBuilder()
@@ -48,7 +48,8 @@ namespace TourInfo.Application.DataGrasperConsole
            }
             var  Configuration = ConfigurationBuilder
           .Build();
-            
+            BootStrap.Boot(Configuration);
+
             logger.Info("开始抓取EWQY数据");
             string _dateVersion = DateTime.Now.ToString("yyyyMMddhhmmss");
             BackgroundWorker ewqyWorker = new BackgroundWorker();
