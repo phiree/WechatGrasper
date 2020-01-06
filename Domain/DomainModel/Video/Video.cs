@@ -30,4 +30,18 @@ namespace TourInfo.Domain.DomainModel.Video
         public bool deleteflag { get; set; }
         public int id { get; set; }
     }
+
+    public class Data
+    {
+        public int totalcount { get; set; }
+        public int type { get; set; }
+        public List<Video> results { get; set; }
+    }
+
+    public class RootObject
+    {
+        public Data data { get; set; }
+        public int code { get; set; }
+        public string message { get; set; }
+    }
 }
