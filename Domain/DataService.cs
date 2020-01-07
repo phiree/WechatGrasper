@@ -48,7 +48,8 @@ namespace TourInfo.Domain.DomainModel
         ISqliteTableCreater<SqliteTypeinfo> SqliteTypeinfoCreator;
         ISqliteTableCreater<SqliteTypepic> SqliteTypepicCreator;
         ISqliteTableCreater<SqliteTypetag> SqliteTypetagCreator;
-
+        ISqliteTableCreater<SqliteVideo> SqliteVideoCreator;
+        ISqliteTableCreater<SystemSetting> SqliteSystemSettingCreator;
 
         IMapper _mapper;
 
@@ -84,7 +85,9 @@ namespace TourInfo.Domain.DomainModel
         ISqliteTableCreater<SqliteTypefield> SqliteTypefieldCreator,
         ISqliteTableCreater<SqliteTypeinfo> SqliteTypeinfoCreator,
         ISqliteTableCreater<SqliteTypepic> SqliteTypepicCreator,
-        ISqliteTableCreater<SqliteTypetag> SqliteTypetagCreator
+        ISqliteTableCreater<SqliteTypetag> SqliteTypetagCreator,
+        ISqliteTableCreater<SqliteVideo> SqliteVideoCreator,
+        ISqliteTableCreater<SystemSetting> SqliteSystemSettingCreator
             , IMapper _mapper
             )
         {
@@ -122,7 +125,8 @@ namespace TourInfo.Domain.DomainModel
             this.SqliteTypeinfoCreator = SqliteTypeinfoCreator;
             this.SqliteTypepicCreator = SqliteTypepicCreator;
             this.SqliteTypetagCreator = SqliteTypetagCreator;
-
+            this.SqliteVideoCreator = SqliteVideoCreator;
+            this.SqliteSystemSettingCreator = SqliteSystemSettingCreator;
         }
         public void CreateInitData()
         {
@@ -144,6 +148,8 @@ namespace TourInfo.Domain.DomainModel
             SqliteTypeinfoCreator.CreateTable(sqliteDbConn, _mapper.Map<IList<SqliteTypeinfo>>(TypeinfoRepository.GetAll()));
             SqliteTypepicCreator.CreateTable(sqliteDbConn, _mapper.Map<IList<SqliteTypepic>>(TypepicRepository.GetAll()));
             SqliteTypetagCreator.CreateTable(sqliteDbConn, _mapper.Map<IList<SqliteTypetag>>(TypetagRepository.GetAll()));
+            SqliteVideoCreator.CreateTable(sqliteDbConn, _mapper.Map<IList<SqliteVideo>>(new List<Video.Video> { }));
+            SqliteSystemSettingCreator.CreateTable(sqliteDbConn, _mapper.Map<IList<SystemSetting>>(new List<SystemSetting> { }));
         }
         public dynamic CreateSyncData(string version)
         {

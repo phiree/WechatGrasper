@@ -175,7 +175,7 @@
             远程图片绝对路径.
             </summary>
         </member>
-        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteCompanyVenue.location">
+        <member name="P:TourInfo.Domain.DomainModel.DataSync.SqliteCompanyVenue.longitude">
             <summary>
             长度为2的数组, 表示经纬度, 第一个是经度,第二个维度
             </summary>
@@ -336,6 +336,26 @@
             </summary>
             <param name="dataVersion"></param>
             <param name="forceInit">因为rapi提供了sync接口</param>
+        </member>
+        <member name="T:TourInfo.Domain.DomainModel.Rapi.LocationStringJsonConverter">
+            <summary>
+            字符串转换为经纬度 
+            </summary>
+        </member>
+        <member name="M:TourInfo.Domain.DomainModel.Rapi.LocationStringJsonConverter.#ctor(Microsoft.Extensions.Logging.ILogger{TourInfo.Domain.DomainModel.Rapi.LocationStringJsonConverter},System.Boolean,System.Char)">
+            <summary>
+            
+            </summary>
+            <param name="logger"></param>
+            <param name="longitudeFirst">经度在前面</param>
+            <param name="spliter">分隔符</param>
+        </member>
+        <member name="M:TourInfo.Domain.DomainModel.Rapi.LocationDoubleArrayJsonConverter.#ctor(Microsoft.Extensions.Logging.ILoggerFactory,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="logger"></param>
+            <param name="longitudeFirst">经度在前面</param>
         </member>
         <member name="T:TourInfo.Domain.Activity">
             <summary>

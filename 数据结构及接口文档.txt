@@ -4,7 +4,7 @@
 
 1.1 文化活动表 :Activity 
      
-       Version :版本号
+       Version :数据版本号
         PlaceType :活动类型 0:文化场馆活动  1: 文化企业活动.
        startTime :活动开始时间
        createTime :信息创建时间
@@ -20,7 +20,8 @@
         isShared :(暂时忽略)是否已分享
        Id :活动Id
         
-
+1.1.1 Version说明
+     Version格式为时间格式YYYYMMddHHmmss,即年月日时分秒,如 "201912070312". 
 
 1.2 企业/场馆表:CompanyVenue
     
@@ -28,7 +29,8 @@
        PlaceType :类型 0:文化场馆  1: 文化企业.
        thumbnailKey :本地图片路径:活动缩略图.
        thumbnailKeyOriginal :远程图片绝对路径.
-       location :长度为2的数组, 表示经纬度, 第一个是经度,第二个维度
+       location_longitude: 经度
+       location_latitude:纬度. 这两个字段替换原来的[location :长度为2的数组, 表示经纬度, 第一个是经度,第二个维度]
        name :名称
        satisfactionScore :满意度得分
        typeId :类型id,见1.4
@@ -81,15 +83,16 @@
 
 2 数据同步接口
 
-2.1 接口url: 服务器地址/api/tourinfo/syncdata?version=[version]
+2.1 接口url: 服务器地址/api/tourinfo/syncdata?Version=[version]
 
-2.2 参数说明: version表示获取大于该version的数据.
+2.2 参数说明: version表示获取大于该version的数据.格式见1.1.1
 
 2.3 返回结构:
     {
      code:0,//0 表示成功,否则失败
      msg:"",//错误消息.如果code为0 则空
      data:{
+            Version:本次获取的新数据的版本.格式见1.1.1
             Activities:[活动列表],
             CompanyVenues:[企业场馆]
             ZbtaNews:[旅游资讯],
