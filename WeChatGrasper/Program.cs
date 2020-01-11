@@ -24,6 +24,7 @@ using Autofac;
 using TourInfo.Domain.Application.Rapi;
 using NLog;
 using ILogger = NLog.ILogger;
+using TourInfo.Domain.Application.Video;
 
 namespace TourInfo.Application.DataGrasperConsole
 {
@@ -66,6 +67,10 @@ namespace TourInfo.Application.DataGrasperConsole
             rapiWorker.RunWorkerCompleted += RapiWorker_RunWorkerCompleted;
             rapiWorker.RunWorkerAsync(argument: _dateVersion);
 
+            BackgroundWorker videoWorker = new BackgroundWorker();
+            videoWorker.DoWork += (obj, e) => VideoWorker_DoWork(_dateVersion);
+            videoWorker.RunWorkerCompleted += VideoWorker_RunWorkerCompleted;
+            videoWorker.RunWorkerAsync(argument: _dateVersion);
             while (true)
             {
                 logger.Info("正在抓取");
@@ -86,6 +91,16 @@ namespace TourInfo.Application.DataGrasperConsole
         {
             var rapiApplication =BootStrap. serviceProvider.GetService<IRapiApplication>();
             rapiApplication.Graspe(dataVersion,true);
+        }
+        private static void VideoWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            logger.Info("rapi抓取完毕");
+        }
+
+        private static void VideoWorker_DoWork(string dataVersion)
+        {
+            var videoApplication = BootStrap.serviceProvider.GetService<IVideoApplication>();
+            videoApplication.Graspe(dataVersion);
         }
 
         private static void ZbtaWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

@@ -27,10 +27,12 @@ namespace TourInfo.Domain
         string ewqyLocalSavedPath;
         string zbtaLocalSavedPath;
         string rapi_initurl, rapi_syncurl, rapi_tokenurl, rapi_appid, rapi_appsecret, rapi_localsavedpath;
+        string video_baseurl;
         public TourInfoDomainAutofactModel(string zbtaTitleImageBaseUrl, string zbtaDetailImageBaseUrl
             , string ewqyImageBaseUrl, string ewqyLocalSavedPath, string zbtaLocalSavedPath,
             string rapi_initurl, string rapi_syncurl, string rapi_tokenurl, string rapi_appid,
-            string rapi_appsecret,string rapi_localsavedpath)
+            string rapi_appsecret,string rapi_localsavedpath
+            , string video_baseurl)
         {
             this.zbtaTitleImageBaseUrl = zbtaTitleImageBaseUrl;
             this.zbtaDetailImageBaseUrl = zbtaDetailImageBaseUrl;
@@ -43,6 +45,7 @@ namespace TourInfo.Domain
             this.rapi_syncurl = rapi_syncurl;
             this.rapi_tokenurl = rapi_tokenurl;
             this.rapi_localsavedpath= rapi_localsavedpath;
+            this.video_baseurl=video_baseurl;
         }
         protected override void Load(ContainerBuilder builder)
         {
@@ -76,6 +79,13 @@ namespace TourInfo.Domain
                    .WithParameter("appid", rapi_appid)
                    .WithParameter("appsecret", rapi_appsecret)
                     .WithParameter("tokenurl", rapi_tokenurl)
+                   ;
+            //Video 
+            builder.RegisterType<Application.Video.VideoApplication>().As<Application.Video.IVideoApplication>()
+                   ;
+            builder.RegisterType<DomainModel.Video.GraspeService>().As<DomainModel.Video.IGraspeService>()
+                   .WithParameter("baseUrl",   video_baseurl)
+                  
                    ;
             base.Load(builder);
         }
