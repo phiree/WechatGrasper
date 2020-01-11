@@ -84,6 +84,7 @@ namespace TourInfo.Domain
             CreateMap<Rapi.Typefield, SqliteTypefield>();
             CreateMap<Rapi.Typetag,SqliteTypetag>();
             CreateMap<Rapi.Typepic, SqliteTypepic>();
+            CreateMap<DomainModel.Video.Video, SqliteVideo>();
         }
     }
 }
