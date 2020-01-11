@@ -2,7 +2,7 @@
 
 namespace TourInfo.Domain.Base
 {
-    public abstract class VersionedEntity<T> :Entity<T>,IHasVersion
+    public abstract class VersionedEntity<Key> :Entity<Key>,IHasVersion
     {
         /// <summary>
         /// 数据版本，格式yyyyMMddHHmmss

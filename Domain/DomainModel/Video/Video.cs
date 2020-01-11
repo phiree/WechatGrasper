@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
+using TourInfo.Domain.Base;
 namespace TourInfo.Domain.DomainModel.Video
 {
-    public class Video
+    public class Video:Base.VersionedEntity<int> 
     {
         public int orderno { get; set; }
         public string title { get; set; }
@@ -28,7 +28,7 @@ namespace TourInfo.Domain.DomainModel.Video
         public DateTime createtime { get; set; }
         public DateTime updatetime { get; set; }
         public bool deleteflag { get; set; }
-        public int id { get; set; }
+       
     }
 
     public class Data

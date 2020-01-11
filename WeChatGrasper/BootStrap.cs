@@ -41,9 +41,10 @@ namespace TourInfo.Application.DataGrasperConsole
             string rapi_initurl = Configuration.GetValue<string>("Rapi:initurl");
             string rapi_syncurl = Configuration.GetValue<string>("Rapi:syncurl");
             string RapiLocalSavedPath = Configuration.GetValue<string>("Rapi:RapiLocalSavedPath");
+            string video_baseurl = Configuration.GetValue<string>("Video:baseUrl");
             containerBuilder.RegisterModule(new TourInfo.Domain.TourInfoDomainAutofactModel
                (zbtaTitleImageBaseUrl, zbtaDetailImageBaseUrl, ewqyImageBaseUrl, ewqyLocalSavedPath, zbtaLocalSavedPath
-                , rapi_initurl, rapi_syncurl, rapi_tokenurl, rapi_appid, rapi_secret, RapiLocalSavedPath));
+                , rapi_initurl, rapi_syncurl, rapi_tokenurl, rapi_appid, rapi_secret, RapiLocalSavedPath, video_baseurl));
             containerBuilder.RegisterModule(new  Infrastracture.TourinfoInstallerAutofacModule
                (connectionString));
             var container = containerBuilder.Build();

@@ -9,6 +9,7 @@ using TourInfo.Domain.TourNews;
 using TourInfo.Domain.DomainModel.Rapi;
 using TourInfo.Domain.DomainModel.EWQY;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using TourInfo.Domain.DomainModel.Video;
 
 namespace TourInfo.Infrastracture.Repository.EFCore
 {
@@ -148,6 +149,8 @@ namespace TourInfo.Infrastracture.Repository.EFCore
         public DbSet<Pubunittag> Pubunittags { get; set; }
         public DbSet<Pubmediainfo> Pubmediainfos { get; set; }
         public DbSet<Pubinfounitchild> Pubinfounitchilds { get; set; }
+
+        public DbSet<Video> Videos { get;set;}
 
 
     }

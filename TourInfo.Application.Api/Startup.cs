@@ -73,11 +73,12 @@ namespace TourInfo.Application.Api
             string rapi_initurl = Configuration.GetValue<string>("Rapi:initurl");
             string rapi_syncurl = Configuration.GetValue<string>("Rapi:syncurl");
             string RapiLocalSavedPath = Configuration.GetValue<string>("Rapi:RapiLocalSavedPath");
+            string video_baseurl = Configuration.GetValue<string>("Video:baseUrl");
             var containerBuilder = new Autofac.ContainerBuilder();
             containerBuilder.Populate(services);
             containerBuilder.RegisterModule(new TourInfo.Domain.TourInfoDomainAutofactModel
                (zbtaTitleImageBaseUrl, zbtaDetailImageBaseUrl, ewqyImageBaseUrl, ewqyLocalSavedPath, zbtaLocalSavedPath
-                , rapi_initurl, rapi_syncurl, rapi_tokenurl, rapi_appid, rapi_secret, RapiLocalSavedPath));
+                , rapi_initurl, rapi_syncurl, rapi_tokenurl, rapi_appid, rapi_secret, RapiLocalSavedPath, video_baseurl));
             containerBuilder.RegisterModule(new TourInfo.Infrastracture.TourinfoInstallerAutofacModule
                (connectionString));
             var container = containerBuilder.Build();
@@ -92,10 +93,10 @@ namespace TourInfo.Application.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            //if (env.IsDevelopment())
+            //{
+                 app.UseDeveloperExceptionPage();
+            //}
 
             app.UseMvc();
         }

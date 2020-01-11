@@ -10,6 +10,7 @@ using TourInfo.Domain.EWQY;
 using TourInfo.Domain.TourNews;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using TourInfo.Domain.Application.Video;
 
 namespace TourInfo.Application.Api.Controllers
 {
@@ -21,6 +22,7 @@ namespace TourInfo.Application.Api.Controllers
         IZBTAApplication zBTAApplication;
         IEWQYApplication eWQYApplication;
         IRapiApplication  rapiApplication;
+        IVideoApplication  videoApplication;
         IDataService dataService;
         IServiceProvider serviceProvider;
         ILogger<TourInfoController> logger;
@@ -28,13 +30,14 @@ namespace TourInfo.Application.Api.Controllers
             IRapiApplication rapiApplication, 
             IZBTAApplication zBTAApplication, 
             IEWQYApplication eWQYApplication,
-            
+            IVideoApplication videoApplication,
             IDataService dataService)
         {
             this.logger=logger;
            this.rapiApplication = rapiApplication;
             this.zBTAApplication = zBTAApplication;
             this.eWQYApplication = eWQYApplication;
+            this.videoApplication=videoApplication;
             this.dataService = dataService;
             this.serviceProvider=serviceProvider;
         }
@@ -63,7 +66,8 @@ namespace TourInfo.Application.Api.Controllers
           //  var rapiApplication = serviceProvider.GetService<IRapiApplication>();
             zBTAApplication.Graspe(_dateVersion);
             eWQYApplication.Graspe(_dateVersion);
-            logger.LogInformation("typeInfoT抓取完毕");
+            videoApplication.Graspe(_dateVersion);
+            logger.LogInformation(" 抓取完毕");
             //var typeInfoThread = new System.Threading.Thread(() => {
 
                
@@ -85,7 +89,7 @@ namespace TourInfo.Application.Api.Controllers
             //rapiWorker.RunWorkerCompleted += RapiWorker_RunWorkerCompleted;
             //rapiWorker.RunWorkerAsync(argument: _dateVersion);
 
-            return Content("已在后台执行");
+            return Content("抓取完毕");
 
         }
         private   void RapiWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
