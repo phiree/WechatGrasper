@@ -42,9 +42,9 @@ namespace TourInfo.Domain
         /// </summary>
         public int credits { get; set; }
         /// <summary>
-        /// 是否已经被分享（暂时不用）
+        /// 是否已经被分享（暂时不用）, 0 表示 false, 1 表示true
         /// </summary>
-        public bool isShared { get; set; }
+        public int isShared { get; set; }
          
         public override string CalculateFingerprint(IMD5Helper mD5Helper)
         {

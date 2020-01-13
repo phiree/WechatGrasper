@@ -153,6 +153,8 @@ namespace TourInfo.Domain.DomainModel
         }
         public dynamic CreateSyncData(string version)
         {
+            
+
             var allActivity = activityRepository.GetAllAfterVersion(version).Select(x =>_mapper.Map<SqliteActivity>(x)  );
 
          //如果是同步 则需要加上图片跟路径

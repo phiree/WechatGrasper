@@ -10,6 +10,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DomainModel\新文件夹\**" />
+    <EmbeddedResource Remove="DomainModel\新文件夹\**" />
+    <None Remove="DomainModel\新文件夹\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="5.0.1" />
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="AutoMapper.Contrib.Autofac.DependencyInjection" Version="2.0.0" />
@@ -17,10 +23,6 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="sqlite-net-pcl" Version="1.6.292" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="DomainModel\新文件夹\" />
   </ItemGroup>
 
 </Project>

@@ -357,6 +357,11 @@
             <param name="logger"></param>
             <param name="longitudeFirst">经度在前面</param>
         </member>
+        <member name="T:TourInfo.Domain.DomainModel.PagedDataFetcher`2">
+            <summary>
+            抓取一个接口的数据, 并判断其是否过期
+            </summary>
+        </member>
         <member name="T:TourInfo.Domain.Activity">
             <summary>
             活动列表项
@@ -399,7 +404,7 @@
         </member>
         <member name="P:TourInfo.Domain.Activity.isShared">
             <summary>
-            是否已经被分享（暂时不用）
+            是否已经被分享（暂时不用）, 0 表示 false, 1 表示true
             </summary>
         </member>
         <member name="T:TourInfo.Domain.CompanyVenue">
