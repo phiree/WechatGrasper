@@ -69,7 +69,7 @@ namespace TourInfo.Application.Api.Controllers
         public ActionResult<string> GetZbtaNewsDetail(string id)
         {
             string localizedDetail = zBTAApplication.GetNewsDetail(id);//.Replace("DownloadImages","/DownloadImages");
-            return Content(localizedDetail, "text/html");
+            return Content(localizedDetail, "text/html",System.Text.Encoding.Default);
 
         }
 

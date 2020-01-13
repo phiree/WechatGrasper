@@ -118,8 +118,13 @@
     活动,场馆,资讯的信息结构和表结构一样.
     
 
+3 zbtanews新闻详情接口
 
- 
+3.1 接口url: 服务器地址/api/tourinfo/getzbtanewsdetail?id=[id]
+    例如 http://data.zbta.net:8087/api/tourinfo/getzbtanewsdetail?id=1397
+
+3.2 返回: content-type为 text/html 的html页面. 包含文字,图片和内嵌样式.
+
 
 
         
