@@ -37,8 +37,15 @@ namespace TourInfo.Domain.TourNews
         /// <summary>
         /// 详情（富文本）
         /// </summary>
-        public string details { get; set; }
-        public string localizedDetails { get; set; }
+        public TextContainsImageUrls details { get; set; }
+
+        public void CorrectDetailImagePath() {
+            string original = details.OriginaText;
+             original = original.Replace("/ziboback/", string.Empty);
+            details.UpdateOriginalText( original);
+            
+        }
+         
         /// <summary>
         /// 创建者（暂时无用）
         /// </summary>

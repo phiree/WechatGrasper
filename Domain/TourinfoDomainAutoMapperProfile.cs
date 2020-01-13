@@ -45,7 +45,7 @@ namespace TourInfo.Domain
             CreateMap<ZbtaNews, SqliteZbtaNews>()
                 .ForMember(x => x.image, c => c.MapFrom( d =>d.image.LocalizedUrl))
                 .ForMember(x => x.imageOriginal, c => c.MapFrom(d => d.image.OriginalUrl))
-                .ForMember(x => x.details, c => c.MapFrom(d => d.localizedDetails));
+                .ForMember(x => x.details, c => c.MapFrom(d => d.details.ImageLocalizedText));
 
             CreateMap<Rapi.Projectinfo, SqliteProjectinfo>();
 

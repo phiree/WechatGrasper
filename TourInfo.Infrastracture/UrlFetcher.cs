@@ -12,44 +12,51 @@ namespace TourInfo.Infrastracture
     public class UrlFetcher : IUrlFetcher
     {
         ILogger<UrlFetcher> logger;
-        public UrlFetcher(ILogger<UrlFetcher> logger)
-        { 
-            this.logger=logger;
-            }
+        public UrlFetcher(ILoggerFactory loggerFactory)
+        {
+            this.logger = loggerFactory.CreateLogger<UrlFetcher>();
+        }
         public Task<string> FetchAsync(string url)
         {
+            logger.LogInformation("开始异步抓取:" + url);
             var webClient = new CookieAwareWebClient();
-            
+
             return webClient.DownloadStringTaskAsync(url);
+            //logger.LogInformation("抓取结果:" + result);
         }
-        public string PostWithJsonAsync(string url,string postJson)
+        public string PostWithJsonAsync(string url, string postJson)
         {
+            logger.LogInformation($"开始异步抓取.url[{url}],jsonParam[{postJson}]");
             var cli = new WebClient();
             cli.Headers[HttpRequestHeader.ContentType] = "application/json";
             var response = cli.UploadString(url, postJson);
+            logger.LogInformation("抓取结果" + response);
             return response;
         }
-        public Task FetchFile(string url,string fileName)
+        public Task FetchFile(string url, string fileName)
         {
+            logger.LogInformation($"开始抓取文件.url[{url}],filename6[{fileName}]");
             var webClient = new CookieAwareWebClient();
-            if(!string.IsNullOrEmpty(url)
+            if (!string.IsNullOrEmpty(url)
                 )
             {
-                try { 
-                webClient.DownloadFile(new Uri(url), fileName) ; 
-                    }
-                catch(System.Net.WebException webEx)
-                { 
-                    logger.LogError($"Web请求失败.url:[{url}],ex:[{webEx.Message}]");
-                    }
+                try
+                {
+                    webClient.DownloadFile(new Uri(url), fileName);
+                    logger.LogInformation($"抓取完成");
                 }
-
+                catch (System.Net.WebException webEx)
+                {
+                    logger.LogError($"Web请求失败.url:[{url}],ex:[{webEx.Message}]");
+                }
+            }
+           
             return Task.FromResult(0);
-        
-           // return webClient.DownloadStringTaskAsync(url);
+
+            // return webClient.DownloadStringTaskAsync(url);
         }
 
-        public async Task<string> FetchEWQYAsync(string url )
+        public async Task<string> FetchEWQYAsync(string url)
         {
             var webClient = new CookieAwareWebClient();
             var cookiesContainer = new CookieContainer();
@@ -64,7 +71,7 @@ namespace TourInfo.Infrastracture
         public async Task<string> FetchWithHeaderAsync(string url, IDictionary<string, string> header)
         {
             var webClient = new CookieAwareWebClient();
-            foreach(var kvp in header)
+            foreach (var kvp in header)
             {
                 webClient.Headers.Add(kvp.Key, kvp.Value);
             }

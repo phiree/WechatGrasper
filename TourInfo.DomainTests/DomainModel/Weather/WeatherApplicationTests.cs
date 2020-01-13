@@ -17,7 +17,7 @@ namespace TourInfo.Domain.DomainModel.Weather.Tests
         public void GetWeatherTest()
         {
             var fixture = new Fixture().Customize(new AutoMoqCustomization());
-            var logger = fixture.Freeze<Mock<ILogger<UrlFetcher>>>();
+            var logger = fixture.Freeze<Mock<ILoggerFactory>>();
           var  app=new WeatherApplication(new UrlFetcher(logger.Object));
             var weather=app.GetWeather();
             Console.Write(weather.weather);

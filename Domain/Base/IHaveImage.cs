@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+ 
 using System.Text;
 
 namespace TourInfo.Domain.Base
 {
-    public interface IHaveImage
-    {
-         /// <summary>
-         /// 图片源路径属性 和  本地化路径 属性对应关系
-         /// 如果不需要保存源地址，则key和value可以设置到同一个字段。
-         /// </summary>
-        IDictionary<string, string> ImageUrlPropertyMap { get; }
-    }
+ 
+    /// <summary>
+    /// 图片url
+    /// </summary>
     public class ImageUrl
     {
         public ImageUrl(string originalUrl) : this(originalUrl, string.Empty) { }
@@ -24,8 +21,51 @@ namespace TourInfo.Domain.Base
         { 
             this.LocalizedUrl=localizedUrl;
             }
+        /// <summary>
+        /// 原始地址
+        /// </summary>
         public string OriginalUrl { get; protected  set; }
+        /// <summary>
+        /// 下载到本地的地址.
+        /// </summary>
         public string LocalizedUrl { get; protected set; }
         
+    }
+
+    /// <summary>
+    /// 包含图片连接的文本
+    /// </summary>
+    public class TextContainsImageUrls
+    {
+        public TextContainsImageUrls(string originaText):this(originaText,string.Empty,string.Empty)
+        {
+        }
+        public TextContainsImageUrls(string originaText, string imageLocalizedText,string imageBaseUrl)
+        {
+            OriginaText = originaText;
+            ImageLocalizedText = imageLocalizedText;
+            this.ImageBaseUrl = imageBaseUrl;
+        }
+        public void UpdateImageLocalizedText(string imageLocalizedText)
+        {
+            this.ImageLocalizedText = imageLocalizedText;
+        }
+        public void UpdateOriginalText(string originalText)
+        {
+            this.OriginaText = originalText;
+        }
+        /// <summary>
+        /// 原始文本
+        /// </summary>
+        public string OriginaText { get; protected set; }
+        /// <summary>
+        /// 其中的文本本地化之后的文本
+        /// </summary>
+        public string ImageLocalizedText { get; protected set; }
+        /// <summary>
+        /// 图片跟路径
+        /// </summary>
+        
+        public string ImageBaseUrl { get; protected set; }
     }
 }

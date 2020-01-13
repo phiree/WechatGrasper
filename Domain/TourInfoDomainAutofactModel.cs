@@ -23,14 +23,14 @@ namespace TourInfo.Domain
         string zbtaTitleImageBaseUrl;
         string zbtaDetailImageBaseUrl;
         string ewqyImageBaseUrl;
-        string imageClientPath;
+        string zbtaImageClientPath, ewqyImageClientPath, rapiImageClientPath;
         string ewqyLocalSavedPath;
         string zbtaLocalSavedPath;
         string rapi_initurl, rapi_syncurl, rapi_tokenurl, rapi_appid, rapi_appsecret, rapi_localsavedpath;
         string video_baseurl;
         public TourInfoDomainAutofactModel(string zbtaTitleImageBaseUrl, string zbtaDetailImageBaseUrl
             , string ewqyImageBaseUrl, string ewqyLocalSavedPath, string zbtaLocalSavedPath,
-            string imageClientPath,
+            string zbtaImageClientPath,string ewqyImageClientPath,string rapiImageClientPath,
             string rapi_initurl, string rapi_syncurl, string rapi_tokenurl, string rapi_appid,
             string rapi_appsecret,string rapi_localsavedpath
             , string video_baseurl)
@@ -38,7 +38,9 @@ namespace TourInfo.Domain
             this.zbtaTitleImageBaseUrl = zbtaTitleImageBaseUrl;
             this.zbtaDetailImageBaseUrl = zbtaDetailImageBaseUrl;
             this.ewqyImageBaseUrl = ewqyImageBaseUrl;
-            this.imageClientPath = imageClientPath;
+            this.zbtaImageClientPath = zbtaImageClientPath;
+            this.ewqyImageClientPath = ewqyImageClientPath;
+            this.rapiImageClientPath = rapiImageClientPath;
             this.ewqyLocalSavedPath = ewqyLocalSavedPath;
             this.zbtaLocalSavedPath = zbtaLocalSavedPath;
             this.rapi_appid = rapi_appid;
@@ -53,8 +55,9 @@ namespace TourInfo.Domain
         {
             builder.RegisterType<WeatherApplication>().As<IWeatherApplication>()
                  ;
-            builder.RegisterType<ZBTAApplication>().As<IZBTAApplication>().WithParameter("imageClientPath", imageClientPath)
+            builder.RegisterType<ZBTAApplication>().As<IZBTAApplication>().WithParameter("imageClientPath", zbtaImageClientPath)
                 .WithParameter("titleImageBaseUrl", zbtaTitleImageBaseUrl)
+                .WithParameter("detailImageBaseUrl", zbtaDetailImageBaseUrl)
                  .WithParameter("localSavedPath", zbtaLocalSavedPath)
                 ;
             //builder.RegisterType<DetailImageLocalizer>().As<IDetailImageLocalizer>()
@@ -63,7 +66,7 @@ namespace TourInfo.Domain
             //   ;
 
             builder.RegisterType<EWQYApplication>().As<IEWQYApplication>()
-          .WithParameter("imageBaseUrl", ewqyImageBaseUrl).WithParameter("imageClientPath", imageClientPath)
+          .WithParameter("imageBaseUrl", ewqyImageBaseUrl).WithParameter("imageClientPath", ewqyImageClientPath)
           .WithParameter("localSavedPath", ewqyLocalSavedPath)
           ;
             builder.RegisterType<DataService>().As<IDataService>()
@@ -76,7 +79,7 @@ namespace TourInfo.Domain
                     .WithParameter("initUrl", rapi_initurl)
                     .WithParameter("syncUrl", rapi_syncurl)
                     .WithParameter("localSavedPath", rapi_localsavedpath)
-                     .WithParameter("imageClientPath", imageClientPath)
+                     .WithParameter("imageClientPath", rapiImageClientPath)
                     ;
             builder.RegisterType<TokenManager>().As<ITokenManager>()
                    .WithParameter("appid", rapi_appid)

@@ -43,6 +43,10 @@ namespace TourInfo.Infrastracture.Repository.EFCore
 
             modelBuilder.Entity<ZbtaNews>()
                 .OwnsOne(x => x.image);
+            modelBuilder.Entity<ZbtaNews>()
+               .OwnsOne(x => x.details);
+           
+             
 
 
             modelBuilder.Entity<Projectinfo>()

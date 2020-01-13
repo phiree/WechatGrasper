@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Text;
 using System.Text.RegularExpressions;
 using TourInfo.Domain.Base;
@@ -12,17 +13,21 @@ namespace TourInfo.Domain.TourNews
         IImageLocalizer imageLocalizer;
    //     IDetailImageLocalizer detailImageLocalizer;
         IInfoLocalizer<ZbtaNews,string> infoLocalizerZbtaNews;
-        string titleImageBaseUrl, localSavedPath,imageClientPath;
+        string titleImageBaseUrl,detailImageBaseUrl,localSavedPath,imageClientPath;
         IVersionedRepository<ZbtaNews, string> newsRepository;
+        ILogger logger;
         public ZBTAApplication(IUrlFetcher urlFetcher,
+            ILoggerFactory loggerFactory,
               //      IDetailImageLocalizer detailImageLocalizer,
         IVersionedRepository<ZbtaNews, string> newsRepository
-            ,string titleImageBaseUrl,string localSavedPath,string imageClientPath, IImageLocalizer imageLocalizer, IInfoLocalizer<ZbtaNews,string> infoLocalizerZbtaNews)
+            ,string titleImageBaseUrl,string detailImageBaseUrl, string localSavedPath,string imageClientPath, IImageLocalizer imageLocalizer, IInfoLocalizer<ZbtaNews,string> infoLocalizerZbtaNews)
         {
+            logger = loggerFactory.CreateLogger<ZBTAApplication>();
             this.infoLocalizerZbtaNews=infoLocalizerZbtaNews;
           //  this.detailImageLocalizer = detailImageLocalizer;
             this.imageLocalizer = imageLocalizer;
             this.titleImageBaseUrl = titleImageBaseUrl;
+            this.detailImageBaseUrl = detailImageBaseUrl;
            this.localSavedPath = localSavedPath;
             this.newsRepository = newsRepository;
             this.urlFetcher = urlFetcher;
@@ -31,17 +36,21 @@ namespace TourInfo.Domain.TourNews
         const string baseUrl = "http://www.zbta.net/informationW/getInformation.html?page=";
         public void Graspe(string _dateVersion)
         {
+            logger.LogInformation("开始抓取ZbtaNews");
             bool needContinue = true;
             int pageIndex = 1;
             while (needContinue)
             {
+                
                 string result = urlFetcher.FetchAsync(baseUrl + pageIndex).Result;
-
+                logger.LogInformation($"第{pageIndex}页抓取结果:" + result);
                 //转换错误,可能是因为json的Id是int类型
                
-                var jsonResult = Newtonsoft.Json.JsonConvert.DeserializeObject<ZbtaNewsResponse>(result,new ImageUrlJsonConverter());
+                var jsonResult = Newtonsoft.Json.JsonConvert.DeserializeObject<ZbtaNewsResponse>
+                    (result,new ImageUrlJsonConverter(),new TextContainsImageUrlsJsonConverter());
                 if (jsonResult.TourNews.Count == 0)
                 {
+                    logger.LogInformation("返回数据为空");
                     needContinue = false;
                     continue;
                 }
@@ -53,6 +62,8 @@ namespace TourInfo.Domain.TourNews
                         break;
                     }
                    bool isExisted=false;
+                    //特殊处理:
+                    news.details = new TextContainsImageUrls(news.details.OriginaText, string.Empty, detailImageBaseUrl);
                     infoLocalizerZbtaNews.Localize(news,titleImageBaseUrl, localSavedPath, imageClientPath,_dateVersion, out isExisted);
                     if(isExisted)
                     {
@@ -155,7 +166,7 @@ namespace TourInfo.Domain.TourNews
         public string GetNewsDetail(string id)
         {
             var news= newsRepository.Get(id);
-            return news.localizedDetails;
+            return news.details.ImageLocalizedText;
         }
     }
 }

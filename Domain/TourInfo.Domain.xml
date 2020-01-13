@@ -100,10 +100,39 @@
             基类
             </summary>
         </member>
-        <member name="P:TourInfo.Domain.Base.IHaveImage.ImageUrlPropertyMap">
+        <member name="T:TourInfo.Domain.Base.ImageUrl">
             <summary>
-            图片源路径属性 和  本地化路径 属性对应关系
-            如果不需要保存源地址，则key和value可以设置到同一个字段。
+            图片url
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.Base.ImageUrl.OriginalUrl">
+            <summary>
+            原始地址
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.Base.ImageUrl.LocalizedUrl">
+            <summary>
+            下载到本地的地址.
+            </summary>
+        </member>
+        <member name="T:TourInfo.Domain.Base.TextContainsImageUrls">
+            <summary>
+            包含图片连接的文本
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.Base.TextContainsImageUrls.OriginaText">
+            <summary>
+            原始文本
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.Base.TextContainsImageUrls.ImageLocalizedText">
+            <summary>
+            其中的文本本地化之后的文本
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.Base.TextContainsImageUrls.ImageBaseUrl">
+            <summary>
+            图片跟路径
             </summary>
         </member>
         <member name="P:TourInfo.Domain.Base.VersionedEntity`1.Version">

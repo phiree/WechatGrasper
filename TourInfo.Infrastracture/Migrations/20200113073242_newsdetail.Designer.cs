@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TourInfo.Infrastracture.Repository.EFCore;
 
 namespace TourInfo.Infrastracture.Migrations
 {
     [DbContext(typeof(TourInfoDbContext))]
-    partial class TourInfoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200113073242_newsdetail")]
+    partial class newsdetail
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -839,8 +841,6 @@ namespace TourInfo.Infrastracture.Migrations
                     b.OwnsOne("TourInfo.Domain.Base.TextContainsImageUrls", "details", b1 =>
                         {
                             b1.Property<string>("ZbtaNewsid");
-
-                            b1.Property<string>("ImageBaseUrl");
 
                             b1.Property<string>("ImageLocalizedText");
 
