@@ -34,6 +34,7 @@ namespace TourInfo.Application.DataGrasperConsole
             string ewqyImageBaseUrl = Configuration.GetValue<string>("ImageLocalizer:EwqyImageBaseUrl");
             string zbtaLocalSavedPath = Configuration.GetValue<string>("ImageLocalizer:ZbtaLocalSavedPath");
             string ewqyLocalSavedPath = Configuration.GetValue<string>("ImageLocalizer:EwqyLocalSavedPath");
+            string imageClientPath = Configuration.GetValue<string>("ImageLocalizer:ImageClientPath");
 
             string rapi_appid = Configuration.GetValue<string>("Rapi:appid");
             string rapi_secret = Configuration.GetValue<string>("Rapi:appsecret");
@@ -43,7 +44,7 @@ namespace TourInfo.Application.DataGrasperConsole
             string RapiLocalSavedPath = Configuration.GetValue<string>("Rapi:RapiLocalSavedPath");
             string video_baseurl = Configuration.GetValue<string>("Video:baseUrl");
             containerBuilder.RegisterModule(new TourInfo.Domain.TourInfoDomainAutofactModel
-               (zbtaTitleImageBaseUrl, zbtaDetailImageBaseUrl, ewqyImageBaseUrl, ewqyLocalSavedPath, zbtaLocalSavedPath
+               (zbtaTitleImageBaseUrl, zbtaDetailImageBaseUrl, ewqyImageBaseUrl, ewqyLocalSavedPath, zbtaLocalSavedPath,imageClientPath
                 , rapi_initurl, rapi_syncurl, rapi_tokenurl, rapi_appid, rapi_secret, RapiLocalSavedPath, video_baseurl));
             containerBuilder.RegisterModule(new  Infrastracture.TourinfoInstallerAutofacModule
                (connectionString));

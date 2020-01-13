@@ -1,10 +1,14 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
 
     <IsPackable>false</IsPackable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="DomainModel\ZBTA\DetailImageLocalizerTests.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="autofixture" Version="4.11.0" />
@@ -25,6 +29,10 @@
     <None Update="DomainModel\Rapi\initdata.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="DomainModel\ZBTA\" />
   </ItemGroup>
 
 </Project>

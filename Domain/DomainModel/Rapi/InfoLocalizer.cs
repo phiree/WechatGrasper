@@ -19,7 +19,7 @@ namespace TourInfo.Domain.DomainModel.Rapi
             
         }
          
-        public void Localize(T t,string originImageRootUrl, string localSavedPath,string version,out bool isExisted )
+        public void Localize(T t,string originImageRootUrl, string localSavedPath,string imageClientPath, string version,out bool isExisted )
         {
             isExisted=false;
             var  existed=repository.Get(t.id);
@@ -30,7 +30,7 @@ namespace TourInfo.Domain.DomainModel.Rapi
                 if (p.PropertyType == typeof(ImageUrl))
                 {
                     var imageUrl = (ImageUrl)p.GetValue(t);
-                    imageUrl.UpdateLocalizedUrl(imageLocalizer.Localize(originImageRootUrl+imageUrl.OriginalUrl, localSavedPath));
+                    imageUrl.UpdateLocalizedUrl(imageLocalizer.Localize(originImageRootUrl+imageUrl.OriginalUrl, localSavedPath,imageClientPath));
                     p.SetValue(t, imageUrl);
                 }
                 else if (p.PropertyType.IsAssignableFrom(typeof(IList<ImageUrl>)) 
@@ -42,7 +42,7 @@ namespace TourInfo.Domain.DomainModel.Rapi
                     foreach (var itemP in arrayP)
                     {
                         var imageUrl = (ImageUrl)itemP;
-                        imageUrl.UpdateLocalizedUrl(imageLocalizer.Localize(originImageRootUrl+imageUrl.OriginalUrl, localSavedPath));
+                        imageUrl.UpdateLocalizedUrl(imageLocalizer.Localize(originImageRootUrl+imageUrl.OriginalUrl, localSavedPath,imageClientPath));
                         //string localizedImage = imageLocalizer.Localize(imageUrl.OriginalUrl, localSavedPath);
                         //p.SetValue(t, new ImageUrl(imageUrl.OriginalUrl, localizedImage));
                         imageUrls.Add(imageUrl);

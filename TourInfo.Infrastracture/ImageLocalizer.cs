@@ -17,7 +17,8 @@ namespace TourInfo.Infrastracture
             this.urlFetcher = urlFetcher;
             
         }
-        public string Localize( string remotePicUrl, string localSavedPath)
+   
+        public string Localize( string remotePicUrl, string localSavedPath,string clientPath)
         {
             string imgExt=Path.GetExtension(remotePicUrl);
             imgExt=string.IsNullOrEmpty(imgExt)?".jpg":imgExt;
@@ -29,7 +30,7 @@ namespace TourInfo.Infrastracture
 
             string imageName = Guid.NewGuid() + imgExt;
             string imageFullName =imageLocalDirectory+imageName;
-            string imageReletiveName = localSavedPath + imageName;
+            string imageReletiveName = clientPath + imageName;
               urlFetcher.FetchFile(remotePicUrl, imageFullName);
             return imageReletiveName;            
         }

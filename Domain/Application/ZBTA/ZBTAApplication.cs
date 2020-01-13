@@ -3,30 +3,30 @@ using System.Text;
 using System.Text.RegularExpressions;
 using TourInfo.Domain.Base;
 using TourInfo.Domain.DomainModel.Rapi;
-using TourInfo.Domain.DomainModel.ZBTA;
-
+ 
 namespace TourInfo.Domain.TourNews
 {
     public class ZBTAApplication : IZBTAApplication
     {
         IUrlFetcher urlFetcher;
         IImageLocalizer imageLocalizer;
-        IDetailImageLocalizer detailImageLocalizer;
+   //     IDetailImageLocalizer detailImageLocalizer;
         IInfoLocalizer<ZbtaNews,string> infoLocalizerZbtaNews;
-        string titleImageBaseUrl, localSavedPath;
+        string titleImageBaseUrl, localSavedPath,imageClientPath;
         IVersionedRepository<ZbtaNews, string> newsRepository;
         public ZBTAApplication(IUrlFetcher urlFetcher,
-                    IDetailImageLocalizer detailImageLocalizer,
+              //      IDetailImageLocalizer detailImageLocalizer,
         IVersionedRepository<ZbtaNews, string> newsRepository
-            ,string titleImageBaseUrl,string localSavedPath, IImageLocalizer imageLocalizer, IInfoLocalizer<ZbtaNews,string> infoLocalizerZbtaNews)
+            ,string titleImageBaseUrl,string localSavedPath,string imageClientPath, IImageLocalizer imageLocalizer, IInfoLocalizer<ZbtaNews,string> infoLocalizerZbtaNews)
         {
             this.infoLocalizerZbtaNews=infoLocalizerZbtaNews;
-            this.detailImageLocalizer = detailImageLocalizer;
+          //  this.detailImageLocalizer = detailImageLocalizer;
             this.imageLocalizer = imageLocalizer;
             this.titleImageBaseUrl = titleImageBaseUrl;
            this.localSavedPath = localSavedPath;
             this.newsRepository = newsRepository;
             this.urlFetcher = urlFetcher;
+            this.imageClientPath = imageClientPath;
         }
         const string baseUrl = "http://www.zbta.net/informationW/getInformation.html?page=";
         public void Graspe(string _dateVersion)
@@ -53,7 +53,7 @@ namespace TourInfo.Domain.TourNews
                         break;
                     }
                    bool isExisted=false;
-                    infoLocalizerZbtaNews.Localize(news,titleImageBaseUrl, localSavedPath,_dateVersion,out isExisted);
+                    infoLocalizerZbtaNews.Localize(news,titleImageBaseUrl, localSavedPath, imageClientPath,_dateVersion, out isExisted);
                     if(isExisted)
                     {
                         needContinue=false;
@@ -151,5 +151,11 @@ namespace TourInfo.Domain.TourNews
   ]
 }
          */
+
+        public string GetNewsDetail(string id)
+        {
+            var news= newsRepository.Get(id);
+            return news.localizedDetails;
+        }
     }
 }

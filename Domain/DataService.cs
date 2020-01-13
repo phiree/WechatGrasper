@@ -33,7 +33,7 @@ namespace TourInfo.Domain.DomainModel
         IVersionedRepository<Typeinfo, int> TypeinfoRepository;
         IVersionedRepository<Typepic, int> TypepicRepository;
         IVersionedRepository<Typetag, int> TypetagRepository;
-
+        IVersionedRepository<Video.Video, int> VideoRepository;
 
 
         ISqliteTableCreater<SqliteActivity> sqliteActivityTableCreator;
@@ -67,7 +67,7 @@ namespace TourInfo.Domain.DomainModel
         IVersionedRepository<Typeinfo, int> TypeinfoRepository,
         IVersionedRepository<Typepic, int> TypepicRepository,
         IVersionedRepository<Typetag, int> TypetagRepository,
-
+        IVersionedRepository<Video.Video, int> VideoRepository,
 
         IVersionedRepository<Activity, string> activityRepository,
             IVersionedRepository<CompanyVenueType, string> companyVenueTypeRepository
@@ -113,7 +113,7 @@ namespace TourInfo.Domain.DomainModel
             this.TypeinfoRepository = TypeinfoRepository;
             this.TypepicRepository = TypepicRepository;
             this.TypetagRepository = TypetagRepository;
-
+           this. VideoRepository=VideoRepository;
 
 
             this.SqliteProjectinfoCreator = SqliteProjectinfoCreator;
@@ -128,12 +128,13 @@ namespace TourInfo.Domain.DomainModel
             this.SqliteVideoCreator = SqliteVideoCreator;
             this.SqliteSystemSettingCreator = SqliteSystemSettingCreator;
         }
-        public void CreateInitData()
+        public void CreateInitData(string version)
         {
 
 
-
-            var sqliteDbConn = sqliteDatabaseCreater.Create(Environment.CurrentDirectory + "..\\TourInfo.db3");
+            var sqliteDirectory=new System.IO.DirectoryInfo(Environment.CurrentDirectory).Parent;
+           using( var sqliteDbConn = sqliteDatabaseCreater.Create( sqliteDirectory.FullName + "\\TourInfo.db3"))
+            { 
             var allCompanyVenues=companyVenueRepository.GetAll();
             sqliteActivityTableCreator.CreateTable(sqliteDbConn, _mapper.Map<IList<SqliteActivity>>(activityRepository.GetAll()));
             sqliteCompanyVenueTableCreator.CreateTable(sqliteDbConn, _mapper.Map<IList<SqliteCompanyVenue>>(allCompanyVenues));
@@ -148,8 +149,9 @@ namespace TourInfo.Domain.DomainModel
             SqliteTypeinfoCreator.CreateTable(sqliteDbConn, _mapper.Map<IList<SqliteTypeinfo>>(TypeinfoRepository.GetAll()));
             SqliteTypepicCreator.CreateTable(sqliteDbConn, _mapper.Map<IList<SqliteTypepic>>(TypepicRepository.GetAll()));
             SqliteTypetagCreator.CreateTable(sqliteDbConn, _mapper.Map<IList<SqliteTypetag>>(TypetagRepository.GetAll()));
-            SqliteVideoCreator.CreateTable(sqliteDbConn, _mapper.Map<IList<SqliteVideo>>(new List<Video.Video> { }));
-            SqliteSystemSettingCreator.CreateTable(sqliteDbConn, _mapper.Map<IList<SystemSetting>>(new List<SystemSetting> { }));
+            SqliteVideoCreator.CreateTable(sqliteDbConn, _mapper.Map<IList<SqliteVideo>>(VideoRepository.GetAll()));
+            SqliteSystemSettingCreator.CreateTable(sqliteDbConn, _mapper.Map<IList<SystemSetting>>(new List<SystemSetting> { new SystemSetting{LatestVersion=version } }));
+            }
         }
         public dynamic CreateSyncData(string version)
         {
@@ -158,7 +160,7 @@ namespace TourInfo.Domain.DomainModel
             var allActivity = activityRepository.GetAllAfterVersion(version).Select(x =>_mapper.Map<SqliteActivity>(x)  );
 
          //如果是同步 则需要加上图片跟路径
-            allActivity= allActivity.Select(x=>{x.thumbnailKey=imageBaseUrl_Ewqy+x.thumbnailKey;return x;});
+            allActivity= allActivity.Select(x=>{x.thumbnailKey=imageBaseUrl_Ewqy+x.thumbnailKey; return x;});
             var allCompanyVenue = companyVenueRepository.GetAllAfterVersion(version).Select(x => _mapper.Map<SqliteCompanyVenue>(x));
             allCompanyVenue = allCompanyVenue.Select(x => { x.thumbnailKey = imageBaseUrl_Ewqy + x.thumbnailKey; return x; });
             var allZbtaNews = zbtaNewsRepository.GetAllAfterVersion(version).Select(x => _mapper.Map<SqliteZbtaNews>(x) );
@@ -167,8 +169,7 @@ namespace TourInfo.Domain.DomainModel
 
             allZbtaNews = allZbtaNews.Select(x => { x.imageOriginal = imageBaseUrl_Zbta + x.imageOriginal; return x; });
             var weather=weatherApplication.GetWeather();
-
-
+            
             return new SyncDataModel
             {
                 data = new SyncDataModelData
@@ -187,11 +188,49 @@ namespace TourInfo.Domain.DomainModel
                     Typefields = _mapper.Map<IList<SqliteTypefield>>(TypefieldRepository.GetAllAfterVersion(version)),
                     Typeinfos = _mapper.Map<IList<SqliteTypeinfo>>(TypeinfoRepository.GetAllAfterVersion(version)),
                     Typepics = _mapper.Map<IList<SqliteTypepic>>(TypepicRepository.GetAllAfterVersion(version)),
-                    Typetags = _mapper.Map<IList<SqliteTypetag>>(TypetagRepository.GetAllAfterVersion(version))
+                    Typetags = _mapper.Map<IList<SqliteTypetag>>(TypetagRepository.GetAllAfterVersion(version)),
+                    Videos = _mapper.Map<IList<SqliteVideo>>(VideoRepository.GetAllAfterVersion(version))
                 }
             };
         }
+        public dynamic CreateSyncDataForTest()
+        {
+            var allActivity = activityRepository.GetAll().Take(2).Select(x => _mapper.Map<SqliteActivity>(x));
 
+            //如果是同步 则需要加上图片跟路径
+            allActivity = allActivity.Select(x => { x.thumbnailKey = imageBaseUrl_Ewqy + x.thumbnailKey; return x; });
+            var allCompanyVenue = companyVenueRepository.GetAll().Take(2).Select(x => _mapper.Map<SqliteCompanyVenue>(x));
+            allCompanyVenue = allCompanyVenue.Select(x => { x.thumbnailKey = imageBaseUrl_Ewqy + x.thumbnailKey; return x; });
+            var allZbtaNews = zbtaNewsRepository.GetAll().Take(2).Select(x => _mapper.Map<SqliteZbtaNews>(x));
+            var allCompanyVenueType = companyVenueTypeRepository.GetAll().Take(2).Select(x => _mapper.Map<SqliteCompanyVenueType>(x));
+
+
+            allZbtaNews = allZbtaNews.Select(x => { x.imageOriginal = imageBaseUrl_Zbta + x.imageOriginal; return x; });
+            var weather = weatherApplication.GetWeather();
+
+            return new SyncDataModel
+            {
+                data = new SyncDataModelData
+                {
+                    Activities = allActivity,
+                    CompanyVenues = allCompanyVenue,
+                    CompanyVenueTypes = allCompanyVenueType,
+                    ZbtaNews = allZbtaNews,
+                    Weather = weather,
+                    Projectinfos = _mapper.Map<IEnumerable<SqliteProjectinfo>>(projectinfoRepository.GetAll().Take(2)),
+
+                    Pubinfounitchilds = _mapper.Map<IList<SqlitePubinfounitchild>>(PubinfounitchildRepository.GetAll().Take(2)),
+                    Pubinfounits = _mapper.Map<IList<SqlitePubinfounit>>(PubinfounitRepository.GetAll().Take(2)),
+                    Pubmediainfos = _mapper.Map<IList<SqlitePubmediainfo>>(PubmediainfoRepository.GetAll().Take(2)),
+                    Pubunittags = _mapper.Map<IList<SqlitePubunittag>>(PubunittagRepository.GetAll().Take(2)),
+                    Typefields = _mapper.Map<IList<SqliteTypefield>>(TypefieldRepository.GetAll().Take(2)),
+                    Typeinfos = _mapper.Map<IList<SqliteTypeinfo>>(TypeinfoRepository.GetAll().Take(2)),
+                    Typepics = _mapper.Map<IList<SqliteTypepic>>(TypepicRepository.GetAll().Take(2)),
+                    Typetags = _mapper.Map<IList<SqliteTypetag>>(TypetagRepository.GetAll().Take(2)),
+                    Videos = _mapper.Map<IList<SqliteVideo>>(VideoRepository.GetAll().Take(2))
+                }
+            };
+        }
         public class SyncDataModel
         {
             public int code { get; set; }
@@ -216,7 +255,7 @@ namespace TourInfo.Domain.DomainModel
             public IEnumerable<SqliteTypefield> Typefields { get; set; }
             public IEnumerable<SqliteTypetag> Typetags { get; set; }
             public IEnumerable<SqliteTypeinfo> Typeinfos { get; set; }
-
+            public IEnumerable<SqliteVideo> Videos { get; set; }
         }
 
     }

@@ -4,6 +4,47 @@
         <name>TourInfo.Domain</name>
     </assembly>
     <members>
+        <!-- Badly formed XML comment ignored for member "P:TourInfo.Domain.Application.EWQY.ActivityModel.Version" -->
+        <member name="P:TourInfo.Domain.Application.EWQY.ActivityModel.Fingerprint">
+            <summary>
+            数据指纹，用于判断内容是否变更
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.Application.EWQY.ActivityModel.createTime">
+            <summary>
+            活动信息创建时间
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.Application.EWQY.ActivityModel.address">
+            <summary>
+            地址
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.Application.EWQY.ActivityModel.name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.Application.EWQY.ActivityModel.endTime">
+            <summary>
+            活动结束时间
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.Application.EWQY.ActivityModel.detail">
+            <summary>
+            活动详情
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.Application.EWQY.ActivityModel.credits">
+            <summary>
+            分享积分（暂时不用）
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.Application.EWQY.ActivityModel.isShared">
+            <summary>
+            是否已经被分享（暂时不用）, 0 表示 false, 1 表示true
+            </summary>
+        </member>
         <member name="F:TourInfo.Domain.EWQY.UrlCreator.PagedDetailUrlMap">
             <summary>
             
@@ -483,12 +524,13 @@
             图片
             </summary>
         </member>
-        <member name="M:TourInfo.Domain.IImageLocalizer.Localize(System.String,System.String)">
+        <member name="M:TourInfo.Domain.IImageLocalizer.Localize(System.String,System.String,System.String)">
             <summary>
             图片本地化
             </summary>
             <param name="remotePicUrl">远程图片地址</param>
-            <param name="localSavedPath">本地保存绝对路径</param>
+            <param name="localSavedPath">本地保存的相对(执行文件)路径</param>
+            <param name="clientPath">客户端使用的相对路径</param>
             <returns>本地图片相对地址</returns>
         </member>
         <member name="T:TourInfo.Domain.IUrlFetcher">

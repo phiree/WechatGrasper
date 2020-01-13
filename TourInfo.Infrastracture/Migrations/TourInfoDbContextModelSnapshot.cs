@@ -471,8 +471,7 @@ namespace TourInfo.Infrastracture.Migrations
 
             modelBuilder.Entity("TourInfo.Domain.DomainModel.Video.Video", b =>
                 {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("id");
 
                     b.Property<string>("Fingerprint");
 

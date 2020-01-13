@@ -9,8 +9,8 @@ using TourInfo.Infrastracture.Repository.EFCore;
 namespace TourInfo.Infrastracture.Migrations
 {
     [DbContext(typeof(TourInfoDbContext))]
-    [Migration("20200113023640_changeIsSharedToInt")]
-    partial class changeIsSharedToInt
+    [Migration("20200111175245_video")]
+    partial class video
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -473,8 +473,7 @@ namespace TourInfo.Infrastracture.Migrations
 
             modelBuilder.Entity("TourInfo.Domain.DomainModel.Video.Video", b =>
                 {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("id");
 
                     b.Property<string>("Fingerprint");
 
@@ -611,7 +610,7 @@ namespace TourInfo.Infrastracture.Migrations
 
                     b.Property<string>("endTime");
 
-                    b.Property<int>("isShared");
+                    b.Property<bool>("isShared");
 
                     b.Property<string>("name");
 

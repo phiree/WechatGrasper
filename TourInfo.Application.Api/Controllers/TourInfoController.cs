@@ -43,23 +43,40 @@ namespace TourInfo.Application.Api.Controllers
         }
 
         [HttpGet("InitData")]
-        public ActionResult<string> InitData()
+        public ActionResult<string> InitData(string version)
         {
 
-            dataService.CreateInitData();
+            dataService.CreateInitData(version);
             return new ActionResult<string>("初始化成功");
         }
         [HttpGet("SyncData")]
         public ActionResult<dynamic> SyncData(string version)
         {
-
+            string currentVersion = DateTime.Now.ToString("yyyyMMddhhmmss");
+            this.GraspeData(currentVersion);
+            dataService.CreateInitData(currentVersion);
           return  dataService.CreateSyncData(version);
             
-        }   
-        [HttpGet("GraspeData")]
-        public ActionResult<dynamic> GraspeData( )
+        }
+        [HttpGet("SyncDataTest")]
+        public ActionResult<dynamic> SyncDataTest( )
         {
-            string _dateVersion = DateTime.Now.ToString("yyyyMMddhhmmss");
+            
+            return dataService.CreateSyncDataForTest();
+
+        }
+        [HttpGet("GetZbtaNewsDetail")]
+        public ActionResult<string> GetZbtaNewsDetail(string id)
+        {
+
+            return Content( zBTAApplication.GetNewsDetail(id));
+
+        }
+
+        [HttpGet("GraspeData")]
+        public ActionResult<dynamic> GraspeData(string _dateVersion)
+        {
+           
 
           //  var rapiApplication = serviceProvider.GetService<IRapiApplication>();
             rapiApplication.Graspe(_dateVersion, false);

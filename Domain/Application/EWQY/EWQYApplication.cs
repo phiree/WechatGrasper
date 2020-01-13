@@ -27,12 +27,14 @@ namespace TourInfo.Domain.EWQY
         Random rm = new Random();
 
         IEWQYRepository eWQYRepository;
-        string imageBaseUrl, localSavedPath;
+        string imageBaseUrl, localSavedPath,imageClientPath;
         ILoggerFactory loggerFactory;
+        ILogger logger;
         ILogger<LocationStringJsonConverter> locationJsonConverterLogger;
         public EWQYApplication(ILoggerFactory loggerFactory,IUrlFetcher urlFetcher, IEWQYRepository eWQYRepository, ILogger<LocationStringJsonConverter> locationJsonConverterLogger
-            , string imageBaseUrl, string localSavedPath, IImageLocalizer imageLocalizer, IInfoLocalizer<EWQYPlaceTypeEntity, string> infoLocalizer)
+            , string imageBaseUrl, string localSavedPath,string imageClientPath, IImageLocalizer imageLocalizer, IInfoLocalizer<EWQYPlaceTypeEntity, string> infoLocalizer)
         {
+            logger=loggerFactory.CreateLogger< EWQYApplication >();
             this.loggerFactory=loggerFactory;
             this.locationJsonConverterLogger=locationJsonConverterLogger;
             this.infoLocalizer = infoLocalizer;
@@ -42,6 +44,7 @@ namespace TourInfo.Domain.EWQY
             this.urlFetcher = urlFetcher;
             this.eWQYRepository = eWQYRepository;
             this.imageBaseUrl = imageBaseUrl;
+            this.imageClientPath = imageClientPath;
 
 
         }
@@ -96,8 +99,16 @@ namespace TourInfo.Domain.EWQY
                    var existed=eWQYRepository.Get(data.id);
                     if (existed != null) { break;}
                     string detailUrl = urlCreator.CreateDetailUrl(basePageUrl, data.id);
-                    string detailResult = urlFetcher.FetchEWQYAsync(detailUrl).Result;
-                    var detail = JsonConvert.DeserializeObject<DetailResultWrapper<T>>(detailResult
+                    string detailResult=string.Empty;
+                    try
+                    { 
+                      detailResult = urlFetcher.FetchEWQYAsync(detailUrl).Result;
+                    }
+                    catch(Exception ex)
+                    { 
+                        logger.LogError("url获取失败:"+detailUrl);
+                        }
+                        var detail = JsonConvert.DeserializeObject<DetailResultWrapper<T>>(detailResult
                         , new ImageUrlJsonConverter(),
                        new LocationStringJsonConverter(locationJsonConverterLogger, true, ';')
                         );
@@ -105,7 +116,7 @@ namespace TourInfo.Domain.EWQY
 
                     detail.data.PlaceType = type.Value;
                     bool isExisted=false;
-                   infoLocalizer.Localize(detail.data,imageBaseUrl,localSavedPath,_dateVersion,out isExisted);
+                   infoLocalizer.Localize(detail.data,imageBaseUrl,localSavedPath,imageClientPath,_dateVersion,out isExisted);
                 }
 
             }

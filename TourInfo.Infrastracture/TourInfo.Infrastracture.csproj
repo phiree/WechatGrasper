@@ -11,6 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200111175041_video.cs" />
+    <Compile Remove="Migrations\20200111175041_video.Designer.cs" />
     <Compile Remove="Repository\ADONET\AdoNetRepository.cs" />
   </ItemGroup>
 

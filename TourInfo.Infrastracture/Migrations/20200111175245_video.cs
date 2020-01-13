@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TourInfo.Infrastracture.Migrations
 {
-    public partial class changeIsSharedToInt : Migration
+    public partial class video : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,8 +11,7 @@ namespace TourInfo.Infrastracture.Migrations
                 name: "Videos",
                 columns: table => new
                 {
-                    id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    id = table.Column<int>(nullable: false),
                     Version = table.Column<string>(nullable: true),
                     Fingerprint = table.Column<string>(nullable: true),
                     orderno = table.Column<int>(nullable: false),

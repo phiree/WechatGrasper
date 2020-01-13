@@ -15,6 +15,7 @@ namespace TourInfo.Domain
         public TourinfoDomainAutoMapperProfile()
         {
             CreateMap<Activity, SqliteActivity>()
+                .ForMember(x=>x.isShared,c=>c.MapFrom(d=>d.isShared?1:0))
                 .ForMember(x=>x.pictureKeys,
                            c=>c.MapFrom(
                                d=>d.pictureKeys==null?string.Empty:string.Join(";",d.pictureKeys.Select(x=>x.LocalizedUrl))))
@@ -84,6 +85,7 @@ namespace TourInfo.Domain
             CreateMap<Rapi.Typefield, SqliteTypefield>();
             CreateMap<Rapi.Typetag,SqliteTypetag>();
             CreateMap<Rapi.Typepic, SqliteTypepic>();
+            CreateMap<DomainModel.Video.Video, SqliteVideo>();
         }
     }
 }

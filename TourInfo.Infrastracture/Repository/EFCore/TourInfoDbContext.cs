@@ -38,8 +38,9 @@ namespace TourInfo.Infrastracture.Repository.EFCore
 
             modelBuilder.Entity<CompanyVenue>()
                 .OwnsOne(x => x.location).ToTable("CompanyVanueLocations");
-            
-              
+          
+
+
             modelBuilder.Entity<ZbtaNews>()
                 .OwnsOne(x => x.image);
 
@@ -129,7 +130,8 @@ namespace TourInfo.Infrastracture.Repository.EFCore
             modelBuilder.Entity<Pubinfounitchild>()
                 .HasIndex(x => x.childid);
 
-
+            modelBuilder.Entity<Video>()
+          .Property(x => x.id).ValueGeneratedNever();
 
         }
         // public DbSet<Entity<string>> Entities { get; set; }

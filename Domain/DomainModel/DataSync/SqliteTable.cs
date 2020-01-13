@@ -77,7 +77,7 @@ namespace TourInfo.Domain.DomainModel.DataSync
         /// <summary>
         /// (暂时忽略)是否已分享
         /// </summary>
-        public bool isShared { get; set; }
+        public int isShared { get; set; }
         /// <summary>
         /// 活动Id
         /// </summary>
