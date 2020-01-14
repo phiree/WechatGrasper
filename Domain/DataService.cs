@@ -10,6 +10,7 @@ using TourInfo.Domain.TourNews;
 using TourInfo.Domain.DomainModel.Rapi;
 using AutoMapper;
 using TourInfo.Domain.DomainModel.EWQY;
+using Microsoft.Extensions.Logging;
 
 namespace TourInfo.Domain.DomainModel
 {
@@ -55,7 +56,9 @@ namespace TourInfo.Domain.DomainModel
 
         string imageBaseUrl_Ewqy, imageBaseUrl_Zbta;
         Weather.IWeatherApplication weatherApplication;
+        ILogger logger;
         public DataService(
+            ILoggerFactory loggerFactory,
             Weather.IWeatherApplication weatherApplication,
             string imageBaseUrl_Ewqy,string imageBaseUrl_Zbta,
         IVersionedRepository<Projectinfo, int> projectinfoRepository,
@@ -91,6 +94,7 @@ namespace TourInfo.Domain.DomainModel
             , IMapper _mapper
             )
         {
+            this.logger = loggerFactory.CreateLogger<DataService>();
             this.weatherApplication=weatherApplication;
             this.imageBaseUrl_Ewqy=imageBaseUrl_Ewqy;
             this.imageBaseUrl_Zbta=imageBaseUrl_Zbta;
@@ -155,12 +159,12 @@ namespace TourInfo.Domain.DomainModel
         }
         public dynamic CreateSyncData(string version)
         {
-            
 
+            logger.LogInformation("开始获取活动信息");
             var allActivity = activityRepository.GetAllAfterVersion(version).Select(x =>_mapper.Map<SqliteActivity>(x)  );
-
-         //如果是同步 则需要加上图片跟路径
-            allActivity= allActivity.Select(x=>{x.thumbnailKey=imageBaseUrl_Ewqy+x.thumbnailKey; return x;});
+            logger.LogInformation("活动信息获得"+allActivity.Count()+"条");
+            //如果是同步 则需要加上图片跟路径
+            allActivity = allActivity.Select(x=>{x.thumbnailKey=imageBaseUrl_Ewqy+x.thumbnailKey; return x;});
             var allCompanyVenue = companyVenueRepository.GetAllAfterVersion(version).Select(x => _mapper.Map<SqliteCompanyVenue>(x));
             allCompanyVenue = allCompanyVenue.Select(x => { x.thumbnailKey = imageBaseUrl_Ewqy + x.thumbnailKey; return x; });
             var allZbtaNews = zbtaNewsRepository.GetAllAfterVersion(version).Select(x => _mapper.Map<SqliteZbtaNews>(x) );

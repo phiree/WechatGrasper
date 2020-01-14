@@ -113,7 +113,7 @@ namespace TourInfo.Domain.EWQY
                        new LocationStringJsonConverter(locationJsonConverterLogger, true, ';')
                         );
                     CopyValues(detail.data, data);
-
+                    detail.data.Version = _dateVersion;
                     detail.data.PlaceType = type.Value;
                     bool isExisted=false;
                    infoLocalizer.Localize(detail.data,imageBaseUrl,localSavedPath,imageClientPath,_dateVersion,out isExisted);

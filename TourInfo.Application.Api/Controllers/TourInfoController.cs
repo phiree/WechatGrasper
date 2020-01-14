@@ -52,11 +52,17 @@ namespace TourInfo.Application.Api.Controllers
         [HttpGet("SyncData")]
         public ActionResult<dynamic> SyncData(string version)
         {
+            logger.LogInformation("-----开始同步------");
             string currentVersion = DateTime.Now.ToString("yyyyMMddhhmmss");
+            logger.LogInformation("开始更新数据");
             this.GraspeData(currentVersion);
             dataService.CreateInitData(currentVersion);
-          return  dataService.CreateSyncData(version);
+            logger.LogInformation("开始更新sqlite文件");
             
+            var syncResult=  dataService.CreateSyncData(version);
+            logger.LogInformation("-----同步完成------");
+            return syncResult;
+
         }
         [HttpGet("SyncDataTest")]
         public ActionResult<dynamic> SyncDataTest( )

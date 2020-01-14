@@ -7,6 +7,7 @@ using TourInfo.Domain.Base;
 using Dapper;
 using TourInfo.Infrastracture.Repository.EFCore;
 using TourInfo.Domain;
+using Microsoft.Extensions.Logging;
 
 namespace TourInfo.Infrastracture.Repository.EFCore
 {
@@ -15,18 +16,22 @@ namespace TourInfo.Infrastracture.Repository.EFCore
  
     {
         IMD5Helper md5Helper;
+        ILogger logger;
 
-
-        public VersionedDataEFCoreRepository(TourInfoDbContext tourInfoDbContext, IMD5Helper md5Helper)
+        public VersionedDataEFCoreRepository(TourInfoDbContext tourInfoDbContext, IMD5Helper md5Helper,ILoggerFactory loggerFactory)
             :base(tourInfoDbContext)
-        { 
+        {
+            this.logger = loggerFactory.CreateLogger<VersionedDataEFCoreRepository<T,Key>>();
             this.md5Helper=md5Helper;
         }
 
         public IList<T> GetAllAfterVersion(string version)
         {
+            logger.LogInformation("开始获取 " + typeof(T));
             Func<T, bool> predicate = x => x.Version.CompareTo(version) > 0;
-            return FindList(predicate);
+            var result= FindList(predicate);
+            logger.LogInformation("结果数据条数: " + result.Count);
+            return result;
         }
 
         public void SaveOrUpdate(T entity, string newVersion)

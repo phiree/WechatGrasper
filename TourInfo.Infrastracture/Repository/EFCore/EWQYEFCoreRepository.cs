@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -13,8 +14,8 @@ namespace TourInfo.Infrastracture.Repository.EFCore
     {
       
         IMD5Helper mD5Helper;
-        public EWQYEFCoreRepository(TourInfoDbContext tourInfoDbContext, IMD5Helper mD5Helper)
-            :base(tourInfoDbContext, mD5Helper)
+        public EWQYEFCoreRepository(ILoggerFactory loggerFactory, TourInfoDbContext tourInfoDbContext, IMD5Helper mD5Helper)
+            :base(tourInfoDbContext, mD5Helper,loggerFactory)
         {
               
          
