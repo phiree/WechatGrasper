@@ -11,6 +11,7 @@ using TourInfo.Domain.TourNews;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using TourInfo.Domain.Application.Video;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace TourInfo.Application.Api.Controllers
 {
@@ -26,11 +27,13 @@ namespace TourInfo.Application.Api.Controllers
         IDataService dataService;
         IServiceProvider serviceProvider;
         ILogger<TourInfoController> logger;
+          IMemoryCache _cache;
         public TourInfoController(ILogger<TourInfoController> logger, IServiceProvider serviceProvider, 
             IRapiApplication rapiApplication, 
             IZBTAApplication zBTAApplication, 
             IEWQYApplication eWQYApplication,
             IVideoApplication videoApplication,
+            IMemoryCache cache,
             IDataService dataService)
         {
             this.logger=logger;
@@ -40,6 +43,7 @@ namespace TourInfo.Application.Api.Controllers
             this.videoApplication=videoApplication;
             this.dataService = dataService;
             this.serviceProvider=serviceProvider;
+            this._cache = cache;
         }
 
         [HttpGet("InitData")]
@@ -74,7 +78,16 @@ namespace TourInfo.Application.Api.Controllers
         [HttpGet("GetZbtaNewsDetail")]
         public ActionResult<string> GetZbtaNewsDetail(string id)
         {
+            
+            var zbtanewsCss = _cache.GetOrCreate<string>("zbtanewscss", entry =>
+            {
+                
+                entry.SlidingExpiration = TimeSpan.FromSeconds(1);
+               return  System.IO.File.ReadAllText(Environment.CurrentDirectory + "\\css\\zbtanews.css");
+            });
+
             string localizedDetail = zBTAApplication.GetNewsDetail(id);//.Replace("DownloadImages","/DownloadImages");
+              localizedDetail += zbtanewsCss;
             return Content(localizedDetail, "text/html",System.Text.Encoding.Default);
 
         }
