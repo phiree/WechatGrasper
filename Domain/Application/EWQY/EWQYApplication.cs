@@ -27,16 +27,16 @@ namespace TourInfo.Domain.EWQY
         Random rm = new Random();
 
         IEWQYRepository eWQYRepository;
-        string imageBaseUrl, localSavedPath,imageClientPath;
+        string imageBaseUrl, localSavedPath, imageClientPath;
         ILoggerFactory loggerFactory;
         ILogger logger;
         ILogger<LocationStringJsonConverter> locationJsonConverterLogger;
-        public EWQYApplication(ILoggerFactory loggerFactory,IUrlFetcher urlFetcher, IEWQYRepository eWQYRepository, ILogger<LocationStringJsonConverter> locationJsonConverterLogger
-            , string imageBaseUrl, string localSavedPath,string imageClientPath, IImageLocalizer imageLocalizer, IInfoLocalizer<EWQYPlaceTypeEntity, string> infoLocalizer)
+        public EWQYApplication(ILoggerFactory loggerFactory, IUrlFetcher urlFetcher, IEWQYRepository eWQYRepository, ILogger<LocationStringJsonConverter> locationJsonConverterLogger
+            , string imageBaseUrl, string localSavedPath, string imageClientPath, IImageLocalizer imageLocalizer, IInfoLocalizer<EWQYPlaceTypeEntity, string> infoLocalizer)
         {
-            logger=loggerFactory.CreateLogger< EWQYApplication >();
-            this.loggerFactory=loggerFactory;
-            this.locationJsonConverterLogger=locationJsonConverterLogger;
+            logger = loggerFactory.CreateLogger<EWQYApplication>();
+            this.loggerFactory = loggerFactory;
+            this.locationJsonConverterLogger = locationJsonConverterLogger;
             this.infoLocalizer = infoLocalizer;
             this.localSavedPath = localSavedPath;
             this.imageLocalizer = imageLocalizer;
@@ -50,7 +50,7 @@ namespace TourInfo.Domain.EWQY
         }
         public void Graspe(string _dateVersion)
         {
-            this._dateVersion = _dateVersion; 
+            this._dateVersion = _dateVersion;
             GraspePagedList<CompanyVenue>("venue/findVenueList.action", true, 0, pageSize, order: 0, type: PlaceType.Venue);
             GraspePagedList<CompanyVenue>("company/findCompanyList.action", true, 0, pageSize, order: 0, type: PlaceType.Company);
 
@@ -60,7 +60,7 @@ namespace TourInfo.Domain.EWQY
             GraspePagedList<Activity>("activity/findRegionActivityList.action", true, 0, pageSize, type: PlaceType.Venue);
             GraspePagedList<Activity>("activity/findRegionActivityList.action", true, 0, pageSize, type: PlaceType.Company);
 
-            
+
 
         }
 
@@ -80,7 +80,7 @@ namespace TourInfo.Domain.EWQY
 
             //  contentHandler.HandlerList(result);
             var jsonResult = Newtonsoft.Json.JsonConvert.DeserializeObject<ListResultWrapper<T>>(result,
-                new ImageUrlJsonConverter(), new LocationDoubleArrayJsonConverter(loggerFactory,true)
+                new ImageUrlJsonConverter(), new LocationDoubleArrayJsonConverter(loggerFactory, true)
                 );
             var status = jsonResult.status;// jsonResult["status"];
             if (status != 0)
@@ -90,33 +90,35 @@ namespace TourInfo.Domain.EWQY
             {
                 System.Threading.Thread.Sleep(500 + rm.Next(1, 100));
                 if (!hasDetailPage)
-                {data.Version=_dateVersion;
-                    data.PlaceType=type.Value;
+                {
+                    data.Version = _dateVersion;
+                    data.PlaceType = type.Value;
                     eWQYRepository.InsertOrUpdate(data);
                 }
                 else
                 {
-                   var existed=eWQYRepository.Get(data.id);
-                    if (existed != null) { break;}
+                    var existed = eWQYRepository.Get(data.id);
+                    if (existed != null) { break; }
                     string detailUrl = urlCreator.CreateDetailUrl(basePageUrl, data.id);
-                    string detailResult=string.Empty;
+                    string detailResult = string.Empty;
                     try
-                    { 
-                      detailResult = urlFetcher.FetchEWQYAsync(detailUrl).Result;
+                    {
+                        detailResult = urlFetcher.FetchEWQYAsync(  detailUrl).Result;
                     }
-                    catch(Exception ex)
-                    { 
-                        logger.LogError("url获取失败:"+detailUrl);
-                        }
-                        var detail = JsonConvert.DeserializeObject<DetailResultWrapper<T>>(detailResult
-                        , new ImageUrlJsonConverter(),
-                       new LocationStringJsonConverter(locationJsonConverterLogger, true, ';')
-                        );
+                    catch (Exception ex)
+                    {
+                        logger.LogError("url获取失败:" + detailUrl);
+                        continue;
+                    }
+                    var detail = JsonConvert.DeserializeObject<DetailResultWrapper<T>>(detailResult
+                    , new ImageUrlJsonConverter(),
+                   new LocationStringJsonConverter(locationJsonConverterLogger, true, ';')
+                    );
                     CopyValues(detail.data, data);
                     detail.data.Version = _dateVersion;
                     detail.data.PlaceType = type.Value;
-                    bool isExisted=false;
-                   infoLocalizer.Localize(detail.data,imageBaseUrl,localSavedPath,imageClientPath,_dateVersion,out isExisted);
+                    bool isExisted = false;
+                    infoLocalizer.Localize(detail.data, imageBaseUrl, localSavedPath, imageClientPath, _dateVersion, out isExisted);
                 }
 
             }

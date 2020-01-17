@@ -28,10 +28,19 @@ namespace TourInfo.Infrastracture.Repository.EFCore
         public IList<T> GetAllAfterVersion(string version)
         {
             logger.LogInformation("开始获取 " + typeof(T));
-            Func<T, bool> predicate = x => x.Version.CompareTo(version) > 0;
-            var result= FindList(predicate);
-            logger.LogInformation("结果数据条数: " + result.Count);
-            return result;
+            try
+            {
+                Func<T, bool> predicate = x => x.Version.CompareTo(version) > 0;
+
+                var result = FindList(predicate);
+                logger.LogInformation("结果数据条数: " + result.Count);
+                return result;
+            }
+            catch {
+                string msg = $"获取新版本数据失败.目标类型:[{typeof(T)}].可能是该表对应的version为空";
+                logger.LogError(msg);
+                throw new Exception(msg);
+            }
         }
 
         public void SaveOrUpdate(T entity, string newVersion)
