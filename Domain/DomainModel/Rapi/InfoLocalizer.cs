@@ -32,12 +32,19 @@ namespace TourInfo.Domain.DomainModel.Rapi
                 if (p.PropertyType == typeof(ImageUrl))
                 {
                     var imageUrl = (ImageUrl)p.GetValue(t);
-                    imageUrl.UpdateLocalizedUrl(imageLocalizer.Localize(originImageRootUrl + imageUrl.OriginalUrl, localSavedPath, imageClientPath));
+                    if (imageUrl == null ||string.IsNullOrEmpty( imageUrl.OriginalUrl)) {
+                        imageUrl = ImageUrl.Null;
+                    }
+                    else
+                    {
+                        imageUrl.UpdateLocalizedUrl(imageLocalizer.Localize(originImageRootUrl + imageUrl.OriginalUrl, localSavedPath, imageClientPath));
+
+                    }
                     p.SetValue(t, imageUrl);
                 }
-                else if (p.PropertyType == typeof(TextContainsImageUrls))
+                else if (p.PropertyType == typeof(ImageUrlsInText))
                 {
-                    var imageUrl = (TextContainsImageUrls)p.GetValue(t);
+                    var imageUrl = (ImageUrlsInText)p.GetValue(t);
                     string pattern = "(?<=<img[^>]+src=\")[^\">]+(?=\")";
                     var matches = Regex.Matches(imageUrl.OriginaText, pattern);
                     var textWithLocalizedImageUrl = imageUrl.OriginaText;

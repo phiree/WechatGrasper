@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using TourInfo.Domain.Application.Video;
 using Microsoft.Extensions.Caching.Memory;
+using TourInfo.Domain.Application.WHY;
 
 namespace TourInfo.Application.Api.Controllers
 {
@@ -26,6 +27,7 @@ namespace TourInfo.Application.Api.Controllers
         IVideoApplication  videoApplication;
         IDataService dataService;
         IServiceProvider serviceProvider;
+         IWHYApplication wHYApplication;
         ILogger<TourInfoController> logger;
           IMemoryCache _cache;
         public TourInfoController(ILogger<TourInfoController> logger, IServiceProvider serviceProvider, 
@@ -33,9 +35,11 @@ namespace TourInfo.Application.Api.Controllers
             IZBTAApplication zBTAApplication, 
             IEWQYApplication eWQYApplication,
             IVideoApplication videoApplication,
+            IWHYApplication wHYApplication,
             IMemoryCache cache,
             IDataService dataService)
         {
+            this.wHYApplication=wHYApplication;
             this.logger=logger;
            this.rapiApplication = rapiApplication;
             this.zBTAApplication = zBTAApplication;
@@ -52,6 +56,17 @@ namespace TourInfo.Application.Api.Controllers
 
             dataService.CreateInitData(version);
             return new ActionResult<string>("初始化成功");
+        }
+        [HttpGet("SyncWHYData")]
+        public ActionResult<string> SyncWHYData(string version)
+        {
+            logger.LogInformation("-----开始同步------");
+            string currentVersion = DateTime.Now.ToString("yyyyMMddhhmmss");
+            logger.LogInformation("开始更新数据");
+              wHYApplication.Grasp(currentVersion);
+            logger.LogInformation("-----同步完成------");
+            return "同步完成";
+
         }
         [HttpGet("SyncData")]
         public ActionResult<dynamic> SyncData(string version)

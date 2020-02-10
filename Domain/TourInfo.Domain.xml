@@ -115,22 +115,22 @@
             下载到本地的地址.
             </summary>
         </member>
-        <member name="T:TourInfo.Domain.Base.TextContainsImageUrls">
+        <member name="T:TourInfo.Domain.Base.ImageUrlsInText">
             <summary>
             包含图片连接的文本
             </summary>
         </member>
-        <member name="P:TourInfo.Domain.Base.TextContainsImageUrls.OriginaText">
+        <member name="P:TourInfo.Domain.Base.ImageUrlsInText.OriginaText">
             <summary>
             原始文本
             </summary>
         </member>
-        <member name="P:TourInfo.Domain.Base.TextContainsImageUrls.ImageLocalizedText">
+        <member name="P:TourInfo.Domain.Base.ImageUrlsInText.ImageLocalizedText">
             <summary>
             其中的文本本地化之后的文本
             </summary>
         </member>
-        <member name="P:TourInfo.Domain.Base.TextContainsImageUrls.ImageBaseUrl">
+        <member name="P:TourInfo.Domain.Base.ImageUrlsInText.ImageBaseUrl">
             <summary>
             图片跟路径
             </summary>
@@ -430,6 +430,11 @@
         <member name="T:TourInfo.Domain.DomainModel.PagedDataFetcher`2">
             <summary>
             抓取一个接口的数据, 并判断其是否过期
+            </summary>
+        </member>
+        <member name="T:TourInfo.Domain.DomainModel.WHY.WhyModel">
+            <summary>
+            文化云模型
             </summary>
         </member>
         <member name="T:TourInfo.Domain.Activity">

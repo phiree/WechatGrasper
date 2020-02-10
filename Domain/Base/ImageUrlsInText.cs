@@ -1,46 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
- 
+
 using System.Text;
 
 namespace TourInfo.Domain.Base
 {
- 
-    /// <summary>
-    /// 图片url
-    /// </summary>
-    public class ImageUrl
-    {
-        public ImageUrl(string originalUrl) : this(originalUrl, string.Empty) { }
-        public ImageUrl(string originalUrl, string localizedUrl)
-        {
-            OriginalUrl = originalUrl;
-            LocalizedUrl = localizedUrl;
-        }
-        public void UpdateLocalizedUrl(string localizedUrl)
-        { 
-            this.LocalizedUrl=localizedUrl;
-            }
-        /// <summary>
-        /// 原始地址
-        /// </summary>
-        public string OriginalUrl { get; protected  set; }
-        /// <summary>
-        /// 下载到本地的地址.
-        /// </summary>
-        public string LocalizedUrl { get; protected set; }
-        
-    }
 
     /// <summary>
     /// 包含图片连接的文本
     /// </summary>
-    public class TextContainsImageUrls
+    public class ImageUrlsInText
     {
-        public TextContainsImageUrls(string originaText):this(originaText,string.Empty,string.Empty)
+        public ImageUrlsInText(string originaText):this(originaText,string.Empty,string.Empty)
         {
         }
-        public TextContainsImageUrls(string originaText, string imageLocalizedText,string imageBaseUrl)
+        public ImageUrlsInText(string originaText, string imageLocalizedText,string imageBaseUrl)
         {
             OriginaText = originaText;
             ImageLocalizedText = imageLocalizedText;

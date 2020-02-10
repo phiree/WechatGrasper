@@ -25,11 +25,19 @@ namespace TourInfo.Domain
         string ewqyLocalSavedPath;
         string zbtaLocalSavedPath;
         string rapi_initurl, rapi_syncurl, rapi_tokenurl, rapi_appid, rapi_appsecret, rapi_localsavedpath;
+        string whyImageBaseUrl,whyImageSavedPath,whyImageClientPath,whyListRootUrl,whyDetailRootUrl;
         public TourInfoDomainAutofactModel_Web(string zbtaTitleImageBaseUrl, string zbtaDetailImageBaseUrl
             , string ewqyImageBaseUrl, string ewqyLocalSavedPath, string zbtaLocalSavedPath,
             string rapi_initurl, string rapi_syncurl, string rapi_tokenurl, string rapi_appid,
-            string rapi_appsecret,string rapi_localsavedpath)
+            string rapi_appsecret,string rapi_localsavedpath
+                 , string whyImageBaseUrl, string whyImageSavedPath, string whyImageClientPath
+                 , string whyListRootUrl, string whyDetailRootUrl)
         {
+            this.whyDetailRootUrl=whyDetailRootUrl;
+            this.whyImageBaseUrl=whyImageBaseUrl;
+            this.whyImageSavedPath=whyImageSavedPath;
+            this.whyImageClientPath=whyImageClientPath;
+            this.whyListRootUrl=whyListRootUrl;
             this.zbtaTitleImageBaseUrl = zbtaTitleImageBaseUrl;
             this.zbtaDetailImageBaseUrl = zbtaDetailImageBaseUrl;
             this.ewqyImageBaseUrl = ewqyImageBaseUrl;
@@ -56,8 +64,15 @@ namespace TourInfo.Domain
             //   ;
 
             builder.RegisterType<EWQYApplication>().As<IEWQYApplication>()
-          .WithParameter("imageBaseUrl", ewqyImageBaseUrl)
-          .WithParameter("localSavedPath", ewqyLocalSavedPath)
+          .WithParameter("listRootUrl", whyListRootUrl)
+          .WithParameter("detailRootUrl", whyDetailRootUrl)
+        /* string whyImageBaseUrl;
+      string whyImageSavedPath;
+      string whyImageClientPath;*/
+        .WithParameter("listRootUrl", whyImageBaseUrl)
+          .WithParameter("detailRootUrl", whyImageSavedPath)
+           .WithParameter("listRootUrl", whyImageClientPath)
+          
          .InstancePerDependency();
             builder.RegisterType<DataService>().As<IDataService>()
                  .WithParameter("imageBaseUrl_Ewqy", ewqyImageBaseUrl)

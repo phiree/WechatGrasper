@@ -76,12 +76,18 @@ namespace TourInfo.Application.Api
             string rapi_syncurl = Configuration.GetValue<string>("Rapi:syncurl");
             string RapiLocalSavedPath = Configuration.GetValue<string>("Rapi:RapiLocalSavedPath");
             string video_baseurl = Configuration.GetValue<string>("Video:baseUrl");
+            string whyDetailRootUrl = Configuration.GetValue<string>("WHY:whyDetailRootUrl"); 
+            string whyImageSavedPath = Configuration.GetValue<string>("WHY:whyImageSavedPath");
+            string whyListRootUrl = Configuration.GetValue<string>("WHY:whyListRootUrl");
+            string whyImageClientPath = Configuration.GetValue<string>("WHY:whyImageClientPath");
+            string whyImageBaseUrl = Configuration.GetValue<string>("WHY:whyImageBaseUrl");
             var containerBuilder = new Autofac.ContainerBuilder();
             containerBuilder.Populate(services);
             containerBuilder.RegisterModule(new TourInfo.Domain.TourInfoDomainAutofactModel
                (zbtaTitleImageBaseUrl, zbtaDetailImageBaseUrl, ewqyImageBaseUrl, ewqyLocalSavedPath, zbtaLocalSavedPath,zbtaImageClientPath
                ,ewqyImageClientPath,rapiImageClientPath
-                , rapi_initurl, rapi_syncurl, rapi_tokenurl, rapi_appid, rapi_secret, RapiLocalSavedPath, video_baseurl));
+                , rapi_initurl, rapi_syncurl, rapi_tokenurl, rapi_appid, rapi_secret, RapiLocalSavedPath, video_baseurl
+                ,whyDetailRootUrl,whyImageSavedPath,whyListRootUrl, whyImageClientPath,whyImageBaseUrl));
             containerBuilder.RegisterModule(new TourInfo.Infrastracture.TourinfoInstallerAutofacModule
                (connectionString));
             var container = containerBuilder.Build();

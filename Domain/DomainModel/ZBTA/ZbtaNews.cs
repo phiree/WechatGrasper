@@ -37,7 +37,7 @@ namespace TourInfo.Domain.TourNews
         /// <summary>
         /// 详情（富文本）
         /// </summary>
-        public TextContainsImageUrls details { get; set; }
+        public ImageUrlsInText details { get; set; }
 
         public void CorrectDetailImagePath() {
             string original = details.OriginaText;

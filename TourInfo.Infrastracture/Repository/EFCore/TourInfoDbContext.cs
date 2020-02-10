@@ -137,6 +137,11 @@ namespace TourInfo.Infrastracture.Repository.EFCore
             modelBuilder.Entity<Video>()
           .Property(x => x.id).ValueGeneratedNever();
 
+            modelBuilder.Entity<Domain.DomainModel.WHY.WhyModel>()
+         .OwnsOne(x => x.hposter);
+
+            modelBuilder.Entity<Domain.DomainModel.WHY.WhyModel>()
+         .OwnsOne(x => x.location);
         }
         // public DbSet<Entity<string>> Entities { get; set; }
         //public DbSet<VersionedEntity>  VersionedEntities { get; set; }
@@ -157,6 +162,7 @@ namespace TourInfo.Infrastracture.Repository.EFCore
         public DbSet<Pubinfounitchild> Pubinfounitchilds { get; set; }
 
         public DbSet<Video> Videos { get;set;}
+        public DbSet<Domain.DomainModel.WHY.WhyModel> WHYDetailOrganizations { get;set;}
 
 
     }

@@ -63,7 +63,7 @@ namespace TourInfo.Domain.TourNews
                     }
                    bool isExisted=false;
                     //特殊处理:
-                    news.details = new TextContainsImageUrls(news.details.OriginaText, string.Empty, detailImageBaseUrl);
+                    news.details = new ImageUrlsInText(news.details.OriginaText, string.Empty, detailImageBaseUrl);
                     infoLocalizerZbtaNews.Localize(news,titleImageBaseUrl, localSavedPath, imageClientPath,_dateVersion, out isExisted);
                     if(isExisted)
                     {

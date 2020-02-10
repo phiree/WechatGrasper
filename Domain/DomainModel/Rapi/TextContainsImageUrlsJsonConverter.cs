@@ -8,14 +8,14 @@ using TourInfo.Domain.Base;
 
 namespace TourInfo.Domain.DomainModel.Rapi
 {
-   public class TextContainsImageUrlsJsonConverter : JsonConverter<TextContainsImageUrls>
+   public class TextContainsImageUrlsJsonConverter : JsonConverter<ImageUrlsInText>
     {
-        public override TextContainsImageUrls ReadJson(JsonReader reader, Type objectType, TextContainsImageUrls existingValue, bool hasExistingValue, JsonSerializer serializer)
+        public override ImageUrlsInText ReadJson(JsonReader reader, Type objectType, ImageUrlsInText existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
-           return new TextContainsImageUrls((string)reader.Value);
+           return new ImageUrlsInText((string)reader.Value);
         }
 
-        public override void WriteJson(JsonWriter writer, TextContainsImageUrls value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, ImageUrlsInText value, JsonSerializer serializer)
         {
             writer.WriteValue(value.OriginaText);
         }

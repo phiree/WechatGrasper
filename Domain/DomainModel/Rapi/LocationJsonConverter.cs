@@ -5,6 +5,7 @@ using System.Text;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
+using TourInfo.Domain.Base;
 
 namespace TourInfo.Domain.DomainModel.Rapi
 {

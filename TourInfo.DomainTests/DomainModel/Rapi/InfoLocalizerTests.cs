@@ -18,7 +18,7 @@ namespace TourInfo.Domain.DomainModel.Rapi.Tests
         {
             var fixture = new Fixture().Customize(new AutoMoqCustomization());
             var mediaInfo = fixture.Freeze<DemoInfo>();
-            mediaInfo.NewsDetail =new TextContainsImageUrls( "<p style=\"text-align:center;\">\r\n\t<img src=\"/ziboback/upload/image/20200106/20200106093431_951.jpg\" alt=\"\" />  　1月4日，在桓台县新时代文明实践中心推出非遗、文旅商品年货大集展销活动。“齐风冬韵”淄博文化旅游惠民展销暨桓台县首届民俗文化艺术节、乐游桓台贺年会将持续开展系列活动，营造新时代新年味，丰富和活跃群众精神文化生活。<br />");
+            mediaInfo.NewsDetail =new ImageUrlsInText( "<p style=\"text-align:center;\">\r\n\t<img src=\"/ziboback/upload/image/20200106/20200106093431_951.jpg\" alt=\"\" />  　1月4日，在桓台县新时代文明实践中心推出非遗、文旅商品年货大集展销活动。“齐风冬韵”淄博文化旅游惠民展销暨桓台县首届民俗文化艺术节、乐游桓台贺年会将持续开展系列活动，营造新时代新年味，丰富和活跃群众精神文化生活。<br />");
             var imageLocalizer = fixture.Freeze<Mock<IImageLocalizer>>();
             string localSavedPath = "../download/img/";
             string imageClientPath = "download/img";
@@ -43,7 +43,7 @@ namespace TourInfo.Domain.DomainModel.Rapi.Tests
             public string Name { get; set; }
             public ImageUrl TitlePic { get; set; }
             public  IList<ImageUrl> DetailPics { get; set; }
-            public TextContainsImageUrls NewsDetail { get; set; }
+            public ImageUrlsInText NewsDetail { get; set; }
         }
     }
 }

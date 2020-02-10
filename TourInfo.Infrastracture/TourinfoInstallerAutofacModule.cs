@@ -34,8 +34,8 @@ namespace TourInfo.Infrastracture
                  
                 var opt = new DbContextOptionsBuilder<TourInfoDbContext>();
                 opt.EnableSensitiveDataLogging();
-                //opt.UseSqlServer(connectionString);
-                opt.UseSqlite(connectionString);
+                opt.UseSqlServer(connectionString);
+               // opt.UseSqlite(connectionString);
                 return new TourInfoDbContext(opt.Options);
             }).AsSelf().InstancePerDependency();
 
