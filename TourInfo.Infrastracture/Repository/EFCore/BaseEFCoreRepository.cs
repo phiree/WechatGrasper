@@ -109,5 +109,10 @@ namespace TourInfo.Infrastracture.Repository.EFCore
             tourInfoDbContext.Database.ExecuteSqlCommand(sql);
                
         }
+
+        public void Delete(T entity)
+        {
+           tourInfoDbContext.Remove(entity);
+        }
     }
 }

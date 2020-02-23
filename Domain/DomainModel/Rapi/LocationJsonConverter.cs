@@ -99,8 +99,14 @@ namespace TourInfo.Domain.DomainModel.Rapi
 
         public override void WriteJson(JsonWriter writer, Location value, JsonSerializer serializer)
         {
-
             writer.WriteValue(longitudeFirst ? new double[] { value.Longitude, value.Latitude } : new double[] { value.Latitude, value.Longitude });
+            /*
+            JArray array =new JArray();
+           var values= longitudeFirst ? new JValue[] { new JValue(value.Longitude), new JValue(value.Latitude) }
+            : new JValue[] { new JValue(value.Latitude), new JValue(value.Longitude) };
+            array.WriteTo(writer);*/
+
+
         }
     }
 }

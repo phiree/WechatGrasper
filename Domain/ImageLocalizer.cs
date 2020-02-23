@@ -4,21 +4,23 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using TourInfo.Domain;
-using TourInfo.Infrastracture;
+ 
 using System.IO;
-namespace TourInfo.Infrastracture
+namespace TourInfo.Domain
 {
     public class ImageLocalizer : IImageLocalizer
     {
         IUrlFetcher urlFetcher;
-     
-        public ImageLocalizer(IUrlFetcher urlFetcher )
+      string localSavedPath,  clientPath;
+        
+
+        public ImageLocalizer(IUrlFetcher urlFetcher, string localSavedPath, string clientPath )
         {
-            this.urlFetcher = urlFetcher;
-            
+            this.localSavedPath = localSavedPath;
+            this.clientPath = clientPath; this.urlFetcher = urlFetcher;
         }
-   
-        public string Localize( string remotePicUrl, string localSavedPath,string clientPath)
+
+        public string Localize( string remotePicUrl)
         {
             string imgExt=Path.GetExtension(remotePicUrl);
             imgExt=string.IsNullOrEmpty(imgExt)?".jpg":imgExt;

@@ -53,5 +53,7 @@ namespace TourInfo.Infrastracture.Repository.EFCore
                 Insert(entity);
             
         }
+
+      
     }
 }

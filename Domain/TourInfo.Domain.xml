@@ -135,6 +135,13 @@
             图片跟路径
             </summary>
         </member>
+        <member name="T:TourInfo.Domain.Base.ListMerger`2">
+            <summary>
+            合并两个List
+            </summary>
+            <typeparam name="T"></typeparam>
+            <typeparam name="Key"></typeparam>
+        </member>
         <member name="P:TourInfo.Domain.Base.VersionedEntity`1.Version">
             <summary>
             数据版本，格式yyyyMMddHHmmss
@@ -437,6 +444,11 @@
             文化云模型
             </summary>
         </member>
+        <member name="P:TourInfo.Domain.DomainModel.WHY.WhyModel.RapiId">
+            <summary>
+            rapi对应的Id
+            </summary>
+        </member>
         <member name="T:TourInfo.Domain.Activity">
             <summary>
             活动列表项
@@ -558,7 +570,7 @@
             图片
             </summary>
         </member>
-        <member name="M:TourInfo.Domain.IImageLocalizer.Localize(System.String,System.String,System.String)">
+        <member name="M:TourInfo.Domain.IImageLocalizer.Localize(System.String)">
             <summary>
             图片本地化
             </summary>
@@ -566,6 +578,11 @@
             <param name="localSavedPath">本地保存的相对(执行文件)路径</param>
             <param name="clientPath">客户端使用的相对路径</param>
             <returns>本地图片相对地址</returns>
+        </member>
+        <member name="T:TourInfo.Domain.ImageLocalizerToMd">
+            <summary>
+            图片到mdapi
+            </summary>
         </member>
         <member name="T:TourInfo.Domain.IUrlFetcher">
              <summary>

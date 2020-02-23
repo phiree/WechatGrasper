@@ -11,7 +11,8 @@ using TourInfo.Domain.DomainModel;
 using TourInfo.Domain.DomainModel.DataSync;
 using TourInfo.Domain.DomainModel.Rapi;
 using TourInfo.Domain.DomainModel.Weather;
- using TourInfo.Domain.EWQY;
+using TourInfo.Domain.DomainModel.WHY;
+using TourInfo.Domain.EWQY;
 using TourInfo.Domain.EWQY.DomainModel;
 using TourInfo.Domain.TourNews;
 
@@ -31,8 +32,9 @@ namespace TourInfo.Domain
         string video_baseurl;
         string whyDetailRootUrl;string whyImageSavedPath;string whyListRootUrl; 
             string whyImageClientPath; string whyImageBaseUrl;
+        string rapiRootUrl;
 
-        public TourInfoDomainAutofactModel(string zbtaTitleImageBaseUrl, string zbtaDetailImageBaseUrl, string ewqyImageBaseUrl, string zbtaImageClientPath, string ewqyImageClientPath, string rapiImageClientPath, string ewqyLocalSavedPath, string zbtaLocalSavedPath, string rapi_initurl, string rapi_syncurl, string rapi_tokenurl, string rapi_appid, string rapi_appsecret, string rapi_localsavedpath, string video_baseurl, string whyDetailRootUrl, string whyImageSavedPath, string whyListRootUrl, string whyImageClientPath, string whyImageBaseUrl)
+        public TourInfoDomainAutofactModel(string zbtaTitleImageBaseUrl, string zbtaDetailImageBaseUrl, string ewqyImageBaseUrl, string zbtaImageClientPath, string ewqyImageClientPath, string rapiImageClientPath, string ewqyLocalSavedPath, string zbtaLocalSavedPath, string rapi_initurl, string rapi_syncurl, string rapi_tokenurl, string rapi_appid, string rapi_appsecret, string rapi_localsavedpath, string video_baseurl, string whyDetailRootUrl, string whyImageSavedPath, string whyListRootUrl, string whyImageClientPath, string whyImageBaseUrl, string rapiRootUrl)
         {
             this.zbtaTitleImageBaseUrl = zbtaTitleImageBaseUrl;
             this.zbtaDetailImageBaseUrl = zbtaDetailImageBaseUrl;
@@ -54,9 +56,10 @@ namespace TourInfo.Domain
             this.whyListRootUrl = whyListRootUrl;
             this.whyImageClientPath = whyImageClientPath;
             this.whyImageBaseUrl = whyImageBaseUrl;
+            this.rapiRootUrl = rapiRootUrl;
         }
 
-        protected override void Load(ContainerBuilder builder)
+        protected override void Load(ContainerBuilder builder )
         {
             builder.RegisterType<WeatherApplication>().As<IWeatherApplication>()
                  ;
@@ -113,6 +116,12 @@ namespace TourInfo.Domain
                 .WithParameter("listRootUrl", whyListRootUrl)
                 .WithParameter("detailRootUrl",whyDetailRootUrl)
                 ;
+            builder.RegisterGeneric(typeof(ListMerger<,>)) .As(typeof(IListMerger<,>))
+;
+            builder.RegisterType<RapiSync>().As<IRapiSync>()
+               .WithParameter("rapiRootUrl", rapiRootUrl)
+              
+               ;
 
 
             base.Load(builder);

@@ -10,28 +10,29 @@ namespace TourInfo.Domain.TourNews
     public class ZBTAApplication : IZBTAApplication
     {
         IUrlFetcher urlFetcher;
-        IImageLocalizer imageLocalizer;
+        
    //     IDetailImageLocalizer detailImageLocalizer;
         IInfoLocalizer<ZbtaNews,string> infoLocalizerZbtaNews;
-        string titleImageBaseUrl,detailImageBaseUrl,localSavedPath,imageClientPath;
+        string titleImageBaseUrl,detailImageBaseUrl ;
         IVersionedRepository<ZbtaNews, string> newsRepository;
         ILogger logger;
         public ZBTAApplication(IUrlFetcher urlFetcher,
             ILoggerFactory loggerFactory,
               //      IDetailImageLocalizer detailImageLocalizer,
         IVersionedRepository<ZbtaNews, string> newsRepository
-            ,string titleImageBaseUrl,string detailImageBaseUrl, string localSavedPath,string imageClientPath, IImageLocalizer imageLocalizer, IInfoLocalizer<ZbtaNews,string> infoLocalizerZbtaNews)
+            ,string titleImageBaseUrl,string detailImageBaseUrl, string localSavedPath,string imageClientPath )
         {
             logger = loggerFactory.CreateLogger<ZBTAApplication>();
-            this.infoLocalizerZbtaNews=infoLocalizerZbtaNews;
-          //  this.detailImageLocalizer = detailImageLocalizer;
-            this.imageLocalizer = imageLocalizer;
+            this.infoLocalizerZbtaNews =  new InfoLocalizer<ZbtaNews, string>(newsRepository, urlFetcher, localSavedPath, imageClientPath);
+
+            //  this.detailImageLocalizer = detailImageLocalizer;
+           
             this.titleImageBaseUrl = titleImageBaseUrl;
             this.detailImageBaseUrl = detailImageBaseUrl;
-           this.localSavedPath = localSavedPath;
+           
             this.newsRepository = newsRepository;
             this.urlFetcher = urlFetcher;
-            this.imageClientPath = imageClientPath;
+           
         }
         const string baseUrl = "http://www.zbta.net/informationW/getInformation.html?page=";
         public void Graspe(string _dateVersion)
@@ -64,7 +65,7 @@ namespace TourInfo.Domain.TourNews
                    bool isExisted=false;
                     //特殊处理:
                     news.details = new ImageUrlsInText(news.details.OriginaText, string.Empty, detailImageBaseUrl);
-                    infoLocalizerZbtaNews.Localize(news,titleImageBaseUrl, localSavedPath, imageClientPath,_dateVersion, out isExisted);
+                    infoLocalizerZbtaNews.Localize(news,titleImageBaseUrl, _dateVersion, out isExisted);
                     if(isExisted)
                     {
                         needContinue=false;

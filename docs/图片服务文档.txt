@@ -1,0 +1,4 @@
+get https://mdapi.zjwist.com/mediainfo3/savebyurl?sysid=5&url=
+
+5:表示文化云的图片
+url 需要urlencode

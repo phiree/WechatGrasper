@@ -11,6 +11,10 @@ namespace TourInfo.Domain.DomainModel.WHY
     /// </summary>
     public class WhyModel : VersionedEntity<string>
     {
+        /// <summary>
+        /// rapi对应的Id
+        /// </summary>
+        public int RapiId { get;set;}
         public string contact { get; set; }
         public ImageUrl hposter { get; set; }
         public string addressInfo { get; set; }
@@ -31,7 +35,7 @@ namespace TourInfo.Domain.DomainModel.WHY
 
             .Append(this.contact)
 
-            .Append(this.hposter)
+            .Append(this.hposter.OriginalUrl)
 
             .Append(string.Join(",", location))
             .Append(this.name)

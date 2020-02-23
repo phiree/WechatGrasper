@@ -58,12 +58,13 @@ namespace TourInfo.Infrastracture
             builder.RegisterType<UrlFetcher>().As<IUrlFetcher>()
                .SingleInstance()
            ;
-            builder.RegisterType<ImageLocalizer>().As<IImageLocalizer>()
-             .SingleInstance()
-         ;
-            builder.RegisterGeneric(typeof(InfoLocalizer<,>)).As(typeof(IInfoLocalizer<,>))
-           .SingleInstance()
-       ;
+       //     builder.RegisterType<ImageLocalizer>().As<IImageLocalizer>()
+                
+       //      .SingleInstance()
+       //  ;
+       //     builder.RegisterGeneric(typeof(InfoLocalizer<,>)).As(typeof(IInfoLocalizer<,>))
+       //    .SingleInstance()
+       //;
             builder.RegisterGeneric(typeof(SqliteTableCreater<>)).As(typeof(ISqliteTableCreater<>))
                 .SingleInstance()
                 ;

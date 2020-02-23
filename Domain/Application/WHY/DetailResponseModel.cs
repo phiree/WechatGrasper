@@ -6,7 +6,7 @@ using TourInfo.Domain.DomainModel.WHY;
 namespace TourInfo.Domain.Application.WHY
 {
    
-    [Obsolete("已使用 DomainModel.WHY.WHYModel")]
+    
     public class WHYDetailOrganization
     {
         public string addressCity { get; set; }
@@ -43,7 +43,7 @@ namespace TourInfo.Domain.Application.WHY
     {
         public int follow { get; set; }
         public string msg { get; set; }
-        public WhyModel organizationT { get; set; }
+        public WHYDetailOrganization organizationT { get; set; }
         public int orifoolernumber { get; set; }
         public string oriname { get; set; }
         public string oristatus { get; set; }

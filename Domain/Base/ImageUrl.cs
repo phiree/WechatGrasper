@@ -5,9 +5,11 @@
     /// </summary>
     public class ImageUrl
     {
+        public ImageUrl() { }
         public static ImageUrl Null {get{ return new ImageUrl(string.Empty); } }
         public ImageUrl(string originalUrl) : this(originalUrl, string.Empty) { }
 
+        [Newtonsoft.Json.JsonConstructor]
         public ImageUrl(string originalUrl, string localizedUrl)
         {
             OriginalUrl = originalUrl;

@@ -15,7 +15,7 @@ namespace TourInfo.Domain.EWQY
     {
         UrlCreator urlCreator = null;
         IUrlFetcher urlFetcher;
-        IImageLocalizer imageLocalizer;
+       
         IInfoLocalizer<EWQYPlaceTypeEntity, string> infoLocalizer;
         readonly List<string> apiUrls = new List<string> {
             "venue/findVenueList.action",
@@ -27,24 +27,24 @@ namespace TourInfo.Domain.EWQY
         Random rm = new Random();
 
         IEWQYRepository eWQYRepository;
-        string imageBaseUrl, localSavedPath, imageClientPath;
+        string imageBaseUrl ;
         ILoggerFactory loggerFactory;
         ILogger logger;
         ILogger<LocationStringJsonConverter> locationJsonConverterLogger;
         public EWQYApplication(ILoggerFactory loggerFactory, IUrlFetcher urlFetcher, IEWQYRepository eWQYRepository, ILogger<LocationStringJsonConverter> locationJsonConverterLogger
-            , string imageBaseUrl, string localSavedPath, string imageClientPath, IImageLocalizer imageLocalizer, IInfoLocalizer<EWQYPlaceTypeEntity, string> infoLocalizer)
+            , string imageBaseUrl, string localSavedPath, string imageClientPath )
         {
             logger = loggerFactory.CreateLogger<EWQYApplication>();
             this.loggerFactory = loggerFactory;
             this.locationJsonConverterLogger = locationJsonConverterLogger;
-            this.infoLocalizer = infoLocalizer;
-            this.localSavedPath = localSavedPath;
-            this.imageLocalizer = imageLocalizer;
+            this.infoLocalizer =new InfoLocalizer<EWQYPlaceTypeEntity,string>(eWQYRepository,urlFetcher, localSavedPath,imageClientPath);
+             
+           
             urlCreator = new UrlCreator();
             this.urlFetcher = urlFetcher;
             this.eWQYRepository = eWQYRepository;
             this.imageBaseUrl = imageBaseUrl;
-            this.imageClientPath = imageClientPath;
+            
 
 
         }
@@ -118,7 +118,7 @@ namespace TourInfo.Domain.EWQY
                     detail.data.Version = _dateVersion;
                     detail.data.PlaceType = type.Value;
                     bool isExisted = false;
-                    infoLocalizer.Localize(detail.data, imageBaseUrl, localSavedPath, imageClientPath, _dateVersion, out isExisted);
+                    infoLocalizer.Localize(detail.data, imageBaseUrl,   _dateVersion, out isExisted);
                 }
 
             }

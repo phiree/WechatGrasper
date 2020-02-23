@@ -31,7 +31,7 @@ namespace TourInfo.Domain.DomainModel.Rapi
         ITokenManager tokenManager;
         string initUrl = "";
         string syncUrl = "";
-        IImageLocalizer imageLocalizer;
+       
         IInfoLocalizer<Pubmediainfo,int> infoLocalizerPubMediaInfo;
         IInfoLocalizer<Typeinfo, int> infoLocalizerTypeinfo;
         IInfoLocalizer<Pubinfounit, int> infoLocalizerPubinfounit;
@@ -47,9 +47,9 @@ namespace TourInfo.Domain.DomainModel.Rapi
         IRepository<Pubunittag, int> repositoryPubunittag;
         IRepository<Pubmediainfo, int> repositoryPubmediainfo;
         IRepository<Pubinfounitchild, int> repositoryPubinfounitchild;
-        string localSavedPath,imageClientPath;
+         
         public RapiGraspeService(string localSavedPath,string imageClientPath,
-            IImageLocalizer imageLocalizer, ITokenManager tokenManager,
+            ITokenManager tokenManager,
             string initUrl, string syncUrl, IUrlFetcher urlFetcher,
             IRepository<Projectinfo, int> repositoryProjectInfo,
             IRepository<Typeinfo, int> repositoryTypeinfo,
@@ -60,22 +60,18 @@ namespace TourInfo.Domain.DomainModel.Rapi
             IRepository<Pubunittag, int> repositoryPubunittag,
             IRepository<Pubmediainfo, int> repositoryPubmediainfo,
             IRepository<Pubinfounitchild, int> repositoryPubinfounitchild,
-        IInfoLocalizer<Pubmediainfo, int> infoLocalizerPubMediaInfo,
-        IInfoLocalizer<Typeinfo, int> infoLocalizerTypeinfo,
-        IInfoLocalizer<Pubinfounit, int> infoLocalizerPubinfounit,
-        IInfoLocalizer<Pubinfounitchild, int> infoLocalizerPubinfounitchild,
+      
  ILogger<RapiGraspeService> logger,
  ILogger<LocationStringJsonConverter> locationJsonConverterLogger
             )
         {
             this.locationJsonConverterLogger = locationJsonConverterLogger;
             this.logger = logger;
-            this.infoLocalizerPubinfounit = infoLocalizerPubinfounit;
-            this.infoLocalizerPubinfounitchild = infoLocalizerPubinfounitchild;
-            this.infoLocalizerPubMediaInfo = infoLocalizerPubMediaInfo;
-            this.infoLocalizerTypeinfo = infoLocalizerTypeinfo;
-            this.localSavedPath = localSavedPath;
-            this.imageLocalizer = imageLocalizer;
+            this.infoLocalizerPubinfounit =new InfoLocalizer<Pubinfounit,int>(repositoryPubinfounit,urlFetcher,localSavedPath,imageClientPath);// infoLocalizerPubinfounit;
+            this.infoLocalizerPubinfounitchild = new InfoLocalizer<Pubinfounitchild, int>(repositoryPubinfounitchild, urlFetcher, localSavedPath, imageClientPath);//infoLocalizerPubinfounitchild;
+            this.infoLocalizerPubMediaInfo = new InfoLocalizer<Pubmediainfo, int>(repositoryPubmediainfo, urlFetcher, localSavedPath, imageClientPath);// infoLocalizerPubMediaInfo;
+            this.infoLocalizerTypeinfo = new InfoLocalizer<Typeinfo, int>(repositoryTypeinfo, urlFetcher, localSavedPath, imageClientPath);//infoLocalizerTypeinfo;
+            
             this.initUrl = initUrl;
             this.syncUrl = syncUrl;
             this.tokenManager = tokenManager;
@@ -120,7 +116,7 @@ namespace TourInfo.Domain.DomainModel.Rapi
                 foreach (var item in responseModel.data.pubmediainfoes)
                 {
                     bool isExisted=false;
-                    infoLocalizerPubMediaInfo.Localize(item, string.Empty, localSavedPath,imageClientPath, dataVersion,out isExisted);
+                    infoLocalizerPubMediaInfo.Localize(item, string.Empty,   dataVersion,out isExisted);
                     if (isExisted) { break;}
 
 
@@ -139,7 +135,7 @@ namespace TourInfo.Domain.DomainModel.Rapi
                 foreach (var item in responseModel.data.typeinfoes)
                 {
                     bool isExisted;
-                    infoLocalizerTypeinfo.Localize(item, string.Empty, localSavedPath, imageClientPath, dataVersion,out isExisted);
+                    infoLocalizerTypeinfo.Localize(item, string.Empty,   dataVersion,out isExisted);
                     if (isExisted) { break;}
 
                 }
@@ -155,7 +151,7 @@ namespace TourInfo.Domain.DomainModel.Rapi
                 foreach (var item in responseModel.data.pubinfounits)
                 {
                     bool isExisted;
-                    infoLocalizerPubinfounit.Localize(item, string.Empty, localSavedPath, imageClientPath, dataVersion,out isExisted);
+                    infoLocalizerPubinfounit.Localize(item, string.Empty,   dataVersion,out isExisted);
                     if (isExisted) { break;}
 
                 }
@@ -169,7 +165,7 @@ namespace TourInfo.Domain.DomainModel.Rapi
                 foreach (var item in responseModel.data.pubinfounitchilds)
                 {
                     bool isExisted;
-                    infoLocalizerPubinfounitchild.Localize(item, string.Empty, localSavedPath, imageClientPath, dataVersion,out isExisted);
+                    infoLocalizerPubinfounitchild.Localize(item, string.Empty,   dataVersion,out isExisted);
 
                 }
                 logger.LogInformation("pubinfounitchild抓取完毕");
