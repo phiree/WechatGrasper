@@ -8,7 +8,7 @@ using Newtonsoft;
 using TourInfo.Domain.Base;
 using TourInfo.Domain.DomainModel.Rapi;
 using TourInfo.Domain.DomainModel.WHY;
-
+using System.Linq;
 namespace TourInfo.Domain.Application.WHY
 {
     public class WHYApplication : IWHYApplication
@@ -19,7 +19,7 @@ namespace TourInfo.Domain.Application.WHY
         string detailRootUrl;
 
         string whyImageBaseUrl;
-        string mdRootUrl = "https://mdapi.zjwist.com/data/";
+         
         ILogger logger;
         ILoggerFactory loggerFactory;
         IMapper mapper;
@@ -27,7 +27,7 @@ namespace TourInfo.Domain.Application.WHY
         IListMerger<WhyModel, string> listMerger;
         IRapiSync rapiSync;
         IImageLocalizer imageLocalizer;
-
+        
         public WHYApplication(IMD5Helper mD5Helper, IUrlFetcher urlFetcher,
             string listRootUrl, string detailRootUrl,
             string whyImageBaseUrl, string whyImageSavedPath, string whyImageClientPath,
@@ -65,7 +65,7 @@ namespace TourInfo.Domain.Application.WHY
                 {
                     case MergeResultStatus.Updated:
                     case MergeResultStatus.Added:
-                        string mdUrl = mdRootUrl + imageLocalizer.Localize(whyImageBaseUrl + resultModel.Item.hposter.OriginalUrl);
+                        string mdUrl =  imageLocalizer.Localize(whyImageBaseUrl + resultModel.Item.hposter.OriginalUrl);
                         resultModel.Item.hposter.UpdateLocalizedUrl(mdUrl);
                       //  int rapiId = rapiSync.AddOrUpdate(rapiRequestModel);
                        // resultModel.Item.RapiId = rapiId;
@@ -75,7 +75,9 @@ namespace TourInfo.Domain.Application.WHY
                         }
                         else
                         {
-                            repository.Update(resultModel.Item);
+                           var dataToUpdate= dataInDb.Single(x=>x.id==resultModel.Item.id);
+                            dataToUpdate.hposter.UpdateLocalizedUrl(mdUrl);
+                            repository.Update(dataToUpdate);
                         }
                         break;
 

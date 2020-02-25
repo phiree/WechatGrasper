@@ -35,17 +35,17 @@ namespace TourInfo.Domain
             { 
                 throw new Exception($"上传到mdapi失败.url:[{remotePicUrl}]");
                 }
-            return uploadResult.results[0].filepath;
+            return uploadResult.data.fileurl;
         }
         public class MdResponse
         { 
             public int code { get;set; }
-            public IList<MdResponseData> results { get;set;}
+            public   MdResponseData  data { get;set;}
 
             }
         public class MdResponseData
         { 
-            public string filepath { get;set;}
+            public string fileurl { get;set;}
             }
     }
 

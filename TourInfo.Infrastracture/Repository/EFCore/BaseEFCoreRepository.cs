@@ -56,7 +56,7 @@ namespace TourInfo.Infrastracture.Repository.EFCore
         {
             try
             {
-                tourInfoDbContext.Update(entity);
+                //tourInfoDbContext.Update(entity);
                 tourInfoDbContext.SaveChanges();
                 return true;
             }
