@@ -21,10 +21,12 @@ namespace TourInfo.Domain.Application.WHY
         string whyImageBaseUrl;
          
         ILogger logger;
+        
         ILoggerFactory loggerFactory;
         IMapper mapper;
         IRepository<WhyModel, string> repository;
         IListMerger<WhyModel, string> listMerger;
+
         IRapiSync rapiSync;
         IImageLocalizer imageLocalizer;
         
@@ -53,9 +55,6 @@ namespace TourInfo.Domain.Application.WHY
         {
             logger.LogInformation("开始抓取文化云数据");
             var dataInResponse =GetDetails();
-
-
-             
             var dataInDb = repository.GetAll();
             var mergeResult = listMerger.Merge(dataInDb, dataInResponse);
             foreach (var resultModel in mergeResult)
@@ -65,10 +64,17 @@ namespace TourInfo.Domain.Application.WHY
                 {
                     case MergeResultStatus.Updated:
                     case MergeResultStatus.Added:
-                        string mdUrl =  imageLocalizer.Localize(whyImageBaseUrl + resultModel.Item.hposter.OriginalUrl);
-                        resultModel.Item.hposter.UpdateLocalizedUrl(mdUrl);
-                      //  int rapiId = rapiSync.AddOrUpdate(rapiRequestModel);
-                       // resultModel.Item.RapiId = rapiId;
+                        string mdUrl=string.Empty;
+                        try { 
+                          mdUrl =  imageLocalizer.Localize(whyImageBaseUrl + resultModel.Item.hposter.OriginalUrl);
+                        }
+                        catch(Exception ex)
+                        { 
+                           logger.LogWarning($"图片上传到md失败.id:[{resultModel.Item.id}],imageurl:[{resultModel.Item.hposter.OriginalUrl}]");
+                            }
+                            resultModel.Item.hposter.UpdateLocalizedUrl(mdUrl);
+                        int rapiId = rapiSync.AddOrUpdate(rapiRequestModel);
+                        resultModel.Item.RapiId = rapiId;
                         if (resultModel.MergeResultStatus == MergeResultStatus.Added)
                         {
                             repository.Insert(resultModel.Item);
@@ -88,29 +94,7 @@ namespace TourInfo.Domain.Application.WHY
                     case MergeResultStatus.NoChanged: break;
 
                 }
-
-
-
-
-                switch (resultModel.MergeResultStatus)
-                {
-                    case MergeResultStatus.Added:
-                    //新增数据
-                    //调用rapi保存接口(id传0)
-                    case MergeResultStatus.Updated:
-
-
-                        break;
-
-                    case MergeResultStatus.Deleted:
-
-                        //删除数据
-                        //调用rapi删除接口
-                        break;
-                    case MergeResultStatus.NoChanged:
-                        //跳过
-                        break;
-                }
+             
 
             }
             logger.LogInformation("文化云数据抓取完毕");

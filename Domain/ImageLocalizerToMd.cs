@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using TourInfo.Domain;
  
 using System.IO;
+using Microsoft.Extensions.Logging;
+
 namespace TourInfo.Domain
 {
     /// <summary>
@@ -14,6 +16,7 @@ namespace TourInfo.Domain
     public class ImageLocalizerToMd : IImageLocalizer
     {
         IUrlFetcher urlFetcher;
+        
         int sysId=5;
         string mdapiRootUrl= "https://mdapi.zjwist.com/mediainfo3";
        
@@ -33,8 +36,11 @@ namespace TourInfo.Domain
                 );
             if(uploadResult.code!=0)
             { 
+                
+                
                 throw new Exception($"上传到mdapi失败.url:[{remotePicUrl}]");
                 }
+             
             return uploadResult.data.fileurl;
         }
         public class MdResponse
