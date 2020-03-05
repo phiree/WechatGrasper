@@ -439,6 +439,11 @@
             抓取一个接口的数据, 并判断其是否过期
             </summary>
         </member>
+        <member name="P:TourInfo.Domain.DomainModel.WHY.RapiRequestModel.flagpic">
+            <summary>
+            去除区号的号码.
+            </summary>
+        </member>
         <member name="T:TourInfo.Domain.DomainModel.WHY.WhyModel">
             <summary>
             文化云模型
@@ -448,6 +453,12 @@
             <summary>
             rapi对应的Id
             </summary>
+        </member>
+        <member name="M:TourInfo.Domain.DomainModel.WHY.WhyModel.UpdateDbModelFromApi(TourInfo.Domain.DomainModel.WHY.WhyModel)">
+            <summary>
+            使用api结果 更新数据库对象
+            </summary>
+            <param name="otherModel"></param>
         </member>
         <member name="T:TourInfo.Domain.Activity">
             <summary>

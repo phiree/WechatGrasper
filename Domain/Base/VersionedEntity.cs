@@ -1,7 +1,9 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 
 namespace TourInfo.Domain.Base
 {
+    [Serializable]
     public abstract class VersionedEntity<Key> :Entity<Key>,IHasVersion
     {
         /// <summary>

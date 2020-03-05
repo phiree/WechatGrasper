@@ -103,12 +103,13 @@ namespace TourInfo.Domain
                ;
             CreateMap<WhyModel,RapiRequestModel>()
                  .ForMember(x => x.address, c => c.MapFrom(d => d.addressInfo))
+                  .ForMember(x => x.unitid, c => c.MapFrom(d => d.RapiId))
                .ForMember(x => x.desc, c => c.MapFrom(d => d.summary))
 
                .ForMember(x => x.flagpic, c => c.MapFrom(d =>d.hposter.LocalizedUrl))
                .ForMember(x => x.gpsbd, c => c.MapFrom(d => d.location == null ? string.Empty : d.location.ToString()))
                .ForMember(x => x.unitname, c => c.MapFrom(d => d.name))
-                .ForMember(x => x.telephone, c => c.MapFrom(d => d.contact))
+                .ForMember(x => x.telephone, c => c.MapFrom(d => d.telephoneWithoutAreaCode))
                  .ForMember(x => x.url, c => c.MapFrom(d => d.website))
                ;
 

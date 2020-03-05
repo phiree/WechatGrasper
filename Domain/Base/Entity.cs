@@ -1,8 +1,11 @@
-﻿namespace TourInfo.Domain.Base
+﻿using System;
+
+namespace TourInfo.Domain.Base
 {
     /// <summary>
     /// 基类
     /// </summary>
+    [Serializable]
     public abstract class Entity<Key>
     {
         public Key id { get; set; }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 using TourInfo.Domain.Base;
 
 namespace TourInfo.Domain.DomainModel.WHY
@@ -59,6 +60,11 @@ namespace TourInfo.Domain.DomainModel.WHY
         public string address { get; set; }
 
         public string telephone { get; set; }
+
+        /// <summary>
+        /// 去除区号的号码.
+        /// </summary>
+        
 
         public string flagpic { get; set; }
 

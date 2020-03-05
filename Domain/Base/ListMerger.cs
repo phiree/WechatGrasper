@@ -39,6 +39,7 @@ namespace TourInfo.Domain.Base
     public class MergeListResult<T>
     {
         public T Item { get; set; }
+        public bool ImageChanged { get;set;}
         public MergeResultStatus MergeResultStatus { get; set; }
     }
     public enum MergeResultStatus

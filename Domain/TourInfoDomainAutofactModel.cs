@@ -116,8 +116,8 @@ namespace TourInfo.Domain
                 .WithParameter("listRootUrl", whyListRootUrl)
                 .WithParameter("detailRootUrl",whyDetailRootUrl)
                 ;
-            builder.RegisterGeneric(typeof(ListMerger<,>)) .As(typeof(IListMerger<,>))
-;
+            builder.RegisterGeneric(typeof(ListMerger<,>)) .As(typeof(IListMerger<,>)) ; 
+            builder.RegisterType<WhyModelMerger>().As<IWhyModelMerger>();
             builder.RegisterType<RapiSync>().As<IRapiSync>()
                .WithParameter("rapiRootUrl", rapiRootUrl)
               
