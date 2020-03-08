@@ -6,6 +6,7 @@ using System.Text;
 using TourInfo.Domain;
 using TourInfo.Domain.Application.Rapi;
 using TourInfo.Domain.Application.WHY;
+using TourInfo.Domain.Application.ZiBoWechatNews;
 using TourInfo.Domain.Base;
 using TourInfo.Domain.DomainModel;
 using TourInfo.Domain.DomainModel.DataSync;
@@ -33,9 +34,11 @@ namespace TourInfo.Domain
         string whyDetailRootUrl;string whyImageSavedPath;string whyListRootUrl; 
             string whyImageClientPath; string whyImageBaseUrl;
         string rapiRootUrl;
+        string ziboWechatNewsBaseUrl;
 
-        public TourInfoDomainAutofactModel(string zbtaTitleImageBaseUrl, string zbtaDetailImageBaseUrl, string ewqyImageBaseUrl, string zbtaImageClientPath, string ewqyImageClientPath, string rapiImageClientPath, string ewqyLocalSavedPath, string zbtaLocalSavedPath, string rapi_initurl, string rapi_syncurl, string rapi_tokenurl, string rapi_appid, string rapi_appsecret, string rapi_localsavedpath, string video_baseurl, string whyDetailRootUrl, string whyImageSavedPath, string whyListRootUrl, string whyImageClientPath, string whyImageBaseUrl, string rapiRootUrl)
+        public TourInfoDomainAutofactModel(string zbtaTitleImageBaseUrl, string zbtaDetailImageBaseUrl, string ewqyImageBaseUrl, string zbtaImageClientPath, string ewqyImageClientPath, string rapiImageClientPath, string ewqyLocalSavedPath, string zbtaLocalSavedPath, string rapi_initurl, string rapi_syncurl, string rapi_tokenurl, string rapi_appid, string rapi_appsecret, string rapi_localsavedpath, string video_baseurl, string whyDetailRootUrl, string whyImageSavedPath, string whyListRootUrl, string whyImageClientPath, string whyImageBaseUrl, string rapiRootUrl,string ziboWechatNewsBaseUrl)
         {
+            
             this.zbtaTitleImageBaseUrl = zbtaTitleImageBaseUrl;
             this.zbtaDetailImageBaseUrl = zbtaDetailImageBaseUrl;
             this.ewqyImageBaseUrl = ewqyImageBaseUrl;
@@ -57,6 +60,7 @@ namespace TourInfo.Domain
             this.whyImageClientPath = whyImageClientPath;
             this.whyImageBaseUrl = whyImageBaseUrl;
             this.rapiRootUrl = rapiRootUrl;
+            this.ziboWechatNewsBaseUrl = ziboWechatNewsBaseUrl;
         }
 
         protected override void Load(ContainerBuilder builder )
@@ -83,6 +87,7 @@ namespace TourInfo.Domain
          .WithParameter("imageClientPath", ewqyImageClientPath)
          .WithParameter("localSavedPath", ewqyLocalSavedPath)
          ;
+      
 
             builder.RegisterType<DataService>().As<IDataService>()
                  .WithParameter("imageBaseUrl_Ewqy", ewqyImageBaseUrl)
@@ -122,7 +127,12 @@ namespace TourInfo.Domain
                .WithParameter("rapiRootUrl", rapiRootUrl)
               
                ;
-
+            //淄博微信数据
+            builder.RegisterType<TourInfo.Domain.Application.ZiBoWechatNews.ZiBoWechatNewsApplication>().As<IZiBoWechatNewsApplication>()
+;
+            builder.RegisterType<TourInfo.Domain.DomainModel.ZiBoWechatNews.Grasper>().As<TourInfo.Domain.DomainModel.ZiBoWechatNews.IGrasper>()
+     .WithParameter("baseUrl", ziboWechatNewsBaseUrl)
+                ;
 
             base.Load(builder);
         }

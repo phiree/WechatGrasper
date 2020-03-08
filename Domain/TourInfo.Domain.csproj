@@ -10,12 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="DomainModel\新文件夹\**" />
-    <EmbeddedResource Remove="DomainModel\新文件夹\**" />
-    <None Remove="DomainModel\新文件夹\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Remove="DomainModel\ZBTA\DetailImageLocalizer.cs" />
     <Compile Remove="DomainModel\ZBTA\IDetailImageLocalizer.cs" />
   </ItemGroup>

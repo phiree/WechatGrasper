@@ -8,6 +8,7 @@ using Dapper;
 using TourInfo.Infrastracture.Repository.EFCore;
 using TourInfo.Domain;
 using Microsoft.Extensions.Logging;
+using System.Linq;
 
 namespace TourInfo.Infrastracture.Repository.EFCore
 {
@@ -41,6 +42,16 @@ namespace TourInfo.Infrastracture.Repository.EFCore
                 logger.LogError(msg);
                 throw new Exception(msg);
             }
+        }
+        public IList<T> FindByFingerPrint(string fingerPrint)
+        {
+           
+                Func<T, bool> predicate = x => x.Fingerprint==fingerPrint;
+
+                var result = FindList(predicate);
+                
+                return result;
+            
         }
 
         public void SaveOrUpdate(T entity, string newVersion)

@@ -460,6 +460,11 @@
             </summary>
             <param name="otherModel"></param>
         </member>
+        <member name="T:TourInfo.Domain.DomainModel.ZiBoWechatNews.ZiBoWechatNewsApiResponse">
+            <summary>
+            接口结构和数据库公用一个model
+            </summary>
+        </member>
         <member name="T:TourInfo.Domain.Activity">
             <summary>
             活动列表项

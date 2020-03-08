@@ -164,6 +164,6 @@ namespace TourInfo.Infrastracture.Repository.EFCore
         public DbSet<Video> Videos { get;set;}
         public DbSet<Domain.DomainModel.WHY.WhyModel> WHYDetailOrganizations { get;set;}
 
-
+        public DbSet<Domain.DomainModel.ZiBoWechatNews.ZiBoWechatNews> ZiBoWechatNews { get; set; }
     }
 }

@@ -16,7 +16,7 @@ namespace TourInfo.Infrastracture.Repository.EFCore
     public class BaseEFCoreRepository<T, Key> : IRepository<T, Key>
         where T : Entity<Key>  
     {
-        TourInfoDbContext tourInfoDbContext { get; }
+        protected TourInfoDbContext tourInfoDbContext { get; }
 
         public BaseEFCoreRepository(TourInfoDbContext tourInfoDbContext)
         {

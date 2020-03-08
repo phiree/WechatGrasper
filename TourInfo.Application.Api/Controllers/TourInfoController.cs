@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using TourInfo.Domain.Application.Video;
 using Microsoft.Extensions.Caching.Memory;
 using TourInfo.Domain.Application.WHY;
+using TourInfo.Domain.Application.ZiBoWechatNews;
 
 namespace TourInfo.Application.Api.Controllers
 {
@@ -28,6 +29,7 @@ namespace TourInfo.Application.Api.Controllers
         IDataService dataService;
         IServiceProvider serviceProvider;
          IWHYApplication wHYApplication;
+        IZiBoWechatNewsApplication ziBoWechatNewsApplication;
         ILogger<TourInfoController> logger;
           IMemoryCache _cache;
         public TourInfoController(ILogger<TourInfoController> logger, IServiceProvider serviceProvider, 
@@ -37,7 +39,8 @@ namespace TourInfo.Application.Api.Controllers
             IVideoApplication videoApplication,
             IWHYApplication wHYApplication,
             IMemoryCache cache,
-            IDataService dataService)
+            IDataService dataService,
+            IZiBoWechatNewsApplication ziBoWechatNewsApplication)
         {
             this.wHYApplication=wHYApplication;
             this.logger=logger;
@@ -48,6 +51,7 @@ namespace TourInfo.Application.Api.Controllers
             this.dataService = dataService;
             this.serviceProvider=serviceProvider;
             this._cache = cache;
+            this.ziBoWechatNewsApplication=ziBoWechatNewsApplication;
         }
 
         [HttpGet("InitData")]
@@ -88,6 +92,16 @@ namespace TourInfo.Application.Api.Controllers
         {
             
             return dataService.CreateSyncDataForTest();
+
+        }
+        [HttpGet("GetZiboWechatNews")]
+        public ActionResult<string> GetZiboWechatNews(string dataVersion)
+        {
+
+            string currentVersion = DateTime.Now.ToString("yyyyMMddhhmmss");
+            logger.LogInformation("开始更新数据");
+            ziBoWechatNewsApplication.Graspe(currentVersion);
+            return "更新完毕";
 
         }
         [HttpGet("GetZbtaNewsDetail")]
