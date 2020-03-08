@@ -99,9 +99,9 @@ namespace TourInfo.Application.Api.Controllers
         {
 
             string currentVersion = DateTime.Now.ToString("yyyyMMddhhmmss");
-            logger.LogInformation("开始更新数据");
+            logger.LogInformation("开始更新数据GetZiboWechatNews");
             ziBoWechatNewsApplication.Graspe(currentVersion);
-            return "更新完毕";
+            return "更新完毕GetZiboWechatNews";
 
         }
         [HttpGet("GetZbtaNewsDetail")]
