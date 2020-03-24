@@ -1,0 +1,5 @@
+
+select * from EWQYPlaceTypeEntities where Version is null
+update EWQYPlaceTypeEntities set version=(select max(version) from EWQYPlaceTypeEntities) where version is null
+
+ 

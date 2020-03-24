@@ -434,9 +434,9 @@
             <param name="logger"></param>
             <param name="longitudeFirst">经度在前面</param>
         </member>
-        <member name="T:TourInfo.Domain.DomainModel.PagedDataFetcher`2">
+        <member name="T:TourInfo.Domain.DomainModel.ListDetailFetcher`2">
             <summary>
-            抓取一个接口的数据, 并判断其是否过期
+            抓取 list-detail 类型的接口  的数据.
             </summary>
         </member>
         <member name="P:TourInfo.Domain.DomainModel.WHY.RapiRequestModel.flagpic">

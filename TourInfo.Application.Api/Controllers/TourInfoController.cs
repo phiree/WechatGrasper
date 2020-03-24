@@ -127,7 +127,7 @@ namespace TourInfo.Application.Api.Controllers
            
 
           //  var rapiApplication = serviceProvider.GetService<IRapiApplication>();
-            rapiApplication.Graspe(_dateVersion, false);
+          //  rapiApplication.Graspe(_dateVersion, false);
           //  var rapiApplication = serviceProvider.GetService<IRapiApplication>();
             zBTAApplication.Graspe(_dateVersion);
             eWQYApplication.Graspe(_dateVersion);

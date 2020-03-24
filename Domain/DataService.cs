@@ -144,6 +144,7 @@ namespace TourInfo.Domain.DomainModel
             sqliteCompanyVenueTableCreator.CreateTable(sqliteDbConn, _mapper.Map<IList<SqliteCompanyVenue>>(allCompanyVenues));
             sqliteZbtaNewsTableCreator.CreateTable(sqliteDbConn, _mapper.Map<IList<SqliteZbtaNews>>(zbtaNewsRepository.GetAll()));
 
+                /*
             SqliteProjectinfoCreator.CreateTable(sqliteDbConn, _mapper.Map<IList<SqliteProjectinfo>>(projectinfoRepository.GetAll()));
             SqlitePubinfounitchildCreator.CreateTable(sqliteDbConn, _mapper.Map<IList<SqlitePubinfounitchild>>(PubinfounitchildRepository.GetAll()));
             SqlitePubinfounitCreator.CreateTable(sqliteDbConn, _mapper.Map<IList<SqlitePubinfounit>>(PubinfounitRepository.GetAll()));
@@ -153,7 +154,8 @@ namespace TourInfo.Domain.DomainModel
             SqliteTypeinfoCreator.CreateTable(sqliteDbConn, _mapper.Map<IList<SqliteTypeinfo>>(TypeinfoRepository.GetAll()));
             SqliteTypepicCreator.CreateTable(sqliteDbConn, _mapper.Map<IList<SqliteTypepic>>(TypepicRepository.GetAll()));
             SqliteTypetagCreator.CreateTable(sqliteDbConn, _mapper.Map<IList<SqliteTypetag>>(TypetagRepository.GetAll()));
-            SqliteVideoCreator.CreateTable(sqliteDbConn, _mapper.Map<IList<SqliteVideo>>(VideoRepository.GetAll()));
+    */
+                SqliteVideoCreator.CreateTable(sqliteDbConn, _mapper.Map<IList<SqliteVideo>>(VideoRepository.GetAll()));
             SqliteSystemSettingCreator.CreateTable(sqliteDbConn, _mapper.Map<IList<SystemSetting>>(new List<SystemSetting> { new SystemSetting{LatestVersion=version } }));
             }
         }
@@ -183,6 +185,7 @@ namespace TourInfo.Domain.DomainModel
                     CompanyVenueTypes= allCompanyVenueType,
                     ZbtaNews = allZbtaNews,
                     Weather=weather,
+                    /*
                     Projectinfos = _mapper.Map<IEnumerable<SqliteProjectinfo>>(projectinfoRepository.GetAllAfterVersion(version)),
 
                     Pubinfounitchilds = _mapper.Map<IList<SqlitePubinfounitchild>>(PubinfounitchildRepository.GetAllAfterVersion(version)),
@@ -193,6 +196,7 @@ namespace TourInfo.Domain.DomainModel
                     Typeinfos = _mapper.Map<IList<SqliteTypeinfo>>(TypeinfoRepository.GetAllAfterVersion(version)),
                     Typepics = _mapper.Map<IList<SqliteTypepic>>(TypepicRepository.GetAllAfterVersion(version)),
                     Typetags = _mapper.Map<IList<SqliteTypetag>>(TypetagRepository.GetAllAfterVersion(version)),
+                    */
                     Videos = _mapper.Map<IList<SqliteVideo>>(VideoRepository.GetAllAfterVersion(version))
                 }
             };
@@ -221,6 +225,7 @@ namespace TourInfo.Domain.DomainModel
                     CompanyVenueTypes = allCompanyVenueType,
                     ZbtaNews = allZbtaNews,
                     Weather = weather,
+                    /*
                     Projectinfos = _mapper.Map<IEnumerable<SqliteProjectinfo>>(projectinfoRepository.GetAll().Take(2)),
 
                     Pubinfounitchilds = _mapper.Map<IList<SqlitePubinfounitchild>>(PubinfounitchildRepository.GetAll().Take(2)),
@@ -231,6 +236,7 @@ namespace TourInfo.Domain.DomainModel
                     Typeinfos = _mapper.Map<IList<SqliteTypeinfo>>(TypeinfoRepository.GetAll().Take(2)),
                     Typepics = _mapper.Map<IList<SqliteTypepic>>(TypepicRepository.GetAll().Take(2)),
                     Typetags = _mapper.Map<IList<SqliteTypetag>>(TypetagRepository.GetAll().Take(2)),
+                    */
                     Videos = _mapper.Map<IList<SqliteVideo>>(VideoRepository.GetAll().Take(2))
                 }
             };
@@ -249,7 +255,7 @@ namespace TourInfo.Domain.DomainModel
             public IEnumerable<SqliteCompanyVenue> CompanyVenues { get; set; }
             public IEnumerable<SqliteCompanyVenueType> CompanyVenueTypes { get; set; }
             public IEnumerable<SqliteZbtaNews> ZbtaNews { get; set; }
-
+            /*
             public IEnumerable<SqliteProjectinfo> Projectinfos { get; set; }
             public IEnumerable<SqlitePubinfounit> Pubinfounits { get; set; }
             public IEnumerable<SqlitePubinfounitchild> Pubinfounitchilds { get; set; }
@@ -259,6 +265,7 @@ namespace TourInfo.Domain.DomainModel
             public IEnumerable<SqliteTypefield> Typefields { get; set; }
             public IEnumerable<SqliteTypetag> Typetags { get; set; }
             public IEnumerable<SqliteTypeinfo> Typeinfos { get; set; }
+            */
             public IEnumerable<SqliteVideo> Videos { get; set; }
         }
 
