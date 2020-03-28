@@ -79,7 +79,8 @@ namespace TourInfo.Application.Api.Controllers
             string currentVersion = DateTime.Now.ToString("yyyyMMddhhmmss");
             logger.LogInformation("开始更新数据");
             this.GraspeData(currentVersion);
-            dataService.CreateInitData(currentVersion);
+           //不再需要创建前端适用的sqllite文件
+            // dataService.CreateInitData(currentVersion);
             logger.LogInformation("开始更新sqlite文件");
             
             var syncResult=  dataService.CreateSyncData(version);

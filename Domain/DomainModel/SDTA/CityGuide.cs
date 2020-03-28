@@ -4,9 +4,6 @@ using System.Text;
 
 namespace TourInfo.Domain.DomainModel.SDTA
 {
-    
-
-    
 
     public class CityGuide
     {
