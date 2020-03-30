@@ -23,11 +23,10 @@ namespace TourInfo.Domain.DomainModel
     /// <summary>
     /// 抓取 list-detail 类型的接口  的数据.
     /// </summary>
-    public class ListDetailFetcher<ListData,DetailSummary,DetailWrapper, Detail, Key> 
-        where DetailSummary:Entity<Key>
-        where Detail:Entity<Key> 
-        where DetailWrapper:IDetailWrapper<Detail>
-        where ListData:IListData<DetailSummary,Key>
+    public class ListDetailFetcher<ListData, DetailSummary, DetailWrapper, Detail, Key> : IListDetailFetcher where DetailSummary : Entity<Key>
+        where Detail : Entity<Key>
+        where DetailWrapper : IDetailWrapper<Detail>
+        where ListData : IListData<DetailSummary, Key>
     {
 
         IListUrlBuilder listUrlBuilder;
@@ -36,7 +35,7 @@ namespace TourInfo.Domain.DomainModel
         IRepository<Detail, Key> repositoryDetailItem;
 
         PagingSetting pagingSetting;
-        
+
 
         public ListDetailFetcher(IListUrlBuilder listUrlBuilder, IDetailUrlBuilder<Key> detailUrlBuilder, IUrlFetcher urlFetcher,
             IRepository<Detail, Key> repositoryDetailItem, PagingSetting pagingSetting)
@@ -57,14 +56,14 @@ namespace TourInfo.Domain.DomainModel
             string listUrl = listUrlBuilder.Build();
             string result = urlFetcher.FetchAsync(listUrl).Result;
             var list = Newtonsoft.Json.JsonConvert.DeserializeObject<ListData>(result);
-            if (list==null|| list.Details.Count == 0) { return; }
+            if (list == null || list.Details.Count == 0) { return; }
             foreach (var itemSummary in list.Details)
             {
                 string detailUrl = detailUrlBuilder.Build(itemSummary.id);
                 string detailResult = urlFetcher.FetchAsync(detailUrl).Result;
                 var detailWrapper = Newtonsoft.Json.JsonConvert.DeserializeObject<DetailWrapper>(detailResult);
-                var detail=detailWrapper.Detail;
-                detail.id=itemSummary.id;
+                var detail = detailWrapper.Detail;
+                detail.id = itemSummary.id;
                 repositoryDetailItem.InsertOrUpdate(detail);
             }
             if (pagingSetting.NeedPaging)

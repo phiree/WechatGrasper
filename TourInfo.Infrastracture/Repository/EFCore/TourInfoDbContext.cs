@@ -188,11 +188,33 @@ namespace TourInfo.Infrastracture.Repository.EFCore
                     d.HasForeignKey("GuideId");
                     d.Property(x =>x.img);
                     d.HasKey("GuideId","img");
-                    }
-                
-                );
-               
+                    });
                 });
+            modelBuilder.Entity<Domain.DomainModel.SDTA.FoodDetail.Data>()
+            .ToTable("SDTAFoodDetail")
+            .OwnsOne(e => e.destination) ;
+            modelBuilder.Entity<Domain.DomainModel.SDTA.FoodDetail.Data>()
+           .ToTable("SDTAFoodDetail")
+           .OwnsOne(e => e.snack_food_type);
+            modelBuilder.Entity<Domain.DomainModel.SDTA.FoodDetail.Data>()
+                .Property(a => a.id).ValueGeneratedNever();
+            modelBuilder.Entity<Domain.DomainModel.SDTA.FoodDetail.Data>()
+               
+           .ToTable("SDTAFoodDetail")
+           .OwnsMany(e => e.pictures,c=>{ 
+               c.ToTable("SDTAFoodDetailPictures");
+               c.HasForeignKey("FoodId");
+               c.Property(x=>x.id);
+               c.HasKey("FoodId","id");
+               });
+            modelBuilder.Entity<Domain.DomainModel.SDTA.FoodDetail.Data>()
+          .ToTable("SDTAFoodDetail")
+          .OwnsMany(e => e.filter_pictures, c => {
+              c.ToTable("SDTAFoodDetailFilterPictures");
+              c.HasForeignKey("FoodId");
+              c.Property(x => x.id);
+              c.HasKey("FoodId", "id");
+          });
 
         }
         // public DbSet<Entity<string>> Entities { get; set; }
@@ -214,6 +236,8 @@ namespace TourInfo.Infrastracture.Repository.EFCore
         /// 城市锦囊
         /// </summary>
         public DbSet<Domain.DomainModel.SDTA.CityGuideDetail.Data> CityGuideDetails { get; set; }
+
+        public DbSet<Domain.DomainModel.SDTA.FoodDetail.Data> FoodDetails { get; set; }
 
     }
 }

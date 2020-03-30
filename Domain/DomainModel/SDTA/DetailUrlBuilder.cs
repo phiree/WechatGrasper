@@ -22,4 +22,13 @@ namespace TourInfo.Domain.DomainModel.SDTA
             return "https://www.sdta.cn/api/eledetail/geteledetailbyid.jsp?eleid="+id+"&eletype=article&channel=zibo";
         }
     }
+    public class FoodDetailUrlBuilder : IDetailUrlBuilder<int>
+    {
+
+        public string Build(int id)
+        {
+
+            return "https://www.sdta.cn/api/eledetail/geteledetailbyid.jsp?eleid="+id+"&eletype=snack&channel=zibo";
+        }
+    }
 }

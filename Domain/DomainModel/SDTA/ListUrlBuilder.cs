@@ -22,4 +22,13 @@ namespace TourInfo.Domain.DomainModel.SDTA
             return cityGuideListUrl;
         }
     }
+    public class FoodListUrlBuilder : IListUrlBuilder
+    {
+        string cityGuideListUrl = "https://www.sdta.cn/searches/snack/snack/_search";
+
+        public string Build()
+        {
+            return cityGuideListUrl;
+        }
+    }
 }

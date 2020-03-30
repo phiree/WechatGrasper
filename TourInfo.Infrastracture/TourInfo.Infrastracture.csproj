@@ -15,6 +15,10 @@
     <Compile Remove="Migrations\20200111175041_video.Designer.cs" />
     <Compile Remove="Migrations\20200328183147_add-sdta.cs" />
     <Compile Remove="Migrations\20200328183147_add-sdta.Designer.cs" />
+    <Compile Remove="Migrations\20200330185136_food.cs" />
+    <Compile Remove="Migrations\20200330185136_food.Designer.cs" />
+    <Compile Remove="Migrations\20200330185403_food2.cs" />
+    <Compile Remove="Migrations\20200330185403_food2.Designer.cs" />
     <Compile Remove="Repository\ADONET\AdoNetRepository.cs" />
   </ItemGroup>
 
