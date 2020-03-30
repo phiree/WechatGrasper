@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TourInfo.Infrastracture.Repository.EFCore;
 
 namespace TourInfo.Infrastracture.Migrations
 {
     [DbContext(typeof(TourInfoDbContext))]
-    partial class TourInfoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200330164952_sdta_cityguide")]
+    partial class sdta_cityguide
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -987,7 +989,7 @@ namespace TourInfo.Infrastracture.Migrations
 
                             b1.HasKey("Dataid");
 
-                            b1.ToTable("SDTACityGuideDetailCategory");
+                            b1.ToTable("SDTACityGuideDetail");
 
                             b1.HasOne("TourInfo.Domain.DomainModel.SDTA.CityGuideDetail+Data")
                                 .WithOne("category")
@@ -1013,7 +1015,7 @@ namespace TourInfo.Infrastracture.Migrations
 
                             b1.HasKey("Dataid");
 
-                            b1.ToTable("SDTACityGuideDetailPics");
+                            b1.ToTable("SDTACityGuideDetail");
 
                             b1.HasOne("TourInfo.Domain.DomainModel.SDTA.CityGuideDetail+Data")
                                 .WithOne("pics")

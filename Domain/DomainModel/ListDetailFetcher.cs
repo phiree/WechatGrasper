@@ -7,9 +7,13 @@ namespace TourInfo.Domain.DomainModel
 {
     public interface IListData<DetailSummary,Key> where DetailSummary:Entity<Key>
     {
-        IList<DetailSummary> Details { get; set; }
+        IList<DetailSummary> Details { get;   }
     }
     
+    public interface IDetailWrapper<TDetail>
+    { 
+        TDetail Detail { get ;}
+        }
 
     public class PagingSetting
     {
@@ -19,9 +23,10 @@ namespace TourInfo.Domain.DomainModel
     /// <summary>
     /// 抓取 list-detail 类型的接口  的数据.
     /// </summary>
-    public class ListDetailFetcher<ListData,DetailSummary, Detail, Key> 
+    public class ListDetailFetcher<ListData,DetailSummary,DetailWrapper, Detail, Key> 
         where DetailSummary:Entity<Key>
         where Detail:Entity<Key> 
+        where DetailWrapper:IDetailWrapper<Detail>
         where ListData:IListData<DetailSummary,Key>
     {
 
@@ -57,7 +62,8 @@ namespace TourInfo.Domain.DomainModel
             {
                 string detailUrl = detailUrlBuilder.Build(itemSummary.id);
                 string detailResult = urlFetcher.FetchAsync(detailUrl).Result;
-                var detail = Newtonsoft.Json.JsonConvert.DeserializeObject<Detail>(detailResult);
+                var detailWrapper = Newtonsoft.Json.JsonConvert.DeserializeObject<DetailWrapper>(detailResult);
+                var detail=detailWrapper.Detail;
                 detail.id=itemSummary.id;
                 repositoryDetailItem.InsertOrUpdate(detail);
             }

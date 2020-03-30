@@ -172,7 +172,28 @@ namespace TourInfo.Infrastracture.Repository.EFCore
                      }
                  );
              });
-          
+            modelBuilder.Entity<Domain.DomainModel.SDTA.CityGuideDetail.Data>()
+              .ToTable("SDTACityGuideDetail")
+              .OwnsOne(e => e.category )
+              .ToTable("SDTACityGuideDetailCategory")
+              
+              ;
+            
+            modelBuilder.Entity<Domain.DomainModel.SDTA.CityGuideDetail.Data>()
+            .ToTable("SDTACityGuideDetail")
+            .OwnsOne(e => e.pics,c=>{
+                c.ToTable("SDTACityGuideDetailPics");
+                c.OwnsMany(x => x.images, d => {
+                    d.ToTable("SDTACityGuideDetailPicImage");
+                    d.HasForeignKey("GuideId");
+                    d.Property(x =>x.img);
+                    d.HasKey("GuideId","img");
+                    }
+                
+                );
+               
+                });
+
         }
         // public DbSet<Entity<string>> Entities { get; set; }
         //public DbSet<VersionedEntity>  VersionedEntities { get; set; }
@@ -189,6 +210,10 @@ namespace TourInfo.Infrastracture.Repository.EFCore
         public DbSet<Domain.DomainModel.ZiBoWechatNews.ZiBoWechatNews> ZiBoWechatNews { get; set; }
 
         public DbSet<Domain.DomainModel.SDTA.LineDetail> LineDetails { get; set; }
+        /// <summary>
+        /// 城市锦囊
+        /// </summary>
+        public DbSet<Domain.DomainModel.SDTA.CityGuideDetail.Data> CityGuideDetails { get; set; }
 
     }
 }

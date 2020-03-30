@@ -6,7 +6,7 @@ using TourInfo.Domain.Base;
 namespace TourInfo.Domain.DomainModel.SDTA
 {
 
-    public class LineDetail:Entity<string>
+    public class LineDetail:Entity<string>,IDetailWrapper<LineDetail>
     {
       
         public string name { get; set; }
@@ -15,7 +15,7 @@ namespace TourInfo.Domain.DomainModel.SDTA
         public string bestSeason { get; set; }
         public string[] city { get; set; }
         public List<Day> days { get; set; }
-       
+        public LineDetail Detail { get { return this;}  }
 
         public class Day
         {
