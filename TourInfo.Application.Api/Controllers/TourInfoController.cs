@@ -14,6 +14,7 @@ using TourInfo.Domain.Application.Video;
 using Microsoft.Extensions.Caching.Memory;
 using TourInfo.Domain.Application.WHY;
 using TourInfo.Domain.Application.ZiBoWechatNews;
+using TourInfo.Domain.Application.SDTA;
 
 namespace TourInfo.Application.Api.Controllers
 {
@@ -32,12 +33,14 @@ namespace TourInfo.Application.Api.Controllers
         IZiBoWechatNewsApplication ziBoWechatNewsApplication;
         ILogger<TourInfoController> logger;
           IMemoryCache _cache;
+        ISDTAApplication sDTAApplication;
         public TourInfoController(ILogger<TourInfoController> logger, IServiceProvider serviceProvider, 
             IRapiApplication rapiApplication, 
             IZBTAApplication zBTAApplication, 
             IEWQYApplication eWQYApplication,
             IVideoApplication videoApplication,
             IWHYApplication wHYApplication,
+            ISDTAApplication sDTAApplication,
             IMemoryCache cache,
             IDataService dataService,
             IZiBoWechatNewsApplication ziBoWechatNewsApplication)
@@ -48,6 +51,7 @@ namespace TourInfo.Application.Api.Controllers
             this.zBTAApplication = zBTAApplication;
             this.eWQYApplication = eWQYApplication;
             this.videoApplication=videoApplication;
+            this.sDTAApplication=sDTAApplication;
             this.dataService = dataService;
             this.serviceProvider=serviceProvider;
             this._cache = cache;
@@ -127,100 +131,28 @@ namespace TourInfo.Application.Api.Controllers
         {
            
 
-          //  var rapiApplication = serviceProvider.GetService<IRapiApplication>();
-          //  rapiApplication.Graspe(_dateVersion, false);
-          //  var rapiApplication = serviceProvider.GetService<IRapiApplication>();
-            zBTAApplication.Graspe(_dateVersion);
+          zBTAApplication.Graspe(_dateVersion);
             eWQYApplication.Graspe(_dateVersion);
             videoApplication.Graspe(_dateVersion);
             logger.LogInformation(" 抓取完毕");
-            //var typeInfoThread = new System.Threading.Thread(() => {
-
-               
-            //});
-            //typeInfoThread.Start();
-
-
-          //  BackgroundWorker ewqyWorker = new BackgroundWorker();
-           // ewqyWorker.DoWork += (obj, e) => EwqyWorker_DoWork(_dateVersion);
-           // ewqyWorker.RunWorkerCompleted += EwqyWorker_RunWorkerCompleted;
-            //ewqyWorker.RunWorkerAsync();
-            //BackgroundWorker zbtaWorker = new BackgroundWorker();
-            //zbtaWorker.DoWork += (obj, e) => ZbtaWorker_DoWork(_dateVersion);
-            //zbtaWorker.RunWorkerCompleted += ZbtaWorker_RunWorkerCompleted;
-            //zbtaWorker.RunWorkerAsync(argument: _dateVersion);
-
-            //BackgroundWorker rapiWorker = new BackgroundWorker();
-            //rapiWorker.DoWork += (obj, e) => RapiWorker_DoWork(_dateVersion);
-            //rapiWorker.RunWorkerCompleted += RapiWorker_RunWorkerCompleted;
-            //rapiWorker.RunWorkerAsync(argument: _dateVersion);
-
+           
             return Content("抓取完毕");
 
         }
-        private   void RapiWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        [HttpGet("GraspeSDTA")]
+        public ActionResult<dynamic> GraspeSDTA(string _dateVersion)
         {
-            Console.WriteLine("rapi抓取完毕");
-        }
-       
-        private   void RapiWorker_DoWork(string dataVersion)
-        {
-            var rapiApplication = serviceProvider.GetService<IRapiApplication>();
-            rapiApplication.Graspe(dataVersion, true);
-        }
 
-        private   void ZbtaWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            Console.WriteLine("zbta抓取完毕");
-        }
 
-        private   void ZbtaWorker_DoWork(string dateVersion)
-        {
-          
-          // 
-
-        }
-
-        private   void EwqyWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            Console.WriteLine("ewqy抓取完毕");
-        }
-
-        private   void EwqyWorker_DoWork(string dateVersion)
-        {
+            sDTAApplication.Graspe();
             
+            return Content("Sdta抓取完毕");
 
-           // 
-        }
-        [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
-        {
-            return new string[] { "value1", "value2" };
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
-        {
-            return "value";
-        }
 
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
 
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+
     }
 }

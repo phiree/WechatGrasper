@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TourInfo.Infrastracture.Repository.EFCore;
 
 namespace TourInfo.Infrastracture.Migrations
 {
     [DbContext(typeof(TourInfoDbContext))]
-    partial class TourInfoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200328185631_add-sdta_lineDetail")]
+    partial class addsdta_lineDetail
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -489,7 +491,7 @@ namespace TourInfo.Infrastracture.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("SDTALineDetail");
+                    b.ToTable("LineDetails");
                 });
 
             modelBuilder.Entity("TourInfo.Domain.DomainModel.Video.Video", b =>
@@ -921,7 +923,7 @@ namespace TourInfo.Infrastracture.Migrations
 
                             b1.HasKey("LineId", "name");
 
-                            b1.ToTable("SDTALineDetailDay");
+                            b1.ToTable("Day");
 
                             b1.HasOne("TourInfo.Domain.DomainModel.SDTA.LineDetail")
                                 .WithMany("days")
@@ -944,7 +946,7 @@ namespace TourInfo.Infrastracture.Migrations
 
                                     b2.HasKey("LineId", "name", "id");
 
-                                    b2.ToTable("SDTALineDetailDayPlace");
+                                    b2.ToTable("Place");
 
                                     b2.HasOne("TourInfo.Domain.DomainModel.SDTA.LineDetail+Day")
                                         .WithMany("place")

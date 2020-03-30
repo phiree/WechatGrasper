@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TourInfo.Domain.Base;
 
 namespace TourInfo.Domain.DomainModel.SDTA
 {
-    public class Lines
+    public class Lines:Entity<string>
     {
         public string name { get; set; }
         public string thumb { get; set; }
@@ -13,12 +14,15 @@ namespace TourInfo.Domain.DomainModel.SDTA
         public List<string> city { get; set; }
         public int days { get; set; }
         public string search { get; set; }
-        public string id { get; set; }
+        
         public int placeNum { get; set; }
     }
 
-    public class ResponseLines
+    public class ResponseLines:IListData<Lines,string>
     {
-        public IList<Lines> lines { get; set; }
+        //public IList<Lines> lines { get; set; }
+        [Newtonsoft.Json.JsonProperty("lines")]
+        
+      public  IList<Lines>  Details {get;set; }
     }
 }

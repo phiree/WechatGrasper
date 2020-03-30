@@ -5,12 +5,14 @@ using System.Collections.Generic;
 using System.Text;
 using TourInfo.Domain;
 using TourInfo.Domain.Application.Rapi;
+using TourInfo.Domain.Application.SDTA;
 using TourInfo.Domain.Application.WHY;
 using TourInfo.Domain.Application.ZiBoWechatNews;
 using TourInfo.Domain.Base;
 using TourInfo.Domain.DomainModel;
 using TourInfo.Domain.DomainModel.DataSync;
 using TourInfo.Domain.DomainModel.Rapi;
+using TourInfo.Domain.DomainModel.SDTA;
 using TourInfo.Domain.DomainModel.Weather;
 using TourInfo.Domain.DomainModel.WHY;
 using TourInfo.Domain.EWQY;
@@ -133,6 +135,10 @@ namespace TourInfo.Domain
             builder.RegisterType<TourInfo.Domain.DomainModel.ZiBoWechatNews.Grasper>().As<TourInfo.Domain.DomainModel.ZiBoWechatNews.IGrasper>()
      .WithParameter("baseUrl", ziboWechatNewsBaseUrl)
                 ;
+
+            /*sdta*/
+                 builder.RegisterType< SDTAApplication>().As<ISDTAApplication>()
+;
 
             base.Load(builder);
         }

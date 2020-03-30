@@ -10,6 +10,7 @@ using TourInfo.Domain.DomainModel.Rapi;
 using TourInfo.Domain.DomainModel.EWQY;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TourInfo.Domain.DomainModel.Video;
+using static TourInfo.Domain.DomainModel.SDTA.LineDetail;
 
 namespace TourInfo.Infrastracture.Repository.EFCore
 {
@@ -142,6 +143,36 @@ namespace TourInfo.Infrastracture.Repository.EFCore
 
             modelBuilder.Entity<Domain.DomainModel.WHY.WhyModel>()
          .OwnsOne(x => x.location);
+
+            modelBuilder.Entity<Domain.DomainModel.SDTA.LineDetail>()
+            .Property(e => e.tags)
+            .HasConversion(
+                v => string.Join(",", v),
+                v => v.Split(new char[]{',' }, StringSplitOptions.RemoveEmptyEntries)
+                );
+            modelBuilder.Entity<Domain.DomainModel.SDTA.LineDetail>()
+           .Property(e => e.city)
+           .HasConversion(
+               v => string.Join(",", v),
+               v => v.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+               );
+            modelBuilder.Entity<Domain.DomainModel.SDTA.LineDetail>()
+                .ToTable("SDTALineDetail")
+         .OwnsMany(e => e.days,c=>{ 
+             c.ToTable("SDTALineDetailDay");
+             c.HasForeignKey("LineId");
+             c.Property("name");
+             c.HasKey("LineId","name");
+             c.OwnsMany (
+                 e => e.place, g => {
+                     g.ToTable("SDTALineDetailDayPlace");
+                     g.HasForeignKey("LineId","name");
+                     g.Property("id");
+                     g.HasKey("LineId","name","id");
+                     }
+                 );
+             });
+          
         }
         // public DbSet<Entity<string>> Entities { get; set; }
         //public DbSet<VersionedEntity>  VersionedEntities { get; set; }
@@ -151,19 +182,13 @@ namespace TourInfo.Infrastracture.Repository.EFCore
         public DbSet<CompanyVenue> CompanyVenues { get; set; }
         public DbSet<CompanyVenueType> CompanyVenueTypes { get; set; }
         public DbSet<ZbtaNews> ZbtaNews { get; set; }
-        public DbSet<Projectinfo> Projectinfos { get; set; }
-        public DbSet<Typeinfo> Typeinfos { get; set; }
-        public DbSet<Typefield> Typefields { get; set; }
-        public DbSet<Typetag> Typetags { get; set; }
-        public DbSet<Typepic> Typepics { get; set; }
-        public DbSet<Pubinfounit> Pubinfounits { get; set; }
-        public DbSet<Pubunittag> Pubunittags { get; set; }
-        public DbSet<Pubmediainfo> Pubmediainfos { get; set; }
-        public DbSet<Pubinfounitchild> Pubinfounitchilds { get; set; }
-
+         
         public DbSet<Video> Videos { get;set;}
         public DbSet<Domain.DomainModel.WHY.WhyModel> WHYDetailOrganizations { get;set;}
 
         public DbSet<Domain.DomainModel.ZiBoWechatNews.ZiBoWechatNews> ZiBoWechatNews { get; set; }
+
+        public DbSet<Domain.DomainModel.SDTA.LineDetail> LineDetails { get; set; }
+
     }
 }

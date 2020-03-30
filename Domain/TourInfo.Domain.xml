@@ -434,7 +434,7 @@
             <param name="logger"></param>
             <param name="longitudeFirst">经度在前面</param>
         </member>
-        <member name="T:TourInfo.Domain.DomainModel.ListDetailFetcher`2">
+        <member name="T:TourInfo.Domain.DomainModel.ListDetailFetcher`4">
             <summary>
             抓取 list-detail 类型的接口  的数据.
             </summary>

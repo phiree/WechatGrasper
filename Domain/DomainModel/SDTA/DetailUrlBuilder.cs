@@ -1,0 +1,25 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace TourInfo.Domain.DomainModel.SDTA
+{
+    public class LineDetailUrlBuilder : IDetailUrlBuilder<string>
+    {
+
+        public string Build(string id)
+        {
+
+            return "https://www.sdta.cn/json/lines/" + id + ".json?channel=zibo";
+        }
+    }
+    public class CityGuideDetailUrlBuilder : IDetailUrlBuilder<string>
+    {
+
+        public string Build(string id)
+        {
+
+            return "https://www.sdta.cn/api/eledetail/geteledetailbyid.jsp?eleid="+id+"&eletype=article&channel=zibo";
+        }
+    }
+}
