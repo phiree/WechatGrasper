@@ -1,0 +1,1 @@
+SqlCmd -E -S Server_Name –Q “RESTORE DATABASE [Name_of_Database] FROM DISK=’X:PathToBackupFile[File_Name].bak'”

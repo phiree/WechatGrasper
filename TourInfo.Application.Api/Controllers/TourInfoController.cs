@@ -80,9 +80,9 @@ namespace TourInfo.Application.Api.Controllers
         public ActionResult<dynamic> SyncData(string version)
         {
             logger.LogInformation("-----开始同步------");
-            string currentVersion = DateTime.Now.ToString("yyyyMMddhhmmss");
+            
             logger.LogInformation("开始更新数据");
-            this.GraspeData(currentVersion);
+           this.GraspeData( );
            //不再需要创建前端适用的sqllite文件
             // dataService.CreateInitData(currentVersion);
             logger.LogInformation("开始更新sqlite文件");
@@ -127,13 +127,13 @@ namespace TourInfo.Application.Api.Controllers
         }
 
         [HttpGet("GraspeData")]
-        public ActionResult<dynamic> GraspeData(string _dateVersion)
+        public ActionResult<dynamic> GraspeData( )
         {
-           
 
-          zBTAApplication.Graspe(_dateVersion);
-            eWQYApplication.Graspe(_dateVersion);
-            videoApplication.Graspe(_dateVersion);
+            string currentVersion = DateTime.Now.ToString("yyyyMMddhhmmss");
+            zBTAApplication.Graspe(currentVersion);
+            eWQYApplication.Graspe(currentVersion);
+            videoApplication.Graspe(currentVersion);
             logger.LogInformation(" 抓取完毕");
            
             return Content("抓取完毕");
