@@ -41,4 +41,32 @@ namespace TourInfo.Domain.DomainModel.Weather
             }
         }
     }
+
+    public class WeatherModelApiBang
+    {
+        public string status { get; set; }
+        public string cityen { get; set; }
+        public string city { get; set; }
+        public string citycode { get; set; }
+        public string temp { get; set; }
+        public string tempf { get; set; }
+        public string wd { get; set; }
+        public string wden { get; set; }
+        public string wdenimg { get; set; }
+        public string wdforce { get; set; }
+        public string wdspd { get; set; }
+        public string uptime { get; set; }
+        public string weather { get; set; }
+        public string weatheren { get; set; }
+        public string weathercode { get; set; }
+        public string weatherimg { get; set; }
+        public string stp { get; set; }
+        public string wisib { get; set; }
+        public string humidity { get; set; }
+        public string prcp { get; set; }
+        public string prcp24h { get; set; }
+        public string aqi { get; set; }
+        public string pm25 { get; set; }
+        public string today { get; set; }
+    }
 }

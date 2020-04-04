@@ -67,7 +67,7 @@ namespace TourInfo.Domain
 
         protected override void Load(ContainerBuilder builder )
         {
-            builder.RegisterType<WeatherApplication>().As<IWeatherApplication>()
+            builder.RegisterType<ApiBangWeatherApplication>().As<IWeatherApplication>()
                  ;
             builder.RegisterType<ZBTAApplication>().As<IZBTAApplication>().WithParameter("imageClientPath", zbtaImageClientPath)
                 .WithParameter("titleImageBaseUrl", zbtaTitleImageBaseUrl)

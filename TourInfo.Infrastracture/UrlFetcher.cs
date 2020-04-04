@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using TourInfo.Domain;
 using TourInfo.Infrastracture;
@@ -22,6 +23,16 @@ namespace TourInfo.Infrastracture
             var webClient = new CookieAwareWebClient();
 
             return webClient.DownloadStringTaskAsync(url);
+            //logger.LogInformation("抓取结果:" + result);
+        }
+        public Task<string> FetchAsync2(string url)
+        {
+            logger.LogInformation("开始异步抓取:" + url);
+            var webClient =  new HttpClient();
+            var webClient2=new CookieAwareWebClient();
+            webClient2.Headers.Add(HttpRequestHeader.UserAgent, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36");
+
+            return webClient2.DownloadStringTaskAsync( url);
             //logger.LogInformation("抓取结果:" + result);
         }
         public string PostWithJsonAsync(string url, string postJson)

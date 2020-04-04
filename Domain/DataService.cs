@@ -162,6 +162,7 @@ namespace TourInfo.Domain.DomainModel
         public dynamic CreateSyncData(string version)
         {
 
+            var weather = weatherApplication.GetWeather();
             logger.LogInformation("开始获取活动信息");
             var allActivity = activityRepository.GetAllAfterVersion(version).Select(x =>_mapper.Map<SqliteActivity>(x)  );
             logger.LogInformation("活动信息获得"+allActivity.Count()+"条");
@@ -174,7 +175,7 @@ namespace TourInfo.Domain.DomainModel
 
 
             allZbtaNews = allZbtaNews.Select(x => { x.imageOriginal = imageBaseUrl_Zbta + x.imageOriginal; return x; });
-            var weather=weatherApplication.GetWeather();
+        
             
             return new SyncDataModel
             {

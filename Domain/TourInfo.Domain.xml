@@ -439,6 +439,17 @@
             抓取 list-detail 类型的接口  的数据.
             </summary>
         </member>
+        <member name="T:TourInfo.Domain.DomainModel.ListDetailFetcher2`5">
+            <summary>
+            抓取 list-detail 类型的接口  的数据.
+            </summary>
+        </member>
+        <member name="T:TourInfo.Domain.DomainModel.ResponseItem`1">
+            <summary>
+            url
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
         <member name="P:TourInfo.Domain.DomainModel.WHY.RapiRequestModel.flagpic">
             <summary>
             去除区号的号码.

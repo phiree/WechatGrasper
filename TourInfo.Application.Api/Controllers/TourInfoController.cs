@@ -15,6 +15,7 @@ using Microsoft.Extensions.Caching.Memory;
 using TourInfo.Domain.Application.WHY;
 using TourInfo.Domain.Application.ZiBoWechatNews;
 using TourInfo.Domain.Application.SDTA;
+using TourInfo.Domain.DomainModel.Weather;
 
 namespace TourInfo.Application.Api.Controllers
 {
@@ -34,6 +35,7 @@ namespace TourInfo.Application.Api.Controllers
         ILogger<TourInfoController> logger;
           IMemoryCache _cache;
         ISDTAApplication sDTAApplication;
+         IWeatherApplication weatherApplication;
         public TourInfoController(ILogger<TourInfoController> logger, IServiceProvider serviceProvider, 
             IRapiApplication rapiApplication, 
             IZBTAApplication zBTAApplication, 
@@ -43,8 +45,11 @@ namespace TourInfo.Application.Api.Controllers
             ISDTAApplication sDTAApplication,
             IMemoryCache cache,
             IDataService dataService,
-            IZiBoWechatNewsApplication ziBoWechatNewsApplication)
+            IZiBoWechatNewsApplication ziBoWechatNewsApplication
+            ,IWeatherApplication weatherApplication
+            )
         {
+            this.weatherApplication=weatherApplication;
             this.wHYApplication=wHYApplication;
             this.logger=logger;
            this.rapiApplication = rapiApplication;
@@ -90,6 +95,13 @@ namespace TourInfo.Application.Api.Controllers
             var syncResult=  dataService.CreateSyncData(version);
             logger.LogInformation("-----同步完成------");
             return syncResult;
+
+        }
+        [HttpGet("GetWeathre")]
+        public ActionResult<dynamic> GetWeather(string version)
+        {
+            
+          return  weatherApplication.GetWeather();
 
         }
         [HttpGet("SyncDataTest")]
