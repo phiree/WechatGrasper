@@ -18,7 +18,7 @@ namespace TourInfo.Domain.DomainModel.Weather.Tests
         {
             var fixture = new Fixture().Customize(new AutoMoqCustomization());
             var logger = fixture.Freeze<Mock<ILoggerFactory>>();
-          var  app=new JirenguWeatherApplication(new UrlFetcher(logger.Object),null);
+          var  app=new JirenguWeatherApplication(new UrlFetcher(logger.Object));
             var weather=app.GetWeather();
             Console.Write(weather.weather);
         }
