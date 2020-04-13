@@ -15,7 +15,11 @@ namespace TourInfo.Domain.Application.SDTA
         IRepository<CityGuideDetail.Data, string> repositoryCityGuideDetail;
         IRepository<FoodDetail.Data, int> repositoryFoodDetail;
         ILogger<ListDetailFetcherWithPostList<Food, Food.Hit.Source, FoodDetail, FoodDetail.Data, int>> logger;
-        public SDTAApplication(  IUrlFetcher urlFetcher,
+
+        IRepository<LineDetailScenic2,string> repositoryLineDetailScenic;
+        IRepository<LineDetail2, string> repositoryLineDetail2;
+
+        public SDTAApplication(IUrlFetcher urlFetcher,
             IRepository<LineDetail, string> repositoryDetailItem, 
             IRepository<CityGuideDetail.Data, string> repositoryCityGuideDetail,
             IRepository<FoodDetail.Data, int> repositoryFoodDetail,
@@ -28,7 +32,7 @@ namespace TourInfo.Domain.Application.SDTA
             this.repositoryFoodDetail=repositoryFoodDetail;
         }
 
-        public void Graspe()
+        public void Graspe(IUrlFetcher lineDetailScenicPostFetcher)
 
         { //美食
             var foodListUrlBuilder = new FoodListUrlBuilder();
@@ -83,7 +87,19 @@ namespace TourInfo.Domain.Application.SDTA
                 new PagingSetting { NeedPaging = false, StartIndex = -1 });
             cityGuidesFetcher.Fetch();
 
-           
+           //新版路线
+
+            var linesFetcher2=new NestedFetcher<
+                ResponseLines2, string,
+                LineDetail2,string,
+                LineDetailScenic2,string
+                >
+                (
+                 "",urlFetcher,false,null,
+                new  LineDetailUrlBuilder(),urlFetcher,true, repositoryLineDetail2,
+                new LineDetailScenicUrlBuilder(), postfe,true, repositoryLineDetailScenic
+                );
+            linesFetcher2.Fetch();
 
         }
     }

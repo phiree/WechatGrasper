@@ -13,6 +13,7 @@ using TourInfo.Infrastracture.Repository.ADONET;
 
 namespace TourInfo.Infrastracture.Repository.EFCore
 {
+    
     public class BaseEFCoreRepository<T, Key> : IRepository<T, Key>
         where T : Entity<Key>  
     {
