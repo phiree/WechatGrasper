@@ -5,7 +5,7 @@ using TourInfo.Domain.Base;
 using System.Linq;
 namespace TourInfo.Domain.DomainModel.SDTA
 {
-    public class Lines2:Entity<string>
+    public class Lines:Entity<string>
     {
         public string name { get; set; }
         public string thumb { get; set; }
@@ -20,15 +20,17 @@ namespace TourInfo.Domain.DomainModel.SDTA
        
     }
 
-    public class ResponseLines2 : DetailWrapper<LineDetail2, string>
+    public class ResponseLines : DetailWrapper<Lines,string>, IEntity<string>
     {
         
         
-      public  IList<Lines2>  lines {get;set; }
+      public  IList<Lines>  lines {get;set; }
 
-       public string GetDetailRequestData(Lines2 lines2) { return lines2.id;}
+       public string GetDetailRequestData(Lines lines2) { return lines2.id;}
+        public override IEnumerable<Lines> DetailSummarys =>lines;
+        public override IDetailHttpRequestMessageCreator<Lines> DetailRequestBuilder =>
+            new LineDetailHttpRequestMessageCreator();
 
-        public override IList<string> DetailKeys => lines.Select(x=>x.id).ToList();
-
+        public string id {get;set;}
     }
 }

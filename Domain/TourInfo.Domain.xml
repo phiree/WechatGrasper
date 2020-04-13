@@ -439,6 +439,28 @@
             抓取 list-detail 类型的接口  的数据.
             </summary>
         </member>
+        <member name="T:TourInfo.Domain.DomainModel.NestedFetcher`8">
+            <summary>
+            三级 list-detail
+            </summary>
+            <typeparam name="T0"></typeparam>
+            <typeparam name="Key0"></typeparam>
+            <typeparam name="T1"></typeparam>
+            <typeparam name="Key1"></typeparam>
+            <typeparam name="T2"></typeparam>
+            <typeparam name="Key2"></typeparam>
+        </member>
+        <member name="T:TourInfo.Domain.DomainModel.ListDetailFetcher3`6">
+            <summary>
+            抓取 list-detail 类型的接口  的数据.
+            </summary>
+        </member>
+        <member name="T:TourInfo.Domain.DomainModel.SDTA.IDetailHttpRequestMessageCreator`1">
+            <summary>
+            详细资料 url 构建器
+            </summary>
+            <typeparam name="DetailKey"></typeparam>
+        </member>
         <member name="P:TourInfo.Domain.DomainModel.WHY.RapiRequestModel.flagpic">
             <summary>
             去除区号的号码.

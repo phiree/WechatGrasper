@@ -13,8 +13,10 @@ namespace TourInfo.Infrastracture
     public class UrlFetcher : IUrlFetcher
     {
         ILogger<UrlFetcher> logger;
-        public UrlFetcher(ILoggerFactory loggerFactory)
+        IHttpClientFactory httpClientFactory;
+        public UrlFetcher(IHttpClientFactory httpClientFactory, ILoggerFactory loggerFactory)
         {
+            this.httpClientFactory=httpClientFactory;
             this.logger = loggerFactory.CreateLogger<UrlFetcher>();
         }
         public Task<string> FetchAsync(string url)
@@ -90,9 +92,20 @@ namespace TourInfo.Infrastracture
             return result;
         }
 
-        public Task<string> FetchAsync(HttpRequestMessage httpRequestMessage)
+        public async Task<string> FetchAsync(HttpRequestMessage request)
         {
-            throw new NotImplementedException();
+            logger.LogInformation($"开始异步抓取.url[{request.RequestUri}]");
+            var cli = httpClientFactory.CreateClient();
+            var response = await cli.SendAsync(request);
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadAsStringAsync();
+            }
+            else
+            {
+                logger.LogError($"抓取失败.statuscode为[{response.StatusCode}]");
+                return string.Empty;
+            }
         }
     }
     public class Fetcher2 : IUrlFetcher

@@ -7,7 +7,7 @@ using System.Text;
 
 namespace TourInfo.Domain.Base
 {
-    public interface IRepository<T, Key>
+    public interface IRepository<T, Key> where T:IEntity<Key>
     {
 
         void Insert(T entity);

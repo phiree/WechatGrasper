@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TourInfo.Domain.Base;
 
 namespace TourInfo.Domain.DomainModel.SDTA
 {
     
    
-    public class LineDetailScenic2
+    public class LineDetailScenic:Entity<string>
     {
         public List<Doc> docs { get; set; }
         public class Doc
@@ -17,8 +18,9 @@ namespace TourInfo.Domain.DomainModel.SDTA
             public int _version { get; set; }
             public bool found { get; set; }
             public Source _source { get; set; }
-            public class Source
+            public class Source 
             {
+              
                 public string ele_id { get; set; }
                 public string ele_type { get; set; }
                 public string ele_type_name { get; set; }
@@ -40,11 +42,13 @@ namespace TourInfo.Domain.DomainModel.SDTA
                 public List<double> location { get; set; }
                 public string buyable { get; set; }
                 public double lowest_price { get; set; }
+          
+
                 public class Eletype
                 {
                     public int level { get; set; }
                     public string value { get; set; }
-                    public List<object> ancestors { get; set; }
+                    public string[] ancestors { get; set; }
                 }
             }
         }

@@ -6,7 +6,7 @@ using System.Linq;
 namespace TourInfo.Domain.DomainModel.SDTA
 {
 
-    public class LineDetail2 : DetailWrapper<LineDetailScenic2, string>
+    public class LineDetail : DetailWrapper<LineDetail.Day.Place,string>, IEntity<string>
     {
 
         public string name { get; set; }
@@ -16,12 +16,14 @@ namespace TourInfo.Domain.DomainModel.SDTA
         public string[] city { get; set; }
         public List<Day> days { get; set; }
 
-        public override IList<string> DetailKeys => days.SelectMany(x => x.place.Select(y => y.type + "_" + y.id)).ToList();
+        
+        public override IEnumerable<Day.Place> DetailSummarys =>  days.SelectMany(x=>x.place);
 
-        public string GetDetailRequestData(LineDetail2.Day.Place place)
-        {
-            return place.type + "_" + place.id;
-        }
+        public override IDetailHttpRequestMessageCreator<Day.Place> DetailRequestBuilder =>new LineDetailScenicHttpRequestMessageCreator();
+
+        public string id { get;set; }
+
+       
 
         public class Day
         {
@@ -33,10 +35,10 @@ namespace TourInfo.Domain.DomainModel.SDTA
             public string foodDesc { get; set; }
 
 
-            public class Place
+            public class Place:Entity<string>
             {
                 public string type { get; set; }
-                public string id { get; set; }
+            
                 public string time { get; set; }
                 public string tag { get; set; }
             }

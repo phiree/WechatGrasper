@@ -11,6 +11,7 @@ using TourInfo.Domain.DomainModel.EWQY;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TourInfo.Domain.DomainModel.Video;
 using static TourInfo.Domain.DomainModel.SDTA.LineDetail;
+using System.Security.Cryptography.X509Certificates;
 
 namespace TourInfo.Infrastracture.Repository.EFCore
 {
@@ -24,7 +25,7 @@ namespace TourInfo.Infrastracture.Repository.EFCore
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-             
+
 
             modelBuilder.Entity<EWQYEntity>()
                 .OwnsMany(x => x.pictureKeys, key =>
@@ -39,15 +40,15 @@ namespace TourInfo.Infrastracture.Repository.EFCore
 
             modelBuilder.Entity<CompanyVenue>()
                 .OwnsOne(x => x.location).ToTable("CompanyVanueLocations");
-          
+
 
 
             modelBuilder.Entity<ZbtaNews>()
                 .OwnsOne(x => x.image);
             modelBuilder.Entity<ZbtaNews>()
                .OwnsOne(x => x.details);
-           
-             
+
+
 
 
             modelBuilder.Entity<Projectinfo>()
@@ -89,7 +90,7 @@ namespace TourInfo.Infrastracture.Repository.EFCore
        .OwnsOne(x => x.flagpic);
 
             modelBuilder.Entity<Pubinfounit>()
-                .OwnsOne(x=>x.gps);
+                .OwnsOne(x => x.gps);
             modelBuilder.Entity<Pubinfounit>()
                .OwnsOne(x => x.gpsbd);
             modelBuilder.Entity<Pubinfounit>()
@@ -148,7 +149,7 @@ namespace TourInfo.Infrastracture.Repository.EFCore
             .Property(e => e.tags)
             .HasConversion(
                 v => string.Join(",", v),
-                v => v.Split(new char[]{',' }, StringSplitOptions.RemoveEmptyEntries)
+                v => v.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
                 );
             modelBuilder.Entity<Domain.DomainModel.SDTA.LineDetail>()
            .Property(e => e.city)
@@ -158,58 +159,95 @@ namespace TourInfo.Infrastracture.Repository.EFCore
                );
             modelBuilder.Entity<Domain.DomainModel.SDTA.LineDetail>()
                 .ToTable("SDTALineDetail")
-         .OwnsMany(e => e.days,c=>{ 
+         .OwnsMany(e => e.days, c =>
+         {
              c.ToTable("SDTALineDetailDay");
              c.HasForeignKey("LineId");
              c.Property("name");
-             c.HasKey("LineId","name");
-             c.OwnsMany (
-                 e => e.place, g => {
+             c.HasKey("LineId", "name");
+             c.OwnsMany(
+                 e => e.place, g =>
+                 {
                      g.ToTable("SDTALineDetailDayPlace");
-                     g.HasForeignKey("LineId","name");
+                     g.HasForeignKey("LineId", "name");
                      g.Property("id");
-                     g.HasKey("LineId","name","id");
-                     }
+                     g.HasKey("LineId", "name", "id");
+                 }
                  );
-             });
+         });
+            modelBuilder.Entity<Domain.DomainModel.SDTA.LineDetailScenic>()
+             .ToTable("SDTALineDetailScenic");
+            modelBuilder.Entity<Domain.DomainModel.SDTA.LineDetailScenic>()
+      .OwnsMany(x => x.docs,
+      c =>
+      {
+          c.ToTable("SDTALineDetailScenicDoc");
+          c.HasForeignKey("DocId");
+          c.Property("_id");
+          c.HasKey("DocId","_id");
+          c.OwnsOne(x => x._source, k => { 
+              k.ToTable("SDTALineDetailScenicDocSource");
+              k.Property(x=>x.location).HasConversion(
+                   v => string.Join(",", v),
+                   v => v.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x=>double.Parse(x)).ToList()
+                  );
+
+              k.OwnsMany(x=>x.eletype,d=>{
+                  d.ToTable("SDTALineDetailScenicDocSourceEletype");
+                  d.HasForeignKey("DocId","_id");
+                  d.Property(x=>x.level);//-----和直接写字符串有何区别
+                  d.HasKey("DocId", "_id","level");
+                  d.Property(x=>x.ancestors).HasConversion(
+                        v => string.Join(",", v),
+               v => v.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                      );
+                  });
+              });
+
+      });
+
             modelBuilder.Entity<Domain.DomainModel.SDTA.CityGuideDetail.Data>()
               .ToTable("SDTACityGuideDetail")
-              .OwnsOne(e => e.category )
+              .OwnsOne(e => e.category)
               .ToTable("SDTACityGuideDetailCategory")
-              
+
               ;
-            
+
             modelBuilder.Entity<Domain.DomainModel.SDTA.CityGuideDetail.Data>()
             .ToTable("SDTACityGuideDetail")
-            .OwnsOne(e => e.pics,c=>{
+            .OwnsOne(e => e.pics, c =>
+            {
                 c.ToTable("SDTACityGuideDetailPics");
-                c.OwnsMany(x => x.images, d => {
+                c.OwnsMany(x => x.images, d =>
+                {
                     d.ToTable("SDTACityGuideDetailPicImage");
                     d.HasForeignKey("GuideId");
-                    d.Property(x =>x.img);
-                    d.HasKey("GuideId","img");
-                    });
+                    d.Property(x => x.img);
+                    d.HasKey("GuideId", "img");
                 });
+            });
             modelBuilder.Entity<Domain.DomainModel.SDTA.FoodDetail.Data>()
             .ToTable("SDTAFoodDetail")
-            .OwnsOne(e => e.destination) ;
+            .OwnsOne(e => e.destination);
             modelBuilder.Entity<Domain.DomainModel.SDTA.FoodDetail.Data>()
            .ToTable("SDTAFoodDetail")
            .OwnsOne(e => e.snack_food_type);
             modelBuilder.Entity<Domain.DomainModel.SDTA.FoodDetail.Data>()
                 .Property(a => a.id).ValueGeneratedNever();
             modelBuilder.Entity<Domain.DomainModel.SDTA.FoodDetail.Data>()
-               
+
            .ToTable("SDTAFoodDetail")
-           .OwnsMany(e => e.pictures,c=>{ 
+           .OwnsMany(e => e.pictures, c =>
+           {
                c.ToTable("SDTAFoodDetailPictures");
                c.HasForeignKey("FoodId");
-               c.Property(x=>x.id);
-               c.HasKey("FoodId","id");
-               });
+               c.Property(x => x.id);
+               c.HasKey("FoodId", "id");
+           });
             modelBuilder.Entity<Domain.DomainModel.SDTA.FoodDetail.Data>()
           .ToTable("SDTAFoodDetail")
-          .OwnsMany(e => e.filter_pictures, c => {
+          .OwnsMany(e => e.filter_pictures, c =>
+          {
               c.ToTable("SDTAFoodDetailFilterPictures");
               c.HasForeignKey("FoodId");
               c.Property(x => x.id);
@@ -225,13 +263,14 @@ namespace TourInfo.Infrastracture.Repository.EFCore
         public DbSet<CompanyVenue> CompanyVenues { get; set; }
         public DbSet<CompanyVenueType> CompanyVenueTypes { get; set; }
         public DbSet<ZbtaNews> ZbtaNews { get; set; }
-         
-        public DbSet<Video> Videos { get;set;}
-        public DbSet<Domain.DomainModel.WHY.WhyModel> WHYDetailOrganizations { get;set;}
+
+        public DbSet<Video> Videos { get; set; }
+        public DbSet<Domain.DomainModel.WHY.WhyModel> WHYDetailOrganizations { get; set; }
 
         public DbSet<Domain.DomainModel.ZiBoWechatNews.ZiBoWechatNews> ZiBoWechatNews { get; set; }
 
         public DbSet<Domain.DomainModel.SDTA.LineDetail> LineDetails { get; set; }
+        public DbSet<Domain.DomainModel.SDTA.LineDetailScenic> LineDetailScenics { get; set; }
         /// <summary>
         /// 城市锦囊
         /// </summary>

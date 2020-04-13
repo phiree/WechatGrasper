@@ -6,10 +6,13 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <GenerateSerializationAssemblies>On</GenerateSerializationAssemblies>
-    <DocumentationFile>D:\Code\WechatGrasper\Domain\TourInfo.Domain.xml</DocumentationFile>
+    <DocumentationFile>TourInfo.Domain.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DomainModel\SDTA\LineDetail.cs" />
+    <Compile Remove="DomainModel\SDTA\LineDetailScenic.cs" />
+    <Compile Remove="DomainModel\SDTA\Lines.cs" />
     <Compile Remove="DomainModel\ZBTA\DetailImageLocalizer.cs" />
     <Compile Remove="DomainModel\ZBTA\IDetailImageLocalizer.cs" />
   </ItemGroup>

@@ -9,6 +9,7 @@ using AutoFixture.AutoMoq;
 using AutoFixture;
 using Moq;
 using Microsoft.Extensions.Logging.Abstractions;
+using System.Net.Http;
 
 namespace TourInfo.Domain.DomainModel.Weather.Tests
 {
@@ -20,7 +21,7 @@ namespace TourInfo.Domain.DomainModel.Weather.Tests
         {
             var fixture = new Fixture().Customize(new AutoMoqCustomization());
             var logger = fixture.Freeze<Mock<ILoggerFactory>>();
-          var  app=new JirenguWeatherApplication(new UrlFetcher(logger.Object),NullLogger<JirenguWeatherApplication>.Instance);
+          var  app=new JirenguWeatherApplication(new UrlFetcher(null, logger.Object),NullLogger<JirenguWeatherApplication>.Instance);
             var weather=app.GetWeather();
             Console.Write(weather.weather);
         }

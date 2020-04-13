@@ -26,6 +26,5 @@ namespace TourInfo.Domain.Base
         
     }
     
-
 }
 

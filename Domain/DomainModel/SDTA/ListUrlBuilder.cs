@@ -40,42 +40,29 @@ namespace TourInfo.Domain.DomainModel.SDTA
     {
         HttpRequestMessage Create(DetailSummary detailKey);
     }
-    public abstract class AbsHttpRequestMessageCreator<DetailSummary> : IDetailHttpRequestMessageCreator<DetailSummary >
+ 
+    public class LineDetailHttpRequestMessageCreator: IDetailHttpRequestMessageCreator<Lines>
     {
-        public AbsHttpRequestMessageCreator(string url)
-        { this.Url = url; }
-        protected string Url { get; }
-
-        public abstract HttpRequestMessage Create(DetailSummary detailSummary);
-    }
-    
-    public class LineDetailHttpRequestMessage: AbsHttpRequestMessageCreator<Lines2>
-    {
-        public LineDetailHttpRequestMessage(string url) : base(url) { }
-
-        public override HttpRequestMessage Create(Lines2 line2)
+      
+        public   HttpRequestMessage Create(Lines line2)
         {
-            string detailUrl=Url+ line2.id;
-
-            var request = new HttpRequestMessage(HttpMethod.Get, Url);
-
+            string detailUrl = $"https://www.sdta.cn/json/lines/{line2.id}.json?channel=zibo";
+            var request = new HttpRequestMessage(HttpMethod.Get, detailUrl);
             return request;
-
         }
     }
-    public class LineDetailScenicHttpRequestMessage  : AbsHttpRequestMessageCreator<LineDetail2.Day.Place>
+    public class LineDetailScenicHttpRequestMessageCreator : IDetailHttpRequestMessageCreator<LineDetail.Day.Place>
     {
        
-        public LineDetailScenicHttpRequestMessage(string url ):base(url)
-        {
-           
-        }
+        
 
-        public override HttpRequestMessage Create(LineDetail2.Day.Place place )
+        public   HttpRequestMessage Create(LineDetail.Day.Place place )
         {
+            string url= "https://www.sdta.cn/searches/element/ele/_mget";
+
             var postData = new { ids=new string[]{ place.type+"_"+place.id } };
 
-            var request = new HttpRequestMessage(HttpMethod.Post, Url);
+            var request = new HttpRequestMessage(HttpMethod.Post, url);
 
             var httpContent = new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(postData));
             request.Headers.Add("ContentType", "application/json");

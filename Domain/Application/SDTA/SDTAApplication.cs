@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
 using TourInfo.Domain.Base;
 using TourInfo.Domain.DomainModel;
@@ -16,25 +17,46 @@ namespace TourInfo.Domain.Application.SDTA
         IRepository<FoodDetail.Data, int> repositoryFoodDetail;
         ILogger<ListDetailFetcherWithPostList<Food, Food.Hit.Source, FoodDetail, FoodDetail.Data, int>> logger;
 
-        IRepository<LineDetailScenic2,string> repositoryLineDetailScenic;
-        IRepository<LineDetail2, string> repositoryLineDetail2;
+        IRepository<LineDetailScenic,string> repositoryLineDetailScenic;
+        IRepository<LineDetail, string> repositoryLineDetail2;
 
         public SDTAApplication(IUrlFetcher urlFetcher,
             IRepository<LineDetail, string> repositoryDetailItem, 
             IRepository<CityGuideDetail.Data, string> repositoryCityGuideDetail,
             IRepository<FoodDetail.Data, int> repositoryFoodDetail,
-            ILogger<ListDetailFetcherWithPostList<Food, Food.Hit.Source, FoodDetail, FoodDetail.Data, int>> logger)
+
+              IRepository<LineDetailScenic, string> repositoryLineDetailScenic,
+        IRepository<LineDetail, string> repositoryLineDetail2,
+
+        ILogger<ListDetailFetcherWithPostList<Food, Food.Hit.Source, FoodDetail, FoodDetail.Data, int>> logger)
         {
             this.logger=logger;
          this.repositoryCityGuideDetail=repositoryCityGuideDetail;
             this.urlFetcher = urlFetcher;
             this.repositoryDetailItem = repositoryDetailItem;
             this.repositoryFoodDetail=repositoryFoodDetail;
+            this. repositoryLineDetailScenic=repositoryLineDetailScenic;
+            this.repositoryLineDetail2=repositoryLineDetail2;
         }
 
         public void Graspe()
 
-        { //美食
+        {
+            //新版路线
+
+            var linesFetcher2 = new NestedFetcher<
+                ResponseLines, string, Lines,
+                LineDetail, string, LineDetail.Day.Place,
+                LineDetailScenic, string
+                >
+                (urlFetcher,
+                new HttpRequestMessage(HttpMethod.Get, "https://www.sdta.cn/json/lines/list_370300.json?channel=zibo")
+                , false, null,
+                true, repositoryLineDetail2,
+                true, repositoryLineDetailScenic
+                );
+            linesFetcher2.Fetch();
+            //美食
             var foodListUrlBuilder = new FoodListUrlBuilder();
             var foodDetailBuilder = new FoodDetailUrlBuilder();
 
@@ -62,16 +84,16 @@ namespace TourInfo.Domain.Application.SDTA
                 },logger
               );;
             foodFetcher.Fetch();
-            //路线
-            var listUrlBuilder = new LineListUrlBuilder( );
-            var detailUrlBuilder = new LineDetailUrlBuilder();
+            ////路线
+            //var listUrlBuilder = new LineListUrlBuilder( );
+            //var detailUrlBuilder = new LineDetailUrlBuilder();
 
-            var linesFetcher = new ListDetailFetcher<ResponseLines,Lines, LineDetail,LineDetail, string>(listUrlBuilder,
-                detailUrlBuilder,
-                urlFetcher,
-                repositoryDetailItem,
-                new PagingSetting { NeedPaging = false, StartIndex = -1 });
-            linesFetcher.Fetch();
+            //var linesFetcher = new ListDetailFetcher<ResponseLines,Lines, LineDetail,LineDetail, string>(listUrlBuilder,
+            //    detailUrlBuilder,
+            //    urlFetcher,
+            //    repositoryDetailItem,
+            //    new PagingSetting { NeedPaging = false, StartIndex = -1 });
+            //linesFetcher.Fetch();
 
 
             //todo: 精品路线中的景区
@@ -87,20 +109,7 @@ namespace TourInfo.Domain.Application.SDTA
                 new PagingSetting { NeedPaging = false, StartIndex = -1 });
             cityGuidesFetcher.Fetch();
 
-           //新版路线
-
-            var linesFetcher2=new NestedFetcher<
-                ResponseLines2, string,
-                LineDetail2,string,
-                LineDetailScenic2,string
-                >
-                (urlFetcher,
-                new HttpRequestMessageWithGet("https://www.sdta.cn/json/lines/list_370300.json?channel=zibo"),false,null
-               ,new System.Net.Http.HttpRequestMessage(
-                new  LineDetailUrlBuilder(),urlFetcher,true, repositoryLineDetail2,
-                new LineDetailScenicUrlBuilder(), postfe,true, repositoryLineDetailScenic
-                );
-            linesFetcher2.Fetch();
+         
 
         }
     }
