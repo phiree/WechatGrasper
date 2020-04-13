@@ -13,6 +13,15 @@ namespace TourInfo.Domain.DomainModel.SDTA
             return "https://www.sdta.cn/json/lines/" + id + ".json?channel=zibo";
         }
     }
+    public class LineDetailScenicUrlBuilder : IDetailUrlBuilder<string>
+    {
+
+        public string Build(string id)
+        {
+
+            return "https://www.sdta.cn/searches/element/ele/_mget";
+        }
+    }
     public class CityGuideDetailUrlBuilder : IDetailUrlBuilder<string>
     {
 

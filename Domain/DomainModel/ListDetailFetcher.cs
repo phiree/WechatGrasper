@@ -1,19 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
 using TourInfo.Domain.Base;
 
 namespace TourInfo.Domain.DomainModel
 {
-    public interface IListData<DetailSummary,Key> where DetailSummary:Entity<Key>
+    public interface IListData<DetailSummary, Key> where DetailSummary : Entity<Key>
     {
-        IList<DetailSummary> Details { get;   }
+        IList<DetailSummary> Details { get; }
     }
-    
+
     public interface IDetailWrapper<TDetail>
-    { 
-        TDetail Detail { get ;}
-        }
+    {
+        TDetail Detail { get; }
+    }
 
     public class PagingSetting
     {
@@ -84,5 +85,7 @@ namespace TourInfo.Domain.DomainModel
     {
         string Build(Key key);
     }
-    
+
+  
+
 }

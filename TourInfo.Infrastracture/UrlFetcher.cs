@@ -28,11 +28,11 @@ namespace TourInfo.Infrastracture
         public Task<string> FetchAsync2(string url)
         {
             logger.LogInformation("开始异步抓取:" + url);
-            var webClient =  new HttpClient();
-            var webClient2=new CookieAwareWebClient();
+            var webClient = new HttpClient();
+            var webClient2 = new CookieAwareWebClient();
             webClient2.Headers.Add(HttpRequestHeader.UserAgent, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36");
 
-            return webClient2.DownloadStringTaskAsync( url);
+            return webClient2.DownloadStringTaskAsync(url);
             //logger.LogInformation("抓取结果:" + result);
         }
         public string PostWithJsonAsync(string url, string postJson)
@@ -61,7 +61,7 @@ namespace TourInfo.Infrastracture
                     logger.LogError($"Web请求失败.url:[{url}],ex:[{webEx.Message}]");
                 }
             }
-           
+
             return Task.FromResult(0);
 
             // return webClient.DownloadStringTaskAsync(url);
@@ -90,6 +90,74 @@ namespace TourInfo.Infrastracture
             return result;
         }
     }
+    public class Fetcher2 : IUrlFetcher
+    {
+        ILogger<Fetcher2> logger;
+        IHttpClientFactory httpClientFactory;
+        string postJson;
+        public Fetcher2(string postJson, IHttpClientFactory httpClientFactory, ILogger<Fetcher2> logger)
+        {
+            this.httpClientFactory = httpClientFactory;
+            this.postJson = postJson;//todo: paging 
+            this.logger = logger;
+        }
+        public async Task<string> FetchAsync(HttpRequestMessage request) {
+            logger.LogInformation($"开始异步抓取.url[{request.RequestUri}],jsonParam[{postJson}]");
+            var cli = httpClientFactory.CreateClient();
+            var response = await cli.SendAsync(request);
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadAsStringAsync();
+            }
+            else
+            {
+                logger.LogError($"抓取失败.statuscode为[{response.StatusCode}]");
+                return string.Empty;
+            }
+        }
+        public async Task<string> FetchAsync(string url)
+        {
+            logger.LogInformation($"开始异步抓取.url[{url}],jsonParam[{postJson}]");
+            var request = new HttpRequestMessage(HttpMethod.Post, url);
+            request.Headers.Add(HttpRequestHeader.ContentType.ToString(), "application/json");
+            var cli = httpClientFactory.CreateClient();
+            var response = await cli.SendAsync(request);
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadAsStringAsync();
+            }
+            else
+            {
+                logger.LogError($"抓取失败.statuscode为[{response.StatusCode}]");
+                return string.Empty;
+            }
 
+        }
+
+        public Task<string> FetchAsync2(string url)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<string> FetchEWQYAsync(string url)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task FetchFile(string url, string fileName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<string> FetchWithHeaderAsync(string url, IDictionary<string, string> header)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string PostWithJsonAsync(string url, string postJson)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
 

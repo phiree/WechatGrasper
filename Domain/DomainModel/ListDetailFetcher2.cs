@@ -6,77 +6,160 @@ using TourInfo.Domain.Base;
 
 namespace TourInfo.Domain.DomainModel
 {
-   
-    
-    
+
+
+  
     /// <summary>
-    /// 抓取 list-detail 类型的接口  的数据.
+    /// 三级 list-detail
     /// </summary>
-    public class ListDetailFetcher2<ListData, DetailSummary, DetailWrapper, Detail, Key> : IListDetailFetcher where DetailSummary : Entity<Key>
-        where Detail : Entity<Key>
-        where DetailWrapper : IDetailWrapper<Detail>
-        where ListData : IListData<DetailSummary, Key>
+    /// <typeparam name="T0"></typeparam>
+    /// <typeparam name="Key0"></typeparam>
+    /// <typeparam name="T1"></typeparam>
+    /// <typeparam name="Key1"></typeparam>
+    /// <typeparam name="T2"></typeparam>
+    /// <typeparam name="Key2"></typeparam>
+    public class NestedFetcher<T0, Key0, T1, Key1, T2, Key2>
+        : NestedFetcher<T0, Key0, T1, Key1>
+        where T0 : DetailWrapper<T1, Key1>
+        where T1 : DetailWrapper<T2, Key2>
+
     {
 
-        IListUrlBuilder listUrlBuilder;
-        IDetailUrlBuilder<Key> detailUrlBuilder;
-        IUrlFetcher urlFetcher;
-        IRepository<Detail, Key> repositoryDetailItem;
+        IUrlFetcher urlFetcher2;
+        IRepository<T2, Key2> repositoryT2;
 
-        PagingSetting pagingSetting;
+        IDetailUrlBuilder<Key2> detailUrlBuilder2;
+        bool persistanse2;
+        bool isPost2;
+        public NestedFetcher(
+            string rootUrl,
+            IUrlFetcher urlFetcher0,
+             bool persistanse0,
+             
+            IRepository<T0, Key0> repository0,
 
+            IDetailUrlBuilder<Key1> detailUrlBuilder1,
+            IUrlFetcher urlFetcher1,
+              bool persistanse1,
+            IRepository<T1, Key1> repositoryT1,
 
-        public ListDetailFetcher2(IListUrlBuilder listUrlBuilder,
-            IDetailUrlBuilder<Key> detailUrlBuilder,
-            IUrlFetcher urlFetcher,
-            IRepository<Detail, Key> repositoryDetailItem,
-            PagingSetting pagingSetting)
+             IDetailUrlBuilder<Key2> detailUrlBuilder2,
+             bool isPost2,
+            IUrlFetcher urlFetcher2,
+               bool persistanse2,
+            IRepository<T2, Key2> repositoryT2
+         
+            )
+            : base(repository0, urlFetcher0, rootUrl, persistanse0,
+                  repositoryT1, urlFetcher1, detailUrlBuilder1, persistanse1)
         {
-            this.listUrlBuilder = listUrlBuilder;
-            this.detailUrlBuilder = detailUrlBuilder;
-            this.urlFetcher = urlFetcher;
-            this.repositoryDetailItem = repositoryDetailItem;
-            this.pagingSetting = pagingSetting;
+            this.repositoryT2 = repositoryT2;
+            this.detailUrlBuilder2 = detailUrlBuilder2;
+            this.urlFetcher2 = urlFetcher2;
+            this.persistanse2 = persistanse2;
+            this.isPost2=isPost2;
         }
 
-        public void Fetch()
+        public new IList<T2> Fetch()
         {
-            Fetch(0);
-        }
-        private void Fetch(int pageIndex)
-        {
-            string listUrl = listUrlBuilder.Build();
-            string result = urlFetcher.FetchAsync(listUrl).Result;
-            var list = Newtonsoft.Json.JsonConvert.DeserializeObject<ListData>(result);
-            if (list == null || list.Details.Count == 0) { return; }
-            foreach (var itemSummary in list.Details)
+            var t2List = new List<T2>();
+            var t1List = base.Fetch();
+            foreach (var t1 in t1List)
             {
-                string detailUrl = detailUrlBuilder.Build(itemSummary.id);
-                string detailResult = urlFetcher.FetchAsync(detailUrl).Result;
-                var detailWrapper = Newtonsoft.Json.JsonConvert.DeserializeObject<DetailWrapper>(detailResult);
-                var detail = detailWrapper.Detail;
-                detail.id = itemSummary.id;
-                repositoryDetailItem.InsertOrUpdate(detail);
+                foreach (var t2key in t1.DetailKeys)
+                {
+                    string t2DetailUrl = detailUrlBuilder2.Build(t2key);
+                    string detailJsonResult=string.Empty;
+                    if(isPost2)
+                    {
+                       detailJsonResult= urlFetcher2.fetchwithpos(t2DetailUrl).Result;
+                        }
+                    var detail = Newtonsoft.Json.JsonConvert.DeserializeObject<T2>(
+                        );
+                    t2List.Add(detail);
+                }
             }
-            if (pagingSetting.NeedPaging)
-            {
-                Fetch(pageIndex + 1);
-            }
+            if (persistanse2) { 
+                repositoryT2.InsertOrUpdate(t2List);
+                }
+            return t2List;
+
         }
+    }
+
+    public class NestedFetcher<T0, Key0, T1, Key1> where T0 : DetailWrapper<T1, Key1>
+    {
+        IRepository<T0, Key0> repositoryT0;
+        IUrlFetcher urlFetcher0;
+        string rootUrl;
+        IRepository<T1, Key1> repositoryT1;
+        IUrlFetcher urlFetcher1;
+        IDetailUrlBuilder<Key1> detailUrlBuilder1;
+        bool t0Persistanse, t1Persistanse;
+        public NestedFetcher(IRepository<T0, Key0> repositoryT0,
+            IUrlFetcher urlFetcher0,
+            string rootUrl,
+            bool t0Persistanse,
+            IRepository<T1, Key1> repositoryT1,
+            IUrlFetcher urlFetcher1,
+            IDetailUrlBuilder<Key1> detailUrlBuilder1,
+            bool t1Persistanse
+            )
+        {
+            this.repositoryT0 = repositoryT0;
+            this.urlFetcher0 = urlFetcher0;
+            this.rootUrl = rootUrl;
+            this.repositoryT1 = repositoryT1;
+            this.urlFetcher1 = urlFetcher1;
+            this.detailUrlBuilder1 = detailUrlBuilder1;
+            this.t0Persistanse = t0Persistanse;
+            this.t1Persistanse = t1Persistanse;
+        }
+
+        public IList<T1> Fetch()
+        {
+            string rootJsonResult = urlFetcher0.FetchAsync(rootUrl).Result;
+            var list0 = Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<T0>>(rootJsonResult);
+            var detailList = new List<T1>();
+
+            foreach (var root in list0)
+            {
+                if (t0Persistanse)
+                {
+                    repositoryT0.InsertOrUpdate(root);
+                }
+                foreach (var detailKey in root.DetailKeys)
+                {
+                    string detailUrl = detailUrlBuilder1.Build(detailKey);
+                    string detailJsonResult = urlFetcher1.FetchAsync(detailUrl).Result;
+                    if (string.IsNullOrEmpty(detailJsonResult))
+                    { continue; }
+                    var detail = Newtonsoft.Json.JsonConvert.DeserializeObject<T1>(detailJsonResult);
+
+                    detailList.Add(detail);
+
+                }
+                if (t1Persistanse)
+                {
+                    repositoryT1.InsertOrUpdate(detailList);
+                }
+            }
+            return detailList;
+        }
+        //paging on top level
+
+    }
+    public abstract class DetailWrapper<Detail, DetailKey>
+    {
+        public abstract IList<DetailKey> DetailKeys { get; }
+
 
     }
     /// <summary>
-    /// url
+    /// 是否需要保存到数据库
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public interface ResponseItem<T>
-    { 
-        IList<T> Details { get;set;}
+    public interface INeedPersistance { }
 
-          HttpClient BuildDetailRequest();
-         
-        }
-    public interface NeedPersistence { }
-    
-    
+
+
 }

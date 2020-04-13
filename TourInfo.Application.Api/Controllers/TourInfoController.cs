@@ -16,6 +16,7 @@ using TourInfo.Domain.Application.WHY;
 using TourInfo.Domain.Application.ZiBoWechatNews;
 using TourInfo.Domain.Application.SDTA;
 using TourInfo.Domain.DomainModel.Weather;
+using TourInfo.Infrastracture;
 
 namespace TourInfo.Application.Api.Controllers
 {
@@ -156,7 +157,7 @@ namespace TourInfo.Application.Api.Controllers
         {
 
 
-            sDTAApplication.Graspe();
+            sDTAApplication.Graspe(new FetcherWithPost();
             
             return Content("Sdta抓取完毕");
 
