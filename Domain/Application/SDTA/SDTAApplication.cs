@@ -32,7 +32,7 @@ namespace TourInfo.Domain.Application.SDTA
             this.repositoryFoodDetail=repositoryFoodDetail;
         }
 
-        public void Graspe(IUrlFetcher lineDetailScenicPostFetcher)
+        public void Graspe()
 
         { //美食
             var foodListUrlBuilder = new FoodListUrlBuilder();
@@ -94,8 +94,9 @@ namespace TourInfo.Domain.Application.SDTA
                 LineDetail2,string,
                 LineDetailScenic2,string
                 >
-                (
-                 "",urlFetcher,false,null,
+                (urlFetcher,
+                new HttpRequestMessageWithGet("https://www.sdta.cn/json/lines/list_370300.json?channel=zibo"),false,null
+               ,new System.Net.Http.HttpRequestMessage(
                 new  LineDetailUrlBuilder(),urlFetcher,true, repositoryLineDetail2,
                 new LineDetailScenicUrlBuilder(), postfe,true, repositoryLineDetailScenic
                 );

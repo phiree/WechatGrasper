@@ -2,6 +2,6 @@
 {
     public interface ISDTAApplication
     {
-        void Graspe(IUrlFetcher lineDetailScenicPostFetcher);
+        void Graspe();
     }
 }

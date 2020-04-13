@@ -26,7 +26,7 @@ namespace TourInfo.Domain.DomainModel.SDTA
         
       public  IList<Lines2>  lines {get;set; }
 
-       
+       public string GetDetailRequestData(Lines2 lines2) { return lines2.id;}
 
         public override IList<string> DetailKeys => lines.Select(x=>x.id).ToList();
 

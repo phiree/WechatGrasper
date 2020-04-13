@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using TourInfo.Domain.Base;
+using TourInfo.Domain.DomainModel.SDTA;
 
 namespace TourInfo.Domain.DomainModel
 {
 
 
-  
+
     /// <summary>
     /// 三级 list-detail
     /// </summary>
@@ -25,39 +26,18 @@ namespace TourInfo.Domain.DomainModel
 
     {
 
-        IUrlFetcher urlFetcher2;
+       
+        HttpRequestMessage t2Request;
+        bool persistanse2;
         IRepository<T2, Key2> repositoryT2;
 
-        IDetailUrlBuilder<Key2> detailUrlBuilder2;
-        bool persistanse2;
-        bool isPost2;
-        public NestedFetcher(
-            string rootUrl,
-            IUrlFetcher urlFetcher0,
-             bool persistanse0,
-             
-            IRepository<T0, Key0> repository0,
-
-            IDetailUrlBuilder<Key1> detailUrlBuilder1,
-            IUrlFetcher urlFetcher1,
-              bool persistanse1,
-            IRepository<T1, Key1> repositoryT1,
-
-             IDetailUrlBuilder<Key2> detailUrlBuilder2,
-             bool isPost2,
-            IUrlFetcher urlFetcher2,
-               bool persistanse2,
-            IRepository<T2, Key2> repositoryT2
-         
-            )
-            : base(repository0, urlFetcher0, rootUrl, persistanse0,
-                  repositoryT1, urlFetcher1, detailUrlBuilder1, persistanse1)
+        public NestedFetcher(IUrlFetcher urlFetcher, HttpRequestMessage rootRequest, bool persistanse0, IRepository<T0, Key0> repository0, HttpRequestMessage t1Request, bool persistanse1, IRepository<T1, Key1> repositoryT1, HttpRequestMessage t2Request, bool persistanse2, IRepository<T2, Key2> repositoryT2)
+       : base(repository0, urlFetcher, rootRequest, persistanse0, repositoryT1, t1Request, persistanse1)
         {
-            this.repositoryT2 = repositoryT2;
-            this.detailUrlBuilder2 = detailUrlBuilder2;
-            this.urlFetcher2 = urlFetcher2;
+
+            this.t2Request = t2Request;
             this.persistanse2 = persistanse2;
-            this.isPost2=isPost2;
+            this.repositoryT2 = repositoryT2;
         }
 
         public new IList<T2> Fetch()
@@ -68,20 +48,15 @@ namespace TourInfo.Domain.DomainModel
             {
                 foreach (var t2key in t1.DetailKeys)
                 {
-                    string t2DetailUrl = detailUrlBuilder2.Build(t2key);
-                    string detailJsonResult=string.Empty;
-                    if(isPost2)
-                    {
-                       detailJsonResult= urlFetcher2.fetchwithpos(t2DetailUrl).Result;
-                        }
-                    var detail = Newtonsoft.Json.JsonConvert.DeserializeObject<T2>(
-                        );
+                    string detailJsonResult = urlFetcher.FetchAsync(t2Request).Result;
+                    var detail = Newtonsoft.Json.JsonConvert.DeserializeObject<T2>(detailJsonResult);
                     t2List.Add(detail);
                 }
             }
-            if (persistanse2) { 
+            if (persistanse2)
+            {
                 repositoryT2.InsertOrUpdate(t2List);
-                }
+            }
             return t2List;
 
         }
@@ -90,35 +65,41 @@ namespace TourInfo.Domain.DomainModel
     public class NestedFetcher<T0, Key0, T1, Key1> where T0 : DetailWrapper<T1, Key1>
     {
         IRepository<T0, Key0> repositoryT0;
-        IUrlFetcher urlFetcher0;
-        string rootUrl;
+        protected IUrlFetcher urlFetcher { get; }
+        HttpRequestMessage rootRequest;
         IRepository<T1, Key1> repositoryT1;
-        IUrlFetcher urlFetcher1;
-        IDetailUrlBuilder<Key1> detailUrlBuilder1;
+
+        HttpRequestMessage t1Request;
         bool t0Persistanse, t1Persistanse;
         public NestedFetcher(IRepository<T0, Key0> repositoryT0,
-            IUrlFetcher urlFetcher0,
-            string rootUrl,
+            IUrlFetcher urlFetcher,
+            HttpRequestMessage rootRequest,
             bool t0Persistanse,
             IRepository<T1, Key1> repositoryT1,
-            IUrlFetcher urlFetcher1,
-            IDetailUrlBuilder<Key1> detailUrlBuilder1,
+
+           HttpRequestMessage t1Request,
+
             bool t1Persistanse
             )
         {
-            this.repositoryT0 = repositoryT0;
-            this.urlFetcher0 = urlFetcher0;
-            this.rootUrl = rootUrl;
-            this.repositoryT1 = repositoryT1;
-            this.urlFetcher1 = urlFetcher1;
-            this.detailUrlBuilder1 = detailUrlBuilder1;
+            this.urlFetcher = urlFetcher;
+
             this.t0Persistanse = t0Persistanse;
+            this.repositoryT0 = repositoryT0;
+            this.rootRequest = rootRequest;
+
+            this.t1Request = t1Request;
             this.t1Persistanse = t1Persistanse;
+            this.repositoryT1 = repositoryT1;
+
+
+
+
         }
 
         public IList<T1> Fetch()
         {
-            string rootJsonResult = urlFetcher0.FetchAsync(rootUrl).Result;
+            string rootJsonResult = urlFetcher.FetchAsync(rootRequest).Result;
             var list0 = Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<T0>>(rootJsonResult);
             var detailList = new List<T1>();
 
@@ -130,8 +111,8 @@ namespace TourInfo.Domain.DomainModel
                 }
                 foreach (var detailKey in root.DetailKeys)
                 {
-                    string detailUrl = detailUrlBuilder1.Build(detailKey);
-                    string detailJsonResult = urlFetcher1.FetchAsync(detailUrl).Result;
+                    var request= requestbuilder.build(detailkey);
+                    string detailJsonResult = urlFetcher.FetchAsync(t1Request).Result;
                     if (string.IsNullOrEmpty(detailJsonResult))
                     { continue; }
                     var detail = Newtonsoft.Json.JsonConvert.DeserializeObject<T1>(detailJsonResult);
@@ -149,16 +130,15 @@ namespace TourInfo.Domain.DomainModel
         //paging on top level
 
     }
-    public abstract class DetailWrapper<Detail, DetailKey>
+    public abstract class DetailWrapper<TWrapper,TKey, TDetailSummary> where TWrapper:Entity<TKey>
     {
-        public abstract IList<DetailKey> DetailKeys { get; }
+        public abstract IList<TDetailSummary> DetailSummarys { get; }
+        public abstract  IDetailHttpRequestMessageCreator<TWrapper,TDetailSummary,TKey> DetailRequestBuilder();
+        public TWrapper Wrapper { get;set;}
 
 
     }
-    /// <summary>
-    /// 是否需要保存到数据库
-    /// </summary>
-    public interface INeedPersistance { }
+
 
 
 

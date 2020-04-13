@@ -89,20 +89,25 @@ namespace TourInfo.Infrastracture
             var result = await webClient.DownloadStringTaskAsync(new Uri(url));
             return result;
         }
+
+        public Task<string> FetchAsync(HttpRequestMessage httpRequestMessage)
+        {
+            throw new NotImplementedException();
+        }
     }
     public class Fetcher2 : IUrlFetcher
     {
         ILogger<Fetcher2> logger;
         IHttpClientFactory httpClientFactory;
-        string postJson;
-        public Fetcher2(string postJson, IHttpClientFactory httpClientFactory, ILogger<Fetcher2> logger)
+        
+        public Fetcher2(  IHttpClientFactory httpClientFactory, ILogger<Fetcher2> logger)
         {
             this.httpClientFactory = httpClientFactory;
-            this.postJson = postJson;//todo: paging 
+            
             this.logger = logger;
         }
         public async Task<string> FetchAsync(HttpRequestMessage request) {
-            logger.LogInformation($"开始异步抓取.url[{request.RequestUri}],jsonParam[{postJson}]");
+            logger.LogInformation($"开始异步抓取.url[{request.RequestUri}],jsonParam[{request.Content.ReadAsStringAsync().Result}]");
             var cli = httpClientFactory.CreateClient();
             var response = await cli.SendAsync(request);
             if (response.IsSuccessStatusCode)
@@ -117,8 +122,8 @@ namespace TourInfo.Infrastracture
         }
         public async Task<string> FetchAsync(string url)
         {
-            logger.LogInformation($"开始异步抓取.url[{url}],jsonParam[{postJson}]");
-            var request = new HttpRequestMessage(HttpMethod.Post, url);
+            logger.LogInformation($"开始异步抓取.url[{url}]" );
+            var request = new HttpRequestMessage(HttpMethod.Get, url);
             request.Headers.Add(HttpRequestHeader.ContentType.ToString(), "application/json");
             var cli = httpClientFactory.CreateClient();
             var response = await cli.SendAsync(request);

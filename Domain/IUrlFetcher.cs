@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace TourInfo.Domain
@@ -9,6 +10,7 @@ namespace TourInfo.Domain
     /// </summary>
     public interface IUrlFetcher
     {
+        Task<string> FetchAsync(HttpRequestMessage  httpRequestMessage);
         Task<string> FetchAsync(string url);
         Task<string> FetchAsync2(string url);
         Task<string> FetchEWQYAsync(string url );

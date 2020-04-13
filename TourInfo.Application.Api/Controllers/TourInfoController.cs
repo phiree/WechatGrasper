@@ -157,7 +157,7 @@ namespace TourInfo.Application.Api.Controllers
         {
 
 
-            sDTAApplication.Graspe(new FetcherWithPost();
+            sDTAApplication.Graspe();
             
             return Content("Sdta抓取完毕");
 
