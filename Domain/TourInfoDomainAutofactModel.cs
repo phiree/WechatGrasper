@@ -38,7 +38,14 @@ namespace TourInfo.Domain
         string rapiRootUrl;
         string ziboWechatNewsBaseUrl;
 
-        public TourInfoDomainAutofactModel(string zbtaTitleImageBaseUrl, string zbtaDetailImageBaseUrl, string ewqyImageBaseUrl, string zbtaImageClientPath, string ewqyImageClientPath, string rapiImageClientPath, string ewqyLocalSavedPath, string zbtaLocalSavedPath, string rapi_initurl, string rapi_syncurl, string rapi_tokenurl, string rapi_appid, string rapi_appsecret, string rapi_localsavedpath, string video_baseurl, string whyDetailRootUrl, string whyImageSavedPath, string whyListRootUrl, string whyImageClientPath, string whyImageBaseUrl, string rapiRootUrl,string ziboWechatNewsBaseUrl)
+        public TourInfoDomainAutofactModel(
+            string zbtaTitleImageBaseUrl, string zbtaDetailImageBaseUrl, string zbtaImageClientPath, string zbtaLocalSavedPath,
+            string ewqyImageBaseUrl,  string ewqyImageClientPath, string ewqyLocalSavedPath,
+            string rapiRootUrl, string rapiImageClientPath,  string rapi_initurl, string rapi_syncurl, string rapi_tokenurl, string rapi_appid, string rapi_appsecret, string rapi_localsavedpath,
+            string video_baseurl,
+            string whyDetailRootUrl, string whyImageSavedPath, string whyListRootUrl, string whyImageClientPath, string whyImageBaseUrl, 
+            
+            string ziboWechatNewsBaseUrl)
         {
             
             this.zbtaTitleImageBaseUrl = zbtaTitleImageBaseUrl;

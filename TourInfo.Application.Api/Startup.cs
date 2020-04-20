@@ -102,11 +102,13 @@ namespace TourInfo.Application.Api
             var containerBuilder = new Autofac.ContainerBuilder();
             containerBuilder.Populate(services);
             containerBuilder.RegisterModule(new TourInfo.Domain.TourInfoDomainAutofactModel
-               (zbtaTitleImageBaseUrl, zbtaDetailImageBaseUrl, ewqyImageBaseUrl, ewqyLocalSavedPath, zbtaLocalSavedPath,zbtaImageClientPath
-               ,ewqyImageClientPath,rapiImageClientPath
-                , rapi_initurl, rapi_syncurl, rapi_tokenurl, rapi_appid, rapi_secret, RapiLocalSavedPath, video_baseurl
-                ,whyDetailRootUrl,whyImageSavedPath,whyListRootUrl, whyImageClientPath,whyImageBaseUrl,rapiRootUrl,
-                ziboWechatNewsBaseUrl
+               ( zbtaTitleImageBaseUrl,  zbtaDetailImageBaseUrl,  zbtaImageClientPath,  zbtaLocalSavedPath,
+             ewqyImageBaseUrl,  ewqyImageClientPath,  ewqyLocalSavedPath,
+             rapiRootUrl,  rapiImageClientPath,  rapi_initurl,  rapi_syncurl,  rapi_tokenurl,  rapi_appid, rapi_secret, RapiLocalSavedPath,
+             video_baseurl,
+             whyDetailRootUrl,  whyImageSavedPath,  whyListRootUrl,  whyImageClientPath,  whyImageBaseUrl,
+
+             ziboWechatNewsBaseUrl
                 ));
             containerBuilder.RegisterModule(new TourInfo.Infrastracture.TourinfoInstallerAutofacModule
                (connectionString));

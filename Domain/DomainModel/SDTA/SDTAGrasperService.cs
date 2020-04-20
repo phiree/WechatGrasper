@@ -18,8 +18,8 @@ namespace TourInfo.Domain.DomainModel.SDTA
         {
             this.urlFetcher = urlFetcher;
 
-            this.lineLocalizer = new InfoLocalizer<LineDetail, string>(lineRepository, urlFetcher, ".\\DownloadImages\\sdta\\", string.Empty);
-            this.lineDetailScenicLocalizer = new InfoLocalizer<LineDetailScenic.Doc.Source, string>(lineDetailScenicRepository, urlFetcher, ".\\DownloadImages\\sdta\\", string.Empty);
+            this.lineLocalizer = new InfoLocalizer<LineDetail, string>(lineRepository, urlFetcher, "..\\DownloadImages\\sdta\\", string.Empty);
+            this.lineDetailScenicLocalizer = new InfoLocalizer<LineDetailScenic.Doc.Source, string>(lineDetailScenicRepository, urlFetcher, "..\\DownloadImages\\sdta\\", string.Empty);
         }
 
         public void Graspe(string version)
