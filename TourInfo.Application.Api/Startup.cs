@@ -24,6 +24,10 @@ using TourInfo.Domain.EWQY.DomainModel;
 using TourInfo.Domain.TourNews;
 using TourInfo.Infrastracture;
 using TourInfo.Infrastracture.Repository.EFCore;
+using Swashbuckle.AspNetCore.Swagger;
+using Microsoft.OpenApi.Models;
+using System.IO;
+using System.Reflection;
 
 namespace TourInfo.Application.Api
 {
@@ -43,16 +47,28 @@ namespace TourInfo.Application.Api
             services.AddMvc(x => x.EnableEndpointRouting = false).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddAutoMapper(System.Reflection.Assembly.GetAssembly(typeof(TourinfoDomainAutoMapperProfile)));
             string connectionString = Configuration.GetConnectionString("TourinfoConnectionString");
+
+            //swagger
+
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo() { Title = "淄博文旅小程序接口文档", Version = "v1" });
+                options.CustomSchemaIds(type => type.FullName); // 解决相同类名会报错的问题
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                options.IncludeXmlComments(Path.Combine(Directory.GetCurrentDirectory(), xmlFile)); // 标注要使用的 XML 文档
+              //  options.IncludeXmlComments(Path.Combine(Directory.GetCurrentDirectory(), "Nokia.GenericExport.Domain.xml")); // 标注要使用的 XML 文档
+                options.DescribeAllEnumsAsStrings();
+            });
             //services.AddDbContext<TourInfoDbContext>(options =>
             //   options.UseSqlServer(connectionString),
 
-           
-          
+
+
             //   // By registering the DbContext as transient, we can get unique instances
             //   // for each thread worker (even within a single scope), as demonstrated in
             //   // Fix #1 in BooksController.cs.
             //   ServiceLifetime.Transient);
-              services.AddLogging(loggingBuilder =>
+            services.AddLogging(loggingBuilder =>
             {
                 // configure Logging with NLog
                 loggingBuilder.ClearProviders();
@@ -112,6 +128,11 @@ namespace TourInfo.Application.Api
             //}
 
             app.UseMvc();
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Swagger Test UI");
+            });
         }
     }
 }

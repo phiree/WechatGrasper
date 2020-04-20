@@ -20,6 +20,7 @@ using TourInfo.Infrastracture;
 
 namespace TourInfo.Application.Api.Controllers
 {
+    [ApiExplorerSettings(IgnoreApi = true)]
     [Route("api/[controller]")]
     [ApiController]
     public class TourInfoController : ControllerBase
