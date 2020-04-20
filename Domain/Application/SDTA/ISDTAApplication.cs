@@ -2,6 +2,6 @@
 {
     public interface ISDTAApplication
     {
-        void Graspe();
+        void Graspe(string version);
     }
 }

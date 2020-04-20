@@ -6,24 +6,16 @@ using System.Linq;
 namespace TourInfo.Domain.DomainModel.SDTA
 {
 
-    public class LineDetail : DetailWrapper<LineDetail.Day.Place,string>, IEntity<string>
+    public class LineDetail :VersionedEntity<string>
     {
 
         public string name { get; set; }
-        public string thumb { get; set; }
+        public ImageUrl thumb { get; set; }
         public string[] tags { get; set; }
         public string bestSeason { get; set; }
         public string[] city { get; set; }
         public List<Day> days { get; set; }
 
-        
-        public override IEnumerable<Day.Place> DetailSummarys =>  days.SelectMany(x=>x.place);
-
-        public override IDetailHttpRequestMessageCreator<Day.Place> DetailRequestBuilder =>new LineDetailScenicHttpRequestMessageCreator();
-
-        public string id { get;set; }
-
-       
 
         public class Day
         {

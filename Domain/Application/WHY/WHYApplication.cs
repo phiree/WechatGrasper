@@ -6,7 +6,7 @@ using CacheManager.Core;
 using Microsoft.Extensions.Logging;
 using Newtonsoft;
 using TourInfo.Domain.Base;
-using TourInfo.Domain.DomainModel.Rapi;
+using TourInfo.Domain.DomainModel ;
 using TourInfo.Domain.DomainModel.WHY;
 using System.Linq;
 namespace TourInfo.Domain.Application.WHY

@@ -10,8 +10,8 @@ using TourInfo.Infrastracture.Repository.EFCore;
 namespace TourInfo.Infrastracture.Migrations
 {
     [DbContext(typeof(TourInfoDbContext))]
-    [Migration("20200413172222_add_linedetailscenic")]
-    partial class add_linedetailscenic
+    [Migration("20200420150222_changeeletype")]
+    partial class changeeletype
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -600,6 +600,10 @@ namespace TourInfo.Infrastracture.Migrations
                     b.Property<string>("id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("Fingerprint");
+
+                    b.Property<string>("Version");
+
                     b.Property<string>("bestSeason");
 
                     b.Property<string>("city");
@@ -608,21 +612,61 @@ namespace TourInfo.Infrastracture.Migrations
 
                     b.Property<string>("tags");
 
-                    b.Property<string>("thumb");
-
                     b.HasKey("id");
 
                     b.ToTable("SDTALineDetail");
                 });
 
-            modelBuilder.Entity("TourInfo.Domain.DomainModel.SDTA.LineDetailScenic", b =>
+            modelBuilder.Entity("TourInfo.Domain.DomainModel.SDTA.LineDetailScenic+Doc+Source", b =>
                 {
                     b.Property<string>("id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("Fingerprint");
+
+                    b.Property<string>("Version");
+
+                    b.Property<string>("address");
+
+                    b.Property<string>("area");
+
+                    b.Property<string>("buyable");
+
+                    b.Property<int>("city");
+
+                    b.Property<int>("city_order");
+
+                    b.Property<string>("contact");
+
+                    b.Property<int>("date_for_order");
+
+                    b.Property<string>("description");
+
+                    b.Property<string>("ele_id");
+
+                    b.Property<string>("ele_type");
+
+                    b.Property<string>("ele_type_name");
+
+                    b.Property<string>("ele_type_name_en");
+
+                    b.Property<int>("level");
+
+                    b.Property<string>("level_name");
+
+                    b.Property<string>("location");
+
+                    b.Property<double>("lowest_price");
+
+                    b.Property<string>("lvl1");
+
+                    b.Property<string>("name_cn");
+
+                    b.Property<int>("rank");
+
                     b.HasKey("id");
 
-                    b.ToTable("SDTALineDetailScenic");
+                    b.ToTable("SDTALineDetailScenicDocSource");
                 });
 
             modelBuilder.Entity("TourInfo.Domain.DomainModel.Video.Video", b =>
@@ -1373,110 +1417,66 @@ namespace TourInfo.Infrastracture.Migrations
                                         .OnDelete(DeleteBehavior.Cascade);
                                 });
                         });
+
+                    b.OwnsOne("TourInfo.Domain.Base.ImageUrl", "thumb", b1 =>
+                        {
+                            b1.Property<string>("LineDetailid");
+
+                            b1.Property<string>("LocalizedUrl");
+
+                            b1.Property<string>("OriginalUrl");
+
+                            b1.HasKey("LineDetailid");
+
+                            b1.ToTable("SDTALineDetail");
+
+                            b1.HasOne("TourInfo.Domain.DomainModel.SDTA.LineDetail")
+                                .WithOne("thumb")
+                                .HasForeignKey("TourInfo.Domain.Base.ImageUrl", "LineDetailid")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
                 });
 
-            modelBuilder.Entity("TourInfo.Domain.DomainModel.SDTA.LineDetailScenic", b =>
+            modelBuilder.Entity("TourInfo.Domain.DomainModel.SDTA.LineDetailScenic+Doc+Source", b =>
                 {
-                    b.OwnsMany("TourInfo.Domain.DomainModel.SDTA.LineDetailScenic+Doc", "docs", b1 =>
+                    b.OwnsMany("TourInfo.Domain.DomainModel.SDTA.LineDetailScenic+Doc+Source+Eletype", "eletype", b1 =>
                         {
-                            b1.Property<string>("DocId");
+                            b1.Property<string>("sourceid");
 
-                            b1.Property<string>("_id");
+                            b1.Property<string>("id");
 
-                            b1.Property<string>("_index");
+                            b1.Property<string>("ancestors");
 
-                            b1.Property<string>("_type");
+                            b1.Property<int>("level");
 
-                            b1.Property<int>("_version");
+                            b1.Property<string>("value");
 
-                            b1.Property<bool>("found");
+                            b1.HasKey("sourceid", "id");
 
-                            b1.HasKey("DocId", "_id");
+                            b1.ToTable("SDTALineDetailScenicDocSourceEletype");
 
-                            b1.ToTable("SDTALineDetailScenicDoc");
-
-                            b1.HasOne("TourInfo.Domain.DomainModel.SDTA.LineDetailScenic")
-                                .WithMany("docs")
-                                .HasForeignKey("DocId")
+                            b1.HasOne("TourInfo.Domain.DomainModel.SDTA.LineDetailScenic+Doc+Source")
+                                .WithMany("eletype")
+                                .HasForeignKey("sourceid")
                                 .OnDelete(DeleteBehavior.Cascade);
+                        });
 
-                            b1.OwnsOne("TourInfo.Domain.DomainModel.SDTA.LineDetailScenic+Doc+Source", "_source", b2 =>
-                                {
-                                    b2.Property<string>("DocId");
+                    b.OwnsOne("TourInfo.Domain.Base.ImageUrl", "default_photo", b1 =>
+                        {
+                            b1.Property<string>("Sourceid");
 
-                                    b2.Property<string>("Doc_id");
+                            b1.Property<string>("LocalizedUrl");
 
-                                    b2.Property<string>("address");
+                            b1.Property<string>("OriginalUrl");
 
-                                    b2.Property<string>("area");
+                            b1.HasKey("Sourceid");
 
-                                    b2.Property<string>("buyable");
+                            b1.ToTable("SDTALineDetailScenicDocSource");
 
-                                    b2.Property<int>("city");
-
-                                    b2.Property<int>("city_order");
-
-                                    b2.Property<string>("contact");
-
-                                    b2.Property<int>("date_for_order");
-
-                                    b2.Property<string>("default_photo");
-
-                                    b2.Property<string>("description");
-
-                                    b2.Property<string>("ele_id");
-
-                                    b2.Property<string>("ele_type");
-
-                                    b2.Property<string>("ele_type_name");
-
-                                    b2.Property<string>("ele_type_name_en");
-
-                                    b2.Property<int>("level");
-
-                                    b2.Property<string>("level_name");
-
-                                    b2.Property<string>("location");
-
-                                    b2.Property<double>("lowest_price");
-
-                                    b2.Property<string>("lvl1");
-
-                                    b2.Property<string>("name_cn");
-
-                                    b2.Property<int>("rank");
-
-                                    b2.HasKey("DocId", "Doc_id");
-
-                                    b2.ToTable("SDTALineDetailScenicDocSource");
-
-                                    b2.HasOne("TourInfo.Domain.DomainModel.SDTA.LineDetailScenic+Doc")
-                                        .WithOne("_source")
-                                        .HasForeignKey("TourInfo.Domain.DomainModel.SDTA.LineDetailScenic+Doc+Source", "DocId", "Doc_id")
-                                        .OnDelete(DeleteBehavior.Cascade);
-
-                                    b2.OwnsMany("TourInfo.Domain.DomainModel.SDTA.LineDetailScenic+Doc+Source+Eletype", "eletype", b3 =>
-                                        {
-                                            b3.Property<string>("DocId");
-
-                                            b3.Property<string>("_id");
-
-                                            b3.Property<int>("level");
-
-                                            b3.Property<string>("ancestors");
-
-                                            b3.Property<string>("value");
-
-                                            b3.HasKey("DocId", "_id", "level");
-
-                                            b3.ToTable("SDTALineDetailScenicDocSourceEletype");
-
-                                            b3.HasOne("TourInfo.Domain.DomainModel.SDTA.LineDetailScenic+Doc+Source")
-                                                .WithMany("eletype")
-                                                .HasForeignKey("DocId", "_id")
-                                                .OnDelete(DeleteBehavior.Cascade);
-                                        });
-                                });
+                            b1.HasOne("TourInfo.Domain.DomainModel.SDTA.LineDetailScenic+Doc+Source")
+                                .WithOne("default_photo")
+                                .HasForeignKey("TourInfo.Domain.Base.ImageUrl", "Sourceid")
+                                .OnDelete(DeleteBehavior.Cascade);
                         });
                 });
 

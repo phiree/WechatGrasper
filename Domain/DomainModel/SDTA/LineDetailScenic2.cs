@@ -7,7 +7,7 @@ namespace TourInfo.Domain.DomainModel.SDTA
 {
     
    
-    public class LineDetailScenic:Entity<string>
+    public class LineDetailScenic:VersionedEntity<string>
     {
         public List<Doc> docs { get; set; }
         public class Doc
@@ -18,15 +18,15 @@ namespace TourInfo.Domain.DomainModel.SDTA
             public int _version { get; set; }
             public bool found { get; set; }
             public Source _source { get; set; }
-            public class Source 
+            public class Source:VersionedEntity<string>
             {
-              
+              public override string id { get{ return ele_type+"_"+ele_id;} }
                 public string ele_id { get; set; }
                 public string ele_type { get; set; }
                 public string ele_type_name { get; set; }
                 public string name_cn { get; set; }
                 public string address { get; set; }
-                public string default_photo { get; set; }
+                public ImageUrl default_photo { get; set; }
                 public string description { get; set; }
                 public string contact { get; set; }
                 public int level { get; set; }
@@ -44,7 +44,7 @@ namespace TourInfo.Domain.DomainModel.SDTA
                 public double lowest_price { get; set; }
           
 
-                public class Eletype
+                public class Eletype:GuidEntity
                 {
                     public int level { get; set; }
                     public string value { get; set; }

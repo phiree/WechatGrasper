@@ -153,11 +153,11 @@ namespace TourInfo.Application.Api.Controllers
 
         }
         [HttpGet("GraspeSDTA")]
-        public ActionResult<dynamic> GraspeSDTA(string _dateVersion)
+        public ActionResult<dynamic> GraspeSDTA( )
         {
 
-
-            sDTAApplication.Graspe();
+            string currentVersion = DateTime.Now.ToString("yyyyMMddhhmmss");
+            sDTAApplication.Graspe(currentVersion);
             
             return Content("Sdta抓取完毕");
 

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TourInfo.Infrastracture.Repository.EFCore;
 
 namespace TourInfo.Infrastracture.Migrations
 {
     [DbContext(typeof(TourInfoDbContext))]
-    partial class TourInfoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200420142511_addlinedetailscenicdosource")]
+    partial class addlinedetailscenicdosource
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1441,15 +1443,13 @@ namespace TourInfo.Infrastracture.Migrations
                         {
                             b1.Property<string>("sourceid");
 
-                            b1.Property<string>("id");
+                            b1.Property<string>("value");
 
                             b1.Property<string>("ancestors");
 
                             b1.Property<int>("level");
 
-                            b1.Property<string>("value");
-
-                            b1.HasKey("sourceid", "id");
+                            b1.HasKey("sourceid", "value");
 
                             b1.ToTable("SDTALineDetailScenicDocSourceEletype");
 

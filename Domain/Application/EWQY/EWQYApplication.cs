@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TourInfo.Domain.Base;
+using TourInfo.Domain.DomainModel;
 using TourInfo.Domain.DomainModel.EWQY;
 using TourInfo.Domain.DomainModel.Rapi;
 using TourInfo.Domain.EWQY.DomainModel;

@@ -139,7 +139,7 @@ namespace TourInfo.Domain
             /*sdta*/
                  builder.RegisterType< SDTAApplication>().As<ISDTAApplication>()
 ;
-
+            builder.RegisterType<SDTALineGrasperService>().As<ISDTALineGrasperService>();
             base.Load(builder);
         }
     }

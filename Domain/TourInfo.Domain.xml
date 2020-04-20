@@ -100,6 +100,11 @@
             基类
             </summary>
         </member>
+        <member name="T:TourInfo.Domain.Base.GuidEntity">
+            <summary>
+            基类
+            </summary>
+        </member>
         <member name="T:TourInfo.Domain.Base.ImageUrl">
             <summary>
             图片url
@@ -414,26 +419,6 @@
             <param name="dataVersion"></param>
             <param name="forceInit">因为rapi提供了sync接口</param>
         </member>
-        <member name="T:TourInfo.Domain.DomainModel.Rapi.LocationStringJsonConverter">
-            <summary>
-            字符串转换为经纬度 
-            </summary>
-        </member>
-        <member name="M:TourInfo.Domain.DomainModel.Rapi.LocationStringJsonConverter.#ctor(Microsoft.Extensions.Logging.ILogger{TourInfo.Domain.DomainModel.Rapi.LocationStringJsonConverter},System.Boolean,System.Char)">
-            <summary>
-            
-            </summary>
-            <param name="logger"></param>
-            <param name="longitudeFirst">经度在前面</param>
-            <param name="spliter">分隔符</param>
-        </member>
-        <member name="M:TourInfo.Domain.DomainModel.Rapi.LocationDoubleArrayJsonConverter.#ctor(Microsoft.Extensions.Logging.ILoggerFactory,System.Boolean)">
-            <summary>
-            
-            </summary>
-            <param name="logger"></param>
-            <param name="longitudeFirst">经度在前面</param>
-        </member>
         <member name="T:TourInfo.Domain.DomainModel.ListDetailFetcher`5">
             <summary>
             抓取 list-detail 类型的接口  的数据.
@@ -454,6 +439,26 @@
             <summary>
             抓取 list-detail 类型的接口  的数据.
             </summary>
+        </member>
+        <member name="T:TourInfo.Domain.DomainModel.LocationStringJsonConverter">
+            <summary>
+            字符串转换为经纬度 
+            </summary>
+        </member>
+        <member name="M:TourInfo.Domain.DomainModel.LocationStringJsonConverter.#ctor(Microsoft.Extensions.Logging.ILogger{TourInfo.Domain.DomainModel.LocationStringJsonConverter},System.Boolean,System.Char)">
+            <summary>
+            
+            </summary>
+            <param name="logger"></param>
+            <param name="longitudeFirst">经度在前面</param>
+            <param name="spliter">分隔符</param>
+        </member>
+        <member name="M:TourInfo.Domain.DomainModel.LocationDoubleArrayJsonConverter.#ctor(Microsoft.Extensions.Logging.ILoggerFactory,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="logger"></param>
+            <param name="longitudeFirst">经度在前面</param>
         </member>
         <member name="T:TourInfo.Domain.DomainModel.SDTA.IDetailHttpRequestMessageCreator`1">
             <summary>

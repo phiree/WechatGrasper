@@ -19,6 +19,7 @@ namespace TourInfo.Domain.Application.SDTA
 
         IRepository<LineDetailScenic,string> repositoryLineDetailScenic;
         IRepository<LineDetail, string> repositoryLineDetail2;
+        ISDTALineGrasperService sDTALineGrasperService;
 
         public SDTAApplication(IUrlFetcher urlFetcher,
             IRepository<LineDetail, string> repositoryDetailItem, 
@@ -27,7 +28,7 @@ namespace TourInfo.Domain.Application.SDTA
 
               IRepository<LineDetailScenic, string> repositoryLineDetailScenic,
         IRepository<LineDetail, string> repositoryLineDetail2,
-
+        ISDTALineGrasperService sDTALineGrasperService,
         ILogger<ListDetailFetcherWithPostList<Food, Food.Hit.Source, FoodDetail, FoodDetail.Data, int>> logger)
         {
             this.logger=logger;
@@ -37,29 +38,17 @@ namespace TourInfo.Domain.Application.SDTA
             this.repositoryFoodDetail=repositoryFoodDetail;
             this. repositoryLineDetailScenic=repositoryLineDetailScenic;
             this.repositoryLineDetail2=repositoryLineDetail2;
+            this.sDTALineGrasperService=sDTALineGrasperService;
         }
 
-        public void Graspe()
+        public void Graspe(string version)
 
         {
             //新版路线
-
-            var linesFetcher2 = new NestedFetcher<
-                ResponseLines, string, Lines,
-                LineDetail, string, LineDetail.Day.Place,
-                LineDetailScenic, string
-                >
-                (urlFetcher,
-                new HttpRequestMessage(HttpMethod.Get, "https://www.sdta.cn/json/lines/list_370300.json?channel=zibo")
-                , false, null,
-                true, repositoryLineDetail2,
-                true, repositoryLineDetailScenic
-                );
-            linesFetcher2.Fetch();
+             sDTALineGrasperService.Graspe(version);
             //美食
             var foodListUrlBuilder = new FoodListUrlBuilder();
             var foodDetailBuilder = new FoodDetailUrlBuilder();
-
             var foodFetcher = new ListDetailFetcherWithPostList<Food, Food.Hit.Source, FoodDetail, FoodDetail.Data, int>
                 (foodListUrlBuilder,
                 foodDetailBuilder,
@@ -94,8 +83,6 @@ namespace TourInfo.Domain.Application.SDTA
             //    repositoryDetailItem,
             //    new PagingSetting { NeedPaging = false, StartIndex = -1 });
             //linesFetcher.Fetch();
-
-
             //todo: 精品路线中的景区
             //城市锦囊
             var cityGuideUrlBuilder = new CityGuideListUrlBuilder();

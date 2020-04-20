@@ -3,6 +3,7 @@ using System;
 using System.Text;
 using System.Text.RegularExpressions;
 using TourInfo.Domain.Base;
+using TourInfo.Domain.DomainModel;
 using TourInfo.Domain.DomainModel.Rapi;
  
 namespace TourInfo.Domain.TourNews

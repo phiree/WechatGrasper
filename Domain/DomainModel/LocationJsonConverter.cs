@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using TourInfo.Domain.Base;
 
-namespace TourInfo.Domain.DomainModel.Rapi
+namespace TourInfo.Domain.DomainModel
 {
     /// <summary>
     /// 字符串转换为经纬度 

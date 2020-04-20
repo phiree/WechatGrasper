@@ -6,7 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 using Newtonsoft.Json.Converters;
 using TourInfo.Domain.Base;
 
-namespace TourInfo.Domain.DomainModel.Rapi
+namespace TourInfo.Domain.DomainModel
 {
    public class ImageUrlJsonConverter : JsonConverter<ImageUrl>
     {
