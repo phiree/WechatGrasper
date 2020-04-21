@@ -50,51 +50,6 @@
             
             </summary>
         </member>
-        <member name="T:TourInfo.Domain.TourNews.ZbtaNews">
-            <summary>
-            zbta旅游资讯
-            </summary>
-        </member>
-        <member name="P:TourInfo.Domain.TourNews.ZbtaNews.releaseTime">
-            <summary>
-            发布时间
-            </summary>
-        </member>
-        <member name="P:TourInfo.Domain.TourNews.ZbtaNews.checkState">
-            <summary>
-            审核状态（暂时不用）
-            </summary>
-        </member>
-        <member name="P:TourInfo.Domain.TourNews.ZbtaNews.titles">
-            <summary>
-            标题
-            </summary>
-        </member>
-        <member name="P:TourInfo.Domain.TourNews.ZbtaNews.image">
-            <summary>
-            首图
-            </summary>
-        </member>
-        <member name="P:TourInfo.Domain.TourNews.ZbtaNews.created">
-            <summary>
-            信息创建时间
-            </summary>
-        </member>
-        <member name="P:TourInfo.Domain.TourNews.ZbtaNews.back1">
-            <summary>
-            概要
-            </summary>
-        </member>
-        <member name="P:TourInfo.Domain.TourNews.ZbtaNews.details">
-            <summary>
-            详情（富文本）
-            </summary>
-        </member>
-        <member name="P:TourInfo.Domain.TourNews.ZbtaNews.createUser">
-            <summary>
-            创建者（暂时无用）
-            </summary>
-        </member>
         <member name="T:TourInfo.Domain.Base.Entity`1">
             <summary>
             基类
@@ -611,6 +566,51 @@
         <member name="P:TourInfo.Domain.EWQYEntity.pictureKeys">
             <summary>
             图片
+            </summary>
+        </member>
+        <member name="T:TourInfo.Domain.ZBTA.ZbtaNews">
+            <summary>
+            zbta旅游资讯
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.ZBTA.ZbtaNews.releaseTime">
+            <summary>
+            发布时间
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.ZBTA.ZbtaNews.checkState">
+            <summary>
+            审核状态（暂时不用）
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.ZBTA.ZbtaNews.titles">
+            <summary>
+            标题
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.ZBTA.ZbtaNews.image">
+            <summary>
+            首图
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.ZBTA.ZbtaNews.created">
+            <summary>
+            信息创建时间
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.ZBTA.ZbtaNews.back1">
+            <summary>
+            概要
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.ZBTA.ZbtaNews.details">
+            <summary>
+            详情（富文本）
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.ZBTA.ZbtaNews.createUser">
+            <summary>
+            创建者（暂时无用）
             </summary>
         </member>
         <member name="M:TourInfo.Domain.IImageLocalizer.Localize(System.String)">

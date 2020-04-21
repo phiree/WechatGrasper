@@ -10,12 +10,14 @@ namespace TourInfo.Application.Api.Models
     /// </summary>
     public class HomeCarousel
     {
-        public HomeCarousel(string id, string title, DataSourceType dataSourceType, string imageUrl)
+        protected HomeCarousel() { }
+        public HomeCarousel(string id, string title, HomeCarouselDataSourceType dataSourceType, string imageUrl,string date)
         {
             Id = id;
             Title = title;
             DataSourceType = dataSourceType;
             ImageUrl = imageUrl;
+            this.Date=date;
         }
 
         /// <summary>
@@ -29,13 +31,18 @@ namespace TourInfo.Application.Api.Models
         /// <summary>
         /// 数据源类型
         /// </summary>
-        public DataSourceType DataSourceType { get; protected set; }
+        public HomeCarouselDataSourceType DataSourceType { get; protected set; }
         /// <summary>
         /// 图片Url
         /// </summary>
-        public string ImageUrl { get; protected set; }
+        public string ImageUrl { get;   set; }
+        public string Date { get;protected set;}
     }
-    public enum DataSourceType { 
+    /// <summary>
+    /// 轮播图数据来源类型
+    /// </summary>
+    public enum HomeCarouselDataSourceType
+    { 
         /// <summary>
         /// 微信公众号新闻
         /// </summary>

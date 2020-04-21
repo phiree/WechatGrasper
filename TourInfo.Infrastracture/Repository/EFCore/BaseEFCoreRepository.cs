@@ -13,9 +13,9 @@ using TourInfo.Infrastracture.Repository.ADONET;
 
 namespace TourInfo.Infrastracture.Repository.EFCore
 {
-    
+
     public class BaseEFCoreRepository<T, Key> : IRepository<T, Key>
-        where T :class,IEntity<Key> 
+        where T : class, IEntity<Key>
     {
         protected TourInfoDbContext tourInfoDbContext { get; }
 
@@ -29,24 +29,24 @@ namespace TourInfo.Infrastracture.Repository.EFCore
 
         public void Insert(T entity)
         {
-           
+
             tourInfoDbContext.Add(entity);
             tourInfoDbContext.SaveChanges();
         }
         public void InsertOrUpdate(T entity)
         {
-            var existed=tourInfoDbContext.Find<T>(entity.id);
-            if (existed != null) { return;}
+            var existed = tourInfoDbContext.Find<T>(entity.id);
+            if (existed != null) { return; }
             tourInfoDbContext.Add(entity);
             tourInfoDbContext.SaveChanges();
         }
         public void InsertOrUpdate(IList<T> list)
         {
-            foreach(var t in list)
-            { 
+            foreach (var t in list)
+            {
                 InsertOrUpdate(t);
-                }
-           
+            }
+
         }
         public T Get(Key id)
         {
@@ -75,13 +75,20 @@ namespace TourInfo.Infrastracture.Repository.EFCore
         {
             return tourInfoDbContext.Set<T>().Where(predicate).ToList();
         }
+        public IList<T> FindList<OrderKey>(Func<T, bool> predicate, Func<T, OrderKey> order, bool orderDesc, int pageIndex, int pageSize)
+        {
+            var list = tourInfoDbContext.Set<T>().Where(predicate);
+            if (orderDesc) {list= list.OrderByDescending(order); }
+            else { list=list.OrderBy(order); }
+            return list.Skip(pageIndex * pageSize).Take(pageSize).ToList();
+        }
 
         public void SaveChanges()
         {
             tourInfoDbContext.SaveChanges();
         }
 
-       
+
 
         public void BulkInsert(DataTable dataTable, string tableName)
         {
@@ -90,13 +97,13 @@ namespace TourInfo.Infrastracture.Repository.EFCore
 
         public void BulkInsert(IList<T> list)
         {
-             
-            using (var connection=(SqlConnection)tourInfoDbContext.Database.GetDbConnection())
+
+            using (var connection = (SqlConnection)tourInfoDbContext.Database.GetDbConnection())
             {
                 connection.Open();
                 var bulkCopy = new SqlBulkCopy(connection.ConnectionString);
                 bulkCopy.DestinationTableName = typeof(T).Name + "s";
-                var tableData= list.ConvertGenericListToDataTable();
+                var tableData = list.ConvertGenericListToDataTable();
                 tableData.Columns.Cast<DataColumn>().ToList().ForEach(x =>
      bulkCopy.ColumnMappings.Add(new SqlBulkCopyColumnMapping(x.ColumnName, x.ColumnName)));
 
@@ -108,12 +115,17 @@ namespace TourInfo.Infrastracture.Repository.EFCore
         public void ExecuteRawSql(string sql)
         {
             tourInfoDbContext.Database.ExecuteSqlCommand(sql);
-               
+
         }
 
         public void Delete(T entity)
         {
-           tourInfoDbContext.Remove(entity);
+            tourInfoDbContext.Remove(entity);
+        }
+
+        public IList<T> GetList(int pageIndex, int pageSize)
+        {
+            return tourInfoDbContext.Set<T>().Skip(pageIndex * pageSize).Take(pageSize).ToList();
         }
     }
 }

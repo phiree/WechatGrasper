@@ -30,7 +30,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application\新文件夹\" />
+    <Folder Include="Application\FacadeApplet\" />
+    <Folder Include="DomainModel\新文件夹1\" />
   </ItemGroup>
 
 </Project>

@@ -36,12 +36,17 @@
             图片Url
             </summary>
         </member>
-        <member name="F:TourInfo.Application.Api.Models.DataSourceType.WeChatNews">
+        <member name="T:TourInfo.Application.Api.Models.HomeCarouselDataSourceType">
+            <summary>
+            轮播图数据来源类型
+            </summary>
+        </member>
+        <member name="F:TourInfo.Application.Api.Models.HomeCarouselDataSourceType.WeChatNews">
             <summary>
             微信公众号新闻
             </summary>
         </member>
-        <member name="F:TourInfo.Application.Api.Models.DataSourceType.ZbtaNews">
+        <member name="F:TourInfo.Application.Api.Models.HomeCarouselDataSourceType.ZbtaNews">
             <summary>
             zbtanews网站
             </summary>

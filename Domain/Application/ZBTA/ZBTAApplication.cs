@@ -5,7 +5,8 @@ using System.Text.RegularExpressions;
 using TourInfo.Domain.Base;
 using TourInfo.Domain.DomainModel;
 using TourInfo.Domain.DomainModel.Rapi;
- 
+using TourInfo.Domain.ZBTA;
+
 namespace TourInfo.Domain.TourNews
 {
     public class ZBTAApplication : IZBTAApplication

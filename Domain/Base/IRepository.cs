@@ -14,6 +14,7 @@ namespace TourInfo.Domain.Base
         bool Update(T entity);
         T Get(Key id);
         IList<T> GetAll();
+        IList<T> GetList(int pageIndex,int pageSize);
         void SaveChanges();
         void BulkInsert(DataTable dataTable, string tableName);
         void BulkInsert(IList<T> list);
@@ -22,6 +23,9 @@ namespace TourInfo.Domain.Base
         void InsertOrUpdate(T entity);
         void InsertOrUpdate(IList<T> list);
         void Delete(T entity);
+        IList<T> FindList<OrderKey>(Func<T, bool> predicate, Func<T, OrderKey> order,bool orderDesc, int pageIndex, int pageSize);
+      
+
         
 
 

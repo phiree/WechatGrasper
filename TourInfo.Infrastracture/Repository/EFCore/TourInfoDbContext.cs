@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TourInfo.Domain.DomainModel.Video;
 using static TourInfo.Domain.DomainModel.SDTA.LineDetail;
 using System.Security.Cryptography.X509Certificates;
+using TourInfo.Domain.ZBTA;
 
 namespace TourInfo.Infrastracture.Repository.EFCore
 {

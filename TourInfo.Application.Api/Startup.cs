@@ -45,7 +45,8 @@ namespace TourInfo.Application.Api
         {
             services.AddHttpClient();
             services.AddMvc(x => x.EnableEndpointRouting = false).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddAutoMapper(System.Reflection.Assembly.GetAssembly(typeof(TourinfoDomainAutoMapperProfile)));
+            services.AddAutoMapper(System.Reflection.Assembly.GetAssembly(typeof(TourinfoDomainAutoMapperProfile))
+               , Assembly.GetAssembly(typeof(TourinfoApiAutoMapperProfile)));
             string connectionString = Configuration.GetConnectionString("TourinfoConnectionString");
 
             //swagger
@@ -56,7 +57,7 @@ namespace TourInfo.Application.Api
                 options.CustomSchemaIds(type => type.FullName); // 解决相同类名会报错的问题
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 options.IncludeXmlComments(Path.Combine(Directory.GetCurrentDirectory(), xmlFile)); // 标注要使用的 XML 文档
-              //  options.IncludeXmlComments(Path.Combine(Directory.GetCurrentDirectory(), "Nokia.GenericExport.Domain.xml")); // 标注要使用的 XML 文档
+                                                                                                    //  options.IncludeXmlComments(Path.Combine(Directory.GetCurrentDirectory(), "Nokia.GenericExport.Domain.xml")); // 标注要使用的 XML 文档
                 options.DescribeAllEnumsAsStrings();
             });
             //services.AddDbContext<TourInfoDbContext>(options =>
@@ -92,7 +93,7 @@ namespace TourInfo.Application.Api
             string rapi_syncurl = Configuration.GetValue<string>("Rapi:syncurl");
             string RapiLocalSavedPath = Configuration.GetValue<string>("Rapi:RapiLocalSavedPath");
             string video_baseurl = Configuration.GetValue<string>("Video:baseUrl");
-            string whyDetailRootUrl = Configuration.GetValue<string>("WHY:whyDetailRootUrl"); 
+            string whyDetailRootUrl = Configuration.GetValue<string>("WHY:whyDetailRootUrl");
             string whyImageSavedPath = Configuration.GetValue<string>("WHY:whyImageSavedPath");
             string whyListRootUrl = Configuration.GetValue<string>("WHY:whyListRootUrl");
             string whyImageClientPath = Configuration.GetValue<string>("WHY:whyImageClientPath");
@@ -102,11 +103,11 @@ namespace TourInfo.Application.Api
             var containerBuilder = new Autofac.ContainerBuilder();
             containerBuilder.Populate(services);
             containerBuilder.RegisterModule(new TourInfo.Domain.TourInfoDomainAutofactModel
-               ( zbtaTitleImageBaseUrl,  zbtaDetailImageBaseUrl,  zbtaImageClientPath,  zbtaLocalSavedPath,
-             ewqyImageBaseUrl,  ewqyImageClientPath,  ewqyLocalSavedPath,
-             rapiRootUrl,  rapiImageClientPath,  rapi_initurl,  rapi_syncurl,  rapi_tokenurl,  rapi_appid, rapi_secret, RapiLocalSavedPath,
+               (zbtaTitleImageBaseUrl, zbtaDetailImageBaseUrl, zbtaImageClientPath, zbtaLocalSavedPath,
+             ewqyImageBaseUrl, ewqyImageClientPath, ewqyLocalSavedPath,
+             rapiRootUrl, rapiImageClientPath, rapi_initurl, rapi_syncurl, rapi_tokenurl, rapi_appid, rapi_secret, RapiLocalSavedPath,
              video_baseurl,
-             whyDetailRootUrl,  whyImageSavedPath,  whyListRootUrl,  whyImageClientPath,  whyImageBaseUrl,
+             whyDetailRootUrl, whyImageSavedPath, whyListRootUrl, whyImageClientPath, whyImageBaseUrl,
 
              ziboWechatNewsBaseUrl
                 ));
@@ -126,7 +127,7 @@ namespace TourInfo.Application.Api
         {
             //if (env.IsDevelopment())
             //{
-                 app.UseDeveloperExceptionPage();
+            app.UseDeveloperExceptionPage();
             //}
 
             app.UseMvc();

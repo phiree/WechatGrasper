@@ -8,6 +8,7 @@ using TourInfo.Domain.Base;
 using TourInfo.Domain.DomainModel.EWQY;
 using TourInfo.Domain.DomainModel.Rapi;
 using TourInfo.Domain.TourNews;
+using TourInfo.Domain.ZBTA;
 
 namespace TourInfo.Domain.DomainModel.DataSync
 {

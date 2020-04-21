@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using TourInfo.Domain.Base;
 
-namespace TourInfo.Domain.TourNews
+namespace TourInfo.Domain.ZBTA
 {
     /// <summary>
     /// zbta旅游资讯

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft;
-namespace TourInfo.Domain.TourNews
+
+namespace TourInfo.Domain.ZBTA
 {
     public class ZbtaNewsResponse
     {

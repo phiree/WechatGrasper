@@ -9,6 +9,7 @@ using System.Linq;
 using TourInfo.Domain.DomainModel.EWQY;
 using TourInfo.Domain.Base;
 using TourInfo.Domain.DomainModel.WHY;
+using TourInfo.Domain.ZBTA;
 
 namespace TourInfo.Domain
 {

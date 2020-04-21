@@ -11,6 +11,7 @@ using TourInfo.Domain.DomainModel.Rapi;
 using AutoMapper;
 using TourInfo.Domain.DomainModel.EWQY;
 using Microsoft.Extensions.Logging;
+using TourInfo.Domain.ZBTA;
 
 namespace TourInfo.Domain.DomainModel
 {
