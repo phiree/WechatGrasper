@@ -120,6 +120,7 @@ namespace TourInfo.Application.Api.Controllers
             string currentVersion = DateTime.Now.ToString("yyyyMMddhhmmss");
             logger.LogInformation("开始更新数据GetZiboWechatNews");
             ziBoWechatNewsApplication.Graspe(currentVersion);
+            logger.LogInformation("完成更新数据GetZiboWechatNews");
             return "更新完毕GetZiboWechatNews";
 
         }
