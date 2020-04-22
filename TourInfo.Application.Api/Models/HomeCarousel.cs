@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -40,16 +41,20 @@ namespace TourInfo.Application.Api.Models
     }
     /// <summary>
     /// 轮播图数据来源类型
+    /// 1: 微信新闻
+    /// 2: zbta新闻
     /// </summary>
     public enum HomeCarouselDataSourceType
     { 
         /// <summary>
         /// 微信公众号新闻
         /// </summary>
+        [Description("微信公众号新闻")]
         WeChatNews=1,
         /// <summary>
         /// zbtanews网站
         /// </summary>
-        ZbtaNews=2
+        [Description("zbta新闻")]
+        ZbtaNews =2
         }
 }

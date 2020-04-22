@@ -28,6 +28,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using Microsoft.OpenApi.Models;
 using System.IO;
 using System.Reflection;
+using Newtonsoft.Json.Converters;
 
 namespace TourInfo.Application.Api
 {
@@ -44,7 +45,10 @@ namespace TourInfo.Application.Api
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddHttpClient();
-            services.AddMvc(x => x.EnableEndpointRouting = false).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc(x => x.EnableEndpointRouting = false)
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                
+                ; 
             services.AddAutoMapper(System.Reflection.Assembly.GetAssembly(typeof(TourinfoDomainAutoMapperProfile))
                , Assembly.GetAssembly(typeof(TourinfoApiAutoMapperProfile)));
             string connectionString = Configuration.GetConnectionString("TourinfoConnectionString");
@@ -58,7 +62,7 @@ namespace TourInfo.Application.Api
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 options.IncludeXmlComments(Path.Combine(Directory.GetCurrentDirectory(), xmlFile)); // 标注要使用的 XML 文档
                                                                                                     //  options.IncludeXmlComments(Path.Combine(Directory.GetCurrentDirectory(), "Nokia.GenericExport.Domain.xml")); // 标注要使用的 XML 文档
-                options.DescribeAllEnumsAsStrings();
+               // options.DescribeAllEnumsAsStrings();
             });
             //services.AddDbContext<TourInfoDbContext>(options =>
             //   options.UseSqlServer(connectionString),

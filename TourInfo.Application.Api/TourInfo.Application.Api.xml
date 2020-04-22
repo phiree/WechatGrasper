@@ -39,6 +39,8 @@
         <member name="T:TourInfo.Application.Api.Models.HomeCarouselDataSourceType">
             <summary>
             轮播图数据来源类型
+            1: 微信新闻
+            2: zbta新闻
             </summary>
         </member>
         <member name="F:TourInfo.Application.Api.Models.HomeCarouselDataSourceType.WeChatNews">

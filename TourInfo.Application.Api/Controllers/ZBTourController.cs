@@ -42,7 +42,9 @@ namespace TourInfo.Application.Api.Controllers
             var zbtaNewsList=repositoryZbta.FindList(x=>true,x=>x.created,true,0,2);
             var zbtas=mapper .Map<List<HomeCarousel>>(zbtaNewsList)
 
-                .Select(x =>{ x.ImageUrl= Request.Host + "/" + x.ImageUrl; return x; }).ToList();
+                .Select(x =>{ x.ImageUrl=
+                    (Request.Scheme+"://"+ Request.Host + "/" + x.ImageUrl).Replace(@"\",@"/"); 
+                    return x; }).ToList();
             var wechats= mapper.Map<List<HomeCarousel>>(wechatList);
 
            var cas= zbtas.Concat(wechats).OrderByDescending(x=>x.Date).ToList();
