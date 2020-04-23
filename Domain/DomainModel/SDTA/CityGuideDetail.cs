@@ -29,7 +29,7 @@ namespace TourInfo.Domain.DomainModel.SDTA
             public int featured { get; set; }
             public int rank { get; set; }
             public int primary_category { get; set; }
-            public string image { get; set; }
+            public ImageUrl image { get; set; }
             public int views { get; set; }
             public string author { get; set; }
             public string created_at { get; set; }
@@ -70,7 +70,7 @@ namespace TourInfo.Domain.DomainModel.SDTA
                 public string deleted_at { get; set; }
                 public class Image
                 {
-                    public string img { get; set; }
+                    public ImageUrl img { get; set; }
                     public string description { get; set; }
                 }
             }

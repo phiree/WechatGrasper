@@ -52,6 +52,183 @@ namespace TourInfo.Infrastracture.Repository.EFCore
 
 
 
+            modelBuilder.Entity<Video>()
+          .Property(x => x.id).ValueGeneratedNever();
+
+            modelBuilder.Entity<Domain.DomainModel.WHY.WhyModel>()
+         .OwnsOne(x => x.hposter);
+
+            modelBuilder.Entity<Domain.DomainModel.WHY.WhyModel>()
+         .OwnsOne(x => x.location);
+
+
+            modelBuilder.Entity<Domain.DomainModel.SDTA.LineDetail>()
+           .OwnsOne(x => x.thumb);
+
+            modelBuilder.Entity<Domain.DomainModel.SDTA.LineDetail>()
+            .Property(e => e.tags)
+            .HasConversion(
+                v => string.Join(",", v),
+                v => v.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                );
+
+            modelBuilder.Entity<Domain.DomainModel.SDTA.LineDetail>()
+           .Property(e => e.city)
+           .HasConversion(
+               v => string.Join(",", v),
+               v => v.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+               );
+
+
+            modelBuilder.Entity<Domain.DomainModel.SDTA.LineDetail>()
+                .ToTable("SDTALineDetail")
+         .OwnsMany(e => e.days, c =>
+         {
+             c.ToTable("SDTALineDetailDay");
+             c.HasForeignKey("LineId");
+             c.Property("name");
+             c.HasKey("LineId", "name");
+             c.OwnsMany(
+                 e => e.place, g =>
+                 {
+                     g.ToTable("SDTALineDetailDayPlace");
+                     g.HasForeignKey("LineId", "name");
+                     g.Property("id");
+                     g.HasKey("LineId", "name", "id");
+                 }
+                 );
+         });
+
+            modelBuilder.Entity<Domain.DomainModel.SDTA.LineDetailScenic.Doc.Source>()
+                .OwnsOne(x => x.default_photo)
+
+            ;
+            modelBuilder.Entity<Domain.DomainModel.SDTA.LineDetailScenic.Doc.Source>()
+                            .Property(x => x.location).HasConversion(
+                                                           v => string.Join(",", v),
+                                                           v => v.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => double.Parse(x)).ToList()
+                                                       );
+            modelBuilder.Entity<Domain.DomainModel.SDTA.LineDetailScenic.Doc.Source>()
+             .ToTable("SDTALineDetailScenicDocSource")
+            .OwnsMany(x => x.eletype, d =>
+            {
+                d.ToTable("SDTALineDetailScenicDocSourceEletype");
+                d.HasForeignKey("sourceid");
+                d.HasKey("sourceid", "id");
+                d.Property(x => x.ancestors).HasConversion(
+                                                v => string.Join(",", v),
+                                                v => v.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                                            );
+            })
+          ;
+
+
+            modelBuilder.Entity<Domain.DomainModel.SDTA.CityGuideDetail.Data>()
+              .ToTable("SDTACityGuideDetail");
+
+            modelBuilder.Entity<Domain.DomainModel.SDTA.CityGuideDetail.Data>()
+             .OwnsOne(e => e.category)
+              .ToTable("SDTACityGuideDetailCategory")
+              ;
+
+            modelBuilder.Entity<Domain.DomainModel.SDTA.CityGuideDetail.Data>()
+                .OwnsOne(e => e.image)
+            ;
+            modelBuilder.Entity<Domain.DomainModel.SDTA.CityGuideDetail.Data>()
+            .ToTable("SDTACityGuideDetail")
+            .OwnsOne(e => e.pics, c =>
+            {
+                c.ToTable("SDTACityGuideDetailPics");
+                c.OwnsMany(x => x.images, d =>
+                {
+
+                    d.ToTable("SDTACityGuideDetailPicImage");
+                    d.HasForeignKey("GuideId");
+                    d.Property(x => x.description);
+                    d.HasKey("GuideId", "description");
+                    d.OwnsOne(y => y.img);
+
+                });
+            });
+
+            //美食
+            modelBuilder.Entity<Domain.DomainModel.SDTA.FoodDetail.Data>()
+             .ToTable("SDTAFoodDetail");
+
+            modelBuilder.Entity<Domain.DomainModel.SDTA.FoodDetail.Data>()
+             .OwnsOne(e => e.snack_food_type);
+
+            modelBuilder.Entity<Domain.DomainModel.SDTA.FoodDetail.Data>()
+             .OwnsOne(e => e.defaultphoto);
+
+            modelBuilder.Entity<Domain.DomainModel.SDTA.FoodDetail.Data>()
+                .Property(a => a.id).ValueGeneratedNever();
+
+            modelBuilder.Entity<Domain.DomainModel.SDTA.FoodDetail.Data>()
+           .OwnsMany(e => e.pictures, c =>
+           {
+               c.ToTable("SDTAFoodDetailPictures");
+               c.HasForeignKey("FoodId");
+               c.Property(x => x.id);
+               c.HasKey("FoodId", "id");
+               c.OwnsOne(x => x.pho_path);
+           });
+            modelBuilder.Entity<Domain.DomainModel.SDTA.FoodDetail.Data>()
+                .OwnsMany(e => e.filter_pictures, c =>
+          {
+              c.ToTable("SDTAFoodDetailFilterPictures");
+              c.HasForeignKey("FoodId");
+              c.Property(x => x.id);
+              c.HasKey("FoodId", "id");
+              c.OwnsOne(x => x.pho_path);
+          });
+
+            modelBuilder.Entity<Domain.DomainModel.SDTA.FoodDetail.Data>()
+                .OwnsOne(e => e.destination, c =>
+                {
+                    c.ToTable("SDTAFoodDetailDestination");
+                    c.HasForeignKey("FoodId");
+                    c.Property(x => x.id);
+                    c.HasKey("FoodId", "id");
+                    c.OwnsOne(x => x.defaultphoto);
+                });
+            //特产
+            modelBuilder.Entity<Domain.DomainModel.SDTA.SpecialLocalProductDetail.Data>()
+                .ToTable("SDTASpecialLocalProductDetail");
+            modelBuilder.Entity<Domain.DomainModel.SDTA.SpecialLocalProductDetail.Data>()
+               .OwnsOne(x=>x.defaultphoto);
+
+            modelBuilder.Entity<Domain.DomainModel.SDTA.SpecialLocalProductDetail.Data>()
+              .OwnsOne(x => x.destination,c=>{ 
+                  c.OwnsOne(x=>x.defaultphoto);
+                  });
+            modelBuilder.Entity<Domain.DomainModel.SDTA.SpecialLocalProductDetail.Data>()
+             .OwnsMany(x => x.commodity_prices,c=>{ 
+                 c.HasForeignKey("SpecialLocalProducId");
+                 c.Property(x=>x.comm_price_id);
+                 c.HasKey("SpecialLocalProducId", "comm_price_id");
+                 });
+
+            modelBuilder.Entity<Domain.DomainModel.SDTA.SpecialLocalProductDetail.Data>()
+               .OwnsMany(e => e.filter_pictures, c =>
+               {
+                   c.ToTable("SDTASpecialLocalProductDetailFilterPictures");
+                   c.HasForeignKey("SpecialLocalProducId");
+                   c.Property(x => x.id);
+                   c.HasKey("SpecialLocalProducId", "id");
+                   c.OwnsOne(x => x.pho_path);
+               });
+            modelBuilder.Entity<Domain.DomainModel.SDTA.SpecialLocalProductDetail.Data>()
+               .OwnsMany(e => e.pictures, c =>
+               {
+                   c.ToTable("SDTASpecialLocalProductDetailPictures");
+                   c.HasForeignKey("SpecialLocalProducId");
+                   c.Property(x => x.id);
+                   c.HasKey("SpecialLocalProducId", "id");
+                   c.OwnsOne(x => x.pho_path);
+               });
+
+            #region rapi 已弃用
             modelBuilder.Entity<Projectinfo>()
               .HasKey(x => x.pid);
             modelBuilder.Entity<Projectinfo>()
@@ -137,127 +314,7 @@ namespace TourInfo.Infrastracture.Repository.EFCore
             modelBuilder.Entity<Pubinfounitchild>()
                 .HasIndex(x => x.childid);
 
-            modelBuilder.Entity<Video>()
-          .Property(x => x.id).ValueGeneratedNever();
-
-            modelBuilder.Entity<Domain.DomainModel.WHY.WhyModel>()
-         .OwnsOne(x => x.hposter);
-
-            modelBuilder.Entity<Domain.DomainModel.WHY.WhyModel>()
-         .OwnsOne(x => x.location);
-
-
-            modelBuilder.Entity<Domain.DomainModel.SDTA.LineDetail>()
-           .OwnsOne(x => x.thumb);
-
-            modelBuilder.Entity<Domain.DomainModel.SDTA.LineDetail>()
-            .Property(e => e.tags)
-            .HasConversion(
-                v => string.Join(",", v),
-                v => v.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                );
-
-            modelBuilder.Entity<Domain.DomainModel.SDTA.LineDetail>()
-           .Property(e => e.city)
-           .HasConversion(
-               v => string.Join(",", v),
-               v => v.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-               );
-
-
-            modelBuilder.Entity<Domain.DomainModel.SDTA.LineDetail>()
-                .ToTable("SDTALineDetail")
-         .OwnsMany(e => e.days, c =>
-         {
-             c.ToTable("SDTALineDetailDay");
-             c.HasForeignKey("LineId");
-             c.Property("name");
-             c.HasKey("LineId", "name");
-             c.OwnsMany(
-                 e => e.place, g =>
-                 {
-                     g.ToTable("SDTALineDetailDayPlace");
-                     g.HasForeignKey("LineId", "name");
-                     g.Property("id");
-                     g.HasKey("LineId", "name", "id");
-                 }
-                 );
-         });
-
-            modelBuilder.Entity<Domain.DomainModel.SDTA.LineDetailScenic.Doc.Source>()
-                .OwnsOne(x=>x.default_photo)
-             
-            ;
- modelBuilder.Entity<Domain.DomainModel.SDTA.LineDetailScenic.Doc.Source>()
-                 .Property(x => x.location).HasConversion(
-                                                v => string.Join(",", v),
-                                                v => v.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x=>double.Parse(x)).ToList()
-                                            );
-            modelBuilder.Entity<Domain.DomainModel.SDTA.LineDetailScenic.Doc.Source>()
-             .ToTable("SDTALineDetailScenicDocSource")
-            .OwnsMany(x => x.eletype, d =>
-            {
-                d.ToTable("SDTALineDetailScenicDocSourceEletype");
-                d.HasForeignKey("sourceid");
-                d.HasKey("sourceid", "id");
-                d.Property(x => x.ancestors).HasConversion(
-                                                v => string.Join(",", v),
-                                                v => v.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                                            );
-            })
-          ;
-
-
-            modelBuilder.Entity<Domain.DomainModel.SDTA.CityGuideDetail.Data>()
-              .ToTable("SDTACityGuideDetail")
-              .OwnsOne(e => e.category)
-              .ToTable("SDTACityGuideDetailCategory")
-
-              ;
-
-            modelBuilder.Entity<Domain.DomainModel.SDTA.CityGuideDetail.Data>()
-            .ToTable("SDTACityGuideDetail")
-            .OwnsOne(e => e.pics, c =>
-            {
-                c.ToTable("SDTACityGuideDetailPics");
-                c.OwnsMany(x => x.images, d =>
-                {
-                    d.ToTable("SDTACityGuideDetailPicImage");
-                    d.HasForeignKey("GuideId");
-                    d.Property(x => x.img);
-                    d.HasKey("GuideId", "img");
-                });
-            });
-
-
-            modelBuilder.Entity<Domain.DomainModel.SDTA.FoodDetail.Data>()
-            .ToTable("SDTAFoodDetail")
-            .OwnsOne(e => e.destination);
-            modelBuilder.Entity<Domain.DomainModel.SDTA.FoodDetail.Data>()
-           .ToTable("SDTAFoodDetail")
-           .OwnsOne(e => e.snack_food_type);
-            modelBuilder.Entity<Domain.DomainModel.SDTA.FoodDetail.Data>()
-                .Property(a => a.id).ValueGeneratedNever();
-            modelBuilder.Entity<Domain.DomainModel.SDTA.FoodDetail.Data>()
-
-           .ToTable("SDTAFoodDetail")
-           .OwnsMany(e => e.pictures, c =>
-           {
-               c.ToTable("SDTAFoodDetailPictures");
-               c.HasForeignKey("FoodId");
-               c.Property(x => x.id);
-               c.HasKey("FoodId", "id");
-           });
-            modelBuilder.Entity<Domain.DomainModel.SDTA.FoodDetail.Data>()
-          .ToTable("SDTAFoodDetail")
-          .OwnsMany(e => e.filter_pictures, c =>
-          {
-              c.ToTable("SDTAFoodDetailFilterPictures");
-              c.HasForeignKey("FoodId");
-              c.Property(x => x.id);
-              c.HasKey("FoodId", "id");
-          });
-
+            #endregion 
         }
         // public DbSet<Entity<string>> Entities { get; set; }
         //public DbSet<VersionedEntity>  VersionedEntities { get; set; }
@@ -273,6 +330,7 @@ namespace TourInfo.Infrastracture.Repository.EFCore
 
         public DbSet<Domain.DomainModel.ZiBoWechatNews.ZiBoWechatNews> ZiBoWechatNews { get; set; }
 
+        //路线
         public DbSet<Domain.DomainModel.SDTA.LineDetail> LineDetails { get; set; }
         public DbSet<Domain.DomainModel.SDTA.LineDetailScenic.Doc.Source> LineDetailScenics { get; set; }
         /// <summary>
@@ -280,7 +338,9 @@ namespace TourInfo.Infrastracture.Repository.EFCore
         /// </summary>
         public DbSet<Domain.DomainModel.SDTA.CityGuideDetail.Data> CityGuideDetails { get; set; }
 
+        //美食
         public DbSet<Domain.DomainModel.SDTA.FoodDetail.Data> FoodDetails { get; set; }
-
+        //特产
+        public DbSet<Domain.DomainModel.SDTA.SpecialLocalProductDetail.Data> SpecialLocalProductDetails { get; set; }
     }
 }

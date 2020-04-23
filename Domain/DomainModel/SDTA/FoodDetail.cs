@@ -45,7 +45,7 @@ namespace TourInfo.Domain.DomainModel.SDTA
             public string food_price { get; set; }
             public string created_at { get; set; }
             public string food_type_id { get; set; }
-            public string defaultphoto { get; set; }
+            public ImageUrl defaultphoto { get; set; }
             public int rank { get; set; }
             public int is_404 { get; set; }
             public string cityname { get; set; }
@@ -69,7 +69,7 @@ namespace TourInfo.Domain.DomainModel.SDTA
                 public string pho_name { get; set; }
                 public string pho_type { get; set; }
                 public string pho_format { get; set; }
-                public string pho_path { get; set; }
+                public ImageUrl pho_path { get; set; }
                 public string created_at { get; set; }
                 public string updated_at { get; set; }
                 public int rank { get; set; }
@@ -85,7 +85,7 @@ namespace TourInfo.Domain.DomainModel.SDTA
                 public string pho_name { get; set; }
                 public string pho_type { get; set; }
                 public string pho_format { get; set; }
-                public string pho_path { get; set; }
+                public ImageUrl pho_path { get; set; }
                 public string created_at { get; set; }
                 public string updated_at { get; set; }
                 public int rank { get; set; }
@@ -124,7 +124,7 @@ namespace TourInfo.Domain.DomainModel.SDTA
                 public int audit_state { get; set; }
                 public string website { get; set; }
                 public int dest_type_id { get; set; }
-                public string defaultphoto { get; set; }
+                public ImageUrl defaultphoto { get; set; }
                 public string keywords { get; set; }
                 public string tags { get; set; }
                 public string charmcitypic { get; set; }

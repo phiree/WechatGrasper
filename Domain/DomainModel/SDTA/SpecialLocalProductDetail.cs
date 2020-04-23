@@ -1,22 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TourInfo.Domain.Base;
 
 namespace TourInfo.Domain.DomainModel.SDTA
 {
    
    
 
-    public class CommodityPrice
-    {
-        public string comm_price_id { get; set; }
-        public string commodity_id { get; set; }
-        public int price_type { get; set; }
-        public string goods_caption { get; set; }
-        public int price_caption { get; set; }
-        public string created_at { get; set; }
-        public string updated_at { get; set; }
-    }
+   
 
    
 
@@ -35,7 +27,7 @@ namespace TourInfo.Domain.DomainModel.SDTA
             public string destination_id { get; set; }
             public string name_cn { get; set; }
             public string full_name { get; set; }
-            public object short_name { get; set; }
+            public string short_name { get; set; }
             public string commodity_intr { get; set; }
             public string manufacturer_inf { get; set; }
             public int state { get; set; }
@@ -44,8 +36,8 @@ namespace TourInfo.Domain.DomainModel.SDTA
             public string created_at { get; set; }
             public string updated_at { get; set; }
             public string keywords { get; set; }
-            public object tags { get; set; }
-            public string defaultphoto { get; set; }
+            public string tags { get; set; }
+            public ImageUrl defaultphoto { get; set; }
             public int rank { get; set; }
             public int is_404 { get; set; }
             public string price_desc { get; set; }
@@ -63,9 +55,16 @@ namespace TourInfo.Domain.DomainModel.SDTA
             public CommodityType commodity_type { get; set; }
             public List<CommodityPrice> commodity_prices { get; set; }
             public List<Picture> pictures { get; set; }
-            public List<object> comments { get; set; }
-            public List<object> likes { get; set; }
-            public List<object> collects { get; set; }
+            public class CommodityPrice
+            {
+                public string comm_price_id { get; set; }
+                public string commodity_id { get; set; }
+                public int price_type { get; set; }
+                public string goods_caption { get; set; }
+                public int price_caption { get; set; }
+                public string created_at { get; set; }
+                public string updated_at { get; set; }
+            }
             public class FilterPicture
             {
                 public int id { get; set; }
@@ -73,14 +72,14 @@ namespace TourInfo.Domain.DomainModel.SDTA
                 public string picable_id { get; set; }
                 public string picable_type { get; set; }
                 public string pho_name { get; set; }
-                public object pho_type { get; set; }
-                public object pho_format { get; set; }
-                public string pho_path { get; set; }
+                public string pho_type { get; set; }
+                public string pho_format { get; set; }
+                public ImageUrl pho_path { get; set; }
                 public string created_at { get; set; }
                 public string updated_at { get; set; }
                 public int rank { get; set; }
                 public int is_404 { get; set; }
-                public object deleted_at { get; set; }
+                public string deleted_at { get; set; }
             }
 
 
@@ -97,15 +96,15 @@ namespace TourInfo.Domain.DomainModel.SDTA
                 public string adm_phone { get; set; }
                 public string dest_des { get; set; }
                 public string culture { get; set; }
-                public object dest_adver { get; set; }
+                public string dest_adver { get; set; }
                 public string clim_des { get; set; }
-                public object notes_des { get; set; }
-                public object tou_taboo { get; set; }
+                public string notes_des { get; set; }
+                public string tou_taboo { get; set; }
                 public string fea_inf { get; set; }
-                public object longitude { get; set; }
-                public object latitude { get; set; }
+                public string longitude { get; set; }
+                public string latitude { get; set; }
                 public string airlines { get; set; }
-                public object railway { get; set; }
+                public string railway { get; set; }
                 public string highway { get; set; }
                 public string water_carriage { get; set; }
                 public string bus { get; set; }
@@ -116,11 +115,11 @@ namespace TourInfo.Domain.DomainModel.SDTA
                 public int audit_state { get; set; }
                 public string website { get; set; }
                 public int dest_type_id { get; set; }
-                public string defaultphoto { get; set; }
+                public ImageUrl defaultphoto { get; set; }
                 public string keywords { get; set; }
                 public string tags { get; set; }
-                public object charmcitypic { get; set; }
-                public object daren_picture { get; set; }
+                public string charmcitypic { get; set; }
+                public string daren_picture { get; set; }
                 public string area_id { get; set; }
                 public int rank { get; set; }
                 public int is_404 { get; set; }
@@ -131,12 +130,12 @@ namespace TourInfo.Domain.DomainModel.SDTA
                 public int id { get; set; }
                 public string comm_type_id { get; set; }
                 public string comm_type_id_p { get; set; }
-                public object user_id { get; set; }
+                public string user_id { get; set; }
                 public string comm_name { get; set; }
                 public int grade { get; set; }
-                public object created_at { get; set; }
-                public object updated_at { get; set; }
-                public object deleted_at { get; set; }
+                public string created_at { get; set; }
+                public string updated_at { get; set; }
+                public string deleted_at { get; set; }
             }
             public class Picture
             {
@@ -145,14 +144,14 @@ namespace TourInfo.Domain.DomainModel.SDTA
                 public string picable_id { get; set; }
                 public string picable_type { get; set; }
                 public string pho_name { get; set; }
-                public object pho_type { get; set; }
-                public object pho_format { get; set; }
-                public string pho_path { get; set; }
+                public string pho_type { get; set; }
+                public string pho_format { get; set; }
+                public ImageUrl pho_path { get; set; }
                 public string created_at { get; set; }
                 public string updated_at { get; set; }
                 public int rank { get; set; }
                 public int is_404 { get; set; }
-                public object deleted_at { get; set; }
+                public string deleted_at { get; set; }
             }
         }
     }

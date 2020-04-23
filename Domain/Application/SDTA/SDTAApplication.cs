@@ -73,17 +73,7 @@ namespace TourInfo.Domain.Application.SDTA
                 },logger
               );;
             foodFetcher.Fetch();
-            ////路线
-            //var listUrlBuilder = new LineListUrlBuilder( );
-            //var detailUrlBuilder = new LineDetailUrlBuilder();
-
-            //var linesFetcher = new ListDetailFetcher<ResponseLines,Lines, LineDetail,LineDetail, string>(listUrlBuilder,
-            //    detailUrlBuilder,
-            //    urlFetcher,
-            //    repositoryDetailItem,
-            //    new PagingSetting { NeedPaging = false, StartIndex = -1 });
-            //linesFetcher.Fetch();
-            //todo: 精品路线中的景区
+             
             //城市锦囊
             var cityGuideUrlBuilder = new CityGuideListUrlBuilder();
             var cityUrlBuilder = new CityGuideDetailUrlBuilder();
