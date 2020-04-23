@@ -41,13 +41,15 @@ namespace TourInfo.Domain
                 if (p.PropertyType == typeof(ImageUrl))
                 {
                     var imageUrl = (ImageUrl)p.GetValue(t);
+                    
                     if (imageUrl == null || string.IsNullOrEmpty(imageUrl.OriginalUrl))
                     {
                         imageUrl = ImageUrl.Null;
                     }
                     else
                     {
-                        imageUrl.UpdateLocalizedUrl(imageLocalizer.Localize(originImageRootUrl + imageUrl.OriginalUrl  ));
+                        imageUrl.Localize(imageLocalizer,originImageRootUrl);
+                        //imageUrl.UpdateLocalizedUrl(imageLocalizer.Localize(originImageRootUrl + imageUrl.OriginalUrl  ));
 
                     }
                     p.SetValue(t, imageUrl);
@@ -55,18 +57,8 @@ namespace TourInfo.Domain
                 else if (p.PropertyType == typeof(ImageUrlsInText))
                 {
                     var imageUrl = (ImageUrlsInText)p.GetValue(t);
-                    string pattern = "(?<=<img[^>]+src=\")[^\">]+(?=\")";
-                    var matches = Regex.Matches(imageUrl.OriginaText, pattern);
-                    var textWithLocalizedImageUrl = imageUrl.OriginaText;
-                    //特殊判断:  对象自己定义的根路径 优先.
-                    //原因: zbtanews 的 标题图片的根路径 不带 ziboback/ 这一节, 但是内容里面的图片地址带.
-                    string imageBaseUrl = string.IsNullOrEmpty(imageUrl.ImageBaseUrl) ? originImageRootUrl : imageUrl.ImageBaseUrl;
-                    foreach (Match m in matches)
-                    {
-                        var localizedImage = imageLocalizer.Localize(imageBaseUrl + m.Value );
-                        textWithLocalizedImageUrl = textWithLocalizedImageUrl.Replace(m.Value, localizedImage);
-                    }
-                    imageUrl.UpdateImageLocalizedText(textWithLocalizedImageUrl);
+
+                    imageUrl.Localize(imageLocalizer,originImageRootUrl);
                     p.SetValue(t, imageUrl);
 
                 }
@@ -77,7 +69,7 @@ namespace TourInfo.Domain
                     foreach (var itemP in arrayP)
                     {
                         var imageUrl = itemP;
-                        imageUrl.UpdateLocalizedUrl(imageLocalizer.Localize(originImageRootUrl + imageUrl.OriginalUrl ));
+                        imageUrl.Localize(imageLocalizer ,originImageRootUrl  );
                         //string localizedImage = imageLocalizer.Localize(imageUrl.OriginalUrl, localSavedPath);
                         //p.SetValue(t, new ImageUrl(imageUrl.OriginalUrl, localizedImage));
                         imageUrls.Add(imageUrl);

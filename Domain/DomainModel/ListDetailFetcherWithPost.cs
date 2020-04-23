@@ -60,7 +60,7 @@ namespace TourInfo.Domain.DomainModel
                     logger.LogError($"获取美食详情失败.[{detailUrl}]");
                     continue;
                     }
-                var detailWrapper = Newtonsoft.Json.JsonConvert.DeserializeObject<DetailWrapper>(detailResult);
+                var detailWrapper = Newtonsoft.Json.JsonConvert.DeserializeObject<DetailWrapper>(detailResult,new ImageUrlJsonConverter());
                 var detail = detailWrapper.Detail;
                 detail.id = itemSummary.id;
                 repositoryDetailItem.InsertOrUpdate(detail);

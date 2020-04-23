@@ -154,6 +154,18 @@ namespace TourInfo.Application.Api.Controllers
             return Content("抓取完毕");
 
         }
+        [HttpGet("GraspeZbta")]
+        public ActionResult<dynamic> GraspeZbta()
+        {
+
+            string currentVersion = DateTime.Now.ToString("yyyyMMddhhmmss");
+            zBTAApplication.Graspe(currentVersion);
+           
+            logger.LogInformation(" 抓取完毕");
+
+            return Content("抓取完毕");
+
+        }
         [HttpGet("GraspeSDTA")]
         public ActionResult<dynamic> GraspeSDTA( )
         {
