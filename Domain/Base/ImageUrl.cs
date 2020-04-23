@@ -15,6 +15,10 @@
             OriginalUrl = originalUrl;
             LocalizedUrl = localizedUrl;
         }
+        public void Localize(IImageLocalizer localizer,string imageBaseUrl)
+        { 
+           LocalizedUrl= localizer.Localize(imageBaseUrl+OriginalUrl);
+            }
         public void UpdateLocalizedUrl(string localizedUrl)
         { 
             this.LocalizedUrl=localizedUrl;
