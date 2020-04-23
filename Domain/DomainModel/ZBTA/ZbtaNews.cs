@@ -39,13 +39,6 @@ namespace TourInfo.Domain.ZBTA
         /// </summary>
         public ImageUrlsInText details { get; set; }
 
-        public void CorrectDetailImagePath() {
-            string original = details.OriginaText;
-             original = original.Replace("/ziboback/", string.Empty);
-            details.UpdateOriginalText( original);
-            
-        }
-         
         /// <summary>
         /// 创建者（暂时无用）
         /// </summary>
