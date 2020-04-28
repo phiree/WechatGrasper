@@ -53,29 +53,48 @@ namespace TourInfo.Application.Api.Controllers
             return new ResponseWrapperWithList<HomeCarousel>( cas );
         }
 
-        // GET api/<ZBTourController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+       /// <summary>
+       /// 首页热门资讯
+       /// </summary>
+       /// <returns></returns>
+        [HttpGet("GetHomeHotNews")]
+        public ResponseWrapperWithList<HotNews> GetHomeHotNews()
         {
-            return "value";
+            var wechatList = repositoryWechatNews.GetList(0, 1);
+            var zbtaNewsList = repositoryZbta.FindList(x => true, x => x.created, true, 0, 2);
+            var zbtas = mapper.Map<List<HotNews>>(zbtaNewsList)
+                .Select(x => {
+                    x.ImageUrl =
+          (Request.Scheme + "://" + Request.Host + "/" + x.ImageUrl).Replace(@"\", @"/");
+                    return x;
+                }).ToList();
+            var wechats = mapper.Map<List<HotNews>>(wechatList);
+            var cas = zbtas.Concat(wechats).OrderByDescending(x => x.Date).ToList();
+            //  var zbtaCa=mapper.Map<List<HomeCarousel>>(zbtaNewsList);
+            return new ResponseWrapperWithList<HotNews>(cas);
         }
-
-        // POST api/<ZBTourController>
-        [HttpPost]
-        public void Post([FromBody]string value)
+        /// <summary>
+        /// 资讯列表
+        /// </summary>
+        /// <param name="pageIndex">分页,从0开始</param>
+        /// <param name="pageSize">每页数量</param>
+        /// <returns></returns>
+        [HttpGet("GetHotNews")]
+        public ResponseWrapperWithList<HotNews> GetHotNews(int pageIndex,int pageSize)
         {
+            var wechatList = repositoryWechatNews.FindList(x=>true,x=>x.pubtime,true, pageIndex,pageSize);
+            var zbtaNewsList = repositoryZbta.FindList(x => true, x => x.created, true, pageIndex,pageSize);
+            var zbtas = mapper.Map<List<HotNews>>(zbtaNewsList)
+                .Select(x => {
+                    x.ImageUrl =
+          (Request.Scheme + "://" + Request.Host + "/" + x.ImageUrl).Replace(@"\", @"/");
+                    return x;
+                }).ToList();
+            var wechats = mapper.Map<List<HotNews>>(wechatList);
+            var cas = zbtas.Concat(wechats).OrderByDescending(x => x.Date).Skip(pageIndex*pageSize).Take(pageSize).ToList();
+            //  var zbtaCa=mapper.Map<List<HomeCarousel>>(zbtaNewsList);
+            return new ResponseWrapperWithList<HotNews>(cas);
         }
-
-        // PUT api/<ZBTourController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/<ZBTourController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+       
     }
 }
