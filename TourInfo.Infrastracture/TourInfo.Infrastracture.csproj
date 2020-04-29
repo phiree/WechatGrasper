@@ -21,6 +21,8 @@
     <Compile Remove="Migrations\20200330185403_food2.Designer.cs" />
     <Compile Remove="Migrations\20200413172222_add_linedetailscenic.cs" />
     <Compile Remove="Migrations\20200413172222_add_linedetailscenic.Designer.cs" />
+    <Compile Remove="Migrations\20200423162130_remote-rapi.cs" />
+    <Compile Remove="Migrations\20200423162130_remote-rapi.Designer.cs" />
     <Compile Remove="Repository\ADONET\AdoNetRepository.cs" />
   </ItemGroup>
 

@@ -229,6 +229,7 @@ namespace TourInfo.Infrastracture.Repository.EFCore
                });
 
             #region rapi 已弃用
+            /* 
             modelBuilder.Entity<Projectinfo>()
               .HasKey(x => x.pid);
             modelBuilder.Entity<Projectinfo>()
@@ -313,8 +314,8 @@ namespace TourInfo.Infrastracture.Repository.EFCore
             .Property(x => x.childid).ValueGeneratedNever();
             modelBuilder.Entity<Pubinfounitchild>()
                 .HasIndex(x => x.childid);
-
-            #endregion 
+            */
+            #endregion
         }
         // public DbSet<Entity<string>> Entities { get; set; }
         //public DbSet<VersionedEntity>  VersionedEntities { get; set; }
