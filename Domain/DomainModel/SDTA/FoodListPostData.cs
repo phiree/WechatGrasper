@@ -5,7 +5,7 @@ using System.Text;
 namespace TourInfo.Domain.DomainModel.SDTA
 {
 
-    public class FoodListPostData:IPostData
+    public class ListPostData:IPagingData
     {
         public int from {get{ return PageIndex*PageSize;} }
         public int size { get{ return PageSize;} }

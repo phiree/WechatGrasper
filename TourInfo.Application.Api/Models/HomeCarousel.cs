@@ -37,6 +37,10 @@ namespace TourInfo.Application.Api.Models
         /// 图片Url
         /// </summary>
         public string ImageUrl { get;   set; }
+        /// <summary>
+        /// 详情页面的url
+        /// </summary>
+        public string DetailUrl { get;set;}
         public string Date { get;protected set;}
     }
     /// <summary>

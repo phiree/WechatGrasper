@@ -36,6 +36,11 @@
             图片Url
             </summary>
         </member>
+        <member name="P:TourInfo.Application.Api.Models.HomeCarousel.DetailUrl">
+            <summary>
+            详情页面的url
+            </summary>
+        </member>
         <member name="T:TourInfo.Application.Api.Models.HomeCarouselDataSourceType">
             <summary>
             轮播图数据来源类型

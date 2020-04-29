@@ -2,34 +2,21 @@
 using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
+using TourInfo.Domain.Base;
+
 namespace TourInfo.Domain.DomainModel.SDTA
 {
 
-    public class CommodityType
-    {
-        public int id { get; set; }
-        public string comm_type_id { get; set; }
-        public string comm_type_id_p { get; set; }
-        public object user_id { get; set; }
-        public string comm_name { get; set; }
-        public int? grade { get; set; }
-        public object created_at { get; set; }
-        public object updated_at { get; set; }
-        public object deleted_at { get; set; }
-    }
-
-
-
-
-
-
-
-    public class SpecialLocalProduct
+    
+    public class SpecialLocalProduct: IListData<SpecialLocalProduct.Hits.Hit , string>
     {
         public int took { get; set; }
         public bool timed_out { get; set; }
         public Shards _shards { get; set; }
         public Hits hits { get; set; }
+
+        public IList<Hits.Hit> Details => hits.hits;
+
         public class Shards
         {
             public int total { get; set; }
@@ -42,11 +29,11 @@ namespace TourInfo.Domain.DomainModel.SDTA
             public int total { get; set; }
             public double max_score { get; set; }
             public List<Hit> hits { get; set; }
-            public class Hit
+            public class Hit: Entity<string>
             {
                 public string _index { get; set; }
                 public string _type { get; set; }
-                public string _id { get; set; }
+                public string _id { get { return id; } set { id = value; } }
                 public double _score { get; set; }
                 public Source _source { get; set; }
                 public class Source
@@ -71,6 +58,25 @@ namespace TourInfo.Domain.DomainModel.SDTA
                     public int commentcount { get; set; }
                     public int likescount { get; set; }
                     public int collectscount { get; set; }
+                    public class CommodityType
+                    {
+                        public int id { get; set; }
+                        public string comm_type_id { get; set; }
+                        public string comm_type_id_p { get; set; }
+                        public object user_id { get; set; }
+                        public string comm_name { get; set; }
+                        public int? grade { get; set; }
+                        public object created_at { get; set; }
+                        public object updated_at { get; set; }
+                        public object deleted_at { get; set; }
+                    }
+
+
+
+
+
+
+
                 }
             }
         }

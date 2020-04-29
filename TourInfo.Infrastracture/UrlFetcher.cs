@@ -107,7 +107,26 @@ namespace TourInfo.Infrastracture
                 return string.Empty;
             }
         }
+
     }
+    public interface IPagingData
+    { 
+        int PageIndex { get;set;}
+        int PageSize { get;set;}
+        }
+    public class FetcherWithPaging  
+    {
+         IPagingData pagingData;
+
+        public Task<string> FetchAsync(HttpRequestMessage httpRequestMessage)
+        {
+            throw new NotImplementedException();
+        }
+
+         
+    }
+
+
     public class Fetcher2 : IUrlFetcher
     {
         ILogger<Fetcher2> logger;

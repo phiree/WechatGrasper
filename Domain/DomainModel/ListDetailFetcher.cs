@@ -38,7 +38,8 @@ namespace TourInfo.Domain.DomainModel
         PagingSetting pagingSetting;
 
 
-        public ListDetailFetcher(IListUrlBuilder listUrlBuilder, IDetailUrlBuilder<Key> detailUrlBuilder, IUrlFetcher urlFetcher,
+        public ListDetailFetcher(IListUrlBuilder listUrlBuilder,
+            IDetailUrlBuilder<Key> detailUrlBuilder, IUrlFetcher urlFetcher,
             IRepository<Detail, Key> repositoryDetailItem, PagingSetting pagingSetting)
         {
             this.listUrlBuilder = listUrlBuilder;

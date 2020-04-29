@@ -42,8 +42,8 @@ namespace TourInfo.Application.Api.Controllers
             var zbtaNewsList=repositoryZbta.FindList(x=>true,x=>x.created,true,0,2);
             var zbtas=mapper .Map<List<HomeCarousel>>(zbtaNewsList)
 
-                .Select(x =>{ x.ImageUrl=
-                    (Request.Scheme+"://"+ Request.Host + "/" + x.ImageUrl).Replace(@"\",@"/"); 
+                .Select(x =>{ x.ImageUrl=(Request.Scheme+"://"+ Request.Host + "/" + x.ImageUrl).Replace(@"\",@"/");
+                    x.DetailUrl= Request.Scheme + "://" + Request.Host + "/api/tourinfo/GetZbtaNewsDetail?id="+x.Id;
                     return x; }).ToList();
             var wechats= mapper.Map<List<HomeCarousel>>(wechatList);
 
@@ -53,29 +53,16 @@ namespace TourInfo.Application.Api.Controllers
             return new ResponseWrapperWithList<HomeCarousel>( cas );
         }
 
-        // GET api/<ZBTourController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("GetZbtaNewsDetail")]
+        public ResponseWrapper<ZbtaNewsDetail> GetZbtaNewsDetail(string id)
         {
-            return "value";
+            var zbtaNews=repositoryZbta.Get(id);
+           return new ResponseWrapper<ZbtaNewsDetail>(new ZbtaNewsDetail() );
         }
-
-        // POST api/<ZBTourController>
-        [HttpPost]
-        public void Post([FromBody]string value)
+        [HttpGet("GetWechatNewsDetail")]
+        public ResponseWrapper<WeChatNewsDetail> GetWechatNewsDetail(string id)
         {
-        }
-
-        // PUT api/<ZBTourController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/<ZBTourController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            return new ResponseWrapper<WeChatNewsDetail>(new WeChatNewsDetail());
         }
     }
 }

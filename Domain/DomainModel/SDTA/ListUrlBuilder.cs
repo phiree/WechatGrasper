@@ -23,13 +23,22 @@ namespace TourInfo.Domain.DomainModel.SDTA
             return cityGuideListUrl;
         }
     }
-    public class FoodListUrlBuilder : IListUrlBuilder
+    public class SpecialProductListUrlBuilder : IListUrlBuilder
     {
-        string cityGuideListUrl = "https://www.sdta.cn/searches/snack/snack/_search";
+        string specialProductListUrl = "https://www.sdta.cn/json/city-guide/370300.json?channel=zibo";
 
         public string Build()
         {
-            return cityGuideListUrl;
+            return specialProductListUrl;
+        }
+    }
+    public class FoodListUrlBuilder : IListUrlBuilder
+    {
+        string foodListUrl = "https://www.sdta.cn/searches/commodity/commodity/_search";
+
+        public string Build()
+        {
+            return foodListUrl;
         }
     }
     /// <summary>
@@ -66,6 +75,7 @@ namespace TourInfo.Domain.DomainModel.SDTA
 
             var httpContent = new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(postData));
             request.Headers.Add("ContentType", "application/json");
+            request.Content=httpContent;
             return request;
 
         }

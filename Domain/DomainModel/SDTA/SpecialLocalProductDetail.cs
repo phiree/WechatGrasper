@@ -6,22 +6,18 @@ using TourInfo.Domain.Base;
 namespace TourInfo.Domain.DomainModel.SDTA
 {
    
-   
-
-   
-
-   
-
-   
-
-    public class SpecialLocalProductDetail
+    public class SpecialLocalProductDetail:IDetailWrapper<SpecialLocalProductDetail.Data>
     {
         public bool error { get; set; }
         public string message { get; set; }
         public Data data { get; set; }
-        public class Data
+
+        public Data Detail => data;
+
+        
+        public class Data:Entity<string>
         {
-            public int id { get; set; }
+            public int id { get;set; }
             public string commodity_id { get; set; }
             public string comm_type_id { get; set; }
             public string destination_id { get; set; }

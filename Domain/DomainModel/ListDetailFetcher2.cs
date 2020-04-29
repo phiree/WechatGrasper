@@ -67,6 +67,25 @@ namespace TourInfo.Domain.DomainModel
         }
     }
 
+    public interface INestFetcherHttpRequestCreator
+    {
+        bool NeedPaging { get;set;}
+        HttpRequestMessage Create();
+        HttpRequestMessage CreateNextPageRequest();
+
+    }
+ 
+    public class NestFetcherPagingHttpRequestCreator
+    {
+         
+
+    }
+    /*
+     下载
+     分页下载
+
+        根据一个url获取页面内容
+         */
     public class NestedFetcher<T0, Key0,T1Summary, T1, Key1> 
         where T0 :DetailWrapper<T1Summary,Key1>,IEntity<Key0>
         where T1Summary:Entity<Key1>
@@ -76,20 +95,18 @@ namespace TourInfo.Domain.DomainModel
         protected IUrlFetcher urlFetcher { get; }
         HttpRequestMessage rootRequest;
         IRepository<T1, Key1> repositoryT1;
+        INestFetcherHttpRequestCreator nestFetcherHttpRequestCreator;
 
-      
         bool t0Persistanse, t1Persistanse;
         public NestedFetcher(IRepository<T0, Key0> repositoryT0,
             IUrlFetcher urlFetcher,
             HttpRequestMessage rootRequest,
             bool t0Persistanse,
             IRepository<T1, Key1> repositoryT1,
-
-        
-
             bool t1Persistanse
             )
         {
+            
             this.urlFetcher = urlFetcher;
 
             this.t0Persistanse = t0Persistanse;
@@ -104,10 +121,15 @@ namespace TourInfo.Domain.DomainModel
 
 
         }
-
         public IList<T1> Fetch()
+        { 
+            nestFetcherHttpRequestCreator.Create();
+            throw new NotImplementedException();
+            }
+
+        public IList<T1> Fetch(HttpRequestMessage httpRequestMessage)
         {
-            string rootJsonResult = urlFetcher.FetchAsync(rootRequest).Result;
+            string rootJsonResult = urlFetcher.FetchAsync(httpRequestMessage).Result;
             var root = Newtonsoft.Json.JsonConvert.DeserializeObject< T0>(rootJsonResult);
             var detailList = new List<T1>();
             if (t0Persistanse)
@@ -129,8 +151,14 @@ namespace TourInfo.Domain.DomainModel
                
                 if (t1Persistanse)
                 {
+                   // IInfoLocalizer<T1,Key1> infoLocalizer=new InfoLocalizer<T1,Key1>(repositoryT1,urlFetcher)
                     repositoryT1.InsertOrUpdate(detailList);
                 }
+                if(nestFetcherHttpRequestCreator.NeedPaging)
+                { 
+                    Fetch(nestFetcherHttpRequestCreator.CreateNextPageRequest());
+                    }
+
             }
             return detailList;
         }

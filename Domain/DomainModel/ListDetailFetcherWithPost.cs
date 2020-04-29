@@ -6,7 +6,7 @@ using TourInfo.Domain.Base;
 
 namespace TourInfo.Domain.DomainModel
 {
-    public interface IPostData { 
+    public interface IPagingData { 
         int PageIndex { get;set;}
         int PageSize { get;set;}
         }
@@ -21,16 +21,16 @@ namespace TourInfo.Domain.DomainModel
         IDetailUrlBuilder<Key> detailUrlBuilder;
         IUrlFetcher urlFetcher;
         IRepository<Detail, Key> repositoryDetailItem;
-        ILogger<ListDetailFetcherWithPostList<ListData, DetailSummary, DetailWrapper, Detail, Key>>  logger;
-        IPostData postData;
+         
+        IPagingData postData;
 
 
 
         public ListDetailFetcherWithPostList(IListUrlBuilder listUrlBuilder, IDetailUrlBuilder<Key> detailUrlBuilder, IUrlFetcher urlFetcher,
-            IRepository<Detail, Key> repositoryDetailItem, IPostData postData ,
-            ILogger<ListDetailFetcherWithPostList<ListData, DetailSummary, DetailWrapper, Detail, Key>>  logger)
+            IRepository<Detail, Key> repositoryDetailItem, IPagingData postData 
+            )
         {
-            this.logger=logger  ;
+           
             this.listUrlBuilder = listUrlBuilder;
             this.detailUrlBuilder = detailUrlBuilder;
             this.urlFetcher = urlFetcher;
@@ -38,11 +38,11 @@ namespace TourInfo.Domain.DomainModel
             this.postData = postData;
         }
 
-        public void Fetch()
+        public async void Fetch()
         {
-            Fetch(postData.PageIndex);
+            FetchSync(postData.PageIndex);
         }
-        private void Fetch(int pageIndex)
+        private async void  FetchSync(int pageIndex)
         {
             postData.PageIndex=pageIndex;
             string listUrl = listUrlBuilder.Build();
@@ -52,20 +52,17 @@ namespace TourInfo.Domain.DomainModel
             foreach (var itemSummary in list.Details)
             {
                 string detailUrl = detailUrlBuilder.Build(itemSummary.id);
-                string detailResult=string.Empty;
-                try { 
-                  detailResult = urlFetcher.FetchAsync(detailUrl).Result;
-                }
-                catch(Exception ex) { 
-                    logger.LogError($"获取美食详情失败.[{detailUrl}]");
-                    continue;
-                    }
+                 
+               
+                 var detailResult =await urlFetcher.FetchAsync(detailUrl);
+                
+                 
                 var detailWrapper = Newtonsoft.Json.JsonConvert.DeserializeObject<DetailWrapper>(detailResult);
                 var detail = detailWrapper.Detail;
                 detail.id = itemSummary.id;
                 repositoryDetailItem.InsertOrUpdate(detail);
             }
-                Fetch( pageIndex+1);
+            FetchSync( pageIndex+1);
              
         }
 

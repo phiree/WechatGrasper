@@ -28,12 +28,23 @@ namespace TourInfo.Application.Api
                  ;
             CreateMap<ZiBoWechatNews, Models.HomeCarousel>()
                .ForMember(x => x.Id, c => c.MapFrom(d => d.id))
+               .ForMember(x => x.DetailUrl, c => c.MapFrom(d => d.url))
                .ForMember(x => x.Title, c => c.MapFrom(d => d.title))
                .ForMember(x => x.DataSourceType, c => c.MapFrom(d => HomeCarouselDataSourceType.WeChatNews))// c.MapFrom(d => d.details.ImageLocalizedText))
                 .ForMember(x => x.ImageUrl, c => c.MapFrom(d => d.img))
                    .ForMember(x => x.Date, c => c.MapFrom(d => d.pubtime.ToString("yyyy-MM-dd hh:mm:ss")))
                 ;
+            CreateMap<ZiBoWechatNews, Models.WeChatNewsDetail>()
+             .ForMember(x => x.Title, c => c.MapFrom(d => d.title))
+               .ForMember(x => x.TitleImage, c => c.MapFrom(d => d.img))
+                 .ForMember(x => x.Url, c => c.MapFrom(d => d.url));
+              ;
 
+            CreateMap<ZbtaNews, Models.ZbtaNewsDetail>()
+           .ForMember(x => x.Title, c => c.MapFrom(d => d.titles))
+             .ForMember(x => x.TitleImage, c => c.MapFrom(d => d.image.LocalizedUrl))
+               .ForMember(x => x.Content, c => c.MapFrom(d => d.details));
+            ;
         }
     }
 }

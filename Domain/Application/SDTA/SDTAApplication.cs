@@ -21,6 +21,8 @@ namespace TourInfo.Domain.Application.SDTA
         IRepository<LineDetail, string> repositoryLineDetail2;
         ISDTALineGrasperService sDTALineGrasperService;
 
+        IRepository<SpecialLocalProductDetail.Data,string> specialProductRepository;
+
         public SDTAApplication(IUrlFetcher urlFetcher,
             IRepository<LineDetail, string> repositoryDetailItem, 
             IRepository<CityGuideDetail.Data, string> repositoryCityGuideDetail,
@@ -29,8 +31,10 @@ namespace TourInfo.Domain.Application.SDTA
               IRepository<LineDetailScenic, string> repositoryLineDetailScenic,
         IRepository<LineDetail, string> repositoryLineDetail2,
         ISDTALineGrasperService sDTALineGrasperService,
+        IRepository<SpecialLocalProductDetail.Data, string> specialProductRepository,
         ILogger<ListDetailFetcherWithPostList<Food, Food.Hit.Source, FoodDetail, FoodDetail.Data, int>> logger)
         {
+            this.specialProductRepository=specialProductRepository;
             this.logger=logger;
          this.repositoryCityGuideDetail=repositoryCityGuideDetail;
             this.urlFetcher = urlFetcher;
@@ -45,6 +49,7 @@ namespace TourInfo.Domain.Application.SDTA
 
         {
             //新版路线
+            
              sDTALineGrasperService.Graspe(version);
             //美食
             var foodListUrlBuilder = new FoodListUrlBuilder();
@@ -54,23 +59,23 @@ namespace TourInfo.Domain.Application.SDTA
                 foodDetailBuilder,
                 urlFetcher,
                 repositoryFoodDetail,
-                new FoodListPostData
+                new ListPostData
                 {
                     PageIndex = 0,
                     PageSize = 20,
-                    post_filter = new FoodListPostData.PostFilter
+                    post_filter = new ListPostData.PostFilter
                     {
-                        @bool = new FoodListPostData.PostFilter.Bool
+                        @bool = new ListPostData.PostFilter.Bool
                         {
-                            must = new List<FoodListPostData.PostFilter.Bool.Must>{
-                                  new FoodListPostData.PostFilter.Bool.Must{
-                                      term=new FoodListPostData.PostFilter.Bool.Must.Term{
+                            must = new List<ListPostData.PostFilter.Bool.Must>{
+                                  new ListPostData.PostFilter.Bool.Must{
+                                      term=new ListPostData.PostFilter.Bool.Must.Term{
                                            citycode="370300"
                                           } }
                                  }
                         }
                     }
-                },logger
+                } 
               );;
             foodFetcher.Fetch();
              
@@ -85,8 +90,34 @@ namespace TourInfo.Domain.Application.SDTA
                 repositoryCityGuideDetail,
                 new PagingSetting { NeedPaging = false, StartIndex = -1 });
             cityGuidesFetcher.Fetch();
+            //特产
+            var specialProductListUrlBuilder = new SpecialProductListUrlBuilder();
+            var specialProductDetailUrlBuilder = new CityGuideDetailUrlBuilder();
 
-         
+            var specialProductFetcher = new ListDetailFetcherWithPostList<SpecialLocalProduct, SpecialLocalProduct.Hits.Hit, SpecialLocalProductDetail, SpecialLocalProductDetail.Data, string>
+                (specialProductListUrlBuilder,
+                specialProductDetailUrlBuilder,
+                urlFetcher,
+                specialProductRepository,
+                new ListPostData
+                {
+                    PageIndex = 0,
+                    PageSize = 20,
+                    post_filter = new ListPostData.PostFilter
+                    {
+                        @bool = new ListPostData.PostFilter.Bool
+                        {
+                            must = new List<ListPostData.PostFilter.Bool.Must>{
+                                  new ListPostData.PostFilter.Bool.Must{
+                                      term=new ListPostData.PostFilter.Bool.Must.Term{
+                                           citycode="370300"
+                                          } }
+                                 }
+                        }
+                    }
+                });
+            specialProductFetcher.Fetch();
+
 
         }
     }
