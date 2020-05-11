@@ -10,15 +10,20 @@ namespace TourInfo.Domain.DomainModel.ZiBoWechatNews
         IUrlFetcher fetcher;
         IVersionedRepository<ZiBoWechatNews, string> repository;
         IMD5Helper mD5Helper;
+        IInfoLocalizer<ZiBoWechatNews,string> infoLocalizer;
         string baseUrl = "";
         int pageSize = 10;
 
-        public Grasper(IUrlFetcher fetcher, IVersionedRepository<ZiBoWechatNews, string> repository, IMD5Helper mD5Helper, string baseUrl)
+        public Grasper(IUrlFetcher fetcher,
+            IVersionedRepository<ZiBoWechatNews, string> repository,
+            IMD5Helper mD5Helper, string baseUrl,string localSavedPath,string imageClientPath)
         {
             this.fetcher = fetcher;
             this.repository = repository;
             this.mD5Helper = mD5Helper;
             this.baseUrl = baseUrl;
+            infoLocalizer=new  InfoLocalizer<ZiBoWechatNews,string>
+                (repository,fetcher,localSavedPath,imageClientPath);
         }
 
         //如何判定结束
@@ -28,18 +33,21 @@ namespace TourInfo.Domain.DomainModel.ZiBoWechatNews
 
 
             string result = fetcher.FetchAsync(BuildUrl(pageIndex)).Result;
-            var data = Newtonsoft.Json.JsonConvert.DeserializeObject<ZiBoWechatNewsApiResponse>(result).data;
+            var data = Newtonsoft.Json.JsonConvert.DeserializeObject<ZiBoWechatNewsApiResponse>(result,new ImageUrlJsonConverter()).data;
             foreach (var news in data)
             {
-                if(news.pubtime<new DateTime(2020, 1, 1)) { return;}
+                if (news.pubtime < new DateTime(2020, 1, 1)) { return; }
+                news.content =new ImageUrlsInText( fetcher.FetchAsync(news.url).Result);
                 string calculatedFingerPrint = news.CalculateFingerprint(mD5Helper);
                 news.UpdateVersion(calculatedFingerPrint, dataVersion);
-                var existes = repository.FindByFingerPrint(calculatedFingerPrint);
-                if (existes.Count >= 1)
+                var existes = repository.Get(news.id);
+                if (existes!=null)
                 {
                     return;
                 }
-                repository.Insert(news);
+                bool isExistedInDb;
+                infoLocalizer.Localize(news,string.Empty,dataVersion,out isExistedInDb);
+               // repository.Insert(news);
                
             }
             GraspeWithPage(pageIndex+1, dataVersion);

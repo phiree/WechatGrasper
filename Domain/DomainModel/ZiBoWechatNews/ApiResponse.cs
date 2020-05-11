@@ -15,9 +15,10 @@ namespace TourInfo.Domain.DomainModel.ZiBoWechatNews
     public class ZiBoWechatNews:VersionedEntity<string>
         {
         public string title { get;set;}
-        public string img { get; set; }
+        public ImageUrl img { get; set; }
         public string url { get; set; }
         public DateTime pubtime { get;set;}
+        public ImageUrlsInText content { get;set;}
 
         public override string CalculateFingerprint(IMD5Helper mD5Helper)
         {

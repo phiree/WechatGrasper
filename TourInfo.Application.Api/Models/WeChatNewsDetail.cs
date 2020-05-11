@@ -9,6 +9,6 @@ namespace TourInfo.Application.Api.Models
     {
         public string Title { get; set; }
         public string TitleImage { get; set; }
-        public string Url { get; set; }
+        public string Content { get; set; }
     }
 }

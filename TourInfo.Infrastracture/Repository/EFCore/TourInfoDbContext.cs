@@ -13,6 +13,8 @@ using TourInfo.Domain.DomainModel.Video;
 using static TourInfo.Domain.DomainModel.SDTA.LineDetail;
 using System.Security.Cryptography.X509Certificates;
 using TourInfo.Domain.ZBTA;
+using TourInfo.Infrastracture.Migrations;
+using TourInfo.Domain.DomainModel.ZiBoWechatNews;
 
 namespace TourInfo.Infrastracture.Repository.EFCore
 {
@@ -227,6 +229,12 @@ namespace TourInfo.Infrastracture.Repository.EFCore
                    c.HasKey("SpecialLocalProducId", "id");
                    c.OwnsOne(x => x.pho_path);
                });
+            modelBuilder.Entity<ZiBoWechatNews>()
+         .OwnsOne(x => x.img);
+
+            modelBuilder.Entity<ZiBoWechatNews>()
+         .OwnsOne(x => x.content);
+
 
             #region rapi 已弃用
             /* 

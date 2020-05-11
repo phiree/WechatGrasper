@@ -76,7 +76,17 @@ namespace TourInfo.Application.Api.Controllers
         [HttpGet("GetWechatNewsDetail")]
         public ResponseWrapper<WeChatNewsDetail> GetWechatNewsDetail(string id)
         {
-            return new ResponseWrapper<WeChatNewsDetail>(new WeChatNewsDetail());
+           ZiBoWechatNews news= repositoryWechatNews.Get(id);
+            var model=mapper.Map<WeChatNewsDetail>(news);
+            return new ResponseWrapper<WeChatNewsDetail>(model);
+        }
+        [HttpGet("RenderWechatNewsDetail")]
+        public ActionResult<string> RenderWechatNewsDetail(string id)
+        {
+            ZiBoWechatNews news = repositoryWechatNews.Get(id);
+            var model = mapper.Map<WeChatNewsDetail>(news);
+            return Content(model.Content, "text/html", System.Text.Encoding.Default);
+
         }
         /// <summary>
         /// 资讯列表
