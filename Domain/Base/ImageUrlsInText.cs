@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -38,9 +38,14 @@ namespace TourInfo.Domain.Base
             {
                 //可能有的图片是绝对路径, 有的是相对.
                 string remoteAbsoluteUrl=m.Value.StartsWith("http")?m.Value:imageBaseUrl+m.Value;
-
+                try { 
                 var localizedImage = imageLocalizer.Localize(remoteAbsoluteUrl);
                 textWithLocalizedImageUrl = textWithLocalizedImageUrl.Replace(m.Value, localizedImage);
+                }
+                catch(WebException webex)
+                { //图片下载错误则直接跳过. 
+                    continue;
+                    }
             }
              this.ImageLocalizedText = textWithLocalizedImageUrl;
             

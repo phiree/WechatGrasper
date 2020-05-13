@@ -61,6 +61,7 @@ namespace TourInfo.Infrastracture
                 catch (System.Net.WebException webEx)
                 {
                     logger.LogError($"Web请求失败.url:[{url}],ex:[{webEx.Message}]");
+                    throw webEx;
                 }
             }
 
