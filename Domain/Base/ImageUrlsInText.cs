@@ -36,7 +36,10 @@ namespace TourInfo.Domain.Base
             string imageBaseUrl = string.IsNullOrEmpty(imageUrl.ImageBaseUrl) ? originalImageRootUrl : imageUrl.ImageBaseUrl;
             foreach (Match m in matches)
             {
-                var localizedImage = imageLocalizer.Localize(imageBaseUrl + m.Value);
+                //可能有的图片是绝对路径, 有的是相对.
+                string remoteAbsoluteUrl=m.Value.StartsWith("http")?m.Value:imageBaseUrl+m.Value;
+
+                var localizedImage = imageLocalizer.Localize(remoteAbsoluteUrl);
                 textWithLocalizedImageUrl = textWithLocalizedImageUrl.Replace(m.Value, localizedImage);
             }
              this.ImageLocalizedText = textWithLocalizedImageUrl;
