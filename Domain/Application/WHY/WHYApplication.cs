@@ -112,9 +112,9 @@ namespace TourInfo.Domain.Application.WHY
         private IList<WhyModel> GetDetails()
         {
             //本地数据测试
-            string cachevalue = System.IO.File.ReadAllText("WHYdetailResponseFileCache.txt");
+            //string cachevalue = System.IO.File.ReadAllText("WHYdetailResponseFileCache.txt");
 
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<IList<WhyModel>>(cachevalue);
+            //return Newtonsoft.Json.JsonConvert.DeserializeObject<IList<WhyModel>>(cachevalue);
 
 
             var dataInResponse = new List<WhyModel>();

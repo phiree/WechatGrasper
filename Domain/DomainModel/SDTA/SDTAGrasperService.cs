@@ -26,6 +26,7 @@ namespace TourInfo.Domain.DomainModel.SDTA
         {
             string rootUrl = "https://www.sdta.cn/json/lines/list_370300.json?channel=zibo";
 
+            
             ResponseLines responseLines = JsonConvert.DeserializeObject<ResponseLines>
                 (urlFetcher.FetchAsync(rootUrl).Result
                 

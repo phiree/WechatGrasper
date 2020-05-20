@@ -52,11 +52,17 @@ namespace TourInfo.Domain.DomainModel
             foreach (var itemSummary in list.Details)
             {
                 string detailUrl = detailUrlBuilder.Build(itemSummary.id);
+
+
+               string detailResult;
+                try{detailResult =  urlFetcher.FetchAsync(detailUrl).Result; }
+                catch(Exception ex)
+                { 
+                  continue;
+                    }
                  
-               
-                 var detailResult =await urlFetcher.FetchAsync(detailUrl);
-                
-                 
+
+
                 var detailWrapper = Newtonsoft.Json.JsonConvert.DeserializeObject<DetailWrapper>(detailResult);
                 var detail = detailWrapper.Detail;
                 detail.id = itemSummary.id;
