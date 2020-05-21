@@ -13,7 +13,9 @@ namespace TourInfo.Domain.DomainModel.ZiBoWechatNews
         public IList<ZiBoWechatNews> data { get;set;}
     }
     public class ZiBoWechatNews:VersionedEntity<string>
-        {
+    {
+        public override string id { get; set; }
+
         public string title { get;set;}
         public ImageUrl img { get; set; }
         public string url { get; set; }

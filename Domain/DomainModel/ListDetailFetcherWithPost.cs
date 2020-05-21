@@ -13,7 +13,7 @@ namespace TourInfo.Domain.DomainModel
 
     public class ListDetailFetcherWithPostList<ListData, DetailSummary, DetailWrapper, Detail, Key> : IListDetailFetcher
         where DetailSummary : IEntity<Key>
-      where Detail : IEntity<Key>
+      where Detail : VersionedEntity<Key>
       where DetailWrapper : IDetailWrapper<Detail>
       where ListData : IListData<DetailSummary, Key>
     {
@@ -25,18 +25,23 @@ namespace TourInfo.Domain.DomainModel
          
         IPagingData postData;
 
-
+        InfoLocalizer<Detail,Key> infoLocalizer;
+        string imageOriginalBaseUrl ;
+        string version;
 
         public ListDetailFetcherWithPostList(IListUrlBuilder listUrlBuilder, IDetailUrlBuilder<Key> detailUrlBuilder, IUrlFetcher urlFetcher,
             IRepository<Detail, Key> repositoryDetailItem, IPagingData postData 
+            ,string imageLocalSavePath,string imageClientPath, string imageOriginalBaseUrl,string version
             )
         {
-           
+            this.version=version;
+           this.imageOriginalBaseUrl=imageOriginalBaseUrl;
             this.listUrlBuilder = listUrlBuilder;
             this.detailUrlBuilder = detailUrlBuilder;
             this.urlFetcher = urlFetcher;
             this.repositoryDetailItem = repositoryDetailItem;
             this.postData = postData;
+            infoLocalizer=new InfoLocalizer<Detail, Key>(repositoryDetailItem,urlFetcher,imageLocalSavePath,imageClientPath);
         }
 
         public async void Fetch()
@@ -68,7 +73,9 @@ namespace TourInfo.Domain.DomainModel
                     new ImageUrlJsonConverter());
                 var detail = detailWrapper.Detail;
                 detail.id = itemSummary.id;
-                repositoryDetailItem.InsertOrUpdate(detail);
+                bool isexisted;
+                infoLocalizer.Localize(detail,imageOriginalBaseUrl,version,out isexisted);
+                //repositoryDetailItem.InsertOrUpdate(detail);
             }
             FetchSync( pageIndex+1);
              

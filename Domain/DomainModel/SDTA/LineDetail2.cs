@@ -8,6 +8,7 @@ namespace TourInfo.Domain.DomainModel.SDTA
 
     public class LineDetail :VersionedEntity<string>
     {
+        public override string id { get; set; }
 
         public string name { get; set; }
         public ImageUrl thumb { get; set; }

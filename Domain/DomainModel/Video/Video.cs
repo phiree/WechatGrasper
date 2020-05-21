@@ -4,8 +4,9 @@ using System.Text;
 using TourInfo.Domain.Base;
 namespace TourInfo.Domain.DomainModel.Video
 {
-    public class Video:Base.VersionedEntity<int> 
+    public class Video:Base.VersionedEntity<int>
     {
+        public override int id { get;set; }
         public int orderno { get; set; }
         public string title { get; set; }
         public string subtitle { get; set; }

@@ -22,7 +22,11 @@ namespace TourInfo.Domain.Application.SDTA
         ISDTALineGrasperService sDTALineGrasperService;
 
         IRepository<SpecialLocalProductDetail.Data,string> specialProductRepository;
-
+        string specialFoodImageLocalSavePath;
+        string specialFoodImageClientPath;
+        string cityGuideImageLocalSavePath;
+        string cityGuideFoodImageClientPath;
+        string remoteImageRootUrl;
         public SDTAApplication(IUrlFetcher urlFetcher,
             IRepository<LineDetail, string> repositoryDetailItem, 
             IRepository<CityGuideDetail.Data, string> repositoryCityGuideDetail,
@@ -48,49 +52,7 @@ namespace TourInfo.Domain.Application.SDTA
         public void Graspe(string version)
 
         {
-            //新版路线
-            
-             sDTALineGrasperService.Graspe(version);
-            //美食
-            var foodListUrlBuilder = new FoodListUrlBuilder();
-            var foodDetailBuilder = new FoodDetailUrlBuilder();
-            var foodFetcher = new ListDetailFetcherWithPostList<Food, Food.Hit.Source, FoodDetail, FoodDetail.Data, string>
-                (foodListUrlBuilder,
-                foodDetailBuilder,
-                urlFetcher,
-                repositoryFoodDetail,
-                new ListPostData
-                {
-                    PageIndex = 0,
-                    PageSize = 20,
-                    post_filter = new ListPostData.PostFilter
-                    {
-                        @bool = new ListPostData.PostFilter.Bool
-                        {
-                            must = new List<ListPostData.PostFilter.Bool.Must>{
-                                  new ListPostData.PostFilter.Bool.Must{
-                                      term=new ListPostData.PostFilter.Bool.Must.Term{
-                                           citycode="370300"
-                                          } }
-                                 }
-                        }
-                    }
-                } 
-              );;
-            foodFetcher.Fetch();
-             
-            //城市锦囊
-            var cityGuideUrlBuilder = new CityGuideListUrlBuilder();
-            var cityUrlBuilder = new CityGuideDetailUrlBuilder();
-
-            var cityGuidesFetcher = new ListDetailFetcher<CityGuide, CityGuide.Category.List, CityGuideDetail,CityGuideDetail.Data, string>
-                (cityGuideUrlBuilder,
-                cityUrlBuilder,
-                urlFetcher,
-                repositoryCityGuideDetail,
-                new PagingSetting { NeedPaging = false, StartIndex = -1 });
-            cityGuidesFetcher.Fetch();
-            //特产
+            #region //特产
             var specialProductListUrlBuilder = new SpecialProductListUrlBuilder();
             var specialProductDetailUrlBuilder = new SpecialProductDetailUrlBuilder();
 
@@ -115,9 +77,58 @@ namespace TourInfo.Domain.Application.SDTA
                                  }
                         }
                     }
-                });
-            specialProductFetcher.Fetch();
+                }
+                , specialFoodImageLocalSavePath, specialFoodImageClientPath, remoteImageRootUrl, version);
 
+            specialProductFetcher.Fetch();
+            #endregion
+            //新版路线
+
+            sDTALineGrasperService.Graspe(version);
+
+            #region //美食 --无需抓取,使用百度的数据
+            //var foodListUrlBuilder = new FoodListUrlBuilder();
+            //var foodDetailBuilder = new FoodDetailUrlBuilder();
+            //var foodFetcher = new ListDetailFetcherWithPostList<Food, Food.Hit.Source, FoodDetail, FoodDetail.Data, string>
+            //    (foodListUrlBuilder,
+            //    foodDetailBuilder,
+            //    urlFetcher,
+            //    repositoryFoodDetail,
+            //    new ListPostData
+            //    {
+            //        PageIndex = 0,
+            //        PageSize = 20,
+            //        post_filter = new ListPostData.PostFilter
+            //        {
+            //            @bool = new ListPostData.PostFilter.Bool
+            //            {
+            //                must = new List<ListPostData.PostFilter.Bool.Must>{
+            //                      new ListPostData.PostFilter.Bool.Must{
+            //                          term=new ListPostData.PostFilter.Bool.Must.Term{
+            //                               citycode="370300"
+            //                              } }
+            //                     }
+            //            }
+            //        }
+            //    } 
+            //  );
+            ////美食 --无需抓取,使用百度的数据
+            ////foodFetcher.Fetch();
+            #endregion
+            #region //城市锦囊
+            var cityGuideUrlBuilder = new CityGuideListUrlBuilder();
+            var cityUrlBuilder = new CityGuideDetailUrlBuilder();
+
+            var cityGuidesFetcher = new ListDetailFetcher<CityGuide, CityGuide.Category.List, CityGuideDetail,CityGuideDetail.Data, string>
+                (cityGuideUrlBuilder,
+                cityUrlBuilder,
+                urlFetcher,
+                repositoryCityGuideDetail,
+                new PagingSetting { NeedPaging = false, StartIndex = -1 });
+            cityGuidesFetcher.Fetch();
+            #endregion
+
+           
 
         }
     }

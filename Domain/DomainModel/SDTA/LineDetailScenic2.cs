@@ -5,10 +5,12 @@ using TourInfo.Domain.Base;
 
 namespace TourInfo.Domain.DomainModel.SDTA
 {
-    
-   
-    public class LineDetailScenic:VersionedEntity<string>
+
+
+    public class LineDetailScenic : VersionedEntity<string>
     {
+        public override string id { get; set; }
+
         public List<Doc> docs { get; set; }
         public class Doc
         {
@@ -18,9 +20,14 @@ namespace TourInfo.Domain.DomainModel.SDTA
             public int _version { get; set; }
             public bool found { get; set; }
             public Source _source { get; set; }
-            public class Source:VersionedEntity<string>
+            public class Source : VersionedEntity<string>
             {
-              public override string id { get{ return ele_type+"_"+ele_id;} }
+                public override string id
+                {
+                    get { return ele_type + "_" + ele_id; }
+
+                    set { ele_id = value.Split('_')[1]; ele_type = value.Split('_')[0]; }
+                }
                 public string ele_id { get; set; }
                 public string ele_type { get; set; }
                 public string ele_type_name { get; set; }
@@ -42,9 +49,9 @@ namespace TourInfo.Domain.DomainModel.SDTA
                 public List<double> location { get; set; }
                 public string buyable { get; set; }
                 public double lowest_price { get; set; }
-          
 
-                public class Eletype:GuidEntity
+
+                public class Eletype : GuidEntity
                 {
                     public int level { get; set; }
                     public string value { get; set; }

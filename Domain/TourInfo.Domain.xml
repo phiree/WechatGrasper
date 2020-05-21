@@ -499,9 +499,6 @@
         </member>
         <member name="P:TourInfo.Domain.CompanyVenue.location">
             <summary>
-            首图
-            </summary>
-            <summary>
             坐标，第一个值是经度，第二个维度
             </summary>
         </member>

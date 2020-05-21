@@ -12,14 +12,13 @@ namespace TourInfo.Domain
     public class CompanyVenue : EWQYEntity
     {
 
-       /// <summary>
-       /// 首图
-       /// </summary>
-       
-       /// <summary>
-       /// 坐标，第一个值是经度，第二个维度
-       /// </summary>
-        public  Location location { get; set; }
+        public override string id { get ; set ; }
+
+
+        /// <summary>
+        /// 坐标，第一个值是经度，第二个维度
+        /// </summary>
+        public Location location { get; set; }
         /// <summary>
         /// 名称
         /// </summary>
@@ -65,7 +64,7 @@ namespace TourInfo.Domain
         /// 联系电话
         /// </summary>
         public string telNumber { get; set; }
-        
+
         public  override string CalculateFingerprint(IMD5Helper mD5Helper)
         {
            StringBuilder sb=new StringBuilder();

@@ -13,7 +13,7 @@ using System.Linq;
 namespace TourInfo.Infrastracture.Repository.EFCore
 {
     public class VersionedDataEFCoreRepository<T,Key>: BaseEFCoreRepository<T,Key>,IVersionedRepository<T,Key>
-        where T: Entity<Key>,IHasVersion
+        where T: class,IEntity<Key>,IHasVersion
  
     {
         IMD5Helper md5Helper;

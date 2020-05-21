@@ -40,6 +40,7 @@ namespace TourInfo.Domain.DomainModel.Rapi.Tests
 
         public class DemoInfo:VersionedEntity<string>
         {
+            public override string id { get; set; }
             public string Name { get; set; }
             public ImageUrl TitlePic { get; set; }
             public  IList<ImageUrl> DetailPics { get; set; }

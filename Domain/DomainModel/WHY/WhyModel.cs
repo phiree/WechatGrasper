@@ -12,6 +12,8 @@ namespace TourInfo.Domain.DomainModel.WHY
     /// </summary>
     public class WhyModel : VersionedEntity<string>
     {
+        public override string id { get; set; }
+
         /// <summary>
         /// rapi对应的Id
         /// </summary>

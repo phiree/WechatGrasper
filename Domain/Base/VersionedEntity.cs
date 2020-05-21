@@ -4,7 +4,7 @@ using System.Text;
 namespace TourInfo.Domain.Base
 {
     [Serializable]
-    public abstract class VersionedEntity<Key> :Entity<Key>,IHasVersion
+    public abstract class VersionedEntity<Key> :IEntity<Key>,IHasVersion
     {
         /// <summary>
         /// 数据版本，格式yyyyMMddHHmmss
@@ -14,6 +14,8 @@ namespace TourInfo.Domain.Base
         /// 数据指纹，用于判断内容是否变更
         /// </summary>
         public string Fingerprint { get; set; }
+        public abstract Key id { get;set; }
+
         public override bool Equals(object obj)
         { 
              

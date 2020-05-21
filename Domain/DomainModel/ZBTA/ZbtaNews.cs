@@ -8,7 +8,8 @@ namespace TourInfo.Domain.ZBTA
     /// </summary>
     public class ZbtaNews: VersionedEntity<string>
     {
-     
+        public override string id { get; set; }
+
         /// <summary>
         /// 发布时间
         /// </summary>

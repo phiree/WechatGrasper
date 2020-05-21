@@ -10,6 +10,7 @@ namespace TourInfo.Domain
     /// </summary>
     public class Activity : EWQYEntity 
     {
+        public override string id { get;set; }
         public Activity() { }
         /// <summary>
         /// 活动开始时间

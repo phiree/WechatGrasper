@@ -9,6 +9,7 @@ namespace TourInfo.Domain.DomainModel.EWQY
     public class CompanyVenueType:EWQYPlaceTypeEntity 
         {
      public string name { get;set;}
+        public override string id { get; set; }
     }
     /*
 文化场馆:
@@ -33,5 +34,5 @@ namespace TourInfo.Domain.DomainModel.EWQY
 
 
          */
-  
+
 }

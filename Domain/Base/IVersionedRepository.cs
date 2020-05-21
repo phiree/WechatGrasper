@@ -6,7 +6,7 @@ using System.Text;
 namespace TourInfo.Domain.Base
 {
     public interface IVersionedRepository<T,Key>:IRepository<T, Key> 
-        where T:Entity<Key>
+        where T:IEntity<Key>
         
         
     {

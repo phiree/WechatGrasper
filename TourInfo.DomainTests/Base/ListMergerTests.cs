@@ -45,8 +45,8 @@ namespace TourInfo.Domain.Base.Tests
             Assert.AreEqual(MergeResultStatus.Deleted, result.Skip(3).First().MergeResultStatus);
         }
         public class MergeTestClass:VersionedEntity<string>
-        { 
-            
+        {
+            public override string id { get; set; }
             public string Name { get;set;}
             public string P3 { get;set;}
             public override string CalculateFingerprint(IMD5Helper mD5Helper)
