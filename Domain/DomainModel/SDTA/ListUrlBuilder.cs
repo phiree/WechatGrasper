@@ -25,16 +25,17 @@ namespace TourInfo.Domain.DomainModel.SDTA
     }
     public class SpecialProductListUrlBuilder : IListUrlBuilder
     {
-        string specialProductListUrl = "https://www.sdta.cn/json/city-guide/370300.json?channel=zibo";
+        string specialProductListUrl = "https://www.sdta.cn/searches/commodity/commodity/_search";
 
         public string Build()
         {
             return specialProductListUrl;
         }
     }
+ 
     public class FoodListUrlBuilder : IListUrlBuilder
     {
-        string foodListUrl = "https://www.sdta.cn/searches/commodity/commodity/_search";
+        string foodListUrl = "https://www.sdta.cn/searches/snack/snack/_search";
 
         public string Build()
         {

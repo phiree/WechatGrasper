@@ -21,9 +21,9 @@ namespace TourInfo.Domain.DomainModel.SDTA
 
         public Data Detail => data;
 
-        public class Data:Entity<int>
+        public class Data:IEntity<string>
         {
-           
+            public string id { get { return res_type_rela; } set { res_type_rela = value; } }
             public string res_type_rela { get; set; }
             public string restaurant_id { get; set; }
             public string user_id { get; set; }

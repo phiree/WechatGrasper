@@ -6,7 +6,7 @@ using TourInfo.Domain.Base;
 
 namespace TourInfo.Domain.DomainModel
 {
-    public interface IListData<DetailSummary, Key> where DetailSummary : Entity<Key>
+    public interface IListData<DetailSummary, Key> where DetailSummary : IEntity<Key>
     {
         IList<DetailSummary> Details { get; }
     }

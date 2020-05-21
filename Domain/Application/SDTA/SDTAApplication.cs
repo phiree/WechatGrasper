@@ -14,8 +14,8 @@ namespace TourInfo.Domain.Application.SDTA
         IUrlFetcher urlFetcher;
         IRepository<LineDetail, string> repositoryDetailItem;
         IRepository<CityGuideDetail.Data, string> repositoryCityGuideDetail;
-        IRepository<FoodDetail.Data, int> repositoryFoodDetail;
-        ILogger<ListDetailFetcherWithPostList<Food, Food.Hit.Source, FoodDetail, FoodDetail.Data, int>> logger;
+        IRepository<FoodDetail.Data, string> repositoryFoodDetail;
+        ILogger<ListDetailFetcherWithPostList<Food, Food.Hit.Source, FoodDetail, FoodDetail.Data, string>> logger;
 
         IRepository<LineDetailScenic,string> repositoryLineDetailScenic;
         IRepository<LineDetail, string> repositoryLineDetail2;
@@ -26,13 +26,13 @@ namespace TourInfo.Domain.Application.SDTA
         public SDTAApplication(IUrlFetcher urlFetcher,
             IRepository<LineDetail, string> repositoryDetailItem, 
             IRepository<CityGuideDetail.Data, string> repositoryCityGuideDetail,
-            IRepository<FoodDetail.Data, int> repositoryFoodDetail,
+            IRepository<FoodDetail.Data, string> repositoryFoodDetail,
 
               IRepository<LineDetailScenic, string> repositoryLineDetailScenic,
         IRepository<LineDetail, string> repositoryLineDetail2,
         ISDTALineGrasperService sDTALineGrasperService,
         IRepository<SpecialLocalProductDetail.Data, string> specialProductRepository,
-        ILogger<ListDetailFetcherWithPostList<Food, Food.Hit.Source, FoodDetail, FoodDetail.Data, int>> logger)
+        ILogger<ListDetailFetcherWithPostList<Food, Food.Hit.Source, FoodDetail, FoodDetail.Data, string>> logger)
         {
             this.specialProductRepository=specialProductRepository;
             this.logger=logger;
@@ -54,7 +54,7 @@ namespace TourInfo.Domain.Application.SDTA
             //美食
             var foodListUrlBuilder = new FoodListUrlBuilder();
             var foodDetailBuilder = new FoodDetailUrlBuilder();
-            var foodFetcher = new ListDetailFetcherWithPostList<Food, Food.Hit.Source, FoodDetail, FoodDetail.Data, int>
+            var foodFetcher = new ListDetailFetcherWithPostList<Food, Food.Hit.Source, FoodDetail, FoodDetail.Data, string>
                 (foodListUrlBuilder,
                 foodDetailBuilder,
                 urlFetcher,
@@ -92,7 +92,7 @@ namespace TourInfo.Domain.Application.SDTA
             cityGuidesFetcher.Fetch();
             //特产
             var specialProductListUrlBuilder = new SpecialProductListUrlBuilder();
-            var specialProductDetailUrlBuilder = new CityGuideDetailUrlBuilder();
+            var specialProductDetailUrlBuilder = new SpecialProductDetailUrlBuilder();
 
             var specialProductFetcher = new ListDetailFetcherWithPostList<SpecialLocalProduct, SpecialLocalProduct.Hits.Hit, SpecialLocalProductDetail, SpecialLocalProductDetail.Data, string>
                 (specialProductListUrlBuilder,

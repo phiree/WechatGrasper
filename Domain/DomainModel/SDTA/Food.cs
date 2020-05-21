@@ -11,7 +11,7 @@ namespace TourInfo.Domain.DomainModel.SDTA
 
   
    
-    public class Food:IListData<Food.Hit.Source,int>
+    public class Food:IListData<Food.Hit.Source,string>
     {
         public int took { get; set; }
         public bool timed_out { get; set; }
@@ -38,9 +38,9 @@ namespace TourInfo.Domain.DomainModel.SDTA
             public string _id { get; set; }
             public double _score { get; set; }
             public Source _source { get; set; }
-            public class Source : Entity<int>
+            public class Source : IEntity<string>
             {
-
+                public string id { get{ return res_type_rela;}set{ res_type_rela=value;} }
                 public string res_type_rela { get; set; }
                 public string snack_name { get; set; }
                 public object address { get; set; }

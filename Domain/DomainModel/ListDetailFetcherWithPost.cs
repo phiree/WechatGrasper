@@ -11,8 +11,9 @@ namespace TourInfo.Domain.DomainModel
         int PageSize { get;set;}
         }
 
-    public class ListDetailFetcherWithPostList<ListData, DetailSummary, DetailWrapper, Detail, Key> : IListDetailFetcher where DetailSummary : Entity<Key>
-      where Detail : Entity<Key>
+    public class ListDetailFetcherWithPostList<ListData, DetailSummary, DetailWrapper, Detail, Key> : IListDetailFetcher
+        where DetailSummary : IEntity<Key>
+      where Detail : IEntity<Key>
       where DetailWrapper : IDetailWrapper<Detail>
       where ListData : IListData<DetailSummary, Key>
     {
@@ -63,7 +64,8 @@ namespace TourInfo.Domain.DomainModel
                  
 
 
-                var detailWrapper = Newtonsoft.Json.JsonConvert.DeserializeObject<DetailWrapper>(detailResult);
+                var detailWrapper = Newtonsoft.Json.JsonConvert.DeserializeObject<DetailWrapper>(detailResult,
+                    new ImageUrlJsonConverter());
                 var detail = detailWrapper.Detail;
                 detail.id = itemSummary.id;
                 repositoryDetailItem.InsertOrUpdate(detail);

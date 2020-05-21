@@ -15,9 +15,9 @@ namespace TourInfo.Domain.DomainModel.SDTA
         public Data Detail => data;
 
         
-        public class Data:Entity<string>
+        public class Data:IEntity<string>
         {
-            public int id { get;set; }
+            public   string id{ get{ return commodity_id;}set{ commodity_id=value;} }
             public string commodity_id { get; set; }
             public string comm_type_id { get; set; }
             public string destination_id { get; set; }
