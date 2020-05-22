@@ -14,7 +14,7 @@ namespace TourInfo.Domain.DomainModel.SDTA
 
         public Data Detail => data;
 
-        public class Data:Entity<string>
+        public class Data:IEntity<string>
         {
             [Newtonsoft.Json.JsonProperty("id")]
             public int detailid { get;set;}

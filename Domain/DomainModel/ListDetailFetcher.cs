@@ -36,7 +36,7 @@ namespace TourInfo.Domain.DomainModel
         IRepository<Detail, Key> repositoryDetailItem;
 
         PagingSetting pagingSetting;
-
+        InfoLocalizer<Detail,Key> infoLocalizer;
 
         public ListDetailFetcher(IListUrlBuilder listUrlBuilder,
             IDetailUrlBuilder<Key> detailUrlBuilder, IUrlFetcher urlFetcher,
