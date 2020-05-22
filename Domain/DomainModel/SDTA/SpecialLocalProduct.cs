@@ -45,7 +45,7 @@ namespace TourInfo.Domain.DomainModel.SDTA
                     public string default_photo { get; set; }
                     [JsonProperty("city.lvl1")]
                     public string city_lvl1 { get; set; }
-                    [JsonProperty("city.lvl1")]
+                    [JsonProperty("city.lvl2")]
                     public string city_lvl2 { get; set; }
                     public int rank { get; set; }
                     public CommodityType commodity_type { get; set; }
