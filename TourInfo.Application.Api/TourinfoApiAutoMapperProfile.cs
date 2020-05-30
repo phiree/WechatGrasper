@@ -48,7 +48,7 @@ namespace TourInfo.Application.Api
             CreateMap<ZiBoWechatNews, Models.HotNews>()
               .ForMember(x => x.Id, c => c.MapFrom(d => d.id))
               .ForMember(x => x.Title, c => c.MapFrom(d => d.title))
-                 .ForMember(x => x.ImageUrl, c => c.MapFrom(d => d.img))
+                 .ForMember(x => x.ImageUrl, c => c.MapFrom(d => d.img.LocalizedUrl))
                   .ForMember(x => x.Date, c => c.MapFrom(d => d.pubtime.ToString("yyyy-MM-dd")))
                ;
             CreateMap<ZbtaNews, Models.HotNews>()
