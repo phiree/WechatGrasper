@@ -14,13 +14,14 @@ namespace TourInfo.Domain.DomainModel.SDTA
 
         public Data Detail => data;
 
-        public class Data:IEntity<string>
+        public class Data:VersionedEntity<string>
         {
-            [Newtonsoft.Json.JsonProperty("id")]
-            public int detailid { get;set;}
+            public override string id { get{ return slug ;}set{ slug=value;} }
+
+             public int detailid { get;set;}
             public string name { get; set; }
-            [Newtonsoft.Json.JsonProperty("slug")]
-            public new  string id { get; set; }
+           
+            public    string slug { get; set; }
             public string description { get; set; }
             public string content { get; set; }
             public int status { get; set; }

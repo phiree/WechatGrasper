@@ -25,7 +25,7 @@ namespace TourInfo.Domain.DomainModel
     /// 抓取 list-detail 类型的接口  的数据.
     /// </summary>
     public class ListDetailFetcher<ListData, DetailSummary, DetailWrapper, Detail, Key> : IListDetailFetcher where DetailSummary : Entity<Key>
-        where Detail : Entity<Key>
+        where Detail : VersionedEntity<Key>
         where DetailWrapper : IDetailWrapper<Detail>
         where ListData : IListData<DetailSummary, Key>
     {

@@ -31,7 +31,7 @@ namespace TourInfo.Application.Api
                .ForMember(x => x.DetailUrl, c => c.MapFrom(d => d.url))
                .ForMember(x => x.Title, c => c.MapFrom(d => d.title))
                .ForMember(x => x.DataSourceType, c => c.MapFrom(d => HomeCarouselDataSourceType.WeChatNews))// c.MapFrom(d => d.details.ImageLocalizedText))
-                .ForMember(x => x.ImageUrl, c => c.MapFrom(d => d.img))
+                .ForMember(x => x.ImageUrl, c => c.MapFrom(d => d.img.LocalizedUrl))
                    .ForMember(x => x.Date, c => c.MapFrom(d => d.pubtime.ToString("yyyy-MM-dd")))
                 ;
             CreateMap<ZiBoWechatNews, Models.WeChatNewsDetail>()
