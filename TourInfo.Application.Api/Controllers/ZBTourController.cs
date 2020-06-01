@@ -74,14 +74,17 @@ namespace TourInfo.Application.Api.Controllers
         {
             var wechatList = repositoryWechatNews.GetList(0, 1);
             var zbtaNewsList = repositoryZbta.FindList(x => true, x => x.created, true, 0, 2);
-            var zbtas = mapper.Map<List<HotNews>>(zbtaNewsList)
-                .Select(x => {
-                    x.ImageUrl =
-          (Request.Scheme + "://" + Request.Host + "/" + x.ImageUrl).Replace(@"\", @"/");
-                    return x;
-                }).ToList();
+            var zbtas = mapper.Map<List<HotNews>>(zbtaNewsList);
+                
             var wechats = mapper.Map<List<HotNews>>(wechatList);
-            var cas = zbtas.Concat(wechats).OrderByDescending(x => x.Date).ToList();
+            var cas = zbtas.Concat(wechats).Select(x => {
+                if (!x.ImageUrl.StartsWith("http"))
+                {
+                    x.ImageUrl = (Request.Scheme + "://" + Request.Host + "/" + x.ImageUrl).Replace(@"\", @"/");
+                }
+
+                return x;
+            }).OrderByDescending(x => x.Date).ToList();
             //  var zbtaCa=mapper.Map<List<HomeCarousel>>(zbtaNewsList);
             return new ResponseWrapperWithList<HotNews>(cas);
         }
