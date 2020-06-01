@@ -154,6 +154,7 @@ namespace TourInfo.Infrastracture.Repository.EFCore
             });
 
             //美食
+            /* 
             modelBuilder.Entity<Domain.DomainModel.SDTA.FoodDetail.Data>()
              .ToTable("SDTAFoodDetail");
 
@@ -194,12 +195,14 @@ namespace TourInfo.Infrastracture.Repository.EFCore
                     c.HasKey("FoodId", "id");
                     c.OwnsOne(x => x.defaultphoto);
                 });
-            //特产
+             */
+            //特产 
+            /*
             modelBuilder.Entity<Domain.DomainModel.SDTA.SpecialLocalProductDetail.Data>()
                 .ToTable("SDTASpecialLocalProductDetail");
             modelBuilder.Entity<Domain.DomainModel.SDTA.SpecialLocalProductDetail.Data>()
                .OwnsOne(x=>x.defaultphoto);
-
+          
             modelBuilder.Entity<Domain.DomainModel.SDTA.SpecialLocalProductDetail.Data>()
               .OwnsOne(x => x.destination,c=>{ 
                   c.OwnsOne(x=>x.defaultphoto);
@@ -228,7 +231,7 @@ namespace TourInfo.Infrastracture.Repository.EFCore
                    c.Property(x => x.id);
                    c.HasKey("SpecialLocalProducId", "id");
                    c.OwnsOne(x => x.pho_path);
-               });
+               });*/
             modelBuilder.Entity<ZiBoWechatNews>()
          .OwnsOne(x => x.img);
 
@@ -348,8 +351,8 @@ namespace TourInfo.Infrastracture.Repository.EFCore
         public DbSet<Domain.DomainModel.SDTA.CityGuideDetail.Data> CityGuideDetails { get; set; }
 
         //美食
-        public DbSet<Domain.DomainModel.SDTA.FoodDetail.Data> FoodDetails { get; set; }
+      //  public DbSet<Domain.DomainModel.SDTA.FoodDetail.Data> FoodDetails { get; set; }
         //特产
-        public DbSet<Domain.DomainModel.SDTA.SpecialLocalProductDetail.Data> SpecialLocalProductDetails { get; set; }
+       // public DbSet<Domain.DomainModel.SDTA.SpecialLocalProductDetail.Data> SpecialLocalProductDetails { get; set; }
     }
 }

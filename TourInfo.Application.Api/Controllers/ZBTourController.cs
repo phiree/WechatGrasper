@@ -41,13 +41,25 @@ namespace TourInfo.Application.Api.Controllers
            var wechatList= repositoryWechatNews.GetList(0,3);
             var zbtaNewsList=repositoryZbta.FindList(x=>true,x=>x.created,true,0,2);
             var zbtas=mapper .Map<List<HomeCarousel>>(zbtaNewsList)
-
-                .Select(x =>{ x.ImageUrl=(Request.Scheme+"://"+ Request.Host + "/" + x.ImageUrl).Replace(@"\",@"/");
-                    x.DetailUrl= Request.Scheme + "://" + Request.Host + "/api/tourinfo/GetZbtaNewsDetail?id="+x.Id;
-                    return x; }).ToList();
+                .Select(x=>{
+                     
+                        x.DetailUrl = Request.Scheme + "://" + Request.Host + "/api/tourinfo/GetZbtaNewsDetail?id=" + x.Id;
+                   
+                    return x;
+                    });
             var wechats= mapper.Map<List<HomeCarousel>>(wechatList);
 
-           var cas= zbtas.Concat(wechats).OrderByDescending(x=>x.Date).ToList();
+           var cas= zbtas.Concat(wechats) 
+                  .Select(x => {
+                      if(!x.ImageUrl.StartsWith("http"))
+                      { 
+                      x.ImageUrl = (Request.Scheme + "://" + Request.Host + "/" + x.ImageUrl).Replace(@"\", @"/");
+                      } 
+                      
+                      return x;
+                  }).
+                OrderByDescending(x=>x.Date).ToList();
+
             //  var zbtaCa=mapper.Map<List<HomeCarousel>>(zbtaNewsList);
          
             return new ResponseWrapperWithList<HomeCarousel>( cas );

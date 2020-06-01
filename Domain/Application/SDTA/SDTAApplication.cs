@@ -53,6 +53,7 @@ namespace TourInfo.Domain.Application.SDTA
 
         {
             #region //特产
+            /*
             var specialProductListUrlBuilder = new SpecialProductListUrlBuilder();
             var specialProductDetailUrlBuilder = new SpecialProductDetailUrlBuilder();
 
@@ -81,7 +82,9 @@ namespace TourInfo.Domain.Application.SDTA
                 , specialFoodImageLocalSavePath, specialFoodImageClientPath, remoteImageRootUrl, version);
 
             specialProductFetcher.Fetch();
+            */
             #endregion
+
             //新版路线
 
             sDTALineGrasperService.Graspe(version);

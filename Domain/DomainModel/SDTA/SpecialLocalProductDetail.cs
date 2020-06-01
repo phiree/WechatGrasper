@@ -44,9 +44,11 @@ namespace TourInfo.Domain.DomainModel.SDTA
             public int commentcount { get; set; }
             public int likescount { get; set; }
             public int collectscount { get; set; }
-            public List<FilterPicture> filter_pictures { get; set; }
+         
             public string perlink { get; set; }
             public string compresspic { get; set; }
+            /* 删除无用信息
+               public List<FilterPicture> filter_pictures { get; set; }
             public Destination destination { get; set; }
             public CommodityType commodity_type { get; set; }
             public List<CommodityPrice> commodity_prices { get; set; }
@@ -149,6 +151,7 @@ namespace TourInfo.Domain.DomainModel.SDTA
                 public int is_404 { get; set; }
                 public string deleted_at { get; set; }
             }
+            */
         }
     }
     

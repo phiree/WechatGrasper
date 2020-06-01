@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿ <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -23,6 +23,16 @@
     <Compile Remove="Migrations\20200413172222_add_linedetailscenic.Designer.cs" />
     <Compile Remove="Migrations\20200423162130_remote-rapi.cs" />
     <Compile Remove="Migrations\20200423162130_remote-rapi.Designer.cs" />
+    <Compile Remove="Migrations\20200530100542_add_version.cs" />
+    <Compile Remove="Migrations\20200530100542_add_version.Designer.cs" />
+    <Compile Remove="Migrations\20200601153220_change_food_id.cs" />
+    <Compile Remove="Migrations\20200601153220_change_food_id.Designer.cs" />
+    <Compile Remove="Migrations\20200601163014_delete_useless_sdta_localproduct.cs" />
+    <Compile Remove="Migrations\20200601163014_delete_useless_sdta_localproduct.Designer.cs" />
+    <Compile Remove="Migrations\20200601163744_delete_food_local.cs" />
+    <Compile Remove="Migrations\20200601163744_delete_food_local.Designer.cs" />
+    <Compile Remove="Migrations\20200601164230_delete_food_local.cs" />
+    <Compile Remove="Migrations\20200601164230_delete_food_local.Designer.cs" />
     <Compile Remove="Repository\ADONET\AdoNetRepository.cs" />
   </ItemGroup>
 
