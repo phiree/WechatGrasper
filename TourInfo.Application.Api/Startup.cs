@@ -100,6 +100,7 @@ namespace TourInfo.Application.Api
             string whyDetailRootUrl = Configuration.GetValue<string>("WHY:whyDetailRootUrl");
             string whyImageSavedPath = Configuration.GetValue<string>("WHY:whyImageSavedPath");
             string whyListRootUrl = Configuration.GetValue<string>("WHY:whyListRootUrl");
+            string whyNewsUrl = Configuration.GetValue<string>("WHY:whyNewsUrl");
             string whyImageClientPath = Configuration.GetValue<string>("WHY:whyImageClientPath");
             string whyImageBaseUrl = Configuration.GetValue<string>("WHY:whyImageBaseUrl");
             string rapiRootUrl = Configuration.GetValue<string>("WHY:rapiRootUrl");
@@ -115,7 +116,7 @@ namespace TourInfo.Application.Api
              ewqyImageBaseUrl, ewqyImageClientPath, ewqyLocalSavedPath,
              rapiRootUrl, rapiImageClientPath, rapi_initurl, rapi_syncurl, rapi_tokenurl, rapi_appid, rapi_secret, RapiLocalSavedPath,
              video_baseurl,
-             whyDetailRootUrl, whyImageSavedPath, whyListRootUrl, whyImageClientPath, whyImageBaseUrl,
+             whyDetailRootUrl, whyImageSavedPath, whyListRootUrl,whyNewsUrl, whyImageClientPath, whyImageBaseUrl,
 
              ziboWechatNewsBaseUrl, ziboWechatNewsImageLocalSavedPath, ziboWechatNewsImageClientPath
                 ));

@@ -6,9 +6,14 @@ using CacheManager.Core;
 using Microsoft.Extensions.Logging;
 using Newtonsoft;
 using TourInfo.Domain.Base;
-using TourInfo.Domain.DomainModel ;
+using TourInfo.Domain.DomainModel;
 using TourInfo.Domain.DomainModel.WHY;
 using System.Linq;
+using RestSharp;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System.Diagnostics;
+
 namespace TourInfo.Domain.Application.WHY
 {
     public class WHYApplication : IWHYApplication
@@ -17,6 +22,8 @@ namespace TourInfo.Domain.Application.WHY
         IUrlFetcher urlFetcher;
         string listRootUrl;
         string detailRootUrl;
+
+        string newsUrl;
 
         string whyImageBaseUrl;
 
@@ -29,13 +36,21 @@ namespace TourInfo.Domain.Application.WHY
 
         IRapiSync rapiSync;
         IImageLocalizer imageLocalizer;
+        IInfoLocalizer<WHYNews, string> infoLocalizerNews;
+        
 
         public WHYApplication(IMD5Helper mD5Helper, IUrlFetcher urlFetcher,
-            string listRootUrl, string detailRootUrl,
+            string listRootUrl, string detailRootUrl, string newsUrl,
             string whyImageBaseUrl, string whyImageSavedPath, string whyImageClientPath,
             ILoggerFactory loggerFactory, IMapper mapper, IRepository<WhyModel, string> repository,
-            IWhyModelMerger whyMerger, IRapiSync rapiSync)
+            IRepository<WHYNews, string> repositoryNews,
+            IWhyModelMerger whyMerger, IRapiSync rapiSync
+
+            )
         {
+            
+            infoLocalizerNews = new InfoLocalizer<WHYNews, string>(repositoryNews, urlFetcher, whyImageSavedPath, whyImageClientPath);
+            this.newsUrl = newsUrl;
             this.imageLocalizer = new ImageLocalizerToMd(urlFetcher);
             this.mD5Helper = mD5Helper;
             this.urlFetcher = urlFetcher;
@@ -52,6 +67,11 @@ namespace TourInfo.Domain.Application.WHY
         }
 
         public void Grasp(string dataVersion)
+        {//不再需要.
+            // GraspeAndSyncToRapi();
+        }
+        //场馆
+        private void GraspeAndSyncToRapi()
         {
             logger.LogInformation("开始抓取文化云数据");
             var dataInResponse = GetDetails();
@@ -90,8 +110,8 @@ namespace TourInfo.Domain.Application.WHY
                         else
                         {
                             var dataToUpdate = dataInDb.Single(x => x.id == resultModel.Item.id);
-                           dataToUpdate.UpdateDbModelFromApi(resultModel.Item);
-;
+                            dataToUpdate.UpdateDbModelFromApi(resultModel.Item);
+                            ;
                             repository.Update(dataToUpdate);
                         }
                         break;
@@ -107,6 +127,43 @@ namespace TourInfo.Domain.Application.WHY
 
             }
             logger.LogInformation("文化云数据抓取完毕");
+        }
+
+        public void GraspNews(string version)
+        {
+          //  var result = urlFetcher.FetchAsync(newsUrl).Result;
+            var requst = new WhyNewsRequest { areaId = "全部区域", categoryId = "all", currentPage = 1, lineSize = 4 };
+            GraspNews(version,requst);
+        }
+
+
+        public void GraspNews(string version, WhyNewsRequest requstData)
+        {
+            var client = new RestClient(newsUrl);
+            var parameters = requstData.CreateParameters();
+            var request = new RestRequest("");
+            foreach (var p in parameters)
+            {
+                request.AddParameter(p);
+            }
+
+            var response = client.Post(request);
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                var responseData = JsonConvert.DeserializeObject<WHYNewsRoot>(response.Content,
+                    new UnixTimestampJsonconverter(),new ImageUrlJsonConverter());
+                foreach (var news in responseData.list)
+                {
+                    if (news.updateTime <= new DateTime(2020, 5, 1)) { return; }
+
+                    infoLocalizerNews.Localize(news, whyImageBaseUrl, version, out bool isExisted);
+                    if (isExisted) { return; }
+                }
+            }
+            GraspNews(version, requstData.BuildNextPageRequest());
+            
+
+
         }
 
         private IList<WhyModel> GetDetails()

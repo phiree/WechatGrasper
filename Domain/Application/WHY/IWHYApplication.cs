@@ -3,5 +3,6 @@
     public interface IWHYApplication
     {
         void Grasp(string dataVersion);
+          void GraspNews(string version);
     }
 }

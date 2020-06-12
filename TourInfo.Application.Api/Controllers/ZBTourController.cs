@@ -9,6 +9,7 @@ using TourInfo.Domain.Base;
 using AutoMapper;
 using TourInfo.Domain.DomainModel.ZiBoWechatNews;
 using TourInfo.Domain.ZBTA;
+using TourInfo.Domain.DomainModel.WHY;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace TourInfo.Application.Api.Controllers
@@ -21,8 +22,12 @@ namespace TourInfo.Application.Api.Controllers
         IRepository<TourInfo.Domain.DomainModel.ZiBoWechatNews.ZiBoWechatNews, string> repositoryWechatNews;
         IRepository<TourInfo.Domain.ZBTA.ZbtaNews,string> repositoryZbta;
         IMapper mapper;
+        IRepository<WHYNews,string> whyNewsRepository;
 
-        public ZBTourController(IRepository<ZiBoWechatNews, string> repositoryWechatNews, IRepository<ZbtaNews, string> repositoryZbta, IMapper mapper)
+        public ZBTourController(IRepository<ZiBoWechatNews, string> repositoryWechatNews, 
+            IRepository<ZbtaNews, string> repositoryZbta,
+            IRepository<WHYNews, string> whyNewsRepository,
+            IMapper mapper)
         {
             this.repositoryWechatNews = repositoryWechatNews;
             this.repositoryZbta = repositoryZbta;

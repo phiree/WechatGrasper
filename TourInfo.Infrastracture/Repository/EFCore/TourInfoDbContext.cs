@@ -28,7 +28,8 @@ namespace TourInfo.Infrastracture.Repository.EFCore
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
+            modelBuilder.Entity<Domain.DomainModel.WHY.WHYNews>()
+     .OwnsOne(x => x.imagepath);
 
             modelBuilder.Entity<EWQYEntity>()
                 .OwnsMany(x => x.pictureKeys, key =>
@@ -351,8 +352,10 @@ namespace TourInfo.Infrastracture.Repository.EFCore
         public DbSet<Domain.DomainModel.SDTA.CityGuideDetail.Data> CityGuideDetails { get; set; }
 
         //美食
-      //  public DbSet<Domain.DomainModel.SDTA.FoodDetail.Data> FoodDetails { get; set; }
+        //  public DbSet<Domain.DomainModel.SDTA.FoodDetail.Data> FoodDetails { get; set; }
         //特产
-       // public DbSet<Domain.DomainModel.SDTA.SpecialLocalProductDetail.Data> SpecialLocalProductDetails { get; set; }
+        // public DbSet<Domain.DomainModel.SDTA.SpecialLocalProductDetail.Data> SpecialLocalProductDetails { get; set; }
+
+        public DbSet<Domain.DomainModel.WHY.WHYNews> WhyNews { get; set; }
     }
 }
