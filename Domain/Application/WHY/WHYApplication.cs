@@ -138,7 +138,7 @@ namespace TourInfo.Domain.Application.WHY
             
 
             var fetcherWithPaging=new FetchWithPaging<WhyActivityWrapper,WhyActivity,string>("", "", () => { return false;},InfoLocalizerActivities,"Get");
-            fetcherWithPaging.GraspNews()
+            fetcherWithPaging.GraspNews(version,null);
             }
 
         public void GraspNews(string version)

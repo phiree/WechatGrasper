@@ -33,7 +33,7 @@ namespace TourInfo.Domain
         string zbtaLocalSavedPath;
         string rapi_initurl, rapi_syncurl, rapi_tokenurl, rapi_appid, rapi_appsecret, rapi_localsavedpath;
         string video_baseurl;
-        string whyDetailRootUrl; string whyImageSavedPath; string whyListRootUrl;string whyNewsUrl;
+        string whyDetailRootUrl; string whyImageSavedPath; string whyListRootUrl;string whyNewsUrl; string whyActivityUrl;
         string whyImageClientPath; string whyImageBaseUrl;
         string rapiRootUrl;
         string ziboWechatNewsBaseUrl, ziboWechatNewsImageLocalSavedPath, ziboWechatNewsImageClientPath;
@@ -43,7 +43,7 @@ namespace TourInfo.Domain
             string ewqyImageBaseUrl, string ewqyImageClientPath, string ewqyLocalSavedPath,
             string rapiRootUrl, string rapiImageClientPath, string rapi_initurl, string rapi_syncurl, string rapi_tokenurl, string rapi_appid, string rapi_appsecret, string rapi_localsavedpath,
             string video_baseurl,
-            string whyDetailRootUrl, string whyImageSavedPath, string whyListRootUrl,string whyNewsUrl, string whyImageClientPath, string whyImageBaseUrl,
+            string whyDetailRootUrl, string whyImageSavedPath, string whyListRootUrl,string whyNewsUrl,string whyActivityUrl, string whyImageClientPath, string whyImageBaseUrl,
 
             string ziboWechatNewsBaseUrl, string ziboWechatNewsImageLocalSavedPath, string ziboWechatNewsImageClientPath)
         {
@@ -67,6 +67,7 @@ namespace TourInfo.Domain
             this.whyImageSavedPath = whyImageSavedPath;
             this.whyListRootUrl = whyListRootUrl;
             this.whyNewsUrl=whyNewsUrl;
+            this.whyActivityUrl=whyActivityUrl;
             this.whyImageClientPath = whyImageClientPath;
             this.whyImageBaseUrl = whyImageBaseUrl;
             this.rapiRootUrl = rapiRootUrl;
@@ -134,6 +135,7 @@ namespace TourInfo.Domain
                 .WithParameter("listRootUrl", whyListRootUrl)
                 .WithParameter("detailRootUrl", whyDetailRootUrl)
                   .WithParameter("newsUrl", whyNewsUrl)
+                     .WithParameter("activityBaseUrl", whyActivityUrl)
                 ;
             builder.RegisterGeneric(typeof(ListMerger<,>)).As(typeof(IListMerger<,>));
             builder.RegisterType<WhyModelMerger>().As<IWhyModelMerger>();
