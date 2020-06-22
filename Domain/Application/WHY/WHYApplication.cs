@@ -24,7 +24,7 @@ namespace TourInfo.Domain.Application.WHY
         string detailRootUrl;
 
         string newsUrl;
-
+        string activityBaseUrl;
         string whyImageBaseUrl;
 
         ILogger logger;
@@ -38,19 +38,23 @@ namespace TourInfo.Domain.Application.WHY
         IImageLocalizer imageLocalizer;
         IInfoLocalizer<WHYNews, string> infoLocalizerNews;
         
+        IInfoLocalizer<WhyActivity,string> InfoLocalizerActivities;
 
         public WHYApplication(IMD5Helper mD5Helper, IUrlFetcher urlFetcher,
-            string listRootUrl, string detailRootUrl, string newsUrl,
+            string listRootUrl, string detailRootUrl, string newsUrl,string activityBaseUrl,
             string whyImageBaseUrl, string whyImageSavedPath, string whyImageClientPath,
             ILoggerFactory loggerFactory, IMapper mapper, IRepository<WhyModel, string> repository,
             IRepository<WHYNews, string> repositoryNews,
+            IRepository<WhyActivity,string> repositoryActivities,
             IWhyModelMerger whyMerger, IRapiSync rapiSync
 
             )
         {
             
             infoLocalizerNews = new InfoLocalizer<WHYNews, string>(repositoryNews, urlFetcher, whyImageSavedPath, whyImageClientPath);
+            InfoLocalizerActivities=new InfoLocalizer<WhyActivity,string>(repositoryActivities,urlFetcher,whyImageSavedPath,whyImageClientPath);
             this.newsUrl = newsUrl;
+            this.activityBaseUrl=activityBaseUrl;
             this.imageLocalizer = new ImageLocalizerToMd(urlFetcher);
             this.mD5Helper = mD5Helper;
             this.urlFetcher = urlFetcher;
@@ -129,6 +133,14 @@ namespace TourInfo.Domain.Application.WHY
             logger.LogInformation("文化云数据抓取完毕");
         }
 
+        public void GraspActivity(string version)
+        {
+            
+
+            var fetcherWithPaging=new FetchWithPaging<WhyActivityWrapper,WhyActivity,string>("", "", () => { return false;},InfoLocalizerActivities,"Get");
+            fetcherWithPaging.GraspNews()
+            }
+
         public void GraspNews(string version)
         {
           //  var result = urlFetcher.FetchAsync(newsUrl).Result;
@@ -136,6 +148,7 @@ namespace TourInfo.Domain.Application.WHY
             GraspNews(version,requst);
         }
 
+         
 
         public void GraspNews(string version, WhyNewsRequest requstData)
         {

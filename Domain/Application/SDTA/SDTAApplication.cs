@@ -48,7 +48,7 @@ namespace TourInfo.Domain.Application.SDTA
             this.repositoryLineDetail2=repositoryLineDetail2;
             this.sDTALineGrasperService=sDTALineGrasperService;
         }
-
+        
         public void Graspe(string version)
 
         {
