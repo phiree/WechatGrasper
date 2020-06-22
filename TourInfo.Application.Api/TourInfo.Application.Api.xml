@@ -6,23 +6,55 @@
     <members>
         <member name="M:TourInfo.Application.Api.Controllers.ZBTourController.GetHomeCarousels(System.Int32)">
             <summary>
-            获取首页轮播图
+            1 首页轮播图
             </summary>
             <returns></returns>
             <param name="size">数量</param>
         </member>
-        <member name="M:TourInfo.Application.Api.Controllers.ZBTourController.GetHomeHotNews">
+        <member name="M:TourInfo.Application.Api.Controllers.ZBTourController.GetHomeHotNews(System.Int32,System.Int32)">
             <summary>
-            首页热门资讯
+            2 首页顶部菜单“资讯”对应的列表
             </summary>
+            <param name="pageIndex">分页页码，从0开始，默认0</param>
+            <param name="pageSize">分页页幅,默认10条</param>
             <returns></returns>
         </member>
-        <member name="M:TourInfo.Application.Api.Controllers.ZBTourController.GetHotNews(System.Int32,System.Int32)">
+        <member name="M:TourInfo.Application.Api.Controllers.ZBTourController.GetHotActivities(System.Int32,System.Int32)">
             <summary>
-            资讯列表
+            3 首页热门活动，对应首页模块“热门资讯活动“
             </summary>
             <param name="pageIndex">分页,从0开始</param>
             <param name="pageSize">每页数量</param>
+            <returns></returns>
+        </member>
+        <member name="M:TourInfo.Application.Api.Controllers.ZBTourController.GetActivities">
+            <summary>
+            4  热门活动列表，对应首页模块“热门资讯活动”的 查看更多
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:TourInfo.Application.Api.Controllers.ZBTourController.GetCityGuides">
+            <summary>
+            5 城市锦囊 -- 首页”城市锦囊“的目标列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:TourInfo.Application.Api.Controllers.ZBTourController.GetSpecialProducts">
+            <summary>
+            6 特色商品 --首页 ”特色商品“ 的目标列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:TourInfo.Application.Api.Controllers.ZBTourController.GetHotLines">
+            <summary>
+            7 首页经典路线  
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:TourInfo.Application.Api.Controllers.ZBTourController.GetLines">
+            <summary>
+            8 经典路线 列表
+            </summary>
             <returns></returns>
         </member>
         <member name="T:TourInfo.Application.Api.Models.HomeCarousel">

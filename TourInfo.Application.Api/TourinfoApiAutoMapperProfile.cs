@@ -26,31 +26,13 @@ namespace TourInfo.Application.Api
                  .ForMember(x =>x.ImageUrl, c => c.MapFrom(d => d.image.LocalizedUrl))
                     .ForMember(x => x.Date, c => c.MapFrom(d => Convert.ToDateTime( d.created).ToString("yyyy-MM-dd")))
                  ;
-            CreateMap<ZiBoWechatNews, Models.HomeCarousel>()
-               .ForMember(x => x.Id, c => c.MapFrom(d => d.id))
-               .ForMember(x => x.DetailUrl, c => c.MapFrom(d => d.url))
-               .ForMember(x => x.Title, c => c.MapFrom(d => d.title))
-               .ForMember(x => x.DataSourceType, c => c.MapFrom(d => HomeCarouselDataSourceType.WeChatNews))// c.MapFrom(d => d.details.ImageLocalizedText))
-                .ForMember(x => x.ImageUrl, c => c.MapFrom(d => d.img.LocalizedUrl))
-                   .ForMember(x => x.Date, c => c.MapFrom(d => d.pubtime.ToString("yyyy-MM-dd")))
-                ;
-            CreateMap<ZiBoWechatNews, Models.WeChatNewsDetail>()
-             .ForMember(x => x.Title, c => c.MapFrom(d => d.title))
-               .ForMember(x => x.TitleImage, c => c.MapFrom(d => d.img.LocalizedUrl))
-                 .ForMember(x => x.Content, c => c.MapFrom(d => d.content.ImageLocalizedText));
-              ;
-
+           
             CreateMap<ZbtaNews, Models.ZbtaNewsDetail>()
            .ForMember(x => x.Title, c => c.MapFrom(d => d.titles))
              .ForMember(x => x.TitleImage, c => c.MapFrom(d => d.image.LocalizedUrl))
                .ForMember(x => x.Content, c => c.MapFrom(d => d.details));
             ;
-            CreateMap<ZiBoWechatNews, Models.HotNews>()
-              .ForMember(x => x.Id, c => c.MapFrom(d => d.id))
-              .ForMember(x => x.Title, c => c.MapFrom(d => d.title))
-                 .ForMember(x => x.ImageUrl, c => c.MapFrom(d => d.img.LocalizedUrl))
-                  .ForMember(x => x.Date, c => c.MapFrom(d => d.pubtime.ToString("yyyy-MM-dd")))
-               ;
+           
             CreateMap<ZbtaNews, Models.HotNews>()
              .ForMember(x => x.Id, c => c.MapFrom(d => d.id))
              .ForMember(x => x.Title, c => c.MapFrom(d => d.titles))
@@ -58,6 +40,27 @@ namespace TourInfo.Application.Api
                  .ForMember(x => x.Date, c => c.MapFrom(d => Convert.ToDateTime(d.created).ToString("yyyy-MM-dd")))
               ;
 
+
+            /*已过时*/
+            CreateMap<ZiBoWechatNews, Models.HomeCarousel>()
+              .ForMember(x => x.Id, c => c.MapFrom(d => d.id))
+              .ForMember(x => x.DetailUrl, c => c.MapFrom(d => d.url))
+              .ForMember(x => x.Title, c => c.MapFrom(d => d.title))
+              .ForMember(x => x.DataSourceType, c => c.MapFrom(d => HomeCarouselDataSourceType.WeChatNews))// c.MapFrom(d => d.details.ImageLocalizedText))
+               .ForMember(x => x.ImageUrl, c => c.MapFrom(d => d.img.LocalizedUrl))
+                  .ForMember(x => x.Date, c => c.MapFrom(d => d.pubtime.ToString("yyyy-MM-dd")))
+               ;
+            CreateMap<ZiBoWechatNews, Models.WeChatNewsDetail>()
+             .ForMember(x => x.Title, c => c.MapFrom(d => d.title))
+               .ForMember(x => x.TitleImage, c => c.MapFrom(d => d.img.LocalizedUrl))
+                 .ForMember(x => x.Content, c => c.MapFrom(d => d.content.ImageLocalizedText));
+            ;
+            CreateMap<ZiBoWechatNews, Models.HotNews>()
+             .ForMember(x => x.Id, c => c.MapFrom(d => d.id))
+             .ForMember(x => x.Title, c => c.MapFrom(d => d.title))
+                .ForMember(x => x.ImageUrl, c => c.MapFrom(d => d.img.LocalizedUrl))
+                 .ForMember(x => x.Date, c => c.MapFrom(d => d.pubtime.ToString("yyyy-MM-dd")))
+              ;
         }
     }
 }
