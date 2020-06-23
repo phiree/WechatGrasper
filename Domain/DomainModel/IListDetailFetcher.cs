@@ -3,6 +3,7 @@ using RestSharp;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TourInfo.Domain.Base;
 
 namespace TourInfo.Domain.DomainModel
@@ -24,25 +25,25 @@ namespace TourInfo.Domain.DomainModel
     {
         IEnumerable<T> Details { get; }
     }
-    public class FetchWithPaging<TWrapper, T, Key> 
+    public class FetchWithPaging<TWrapper, T, Key>
         where TWrapper : IDataWrapper<T>
-        where T:VersionedEntity<Key>
+        where T : VersionedEntity<Key>
     {
 
         string url;
         string imageBaseUrl;
 
-        Func<bool> terminalPoint;
+        Func<T, bool> terminalPoint;
         IInfoLocalizer<T, Key> infoLocalizer;
 
         Method method;
-        public FetchWithPaging(string url, string imageBaseUrl, Func<bool> terminalPoint, IInfoLocalizer<T, Key> infoLocalizer, string method)
+        public FetchWithPaging(string url, string imageBaseUrl, Func<T,bool> terminalPoint, IInfoLocalizer<T, Key> infoLocalizer, string method)
         {
             this.url = url;
             this.imageBaseUrl = imageBaseUrl;
             this.terminalPoint = terminalPoint;
             this.infoLocalizer = infoLocalizer;
-            this.method = (Method)Enum.Parse(typeof(Method), method);
+            this.method = (Method)Enum.Parse(typeof(Method), method.ToUpper());
         }
 
         public void GraspNews(string version, IRequestWithPaging requstData)
@@ -60,9 +61,10 @@ namespace TourInfo.Domain.DomainModel
             {
                 var responseData = JsonConvert.DeserializeObject<TWrapper>(response.Content,
                     new UnixTimestampJsonconverter(), new ImageUrlJsonConverter());
+                if (responseData.Details.Count() == 0) { return; }
                 foreach (var news in responseData.Details)
                 {
-                    if (terminalPoint()) { return; }
+                    if (terminalPoint(news)) { return; }
 
                     infoLocalizer.Localize(news, imageBaseUrl, version, out bool isExisted);
                     if (isExisted) { return; }

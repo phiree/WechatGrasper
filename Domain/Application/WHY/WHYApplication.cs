@@ -137,8 +137,10 @@ namespace TourInfo.Domain.Application.WHY
         {
             
 
-            var fetcherWithPaging=new FetchWithPaging<WhyActivityWrapper,WhyActivity,string>("", "", () => { return false;},InfoLocalizerActivities,"Get");
-            fetcherWithPaging.GraspNews(version,null);
+            var fetcherWithPaging=new FetchWithPaging<WhyActivityWrapper,WhyActivity,string>(activityBaseUrl,whyImageBaseUrl,
+                (activity) => {return activity.recentHoldEndTime<=new DateTime(2020,5,1);}
+                ,InfoLocalizerActivities,"Get");
+            fetcherWithPaging.GraspNews(version,new WhyActivityRequest(1,20));
             }
 
         public void GraspNews(string version)

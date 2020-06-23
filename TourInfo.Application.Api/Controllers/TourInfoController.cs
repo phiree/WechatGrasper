@@ -78,7 +78,9 @@ namespace TourInfo.Application.Api.Controllers
             logger.LogInformation("-----开始同步------");
             string currentVersion = DateTime.Now.ToString("yyyyMMddhhmmss");
             logger.LogInformation("开始更新数据");
+            wHYApplication.GraspActivity(currentVersion);
               wHYApplication.GraspNews(currentVersion);
+            //更新活动
             logger.LogInformation("-----同步完成------");
             return "同步完成";
 

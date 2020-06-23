@@ -239,6 +239,8 @@ namespace TourInfo.Infrastracture.Repository.EFCore
             modelBuilder.Entity<ZiBoWechatNews>()
          .OwnsOne(x => x.content);
 
+            modelBuilder.Entity<TourInfo.Domain.DomainModel.WHY.WhyActivity>();
+
 
             #region rapi 已弃用
             /* 
@@ -357,5 +359,7 @@ namespace TourInfo.Infrastracture.Repository.EFCore
         // public DbSet<Domain.DomainModel.SDTA.SpecialLocalProductDetail.Data> SpecialLocalProductDetails { get; set; }
 
         public DbSet<Domain.DomainModel.WHY.WHYNews> WhyNews { get; set; }
+        //文化云活动
+        public DbSet<Domain.DomainModel.WHY.WhyActivity> WhyActivities { get; set; }
     }
 }
