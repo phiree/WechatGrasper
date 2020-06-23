@@ -33,6 +33,18 @@
     <Compile Remove="Migrations\20200601163744_delete_food_local.Designer.cs" />
     <Compile Remove="Migrations\20200601164230_delete_food_local.cs" />
     <Compile Remove="Migrations\20200601164230_delete_food_local.Designer.cs" />
+    <Compile Remove="Migrations\20200623150545_local_product2.cs" />
+    <Compile Remove="Migrations\20200623150545_local_product2.Designer.cs" />
+    <Compile Remove="Migrations\20200623163725_local_product3.cs" />
+    <Compile Remove="Migrations\20200623163725_local_product3.Designer.cs" />
+    <Compile Remove="Migrations\20200623164953_local_product4.cs" />
+    <Compile Remove="Migrations\20200623164953_local_product4.Designer.cs" />
+    <Compile Remove="Migrations\20200623170835_local_product2.cs" />
+    <Compile Remove="Migrations\20200623170835_local_product2.Designer.cs" />
+    <Compile Remove="Migrations\20200623171111_local_product2.cs" />
+    <Compile Remove="Migrations\20200623171111_local_product2.Designer.cs" />
+    <Compile Remove="Migrations\20200623171945_local_product2.cs" />
+    <Compile Remove="Migrations\20200623171945_local_product2.Designer.cs" />
     <Compile Remove="Repository\ADONET\AdoNetRepository.cs" />
   </ItemGroup>
 

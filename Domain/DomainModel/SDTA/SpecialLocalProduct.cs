@@ -12,7 +12,7 @@ namespace TourInfo.Domain.DomainModel.SDTA
     {
         public int took { get; set; }
         public bool timed_out { get; set; }
-        public Shards _shards { get; set; }
+      
         public Hits hits { get; set; }
 
         public IList<Hits.Hit> Details => hits.hits;
@@ -41,14 +41,14 @@ namespace TourInfo.Domain.DomainModel.SDTA
                     public int id { get; set; }
                     public string commodity_id { get; set; }
                     public string name_cn { get; set; }
-                    public object address { get; set; }
+                    public string address { get; set; }
                     public string default_photo { get; set; }
                     [JsonProperty("city.lvl1")]
                     public string city_lvl1 { get; set; }
                     [JsonProperty("city.lvl2")]
                     public string city_lvl2 { get; set; }
                     public int rank { get; set; }
-                    public CommodityType commodity_type { get; set; }
+                    
                     public string full_name { get; set; }
                     public string description { get; set; }
                     public int date_for_order { get; set; }
@@ -58,19 +58,7 @@ namespace TourInfo.Domain.DomainModel.SDTA
                     public int commentcount { get; set; }
                     public int likescount { get; set; }
                     public int collectscount { get; set; }
-                    public class CommodityType
-                    {
-                        public int id { get; set; }
-                        public string comm_type_id { get; set; }
-                        public string comm_type_id_p { get; set; }
-                        public object user_id { get; set; }
-                        public string comm_name { get; set; }
-                        public int? grade { get; set; }
-                        public object created_at { get; set; }
-                        public object updated_at { get; set; }
-                        public object deleted_at { get; set; }
-                    }
-
+                     
 
 
 

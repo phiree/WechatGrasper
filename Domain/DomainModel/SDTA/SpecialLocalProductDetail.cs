@@ -28,7 +28,7 @@ namespace TourInfo.Domain.DomainModel.SDTA
             public string manufacturer_inf { get; set; }
             public int state { get; set; }
             public string auditdate { get; set; }
-            public string version { get; set; }
+            
             public string created_at { get; set; }
             public string updated_at { get; set; }
             public string keywords { get; set; }
@@ -47,22 +47,13 @@ namespace TourInfo.Domain.DomainModel.SDTA
          
             public string perlink { get; set; }
             public string compresspic { get; set; }
-            /* 删除无用信息
+           
                public List<FilterPicture> filter_pictures { get; set; }
             public Destination destination { get; set; }
-            public CommodityType commodity_type { get; set; }
-            public List<CommodityPrice> commodity_prices { get; set; }
+       
+  
             public List<Picture> pictures { get; set; }
-            public class CommodityPrice
-            {
-                public string comm_price_id { get; set; }
-                public string commodity_id { get; set; }
-                public int price_type { get; set; }
-                public string goods_caption { get; set; }
-                public int price_caption { get; set; }
-                public string created_at { get; set; }
-                public string updated_at { get; set; }
-            }
+           
             public class FilterPicture
             {
                 public int id { get; set; }
@@ -123,18 +114,7 @@ namespace TourInfo.Domain.DomainModel.SDTA
                 public int is_404 { get; set; }
                 public string cityname { get; set; }
             }
-            public class CommodityType
-            {
-                public int id { get; set; }
-                public string comm_type_id { get; set; }
-                public string comm_type_id_p { get; set; }
-                public string user_id { get; set; }
-                public string comm_name { get; set; }
-                public int grade { get; set; }
-                public string created_at { get; set; }
-                public string updated_at { get; set; }
-                public string deleted_at { get; set; }
-            }
+             
             public class Picture
             {
                 public int id { get; set; }
@@ -151,7 +131,7 @@ namespace TourInfo.Domain.DomainModel.SDTA
                 public int is_404 { get; set; }
                 public string deleted_at { get; set; }
             }
-            */
+           
         }
     }
     

@@ -22,10 +22,8 @@ namespace TourInfo.Domain.Application.SDTA
         ISDTALineGrasperService sDTALineGrasperService;
 
         IRepository<SpecialLocalProductDetail.Data,string> specialProductRepository;
-        string specialFoodImageLocalSavePath;
-        string specialFoodImageClientPath;
-        string cityGuideImageLocalSavePath;
-        string cityGuideFoodImageClientPath;
+        string imageLocalSavePath;
+        string imageClientPath;
         string remoteImageRootUrl;
         public SDTAApplication(IUrlFetcher urlFetcher,
             IRepository<LineDetail, string> repositoryDetailItem, 
@@ -36,7 +34,10 @@ namespace TourInfo.Domain.Application.SDTA
         IRepository<LineDetail, string> repositoryLineDetail2,
         ISDTALineGrasperService sDTALineGrasperService,
         IRepository<SpecialLocalProductDetail.Data, string> specialProductRepository,
-        ILogger<ListDetailFetcherWithPostList<Food, Food.Hit.Source, FoodDetail, FoodDetail.Data, string>> logger)
+        ILogger<ListDetailFetcherWithPostList<Food, Food.Hit.Source, FoodDetail, FoodDetail.Data, string>> logger
+            , string imageLocalSavePath,
+        string imageClientPath,
+        string remoteImageRootUrl)
         {
             this.specialProductRepository=specialProductRepository;
             this.logger=logger;
@@ -46,14 +47,17 @@ namespace TourInfo.Domain.Application.SDTA
             this.repositoryFoodDetail=repositoryFoodDetail;
             this. repositoryLineDetailScenic=repositoryLineDetailScenic;
             this.repositoryLineDetail2=repositoryLineDetail2;
-            this.sDTALineGrasperService=sDTALineGrasperService;
+            this.sDTALineGrasperService = sDTALineGrasperService;
+            this.remoteImageRootUrl=remoteImageRootUrl;
+            this.imageLocalSavePath=imageLocalSavePath;
+            this.imageClientPath=imageClientPath;
         }
         
         public void Graspe(string version)
 
         {
             #region //特产
-            /*
+            
             var specialProductListUrlBuilder = new SpecialProductListUrlBuilder();
             var specialProductDetailUrlBuilder = new SpecialProductDetailUrlBuilder();
 
@@ -79,10 +83,10 @@ namespace TourInfo.Domain.Application.SDTA
                         }
                     }
                 }
-                , specialFoodImageLocalSavePath, specialFoodImageClientPath, remoteImageRootUrl, version);
+                , imageLocalSavePath, imageClientPath, remoteImageRootUrl, version);
 
             specialProductFetcher.Fetch();
-            */
+            
             #endregion
 
             //新版路线
@@ -127,7 +131,9 @@ namespace TourInfo.Domain.Application.SDTA
                 cityUrlBuilder,
                 urlFetcher,
                 repositoryCityGuideDetail,
-                new PagingSetting { NeedPaging = false, StartIndex = -1 });
+                new PagingSetting { NeedPaging = false, StartIndex = -1 }
+                ,imageLocalSavePath, imageClientPath,remoteImageRootUrl,version
+                );
             cityGuidesFetcher.Fetch();
             #endregion
 

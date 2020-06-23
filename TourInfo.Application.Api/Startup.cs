@@ -109,6 +109,10 @@ namespace TourInfo.Application.Api
             string ziboWechatNewsImageLocalSavedPath = Configuration.GetValue<string>("ZiboWechatNews:imageLocalSavedPath");
             string ziboWechatNewsImageClientPath = Configuration.GetValue<string>("ZiboWechatNews:imageClientPath");
 
+            string sdtaImageRootUrl = Configuration.GetValue<string>("Sdta:ImageRootUrl");
+            string sdTaImageLocalSavedPath = Configuration.GetValue<string>("Sdta:ImageLocalSavePath");
+            string sdTaImageClientPath = Configuration.GetValue<string>("Sdta:ImageClientPath");
+
 
             var containerBuilder = new Autofac.ContainerBuilder();
             containerBuilder.Populate(services);
@@ -119,7 +123,8 @@ namespace TourInfo.Application.Api
              video_baseurl,
              whyDetailRootUrl, whyImageSavedPath, whyListRootUrl,whyNewsUrl, whyActivityUrl, whyImageClientPath, whyImageBaseUrl,
 
-             ziboWechatNewsBaseUrl, ziboWechatNewsImageLocalSavedPath, ziboWechatNewsImageClientPath
+             ziboWechatNewsBaseUrl, ziboWechatNewsImageLocalSavedPath, ziboWechatNewsImageClientPath,
+             sdtaImageRootUrl,sdTaImageLocalSavedPath,sdTaImageClientPath
                 ));
             containerBuilder.RegisterModule(new TourInfo.Infrastracture.TourinfoInstallerAutofacModule
                (connectionString));

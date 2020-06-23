@@ -198,22 +198,19 @@ namespace TourInfo.Infrastracture.Repository.EFCore
                 });
              */
             //特产 
-            /*
-            modelBuilder.Entity<Domain.DomainModel.SDTA.SpecialLocalProductDetail.Data>()
-                .ToTable("SDTASpecialLocalProductDetail");
-            modelBuilder.Entity<Domain.DomainModel.SDTA.SpecialLocalProductDetail.Data>()
-               .OwnsOne(x=>x.defaultphoto);
+
           
             modelBuilder.Entity<Domain.DomainModel.SDTA.SpecialLocalProductDetail.Data>()
-              .OwnsOne(x => x.destination,c=>{ 
-                  c.OwnsOne(x=>x.defaultphoto);
-                  });
+         .ToTable("SDTASpecialLocalProductDetail")
+          .OwnsOne(x => x.defaultphoto);
+            
+
             modelBuilder.Entity<Domain.DomainModel.SDTA.SpecialLocalProductDetail.Data>()
-             .OwnsMany(x => x.commodity_prices,c=>{ 
-                 c.HasForeignKey("SpecialLocalProducId");
-                 c.Property(x=>x.comm_price_id);
-                 c.HasKey("SpecialLocalProducId", "comm_price_id");
-                 });
+              .OwnsOne(x => x.destination, c =>
+              {
+                  c.OwnsOne(x => x.defaultphoto);
+              });
+           
 
             modelBuilder.Entity<Domain.DomainModel.SDTA.SpecialLocalProductDetail.Data>()
                .OwnsMany(e => e.filter_pictures, c =>
@@ -232,7 +229,7 @@ namespace TourInfo.Infrastracture.Repository.EFCore
                    c.Property(x => x.id);
                    c.HasKey("SpecialLocalProducId", "id");
                    c.OwnsOne(x => x.pho_path);
-               });*/
+               });
             modelBuilder.Entity<ZiBoWechatNews>()
          .OwnsOne(x => x.img);
 
@@ -356,7 +353,7 @@ namespace TourInfo.Infrastracture.Repository.EFCore
         //美食
         //  public DbSet<Domain.DomainModel.SDTA.FoodDetail.Data> FoodDetails { get; set; }
         //特产
-        // public DbSet<Domain.DomainModel.SDTA.SpecialLocalProductDetail.Data> SpecialLocalProductDetails { get; set; }
+        public DbSet<Domain.DomainModel.SDTA.SpecialLocalProductDetail.Data> SpecialLocalProductDetails { get; set; }
 
         public DbSet<Domain.DomainModel.WHY.WHYNews> WhyNews { get; set; }
         //文化云活动

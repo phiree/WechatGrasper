@@ -36,17 +36,23 @@ namespace TourInfo.Domain.DomainModel
         IRepository<Detail, Key> repositoryDetailItem;
 
         PagingSetting pagingSetting;
-        InfoLocalizer<Detail,Key> infoLocalizer;
-
+        InfoLocalizer<Detail, Key> infoLocalizer;
+        string localSavedPath; string clientPath; string imageOriginalBaseUrl;
+        string version;
         public ListDetailFetcher(IListUrlBuilder listUrlBuilder,
             IDetailUrlBuilder<Key> detailUrlBuilder, IUrlFetcher urlFetcher,
-            IRepository<Detail, Key> repositoryDetailItem, PagingSetting pagingSetting)
+            IRepository<Detail, Key> repositoryDetailItem, PagingSetting pagingSetting, string localSavedPath, string clientPath, string imageOriginalBaseUrl, string version)
         {
             this.listUrlBuilder = listUrlBuilder;
             this.detailUrlBuilder = detailUrlBuilder;
             this.urlFetcher = urlFetcher;
             this.repositoryDetailItem = repositoryDetailItem;
             this.pagingSetting = pagingSetting;
+            infoLocalizer = new InfoLocalizer<Detail, Key>(repositoryDetailItem, urlFetcher, localSavedPath, clientPath);
+            this.localSavedPath = localSavedPath;
+            this.clientPath = clientPath;
+            this.version = version;
+            this.imageOriginalBaseUrl = imageOriginalBaseUrl;
         }
 
         public void Fetch()
@@ -64,18 +70,21 @@ namespace TourInfo.Domain.DomainModel
                 string detailUrl = detailUrlBuilder.Build(itemSummary.id);
                 string detailResult;
                 try
-                { 
-                  detailResult = urlFetcher.FetchAsync(detailUrl).Result;
+                {
+                    detailResult = urlFetcher.FetchAsync(detailUrl).Result;
                 }
-                catch(Exception ex)
-                { 
-                    
+                catch (Exception ex)
+                {
+
                     continue;
-                    }
-                var detailWrapper = Newtonsoft.Json.JsonConvert.DeserializeObject<DetailWrapper>(detailResult,new ImageUrlJsonConverter());
+                }
+                var detailWrapper = Newtonsoft.Json.JsonConvert.DeserializeObject<DetailWrapper>(detailResult, new ImageUrlJsonConverter());
                 var detail = detailWrapper.Detail;
                 detail.id = itemSummary.id;
-                repositoryDetailItem.InsertOrUpdate(detail);
+
+                infoLocalizer.Localize(detail, imageOriginalBaseUrl, version, out bool isExisted);
+                if (isExisted) { return; }
+
             }
             if (pagingSetting.NeedPaging)
             {
@@ -96,6 +105,6 @@ namespace TourInfo.Domain.DomainModel
         string Build(Key key);
     }
 
-  
+
 
 }

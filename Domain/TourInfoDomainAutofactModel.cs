@@ -37,7 +37,7 @@ namespace TourInfo.Domain
         string whyImageClientPath; string whyImageBaseUrl;
         string rapiRootUrl;
         string ziboWechatNewsBaseUrl, ziboWechatNewsImageLocalSavedPath, ziboWechatNewsImageClientPath;
-
+        string sdtaImageRootUrl,sdtaImageLocalSavePath,sdtaImageClientPath;
         public TourInfoDomainAutofactModel(
             string zbtaTitleImageBaseUrl, string zbtaDetailImageBaseUrl, string zbtaImageClientPath, string zbtaLocalSavedPath,
             string ewqyImageBaseUrl, string ewqyImageClientPath, string ewqyLocalSavedPath,
@@ -45,8 +45,13 @@ namespace TourInfo.Domain
             string video_baseurl,
             string whyDetailRootUrl, string whyImageSavedPath, string whyListRootUrl,string whyNewsUrl,string whyActivityUrl, string whyImageClientPath, string whyImageBaseUrl,
 
-            string ziboWechatNewsBaseUrl, string ziboWechatNewsImageLocalSavedPath, string ziboWechatNewsImageClientPath)
+            string ziboWechatNewsBaseUrl, string ziboWechatNewsImageLocalSavedPath, string ziboWechatNewsImageClientPath,
+             string sdtaImageRootUrl, string sdtaImageLocalSavePath, string sdtaImageClientPath
+            )
         {
+            this.sdtaImageRootUrl=sdtaImageRootUrl;
+            this.sdtaImageClientPath=sdtaImageClientPath;
+            this.sdtaImageLocalSavePath=sdtaImageLocalSavePath;
 
             this.zbtaTitleImageBaseUrl = zbtaTitleImageBaseUrl;
             this.zbtaDetailImageBaseUrl = zbtaDetailImageBaseUrl;
@@ -153,6 +158,9 @@ namespace TourInfo.Domain
                 ;
             /*sdta*/
             builder.RegisterType<SDTAApplication>().As<ISDTAApplication>()
+                   .WithParameter("imageLocalSavePath", sdtaImageLocalSavePath)
+     .WithParameter("imageClientPath", sdtaImageClientPath)
+     .WithParameter("remoteImageRootUrl", sdtaImageRootUrl)
 ;
             builder.RegisterType<SDTALineGrasperService>().As<ISDTALineGrasperService>();
             base.Load(builder);
