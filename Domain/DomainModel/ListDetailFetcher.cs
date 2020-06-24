@@ -80,7 +80,7 @@ namespace TourInfo.Domain.DomainModel
                 }
                 var detailWrapper = Newtonsoft.Json.JsonConvert.DeserializeObject<DetailWrapper>(detailResult, new ImageUrlJsonConverter());
                 var detail = detailWrapper.Detail;
-                detail.id = itemSummary.id;
+                //detail.id = itemSummary.id;
 
                 infoLocalizer.Localize(detail, imageOriginalBaseUrl, version, out bool isExisted);
                 if (isExisted) { return; }
