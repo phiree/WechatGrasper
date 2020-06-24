@@ -113,12 +113,12 @@ namespace TourInfo.Application.Api.Controllers
         /// <param name="pageSize">每页数量</param>
         /// <returns></returns>
         [HttpGet("GetHotActivities")]
-        public ResponseWrapperWithList<WhyActivityModel> GetHotActivities(int pageIndex=0, int pageSize=10)
+        public ResponseWrapperWithList<WhyActivitySummary> GetHotActivities(int pageIndex=0, int pageSize=10)
         {
           
             var activities= whyActivityRepository.GetList(pageIndex,pageSize);
 
-            var activitiyModels = mapper.Map<List<WhyActivityModel>>(activities)
+            var activitiyModels = mapper.Map<List<WhyActivitySummary>>(activities)
                 .Select(x =>
                 {
                     x.ImageUrl =
@@ -128,7 +128,22 @@ namespace TourInfo.Application.Api.Controllers
           
            
             //  var zbtaCa=mapper.Map<List<HomeCarousel>>(zbtaNewsList);
-            return new ResponseWrapperWithList<WhyActivityModel>(activitiyModels);
+            return new ResponseWrapperWithList<WhyActivitySummary>(activitiyModels);
+        }
+        [HttpGet("GetActivity")]
+        public ResponseWrapper<WhyActivityDetail> GetActivity(string id)
+        {
+
+            var activity = whyActivityRepository.Get(id);
+
+            var activitiyModel = mapper.Map< WhyActivityDetail>(activity);
+            activitiyModel.ImageUrl= 
+           (Request.Scheme + "://" + Request.Host + "/" + activitiyModel.ImageUrl).Replace(@"\", @"/");
+       
+
+
+            //  var zbtaCa=mapper.Map<List<HomeCarousel>>(zbtaNewsList);
+            return new ResponseWrapper <WhyActivityDetail>(activitiyModel);
         }
 
         /// <summary>

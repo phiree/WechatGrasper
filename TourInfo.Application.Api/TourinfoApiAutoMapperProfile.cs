@@ -33,14 +33,21 @@ namespace TourInfo.Application.Api
                .ForMember(x => x.Content, c => c.MapFrom(d => d.details));
             ;
            
-            CreateMap<WhyActivity, Models.WhyActivityModel>()
+          
+            CreateMap<WhyActivity, Models.WhyActivitySummary>()
+                .Include<WhyActivity,WhyActivityDetail>()
              .ForMember(x => x.Id, c => c.MapFrom(d => d.id))
              .ForMember(x => x.Title, c => c.MapFrom(d => d.name))
                 .ForMember(x => x.ImageUrl, c => c.MapFrom(d => d.hPoster.LocalizedUrl))
                  .ForMember(x => x.Date, c => c.MapFrom(d => Convert.ToDateTime(d.createTime).ToString("yyyy-MM-dd")))
                     .ForMember(x => x.StartDate, c => c.MapFrom(d => Convert.ToDateTime(d.recentHoldStartTime).ToString("yyyy-MM-dd")))
                        .ForMember(x => x.EndDate, c => c.MapFrom(d => Convert.ToDateTime(d.recentHoldEndTime).ToString("yyyy-MM-dd")))
-              ;
+             
+                       ;
+            CreateMap<WhyActivity, Models.WhyActivityDetail>()
+                     .ForMember(x => x.Content, c => c.MapFrom(d => d.content))
+             ;
+
 
 
             /*已过时*/

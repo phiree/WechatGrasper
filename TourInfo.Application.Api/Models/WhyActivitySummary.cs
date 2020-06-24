@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace TourInfo.Application.Api.Models
 {
-    public   class WhyActivityModel:Summary
+    public   class WhyActivitySummary:Summary
     {
         
         public DateTime StartDate { get; set; }
