@@ -10,6 +10,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DomainModel\新文件夹1\**" />
+    <EmbeddedResource Remove="DomainModel\新文件夹1\**" />
+    <None Remove="DomainModel\新文件夹1\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="DomainModel\SDTA\LineDetail.cs" />
     <Compile Remove="DomainModel\SDTA\LineDetailScenic.cs" />
     <Compile Remove="DomainModel\SDTA\Lines.cs" />
@@ -32,7 +38,6 @@
 
   <ItemGroup>
     <Folder Include="Application\FacadeApplet\" />
-    <Folder Include="DomainModel\新文件夹1\" />
   </ItemGroup>
 
 </Project>

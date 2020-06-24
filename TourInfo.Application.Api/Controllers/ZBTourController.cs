@@ -22,16 +22,18 @@ namespace TourInfo.Application.Api.Controllers
         IRepository<TourInfo.Domain.DomainModel.ZiBoWechatNews.ZiBoWechatNews, string> repositoryWechatNews;
         IRepository<TourInfo.Domain.ZBTA.ZbtaNews, string> repositoryZbta;
         IMapper mapper;
-        IRepository<WHYNews, string> whyNewsRepository;
+        IRepository<WhyActivity, string> whyActivityRepository;
+        
 
         public ZBTourController(IRepository<ZiBoWechatNews, string> repositoryWechatNews,
             IRepository<ZbtaNews, string> repositoryZbta,
-            IRepository<WHYNews, string> whyNewsRepository,
+            IRepository<WhyActivity, string> whyActivityRepository,
             IMapper mapper)
         {
             this.repositoryWechatNews = repositoryWechatNews;
             this.repositoryZbta = repositoryZbta;
             this.mapper = mapper;
+            this.whyActivityRepository= whyActivityRepository;
         }
 
         /// <summary>
@@ -44,7 +46,7 @@ namespace TourInfo.Application.Api.Controllers
         public ResponseWrapperWithList<HomeCarousel> GetHomeCarousels(int size = 3)
         {
             //var wechatList= repositoryWechatNews.GetList(0,3);
-            var zbtaNewsList = repositoryZbta.FindList(x => true, x => x.created, true, 0, 2);
+            var zbtaNewsList = repositoryZbta.FindList(x => true, x => x.created, true, 0, 3);
             var zbtas = mapper.Map<List<HomeCarousel>>(zbtaNewsList)
                 .Select(x =>
                 {
@@ -105,27 +107,28 @@ namespace TourInfo.Application.Api.Controllers
 
 
         /// <summary>
-        /// 3 首页热门活动，对应首页模块“热门资讯活动“
+        /// 3 首页 热门资讯活动，取自 文化云活动 
         /// </summary>
         /// <param name="pageIndex">分页,从0开始</param>
         /// <param name="pageSize">每页数量</param>
         /// <returns></returns>
         [HttpGet("GetHotActivities")]
-        public ResponseWrapperWithList<HotNews> GetHotActivities(int pageIndex, int pageSize)
+        public ResponseWrapperWithList<WhyActivityModel> GetHotActivities(int pageIndex=0, int pageSize=10)
         {
-            var wechatList = repositoryWechatNews.FindList(x => true, x => x.pubtime, true, pageIndex, pageSize);
-            var zbtaNewsList = repositoryZbta.FindList(x => true, x => x.created, true, pageIndex, pageSize);
-            var zbtas = mapper.Map<List<HotNews>>(zbtaNewsList)
+          
+            var activities= whyActivityRepository.GetList(pageIndex,pageSize);
+
+            var activitiyModels = mapper.Map<List<WhyActivityModel>>(activities)
                 .Select(x =>
                 {
                     x.ImageUrl =
           (Request.Scheme + "://" + Request.Host + "/" + x.ImageUrl).Replace(@"\", @"/");
                     return x;
                 }).ToList();
-            var wechats = mapper.Map<List<HotNews>>(wechatList);
-            var cas = zbtas.Concat(wechats).OrderByDescending(x => x.Date).Skip(pageIndex * pageSize).Take(pageSize).ToList();
+          
+           
             //  var zbtaCa=mapper.Map<List<HomeCarousel>>(zbtaNewsList);
-            return new ResponseWrapperWithList<HotNews>(cas);
+            return new ResponseWrapperWithList<WhyActivityModel>(activitiyModels);
         }
 
         /// <summary>

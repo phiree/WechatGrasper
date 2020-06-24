@@ -21,7 +21,7 @@
         </member>
         <member name="M:TourInfo.Application.Api.Controllers.ZBTourController.GetHotActivities(System.Int32,System.Int32)">
             <summary>
-            3 首页热门活动，对应首页模块“热门资讯活动“
+            3 首页 热门资讯活动，取自 文化云活动 
             </summary>
             <param name="pageIndex">分页,从0开始</param>
             <param name="pageSize">每页数量</param>
@@ -72,12 +72,10 @@
             标题
             </summary>
         </member>
-        <member name="P:TourInfo.Application.Api.Models.HomeCarousel.DataSourceType">
+        <member name="P:TourInfo.Application.Api.Models.HomeCarousel.ImageUrl">
             <summary>
             数据源类型
             </summary>
-        </member>
-        <member name="P:TourInfo.Application.Api.Models.HomeCarousel.ImageUrl">
             <summary>
             图片Url
             </summary>

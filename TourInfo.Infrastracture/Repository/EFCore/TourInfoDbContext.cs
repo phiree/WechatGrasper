@@ -236,7 +236,8 @@ namespace TourInfo.Infrastracture.Repository.EFCore
             modelBuilder.Entity<ZiBoWechatNews>()
          .OwnsOne(x => x.content);
 
-            modelBuilder.Entity<TourInfo.Domain.DomainModel.WHY.WhyActivity>();
+            modelBuilder.Entity<TourInfo.Domain.DomainModel.WHY.WhyActivity>()
+                .OwnsOne(x=>x.hPoster);
 
 
             #region rapi 已弃用

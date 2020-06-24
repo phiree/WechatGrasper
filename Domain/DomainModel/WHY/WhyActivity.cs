@@ -27,7 +27,7 @@ namespace TourInfo.Domain.DomainModel.WHY
         public bool grabStatus { get; set; }
         public int grade { get; set; }
         public int gradeNum { get; set; }
-        public string hPoster { get; set; }
+        public ImageUrl hPoster { get; set; }
         public bool hasSession { get; set; }
      
         public int isTop { get; set; }

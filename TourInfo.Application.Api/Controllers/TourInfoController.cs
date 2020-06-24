@@ -72,14 +72,14 @@ namespace TourInfo.Application.Api.Controllers
             dataService.CreateInitData(version);
             return new ActionResult<string>("初始化成功");
         }
-        [HttpGet("SyncWHYData")]
+        [HttpGet("  ")]
         public ActionResult<string> SyncWHYData(string version)
         {
             logger.LogInformation("-----开始同步------");
             string currentVersion = DateTime.Now.ToString("yyyyMMddhhmmss");
             logger.LogInformation("开始更新数据");
             wHYApplication.GraspActivity(currentVersion);
-              wHYApplication.GraspNews(currentVersion);
+            //  wHYApplication.GraspNews(currentVersion);
             //更新活动
             logger.LogInformation("-----同步完成------");
             return "同步完成";

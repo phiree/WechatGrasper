@@ -12,11 +12,11 @@ namespace TourInfo.Application.Api.Models
     public class HomeCarousel
     {
         protected HomeCarousel() { }
-        public HomeCarousel(string id, string title, HomeCarouselDataSourceType dataSourceType, string imageUrl,string date)
+        public HomeCarousel(string id, string title,  string imageUrl,string date)
         {
             Id = id;
             Title = title;
-            DataSourceType = dataSourceType;
+            
             ImageUrl = imageUrl;
             this.Date=date;
         }
@@ -32,7 +32,7 @@ namespace TourInfo.Application.Api.Models
         /// <summary>
         /// 数据源类型
         /// </summary>
-        public HomeCarouselDataSourceType DataSourceType { get; protected set; }
+       
         /// <summary>
         /// 图片Url
         /// </summary>
