@@ -390,11 +390,6 @@
             <typeparam name="T2"></typeparam>
             <typeparam name="Key2"></typeparam>
         </member>
-        <member name="T:TourInfo.Domain.DomainModel.ListDetailFetcher3`6">
-            <summary>
-            抓取 list-detail 类型的接口  的数据.
-            </summary>
-        </member>
         <member name="T:TourInfo.Domain.DomainModel.LocationStringJsonConverter">
             <summary>
             字符串转换为经纬度 

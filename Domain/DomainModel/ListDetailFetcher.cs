@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using TourInfo.Domain.Base;
+using TourInfo.Domain.DomainModel.SDTA;
 
 namespace TourInfo.Domain.DomainModel
 {
@@ -24,10 +25,12 @@ namespace TourInfo.Domain.DomainModel
     /// <summary>
     /// 抓取 list-detail 类型的接口  的数据.
     /// </summary>
-    public class ListDetailFetcher<ListData, DetailSummary, DetailWrapper, Detail, Key> : IListDetailFetcher where DetailSummary : Entity<Key>
+    public class ListDetailFetcher<ListData, DetailSummary, DetailWrapper, Detail, Key> : IListDetailFetcher 
+        where DetailSummary : IEntity<Key>
         where Detail : VersionedEntity<Key>
         where DetailWrapper : IDetailWrapper<Detail>
-        where ListData : IListData<DetailSummary, Key>
+        where ListData : VersionedEntity<Key>,IListData<DetailSummary, Key>
+       
     {
 
         IListUrlBuilder listUrlBuilder;
@@ -37,12 +40,17 @@ namespace TourInfo.Domain.DomainModel
 
         PagingSetting pagingSetting;
         InfoLocalizer<Detail, Key> infoLocalizer;
+        IRepository<ListData,Key> repositoryListData;
         string localSavedPath; string clientPath; string imageOriginalBaseUrl;
         string version;
+        bool saveSummary=false;
         public ListDetailFetcher(IListUrlBuilder listUrlBuilder,
+
             IDetailUrlBuilder<Key> detailUrlBuilder, IUrlFetcher urlFetcher,
-            IRepository<Detail, Key> repositoryDetailItem, PagingSetting pagingSetting, string localSavedPath, string clientPath, string imageOriginalBaseUrl, string version)
+            IRepository<Detail, Key> repositoryDetailItem, IRepository<ListData, Key> repositoryListData, PagingSetting pagingSetting, string localSavedPath, string clientPath, string imageOriginalBaseUrl, string version,bool saveSummary)
         {
+            this.repositoryListData = repositoryListData;
+            this.saveSummary=saveSummary;
             this.listUrlBuilder = listUrlBuilder;
             this.detailUrlBuilder = detailUrlBuilder;
             this.urlFetcher = urlFetcher;
@@ -65,8 +73,13 @@ namespace TourInfo.Domain.DomainModel
             string result = urlFetcher.FetchAsync(listUrl).Result;
             var list = Newtonsoft.Json.JsonConvert.DeserializeObject<ListData>(result);
             if (list == null || list.Details.Count == 0) { return; }
+            if (saveSummary)
+            {
+                repositoryListData.InsertOrUpdate(list);
+            }
             foreach (var itemSummary in list.Details)
             {
+               
                 string detailUrl = detailUrlBuilder.Build(itemSummary.id);
                 string detailResult;
                 try

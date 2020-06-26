@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TourInfo.Infrastracture.Repository.EFCore;
 
 namespace TourInfo.Infrastracture.Migrations
 {
     [DbContext(typeof(TourInfoDbContext))]
-    partial class TourInfoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200624094642_add_cityguide_summary")]
+    partial class add_cityguide_summary
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -19,26 +21,24 @@ namespace TourInfo.Infrastracture.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("TourInfo.Domain.DomainModel.SDTA.CityGuide", b =>
+            modelBuilder.Entity("TourInfo.Domain.DomainModel.SDTA.CityGuide+Category+List", b =>
                 {
                     b.Property<string>("id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Fingerprint");
+                    b.Property<string>("color");
 
-                    b.Property<string>("Version");
+                    b.Property<bool>("isShow");
 
-                    b.Property<string>("cover");
+                    b.Property<string>("slug");
 
-                    b.Property<string>("name");
+                    b.Property<string>("tag");
 
-                    b.Property<string>("nameEn");
-
-                    b.Property<string>("thumb");
+                    b.Property<string>("title");
 
                     b.HasKey("id");
 
-                    b.ToTable("SDTACityGuide");
+                    b.ToTable("SDTACityGuideSummary");
                 });
 
             modelBuilder.Entity("TourInfo.Domain.DomainModel.SDTA.CityGuideDetail+Data", b =>
@@ -602,60 +602,48 @@ namespace TourInfo.Infrastracture.Migrations
                     b.HasDiscriminator().HasValue("CompanyVenue");
                 });
 
-            modelBuilder.Entity("TourInfo.Domain.DomainModel.SDTA.CityGuide", b =>
+            modelBuilder.Entity("TourInfo.Domain.DomainModel.SDTA.CityGuideDetail+Data", b =>
                 {
-                    b.OwnsMany("TourInfo.Domain.DomainModel.SDTA.CityGuide+Category", "category", b1 =>
+                    b.OwnsOne("TourInfo.Domain.DomainModel.SDTA.CityGuideDetail+Data+Category", "category", b1 =>
                         {
-                            b1.Property<string>("GuideId");
+                            b1.Property<string>("Dataid");
+
+                            b1.Property<string>("created_at");
+
+                            b1.Property<string>("description");
+
+                            b1.Property<int>("featured");
+
+                            b1.Property<string>("icon");
+
+                            b1.Property<int>("id");
+
+                            b1.Property<int>("is_default");
 
                             b1.Property<string>("name");
 
-                            b1.HasKey("GuideId", "name");
+                            b1.Property<int>("order");
 
-                            b1.ToTable("SDTACityGuideCategory");
+                            b1.Property<int>("parent_id");
 
-                            b1.HasOne("TourInfo.Domain.DomainModel.SDTA.CityGuide")
-                                .WithMany("category")
-                                .HasForeignKey("GuideId")
+                            b1.Property<string>("slug");
+
+                            b1.Property<int>("status");
+
+                            b1.Property<string>("updated_at");
+
+                            b1.Property<int>("user_id");
+
+                            b1.HasKey("Dataid");
+
+                            b1.ToTable("SDTACityGuideDetailCategory");
+
+                            b1.HasOne("TourInfo.Domain.DomainModel.SDTA.CityGuideDetail+Data")
+                                .WithOne("category")
+                                .HasForeignKey("TourInfo.Domain.DomainModel.SDTA.CityGuideDetail+Data+Category", "Dataid")
                                 .OnDelete(DeleteBehavior.Cascade);
-
-                            b1.OwnsMany("TourInfo.Domain.DomainModel.SDTA.CityGuide+Category+List", "list", b2 =>
-                                {
-                                    b2.Property<string>("id")
-                                        .ValueGeneratedOnAdd();
-
-                                    b2.Property<string>("CategoryGuideId")
-                                        .IsRequired();
-
-                                    b2.Property<string>("Categoryname")
-                                        .IsRequired();
-
-                                    b2.Property<string>("color");
-
-                                    b2.Property<bool>("isShow");
-
-                                    b2.Property<string>("slug");
-
-                                    b2.Property<string>("tag");
-
-                                    b2.Property<string>("title");
-
-                                    b2.HasKey("id");
-
-                                    b2.HasIndex("CategoryGuideId", "Categoryname");
-
-                                    b2.ToTable("SDTACityGuideCategoryList");
-
-                                    b2.HasOne("TourInfo.Domain.DomainModel.SDTA.CityGuide+Category")
-                                        .WithMany("list")
-                                        .HasForeignKey("CategoryGuideId", "Categoryname")
-                                        .OnDelete(DeleteBehavior.Cascade);
-                                });
                         });
-                });
 
-            modelBuilder.Entity("TourInfo.Domain.DomainModel.SDTA.CityGuideDetail+Data", b =>
-                {
                     b.OwnsOne("TourInfo.Domain.DomainModel.SDTA.CityGuideDetail+Data+Pics", "pics", b1 =>
                         {
                             b1.Property<string>("Dataid");

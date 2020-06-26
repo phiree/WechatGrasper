@@ -40,26 +40,11 @@ namespace TourInfo.Domain.DomainModel.SDTA
             public int likescount { get; set; }
             public int collectscount { get; set; }
            
-            public Category category { get; set; }
+        
             public Pics pics { get; set; }
             
            
-            public class Category
-            {
-                public int id { get; set; }
-                public string name { get; set; }
-                public string slug { get; set; }
-                public int parent_id { get; set; }
-                public string description { get; set; }
-                public int status { get; set; }
-                public int user_id { get; set; }
-                public string created_at { get; set; }
-                public string updated_at { get; set; }
-                public string icon { get; set; }
-                public int featured { get; set; }
-                public int order { get; set; }
-                public int is_default { get; set; }
-            }
+           
             public class Pics
             {
                 public int id { get; set; }

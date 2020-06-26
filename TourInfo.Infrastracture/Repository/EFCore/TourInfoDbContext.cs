@@ -125,14 +125,22 @@ namespace TourInfo.Infrastracture.Repository.EFCore
             })
           ;
 
-
-            modelBuilder.Entity<Domain.DomainModel.SDTA.CityGuideDetail.Data>()
-              .ToTable("SDTACityGuideDetail");
-
-            modelBuilder.Entity<Domain.DomainModel.SDTA.CityGuideDetail.Data>()
-             .OwnsOne(e => e.category)
-              .ToTable("SDTACityGuideDetailCategory")
-              ;
+            modelBuilder.Entity<Domain.DomainModel.SDTA.CityGuide>()
+             .ToTable("SDTACityGuide") 
+           
+             .OwnsMany(x=>x.category,d=>{
+                 d.ToTable("SDTACityGuideCategory");
+                 d.HasForeignKey("GuideId");
+                 d.Property("name");
+                 d.HasKey("GuideId","name");
+                 d.OwnsMany(x => x.list, e => {
+                     e.ToTable("SDTACityGuideCategoryList");
+               e.HasKey("id");
+                 });
+             })
+             ;
+              
+           
 
             modelBuilder.Entity<Domain.DomainModel.SDTA.CityGuideDetail.Data>()
                 .OwnsOne(e => e.image)
@@ -349,6 +357,7 @@ namespace TourInfo.Infrastracture.Repository.EFCore
         /// <summary>
         /// 城市锦囊
         /// </summary>
+         public DbSet<Domain.DomainModel.SDTA.CityGuide> CityGuides { get; set; }
         public DbSet<Domain.DomainModel.SDTA.CityGuideDetail.Data> CityGuideDetails { get; set; }
 
         //美食

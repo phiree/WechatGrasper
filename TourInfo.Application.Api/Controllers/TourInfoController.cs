@@ -72,7 +72,7 @@ namespace TourInfo.Application.Api.Controllers
             dataService.CreateInitData(version);
             return new ActionResult<string>("初始化成功");
         }
-        [HttpGet("  ")]
+        [HttpGet("SyncWHYData")]
         public ActionResult<string> SyncWHYData(string version)
         {
             logger.LogInformation("-----开始同步------");

@@ -14,6 +14,7 @@ namespace TourInfo.Domain.Application.SDTA
         IUrlFetcher urlFetcher;
         IRepository<LineDetail, string> repositoryDetailItem;
         IRepository<CityGuideDetail.Data, string> repositoryCityGuideDetail;
+        IRepository<CityGuide, string> repositoryCityGuideSummary;
         IRepository<FoodDetail.Data, string> repositoryFoodDetail;
         ILogger<ListDetailFetcherWithPostList<Food, Food.Hit.Source, FoodDetail, FoodDetail.Data, string>> logger;
 
@@ -28,6 +29,8 @@ namespace TourInfo.Domain.Application.SDTA
         public SDTAApplication(IUrlFetcher urlFetcher,
             IRepository<LineDetail, string> repositoryDetailItem, 
             IRepository<CityGuideDetail.Data, string> repositoryCityGuideDetail,
+            IRepository<CityGuide ,string> repositoryCityGuideSummary,
+
             IRepository<FoodDetail.Data, string> repositoryFoodDetail,
 
               IRepository<LineDetailScenic, string> repositoryLineDetailScenic,
@@ -42,6 +45,7 @@ namespace TourInfo.Domain.Application.SDTA
             this.specialProductRepository=specialProductRepository;
             this.logger=logger;
          this.repositoryCityGuideDetail=repositoryCityGuideDetail;
+            this.repositoryCityGuideSummary=repositoryCityGuideSummary;
             this.urlFetcher = urlFetcher;
             this.repositoryDetailItem = repositoryDetailItem;
             this.repositoryFoodDetail=repositoryFoodDetail;
@@ -130,9 +134,9 @@ namespace TourInfo.Domain.Application.SDTA
                 (cityGuideUrlBuilder,
                 cityUrlBuilder,
                 urlFetcher,
-                repositoryCityGuideDetail,
+                repositoryCityGuideDetail,repositoryCityGuideSummary,
                 new PagingSetting { NeedPaging = false, StartIndex = -1 }
-                ,imageLocalSavePath, imageClientPath,remoteImageRootUrl,version
+                ,imageLocalSavePath, imageClientPath,remoteImageRootUrl,version,true
                 );
             cityGuidesFetcher.Fetch();
             #endregion
