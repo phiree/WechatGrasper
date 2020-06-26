@@ -23,7 +23,7 @@ namespace TourInfo.Domain.DomainModel.SDTA
            
             public    string slug { get; set; }
             public string description { get; set; }
-            public string content { get; set; }
+            public ImageUrlsInText content { get; set; }
             public int status { get; set; }
             public int user_id { get; set; }
             public string cms_user_id { get; set; }

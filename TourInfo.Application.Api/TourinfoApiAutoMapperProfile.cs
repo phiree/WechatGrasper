@@ -12,6 +12,8 @@ using TourInfo.Domain.DomainModel.WHY;
 using TourInfo.Domain.ZBTA;
 using TourInfo.Application.Api.Models;
 using TourInfo.Domain.DomainModel.ZiBoWechatNews;
+using TourInfo.Domain.DomainModel.SDTA;
+
 namespace TourInfo.Application.Api
 {
     public class TourinfoApiAutoMapperProfile : Profile
@@ -48,6 +50,24 @@ namespace TourInfo.Application.Api
                      .ForMember(x => x.Content, c => c.MapFrom(d => d.content))
              ;
 
+            CreateMap<CityGuide.Category.List,CityGuideListModel.GuideLineTitle>()
+                  .ForMember(x => x.Id, c => c.MapFrom(d => d.id))
+                    .ForMember(x => x.Name, c => c.MapFrom(d => d.title))
+                   .ForMember(x => x.Tag, c => c.MapFrom(d => d.tag))
+                  ;
+
+
+            //城市锦囊列表
+            CreateMap<CityGuide.Category, CityGuideListModel>()
+                    .ForMember(x => x.CategoryName, c => c.MapFrom(d => d.name))
+                    .ForMember(x=>x.Titles,c=>c.MapFrom(d=>d.list))
+            ;
+            //城市锦囊详情
+            CreateMap<CityGuideDetail.Data, CityGuideDetailModel>()
+                    .ForMember(x => x.Name, c => c.MapFrom(d => d.name))
+                    .ForMember(x => x.Summary, c => c.MapFrom(d => d.description))
+                      .ForMember(x => x.Content, c => c.MapFrom(d => d.content.ImageLocalizedText))
+            ;
 
 
             /*已过时*/

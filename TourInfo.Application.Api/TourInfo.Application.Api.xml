@@ -27,19 +27,13 @@
             <param name="pageSize">每页数量</param>
             <returns></returns>
         </member>
-        <member name="M:TourInfo.Application.Api.Controllers.ZBTourController.GetActivities">
-            <summary>
-            4  热门活动列表，对应首页模块“热门资讯活动”的 查看更多
-            </summary>
-            <returns></returns>
-        </member>
         <member name="M:TourInfo.Application.Api.Controllers.ZBTourController.GetCityGuides">
             <summary>
             5 城市锦囊 -- 首页”城市锦囊“的目标列表
             </summary>
             <returns></returns>
         </member>
-        <member name="M:TourInfo.Application.Api.Controllers.ZBTourController.GetSpecialProducts">
+        <member name="F:TourInfo.Application.Api.Controllers.ZBTourController.repositoryCityGuideDetail">
             <summary>
             6 特色商品 --首页 ”特色商品“ 的目标列表
             </summary>

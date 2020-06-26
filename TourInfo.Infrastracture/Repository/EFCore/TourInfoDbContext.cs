@@ -146,6 +146,9 @@ namespace TourInfo.Infrastracture.Repository.EFCore
                 .OwnsOne(e => e.image)
             ;
             modelBuilder.Entity<Domain.DomainModel.SDTA.CityGuideDetail.Data>()
+             .OwnsOne(e => e.content)
+         ;
+            modelBuilder.Entity<Domain.DomainModel.SDTA.CityGuideDetail.Data>()
             .ToTable("SDTACityGuideDetail")
             .OwnsOne(e => e.pics, c =>
             {

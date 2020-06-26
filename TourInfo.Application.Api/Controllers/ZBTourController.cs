@@ -10,6 +10,7 @@ using AutoMapper;
 using TourInfo.Domain.DomainModel.ZiBoWechatNews;
 using TourInfo.Domain.ZBTA;
 using TourInfo.Domain.DomainModel.WHY;
+using TourInfo.Domain.DomainModel.SDTA;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace TourInfo.Application.Api.Controllers
@@ -28,12 +29,16 @@ namespace TourInfo.Application.Api.Controllers
         public ZBTourController(IRepository<ZiBoWechatNews, string> repositoryWechatNews,
             IRepository<ZbtaNews, string> repositoryZbta,
             IRepository<WhyActivity, string> whyActivityRepository,
+            IRepository<CityGuide,string> repositoryCityGuide,
+            IRepository<CityGuideDetail.Data, string> repositoryCityGuideDetail,
             IMapper mapper)
         {
+            this.repositoryCityGuide=repositoryCityGuide;
             this.repositoryWechatNews = repositoryWechatNews;
             this.repositoryZbta = repositoryZbta;
             this.mapper = mapper;
             this.whyActivityRepository= whyActivityRepository;
+            this.repositoryCityGuideDetail=repositoryCityGuideDetail;
         }
 
         /// <summary>
@@ -146,30 +151,29 @@ namespace TourInfo.Application.Api.Controllers
             return new ResponseWrapper <WhyActivityDetail>(activitiyModel);
         }
 
-        /// <summary>
-        /// 4  热门活动列表，对应首页模块“热门资讯活动”的 查看更多
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet("GetActivities")]
-        public ResponseWrapperWithList<HotNews> GetActivities()
-        {
-            throw new Exception();
-        }
+        IRepository<CityGuide,string> repositoryCityGuide;
         /// <summary>
         /// 5 城市锦囊 -- 首页”城市锦囊“的目标列表
         /// </summary>
         /// <returns></returns>
         [HttpGet("GetCityGuides")]
-        public ResponseWrapperWithList<HotNews> GetCityGuides()
-        { throw new Exception(); }
+        public ResponseWrapperWithList<CityGuideListModel> GetCityGuides()
+        { 
+           var list= repositoryCityGuide.FindList(x=>x.name=="淄博",o=>o.name,true,0,10).SelectMany(x=>x.category).ToList();
+           var result= mapper.Map<List<CityGuideListModel>>(list);
+            return new ResponseWrapperWithList<CityGuideListModel>(result);
+        }
         /// <summary>
         /// 6 特色商品 --首页 ”特色商品“ 的目标列表
         /// </summary>
         /// <returns></returns>
-        [HttpGet("GetSpecialProducts")]
-        public ResponseWrapperWithList<HotNews> GetSpecialProducts()
+        IRepository<CityGuideDetail.Data,string> repositoryCityGuideDetail;
+        [HttpGet("GetCityGuide")]
+        public ResponseWrapper<CityGuideDetailModel> GetCityGuide(string id)
         {
-            throw new Exception();
+          
+            var result = mapper.Map<CityGuideDetailModel >(repositoryCityGuideDetail.Get(id));
+            return new ResponseWrapper<CityGuideDetailModel>(result);
         }
         /// <summary>
         /// 7 首页经典路线  

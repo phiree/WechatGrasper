@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using TourInfo.Domain.Base;
+using TourInfo.Domain.DomainModel.Rapi;
 using TourInfo.Domain.DomainModel.SDTA;
 
 namespace TourInfo.Domain.DomainModel
@@ -91,7 +92,7 @@ namespace TourInfo.Domain.DomainModel
 
                     continue;
                 }
-                var detailWrapper = Newtonsoft.Json.JsonConvert.DeserializeObject<DetailWrapper>(detailResult, new ImageUrlJsonConverter());
+                var detailWrapper = Newtonsoft.Json.JsonConvert.DeserializeObject<DetailWrapper>(detailResult, new ImageUrlJsonConverter(),new TextContainsImageUrlsJsonConverter());
                 var detail = detailWrapper.Detail;
                 //detail.id = itemSummary.id;
 
