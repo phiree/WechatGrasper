@@ -202,15 +202,7 @@ namespace TourInfo.Application.Api.Controllers
         {
             return new ResponseWrapper<SpecialProductModel>(   mapper.Map<SpecialProductModel>( repositorySpecialLocalProductDetail.Get(id) ));
         }
-        /// <summary>
-        /// 8 经典路线 列表
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet("GetLines")]
-        public ResponseWrapperWithList<HotNews> GetLines()
-        {
-            throw new Exception();
-        }
+        
 
         [Obsolete("微信页面难以被嵌入，取消此数据源")]
         [HttpGet("RenderWechatNewsDetail")]

@@ -50,12 +50,6 @@
             一个特色商品
             </summary>
         </member>
-        <member name="M:TourInfo.Application.Api.Controllers.ZBTourController.GetLines">
-            <summary>
-            8 经典路线 列表
-            </summary>
-            <returns></returns>
-        </member>
         <member name="T:TourInfo.Application.Api.Models.HomeCarousel">
             <summary>
             首页轮播图
