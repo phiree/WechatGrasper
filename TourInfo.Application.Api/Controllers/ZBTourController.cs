@@ -31,6 +31,7 @@ namespace TourInfo.Application.Api.Controllers
             IRepository<WhyActivity, string> whyActivityRepository,
             IRepository<CityGuide,string> repositoryCityGuide,
             IRepository<CityGuideDetail.Data, string> repositoryCityGuideDetail,
+            IRepository<SpecialLocalProductDetail.Data, string> repositorySpecialLocalProductDetail,
             IMapper mapper)
         {
             this.repositoryCityGuide=repositoryCityGuide;
@@ -39,6 +40,7 @@ namespace TourInfo.Application.Api.Controllers
             this.mapper = mapper;
             this.whyActivityRepository= whyActivityRepository;
             this.repositoryCityGuideDetail=repositoryCityGuideDetail;
+            this.repositorySpecialLocalProductDetail = repositorySpecialLocalProductDetail;
         }
 
         /// <summary>
@@ -164,7 +166,7 @@ namespace TourInfo.Application.Api.Controllers
             return new ResponseWrapperWithList<CityGuideListModel>(result);
         }
         /// <summary>
-        /// 6 特色商品 --首页 ”特色商品“ 的目标列表
+        ///  城市锦囊详情
         /// </summary>
         /// <returns></returns>
         IRepository<CityGuideDetail.Data,string> repositoryCityGuideDetail;
@@ -176,15 +178,30 @@ namespace TourInfo.Application.Api.Controllers
             return new ResponseWrapper<CityGuideDetailModel>(result);
         }
         /// <summary>
-        /// 7 首页经典路线  
+        /// 特色商品列表
         /// </summary>
         /// <returns></returns>
-        [HttpGet("GetHotLines")]
-        public ResponseWrapperWithList<HotNews> GetHotLines()
-        {
-            throw new Exception();
-        }
+        
+            IRepository<SpecialLocalProductDetail.Data,string> repositorySpecialLocalProductDetail;
+            [HttpGet("GetSpecialLocalProducts")]
 
+        public ResponseWrapperWithList<Summary> GetSpecialLocalProducts(int pageIndex=0,int pageSize=10)
+        {
+            return new ResponseWrapperWithList<Summary>(
+                mapper.Map<IList<Summary>>(
+                repositorySpecialLocalProductDetail.FindList(x=>true,x=>x.commodity_id,true,pageIndex,pageSize)
+                ));
+        }
+        /// <summary>
+        /// 一个特色商品
+        /// </summary>
+        
+        [HttpGet("GetSpecialLocalProduct")]
+
+        public ResponseWrapper<SpecialProductModel> GetSpecialLocalProduct(string id)
+        {
+            return new ResponseWrapper<SpecialProductModel>(   mapper.Map<SpecialProductModel>( repositorySpecialLocalProductDetail.Get(id) ));
+        }
         /// <summary>
         /// 8 经典路线 列表
         /// </summary>

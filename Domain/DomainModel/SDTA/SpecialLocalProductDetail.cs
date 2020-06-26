@@ -48,29 +48,13 @@ namespace TourInfo.Domain.DomainModel.SDTA
             public string perlink { get; set; }
             public string compresspic { get; set; }
            
-               public List<FilterPicture> filter_pictures { get; set; }
+        
             public Destination destination { get; set; }
        
   
             public List<Picture> pictures { get; set; }
            
-            public class FilterPicture
-            {
-                public int id { get; set; }
-                public string pho_id { get; set; }
-                public string picable_id { get; set; }
-                public string picable_type { get; set; }
-                public string pho_name { get; set; }
-                public string pho_type { get; set; }
-                public string pho_format { get; set; }
-                public ImageUrl pho_path { get; set; }
-                public string created_at { get; set; }
-                public string updated_at { get; set; }
-                public int rank { get; set; }
-                public int is_404 { get; set; }
-                public string deleted_at { get; set; }
-            }
-
+          
 
 
             public class Destination

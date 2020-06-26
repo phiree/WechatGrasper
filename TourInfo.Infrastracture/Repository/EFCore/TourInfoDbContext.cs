@@ -223,15 +223,7 @@ namespace TourInfo.Infrastracture.Repository.EFCore
               });
            
 
-            modelBuilder.Entity<Domain.DomainModel.SDTA.SpecialLocalProductDetail.Data>()
-               .OwnsMany(e => e.filter_pictures, c =>
-               {
-                   c.ToTable("SDTASpecialLocalProductDetailFilterPictures");
-                   c.HasForeignKey("SpecialLocalProducId");
-                   c.Property(x => x.id);
-                   c.HasKey("SpecialLocalProducId", "id");
-                   c.OwnsOne(x => x.pho_path);
-               });
+           
             modelBuilder.Entity<Domain.DomainModel.SDTA.SpecialLocalProductDetail.Data>()
                .OwnsMany(e => e.pictures, c =>
                {

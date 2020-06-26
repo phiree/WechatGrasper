@@ -69,6 +69,32 @@ namespace TourInfo.Application.Api
                       .ForMember(x => x.Content, c => c.MapFrom(d => d.content.ImageLocalizedText))
             ;
 
+            CreateMap<SpecialLocalProductDetail.Data.Picture,string>()
+                .ConvertUsing(r => r.pho_path.LocalizedUrl);
+            ;
+            //特色商品
+            CreateMap<SpecialLocalProductDetail.Data,Summary>()
+                .Include<SpecialLocalProductDetail.Data, Detail>()
+               
+                    .ForMember(x => x.Title, c => c.MapFrom(d => d.name_cn))
+                  
+                      .ForMember(x => x.ImageUrl, c => c.MapFrom(d => d.defaultphoto.LocalizedUrl))
+                       
+                   
+            ;
+            CreateMap<SpecialLocalProductDetail.Data, Detail>()
+                 .Include<SpecialLocalProductDetail.Data, SpecialProductModel>()
+                  .ForMember(x => x.Content, c => c.MapFrom(d => d.commodity_intr))
+           ;
+            CreateMap<SpecialLocalProductDetail.Data, SpecialProductModel>()
+                      .ForMember(x => x.Images, c => c.MapFrom(d => d.pictures))
+           ;
+            //特色商品
+            CreateMap<CityGuideDetail.Data, CityGuideDetailModel>()
+                    .ForMember(x => x.Name, c => c.MapFrom(d => d.name))
+                    .ForMember(x => x.Summary, c => c.MapFrom(d => d.description))
+                      .ForMember(x => x.Content, c => c.MapFrom(d => d.content.ImageLocalizedText))
+            ;
 
             /*已过时*/
             CreateMap<ZiBoWechatNews, Models.HomeCarousel>()

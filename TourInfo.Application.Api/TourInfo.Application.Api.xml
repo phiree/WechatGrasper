@@ -35,15 +35,20 @@
         </member>
         <member name="F:TourInfo.Application.Api.Controllers.ZBTourController.repositoryCityGuideDetail">
             <summary>
-            6 特色商品 --首页 ”特色商品“ 的目标列表
+             城市锦囊详情
             </summary>
             <returns></returns>
         </member>
-        <member name="M:TourInfo.Application.Api.Controllers.ZBTourController.GetHotLines">
+        <member name="F:TourInfo.Application.Api.Controllers.ZBTourController.repositorySpecialLocalProductDetail">
             <summary>
-            7 首页经典路线  
+            特色商品列表
             </summary>
             <returns></returns>
+        </member>
+        <member name="M:TourInfo.Application.Api.Controllers.ZBTourController.GetSpecialLocalProduct(System.String)">
+            <summary>
+            一个特色商品
+            </summary>
         </member>
         <member name="M:TourInfo.Application.Api.Controllers.ZBTourController.GetLines">
             <summary>
