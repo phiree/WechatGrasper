@@ -137,6 +137,11 @@ namespace TourInfo.Application.Api.Controllers
             //  var zbtaCa=mapper.Map<List<HomeCarousel>>(zbtaNewsList);
             return new ResponseWrapperWithList<WhyActivitySummary>(activitiyModels);
         }
+        /// <summary>
+        /// 活动详情
+        /// </summary>
+        /// <param name="id">活动列表中返回的Id</param>
+        /// <returns></returns>
         [HttpGet("GetActivity")]
         public ResponseWrapper<WhyActivityDetail> GetActivity(string id)
         {
@@ -165,11 +170,13 @@ namespace TourInfo.Application.Api.Controllers
            var result= mapper.Map<List<CityGuideListModel>>(list);
             return new ResponseWrapperWithList<CityGuideListModel>(result);
         }
-        /// <summary>
-        ///  城市锦囊详情
-        /// </summary>
-        /// <returns></returns>
+        
         IRepository<CityGuideDetail.Data,string> repositoryCityGuideDetail;
+        /// <summary>
+        /// 城市锦囊详情
+        /// </summary>
+        /// <param name="id">城市锦囊列表返回的id</param>
+        /// <returns></returns>
         [HttpGet("GetCityGuide")]
         public ResponseWrapper<CityGuideDetailModel> GetCityGuide(string id)
         {
@@ -177,13 +184,15 @@ namespace TourInfo.Application.Api.Controllers
             var result = mapper.Map<CityGuideDetailModel >(repositoryCityGuideDetail.Get(id));
             return new ResponseWrapper<CityGuideDetailModel>(result);
         }
+       
+        
+            IRepository<SpecialLocalProductDetail.Data,string> repositorySpecialLocalProductDetail;
         /// <summary>
         /// 特色商品列表
         /// </summary>
         /// <returns></returns>
-        
-            IRepository<SpecialLocalProductDetail.Data,string> repositorySpecialLocalProductDetail;
-            [HttpGet("GetSpecialLocalProducts")]
+      
+        [HttpGet("GetSpecialLocalProducts")]
 
         public ResponseWrapperWithList<Summary> GetSpecialLocalProducts(int pageIndex=0,int pageSize=10)
         {
@@ -192,10 +201,11 @@ namespace TourInfo.Application.Api.Controllers
                 repositorySpecialLocalProductDetail.FindList(x=>true,x=>x.commodity_id,true,pageIndex,pageSize)
                 ));
         }
-        /// <summary>
-        /// 一个特色商品
-        /// </summary>
-        
+         /// <summary>
+         /// 特色商品详情
+         /// </summary>
+         /// <param name="id">特色商品列表返回的Id</param>
+         /// <returns></returns>
         [HttpGet("GetSpecialLocalProduct")]
 
         public ResponseWrapper<SpecialProductModel> GetSpecialLocalProduct(string id)
