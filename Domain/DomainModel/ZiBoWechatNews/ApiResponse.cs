@@ -14,7 +14,7 @@ namespace TourInfo.Domain.DomainModel.ZiBoWechatNews
     }
     public class ZiBoWechatNews:VersionedEntity<string>
     {
-        public override string id { get; set; }
+        public override string id {get=>url;set=>url=value; }
 
         public string title { get;set;}
         public ImageUrl img { get; set; }
