@@ -20,7 +20,7 @@ namespace TourInfo.Domain.DomainModel.ZiBoWechatNews
         public ImageUrl img { get; set; }
         public string url { get; set; }
         public DateTime pubtime { get;set;}
-        public ImageUrlsInText content { get;set;}
+        //public ImageUrlsInText content { get;set;}
 
         public override string CalculateFingerprint(IMD5Helper mD5Helper)
         {

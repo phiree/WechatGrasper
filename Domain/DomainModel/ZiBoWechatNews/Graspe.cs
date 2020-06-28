@@ -37,7 +37,7 @@ namespace TourInfo.Domain.DomainModel.ZiBoWechatNews
             foreach (var news in data)
             {
                 if (news.pubtime < new DateTime(2020, 1, 1)) { return; }
-                news.content =new ImageUrlsInText( fetcher.FetchAsync(news.url).Result);
+                //news.content =new ImageUrlsInText( fetcher.FetchAsync(news.url).Result);
                 string calculatedFingerPrint = news.CalculateFingerprint(mD5Helper);
                 news.UpdateVersion(calculatedFingerPrint, dataVersion);
                 var existes = repository.Get(news.id);

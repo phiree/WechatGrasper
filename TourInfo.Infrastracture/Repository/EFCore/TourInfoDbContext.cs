@@ -237,8 +237,8 @@ namespace TourInfo.Infrastracture.Repository.EFCore
          .OwnsOne(x => x.img);
 
             modelBuilder.Entity<ZiBoWechatNews>()
-         .OwnsOne(x => x.content);
-
+       //  .OwnsOne(x => x.content);
+       ;
             modelBuilder.Entity<TourInfo.Domain.DomainModel.WHY.WhyActivity>()
                 .OwnsOne(x=>x.hPoster);
 

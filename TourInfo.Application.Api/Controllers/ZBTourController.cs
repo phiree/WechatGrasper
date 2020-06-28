@@ -212,17 +212,14 @@ namespace TourInfo.Application.Api.Controllers
         {
             return new ResponseWrapper<SpecialProductModel>(   mapper.Map<SpecialProductModel>( repositorySpecialLocalProductDetail.Get(id) ));
         }
+        [HttpGet("GetLines")]
+        public ResponseWrapper<LineDetail> GetLines()
+        { 
+            throw new NotImplementedException();
+            }
         
 
-        [Obsolete("微信页面难以被嵌入，取消此数据源")]
-        [HttpGet("RenderWechatNewsDetail")]
-        public ActionResult<string> RenderWechatNewsDetail(string id)
-        {
-            ZiBoWechatNews news = repositoryWechatNews.Get(id);
-            var model = mapper.Map<WeChatNewsDetail>(news);
-            return Content(model.Content, "text/html", System.Text.Encoding.Default);
-
-        }
+         
 
         [Obsolete("微信页面难以被嵌入，取消此数据源")]
         [HttpGet("GetWechatNewsDetail")]

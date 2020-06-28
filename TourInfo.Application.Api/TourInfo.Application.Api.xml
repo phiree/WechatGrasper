@@ -27,19 +27,27 @@
             <param name="pageSize">每页数量</param>
             <returns></returns>
         </member>
+        <member name="M:TourInfo.Application.Api.Controllers.ZBTourController.GetActivity(System.String)">
+            <summary>
+            活动详情
+            </summary>
+            <param name="id">活动列表中返回的Id</param>
+            <returns></returns>
+        </member>
         <member name="M:TourInfo.Application.Api.Controllers.ZBTourController.GetCityGuides">
             <summary>
             5 城市锦囊 -- 首页”城市锦囊“的目标列表
             </summary>
             <returns></returns>
         </member>
-        <member name="F:TourInfo.Application.Api.Controllers.ZBTourController.repositoryCityGuideDetail">
+        <member name="M:TourInfo.Application.Api.Controllers.ZBTourController.GetCityGuide(System.String)">
             <summary>
-             城市锦囊详情
+            城市锦囊详情
             </summary>
+            <param name="id">城市锦囊列表返回的id</param>
             <returns></returns>
         </member>
-        <member name="F:TourInfo.Application.Api.Controllers.ZBTourController.repositorySpecialLocalProductDetail">
+        <member name="M:TourInfo.Application.Api.Controllers.ZBTourController.GetSpecialLocalProducts(System.Int32,System.Int32)">
             <summary>
             特色商品列表
             </summary>
@@ -47,8 +55,10 @@
         </member>
         <member name="M:TourInfo.Application.Api.Controllers.ZBTourController.GetSpecialLocalProduct(System.String)">
             <summary>
-            一个特色商品
+            特色商品详情
             </summary>
+            <param name="id">特色商品列表返回的Id</param>
+            <returns></returns>
         </member>
         <member name="T:TourInfo.Application.Api.Models.HomeCarousel">
             <summary>
