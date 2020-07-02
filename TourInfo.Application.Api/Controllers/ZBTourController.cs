@@ -264,7 +264,7 @@ namespace TourInfo.Application.Api.Controllers
                         Location = detail.location,
                         Name = detail.name_cn,
                         RecommentStayHour =int.Parse( scenic.time),
-                        Description=detail.description;
+                        Description=detail.description
                     };
                     dayModel.Scenics.Add(scenicModel);
                 }
