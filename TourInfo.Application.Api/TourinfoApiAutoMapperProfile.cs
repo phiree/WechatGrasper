@@ -13,6 +13,7 @@ using TourInfo.Domain.ZBTA;
 using TourInfo.Application.Api.Models;
 using TourInfo.Domain.DomainModel.ZiBoWechatNews;
 using TourInfo.Domain.DomainModel.SDTA;
+using TourInfo.Domain;
 
 namespace TourInfo.Application.Api
 {
@@ -44,7 +45,6 @@ namespace TourInfo.Application.Api
                  .ForMember(x => x.Date, c => c.MapFrom(d => Convert.ToDateTime(d.createTime).ToString("yyyy-MM-dd")))
                     .ForMember(x => x.StartDate, c => c.MapFrom(d => Convert.ToDateTime(d.recentHoldStartTime).ToString("yyyy-MM-dd")))
                        .ForMember(x => x.EndDate, c => c.MapFrom(d => Convert.ToDateTime(d.recentHoldEndTime).ToString("yyyy-MM-dd")))
-             
                        ;
             CreateMap<WhyActivity, Models.WhyActivityDetail>()
                      .ForMember(x => x.Content, c => c.MapFrom(d => d.content))
@@ -95,6 +95,17 @@ namespace TourInfo.Application.Api
                     .ForMember(x => x.Summary, c => c.MapFrom(d => d.description))
                       .ForMember(x => x.Content, c => c.MapFrom(d => d.content.ImageLocalizedText))
             ;
+
+            //路线
+            CreateMap<Domain.DomainModel.SDTA.LineDetail, LineListModel>()
+                .ForMember(x => x.Name, c => c.MapFrom(d => d.name))
+                .ForMember(x=>x.ImageUrl,c=>c.MapFrom(d=>d.thumb.LocalizedUrl))
+                .ForMember(x => x.LineTags, c => c.MapFrom(d => d.tags))
+                .ForMember(x => x.DaysAmount, c => c.MapFrom(d => d.days.Count))
+                .ForMember(x => x.ScenicTags, c => c.MapFrom(d => d.days.SelectMany(x=>x.place.Select(y=>y.tag)).Where(x=>!string.IsNullOrEmpty(x))))
+                .ForMember(x => x.ScenicsAmount, c => c.MapFrom(d => d.days.SelectMany(x=>x.place).Count()))
+                ;
+            
 
             /*已过时*/
             CreateMap<ZiBoWechatNews, Models.HomeCarousel>()

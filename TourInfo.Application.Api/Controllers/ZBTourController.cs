@@ -24,16 +24,21 @@ namespace TourInfo.Application.Api.Controllers
         IRepository<TourInfo.Domain.ZBTA.ZbtaNews, string> repositoryZbta;
         IMapper mapper;
         IRepository<WhyActivity, string> whyActivityRepository;
-        
+
 
         public ZBTourController(IRepository<ZiBoWechatNews, string> repositoryWechatNews,
             IRepository<ZbtaNews, string> repositoryZbta,
             IRepository<WhyActivity, string> whyActivityRepository,
-            IRepository<CityGuide,string> repositoryCityGuide,
+            IRepository<CityGuide, string> repositoryCityGuide,
             IRepository<CityGuideDetail.Data, string> repositoryCityGuideDetail,
             IRepository<SpecialLocalProductDetail.Data, string> repositorySpecialLocalProductDetail,
-            IMapper mapper)
+             IRepository<LineDetail, string> lineDetailRepository,
+            IRepository<LineDetailScenic, string> lineDetailScenicRepository,
+        IMapper mapper)
         {
+
+            this.lineDetailRepository=lineDetailRepository;
+            this.lineDetailScenicRepository=lineDetailScenicRepository;
             this.repositoryCityGuide=repositoryCityGuide;
             this.repositoryWechatNews = repositoryWechatNews;
             this.repositoryZbta = repositoryZbta;
@@ -43,191 +48,186 @@ namespace TourInfo.Application.Api.Controllers
             this.repositorySpecialLocalProductDetail = repositorySpecialLocalProductDetail;
         }
 
-        /// <summary>
-        /// 1 首页轮播图
-        /// </summary>
-        /// <returns></returns>
-        /// <param name="size">数量</param>
-        // GET: api/<ZBTourController>/GetHomeCarousels
-        [HttpGet("GetHomeCarousels")]
-        public ResponseWrapperWithList<HomeCarousel> GetHomeCarousels(int size = 3)
-        {
-            //var wechatList= repositoryWechatNews.GetList(0,3);
-            var zbtaNewsList = repositoryZbta.FindList(x => true, x => x.created, true, 0, 3);
-            var zbtas = mapper.Map<List<HomeCarousel>>(zbtaNewsList)
-                .Select(x =>
-                {
+    /// <summary>
+    /// 1 首页轮播图
+    /// </summary>
+    /// <returns></returns>
+    /// <param name="size">数量</param>
+    // GET: api/<ZBTourController>/GetHomeCarousels
+    [HttpGet("GetHomeCarousels")]
+    public ResponseWrapperWithList<HomeCarousel> GetHomeCarousels(int size = 3)
+    {
+        //var wechatList= repositoryWechatNews.GetList(0,3);
+        var zbtaNewsList = repositoryZbta.FindList(x => true, x => x.created, true, 0, 3);
+        var zbtas = mapper.Map<List<HomeCarousel>>(zbtaNewsList)
+            .Select(x =>
+            {
 
-                    x.DetailUrl = Request.Scheme + "://" + Request.Host + "/api/tourinfo/GetZbtaNewsDetail?id=" + x.Id;
+                x.DetailUrl = Request.Scheme + "://" + Request.Host + "/api/tourinfo/GetZbtaNewsDetail?id=" + x.Id;
 
-                    return x;
-                });
-            //  var wechats= mapper.Map<List<HomeCarousel>>(wechatList);
+                return x;
+            });
+        //  var wechats= mapper.Map<List<HomeCarousel>>(wechatList);
 
-            var cas = zbtas
-                   //.Concat(wechats) 
-                   .Select(x =>
+        var cas = zbtas
+               //.Concat(wechats) 
+               .Select(x =>
+               {
+                   if (!x.ImageUrl.StartsWith("http"))
                    {
-                       if (!x.ImageUrl.StartsWith("http"))
-                       {
-                           x.ImageUrl = (Request.Scheme + "://" + Request.Host + "/" + x.ImageUrl).Replace(@"\", @"/");
-                       }
+                       x.ImageUrl = (Request.Scheme + "://" + Request.Host + "/" + x.ImageUrl).Replace(@"\", @"/");
+                   }
 
-                       return x;
-                   }).
-                 OrderByDescending(x => x.Date).ToList();
+                   return x;
+               }).
+             OrderByDescending(x => x.Date).ToList();
 
-            //  var zbtaCa=mapper.Map<List<HomeCarousel>>(zbtaNewsList);
+        //  var zbtaCa=mapper.Map<List<HomeCarousel>>(zbtaNewsList);
 
-            return new ResponseWrapperWithList<HomeCarousel>(cas);
-        }
-
-        /// <summary>
-        /// 2 首页顶部菜单“资讯”对应的列表
-        /// </summary>
-        /// <param name="pageIndex">分页页码，从0开始，默认0</param>
-        /// <param name="pageSize">分页页幅,默认10条</param>
-        /// <returns></returns>
-        [HttpGet("GetHomeHotNews")]
-        public ResponseWrapperWithList<HotNews> GetHomeHotNews(int pageIndex = 0, int pageSize = 10)
-        {
-            // var wechatList = repositoryWechatNews.GetList(0, 1);
-            var zbtaNewsList = repositoryZbta.FindList(x => true, x => x.created, true, pageIndex, pageSize);
-            var zbtas = mapper.Map<List<HotNews>>(zbtaNewsList);
-
-            // var wechats = mapper.Map<List<HotNews>>(wechatList);
-            var cas = zbtas
-                //.Concat(wechats)
-                .Select(x =>
-                {
-                    if (!x.ImageUrl.StartsWith("http"))
-                    {
-                        x.ImageUrl = (Request.Scheme + "://" + Request.Host + "/" + x.ImageUrl).Replace(@"\", @"/");
-                    }
-
-                    return x;
-                }).OrderByDescending(x => x.Date).ToList();
-            //  var zbtaCa=mapper.Map<List<HomeCarousel>>(zbtaNewsList);
-            return new ResponseWrapperWithList<HotNews>(cas);
-        }
-
-
-
-        /// <summary>
-        /// 3 首页 热门资讯活动，取自 文化云活动 
-        /// </summary>
-        /// <param name="pageIndex">分页,从0开始</param>
-        /// <param name="pageSize">每页数量</param>
-        /// <returns></returns>
-        [HttpGet("GetHotActivities")]
-        public ResponseWrapperWithList<WhyActivitySummary> GetHotActivities(int pageIndex=0, int pageSize=10)
-        {
-          
-            var activities= whyActivityRepository.GetList(pageIndex,pageSize);
-
-            var activitiyModels = mapper.Map<List<WhyActivitySummary>>(activities)
-                .Select(x =>
-                {
-                    x.ImageUrl =
-          (Request.Scheme + "://" + Request.Host + "/" + x.ImageUrl).Replace(@"\", @"/");
-                    return x;
-                }).ToList();
-          
-           
-            //  var zbtaCa=mapper.Map<List<HomeCarousel>>(zbtaNewsList);
-            return new ResponseWrapperWithList<WhyActivitySummary>(activitiyModels);
-        }
-        /// <summary>
-        /// 活动详情
-        /// </summary>
-        /// <param name="id">活动列表中返回的Id</param>
-        /// <returns></returns>
-        [HttpGet("GetActivity")]
-        public ResponseWrapper<WhyActivityDetail> GetActivity(string id)
-        {
-
-            var activity = whyActivityRepository.Get(id);
-
-            var activitiyModel = mapper.Map< WhyActivityDetail>(activity);
-            activitiyModel.ImageUrl= 
-           (Request.Scheme + "://" + Request.Host + "/" + activitiyModel.ImageUrl).Replace(@"\", @"/");
-       
-
-
-            //  var zbtaCa=mapper.Map<List<HomeCarousel>>(zbtaNewsList);
-            return new ResponseWrapper <WhyActivityDetail>(activitiyModel);
-        }
-
-        IRepository<CityGuide,string> repositoryCityGuide;
-        /// <summary>
-        /// 5 城市锦囊 -- 首页”城市锦囊“的目标列表
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet("GetCityGuides")]
-        public ResponseWrapperWithList<CityGuideListModel> GetCityGuides()
-        { 
-           var list= repositoryCityGuide.FindList(x=>x.name=="淄博",o=>o.name,true,0,10).SelectMany(x=>x.category).ToList();
-           var result= mapper.Map<List<CityGuideListModel>>(list);
-            return new ResponseWrapperWithList<CityGuideListModel>(result);
-        }
-        
-        IRepository<CityGuideDetail.Data,string> repositoryCityGuideDetail;
-        /// <summary>
-        /// 城市锦囊详情
-        /// </summary>
-        /// <param name="id">城市锦囊列表返回的id</param>
-        /// <returns></returns>
-        [HttpGet("GetCityGuide")]
-        public ResponseWrapper<CityGuideDetailModel> GetCityGuide(string id)
-        {
-          
-            var result = mapper.Map<CityGuideDetailModel >(repositoryCityGuideDetail.Get(id));
-            return new ResponseWrapper<CityGuideDetailModel>(result);
-        }
-       
-        
-            IRepository<SpecialLocalProductDetail.Data,string> repositorySpecialLocalProductDetail;
-        /// <summary>
-        /// 特色商品列表
-        /// </summary>
-        /// <returns></returns>
-      
-        [HttpGet("GetSpecialLocalProducts")]
-
-        public ResponseWrapperWithList<Summary> GetSpecialLocalProducts(int pageIndex=0,int pageSize=10)
-        {
-            return new ResponseWrapperWithList<Summary>(
-                mapper.Map<IList<Summary>>(
-                repositorySpecialLocalProductDetail.FindList(x=>true,x=>x.commodity_id,true,pageIndex,pageSize)
-                ));
-        }
-         /// <summary>
-         /// 特色商品详情
-         /// </summary>
-         /// <param name="id">特色商品列表返回的Id</param>
-         /// <returns></returns>
-        [HttpGet("GetSpecialLocalProduct")]
-
-        public ResponseWrapper<SpecialProductModel> GetSpecialLocalProduct(string id)
-        {
-            return new ResponseWrapper<SpecialProductModel>(   mapper.Map<SpecialProductModel>( repositorySpecialLocalProductDetail.Get(id) ));
-        }
-        [HttpGet("GetLines")]
-        public ResponseWrapper<LineDetail> GetLines()
-        { 
-            throw new NotImplementedException();
-            }
-        
-
-         
-
-        [Obsolete("微信页面难以被嵌入，取消此数据源")]
-        [HttpGet("GetWechatNewsDetail")]
-        public ResponseWrapper<WeChatNewsDetail> GetWechatNewsDetail(string id)
-        {
-            ZiBoWechatNews news = repositoryWechatNews.Get(id);
-            var model = mapper.Map<WeChatNewsDetail>(news);
-            return new ResponseWrapper<WeChatNewsDetail>(model);
-        }
+        return new ResponseWrapperWithList<HomeCarousel>(cas);
     }
+
+    /// <summary>
+    /// 2 首页顶部菜单“资讯”对应的列表
+    /// </summary>
+    /// <param name="pageIndex">分页页码，从0开始，默认0</param>
+    /// <param name="pageSize">分页页幅,默认10条</param>
+    /// <returns></returns>
+    [HttpGet("GetHomeHotNews")]
+    public ResponseWrapperWithList<HotNews> GetHomeHotNews(int pageIndex = 0, int pageSize = 10)
+    {
+        // var wechatList = repositoryWechatNews.GetList(0, 1);
+        var zbtaNewsList = repositoryZbta.FindList(x => true, x => x.created, true, pageIndex, pageSize);
+        var zbtas = mapper.Map<List<HotNews>>(zbtaNewsList);
+
+        // var wechats = mapper.Map<List<HotNews>>(wechatList);
+        var cas = zbtas
+            //.Concat(wechats)
+            .Select(x =>
+            {
+                if (!x.ImageUrl.StartsWith("http"))
+                {
+                    x.ImageUrl = (Request.Scheme + "://" + Request.Host + "/" + x.ImageUrl).Replace(@"\", @"/");
+                }
+
+                return x;
+            }).OrderByDescending(x => x.Date).ToList();
+        //  var zbtaCa=mapper.Map<List<HomeCarousel>>(zbtaNewsList);
+        return new ResponseWrapperWithList<HotNews>(cas);
+    }
+
+
+
+    /// <summary>
+    /// 3 首页 热门资讯活动，取自 文化云活动 
+    /// </summary>
+    /// <param name="pageIndex">分页,从0开始</param>
+    /// <param name="pageSize">每页数量</param>
+    /// <returns></returns>
+    [HttpGet("GetHotActivities")]
+    public ResponseWrapperWithList<WhyActivitySummary> GetHotActivities(int pageIndex = 0, int pageSize = 10)
+    {
+
+        var activities = whyActivityRepository.GetList(pageIndex, pageSize);
+
+        var activitiyModels = mapper.Map<List<WhyActivitySummary>>(activities)
+            .Select(x =>
+            {
+                x.ImageUrl =
+      (Request.Scheme + "://" + Request.Host + "/" + x.ImageUrl).Replace(@"\", @"/");
+                return x;
+            }).ToList();
+
+
+        //  var zbtaCa=mapper.Map<List<HomeCarousel>>(zbtaNewsList);
+        return new ResponseWrapperWithList<WhyActivitySummary>(activitiyModels);
+    }
+    /// <summary>
+    /// 活动详情
+    /// </summary>
+    /// <param name="id">活动列表中返回的Id</param>
+    /// <returns></returns>
+    [HttpGet("GetActivity")]
+    public ResponseWrapper<WhyActivityDetail> GetActivity(string id)
+    {
+
+        var activity = whyActivityRepository.Get(id);
+
+        var activitiyModel = mapper.Map<WhyActivityDetail>(activity);
+        activitiyModel.ImageUrl =
+       (Request.Scheme + "://" + Request.Host + "/" + activitiyModel.ImageUrl).Replace(@"\", @"/");
+
+
+
+        //  var zbtaCa=mapper.Map<List<HomeCarousel>>(zbtaNewsList);
+        return new ResponseWrapper<WhyActivityDetail>(activitiyModel);
+    }
+
+    IRepository<CityGuide, string> repositoryCityGuide;
+    /// <summary>
+    /// 5 城市锦囊 -- 首页”城市锦囊“的目标列表
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("GetCityGuides")]
+    public ResponseWrapperWithList<CityGuideListModel> GetCityGuides()
+    {
+        var list = repositoryCityGuide.FindList(x => x.name == "淄博", o => o.name, true, 0, 10).SelectMany(x => x.category).ToList();
+        var result = mapper.Map<List<CityGuideListModel>>(list);
+        return new ResponseWrapperWithList<CityGuideListModel>(result);
+    }
+
+    IRepository<CityGuideDetail.Data, string> repositoryCityGuideDetail;
+    /// <summary>
+    /// 城市锦囊详情
+    /// </summary>
+    /// <param name="id">城市锦囊列表返回的id</param>
+    /// <returns></returns>
+    [HttpGet("GetCityGuide")]
+    public ResponseWrapper<CityGuideDetailModel> GetCityGuide(string id)
+    {
+
+        var result = mapper.Map<CityGuideDetailModel>(repositoryCityGuideDetail.Get(id));
+        return new ResponseWrapper<CityGuideDetailModel>(result);
+    }
+
+
+    IRepository<SpecialLocalProductDetail.Data, string> repositorySpecialLocalProductDetail;
+    /// <summary>
+    /// 特色商品列表
+    /// </summary>
+    /// <returns></returns>
+
+    [HttpGet("GetSpecialLocalProducts")]
+
+    public ResponseWrapperWithList<Summary> GetSpecialLocalProducts(int pageIndex = 0, int pageSize = 10)
+    {
+        return new ResponseWrapperWithList<Summary>(
+            mapper.Map<IList<Summary>>(
+            repositorySpecialLocalProductDetail.FindList(x => true, x => x.commodity_id, true, pageIndex, pageSize)
+            ));
+    }
+    /// <summary>
+    /// 特色商品详情
+    /// </summary>
+    /// <param name="id">特色商品列表返回的Id</param>
+    /// <returns></returns>
+    [HttpGet("GetSpecialLocalProduct")]
+
+    public ResponseWrapper<SpecialProductModel> GetSpecialLocalProduct(string id)
+    {
+        return new ResponseWrapper<SpecialProductModel>(mapper.Map<SpecialProductModel>(repositorySpecialLocalProductDetail.Get(id)));
+    }
+
+    IRepository<LineDetail, string> lineDetailRepository;
+    IRepository<LineDetailScenic, string> lineDetailScenicRepository;
+
+    [HttpGet("GetLines")]
+    public ResponseWrapperWithList<LineListModel> GetLines()
+    {
+        return
+              new ResponseWrapperWithList<LineListModel>(mapper.Map<IList<LineListModel>>(lineDetailRepository.GetAll()));
+    }
+
+
+}
 }

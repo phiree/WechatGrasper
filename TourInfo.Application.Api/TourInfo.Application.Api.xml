@@ -105,5 +105,50 @@
             zbtanews网站
             </summary>
         </member>
+        <member name="P:TourInfo.Application.Api.Models.LineDetailModel.Description">
+            <summary>
+            描述
+            </summary>
+        </member>
+        <member name="P:TourInfo.Application.Api.Models.LineDetailModel.TourSummary">
+            <summary>
+            行程概览
+            </summary>
+        </member>
+        <member name="T:TourInfo.Application.Api.Models.LineDetailModel.DayDetaill">
+            <summary>
+            每日详情
+            </summary>
+        </member>
+        <member name="P:TourInfo.Application.Api.Models.LineDetailModel.DayDetaill.Scenic.ImageUrl">
+            <summary>
+            图片
+            </summary>
+        </member>
+        <member name="P:TourInfo.Application.Api.Models.LineDetailModel.DayDetaill.Scenic.RecommentStayHour">
+            <summary>
+            建议游玩时间
+            </summary>
+        </member>
+        <member name="P:TourInfo.Application.Api.Models.LineListModel.ScenicTags">
+            <summary>
+            包含的景区的标签
+            </summary>
+        </member>
+        <member name="P:TourInfo.Application.Api.Models.LineListModel.LineTags">
+            <summary>
+            路线的标签
+            </summary>
+        </member>
+        <member name="P:TourInfo.Application.Api.Models.LineListModel.DaysAmount">
+            <summary>
+            游玩天数
+            </summary>
+        </member>
+        <member name="P:TourInfo.Application.Api.Models.LineListModel.ScenicsAmount">
+            <summary>
+            包含景区数量
+            </summary>
+        </member>
     </members>
 </doc>
