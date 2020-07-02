@@ -60,6 +60,18 @@
             <param name="id">特色商品列表返回的Id</param>
             <returns></returns>
         </member>
+        <member name="M:TourInfo.Application.Api.Controllers.ZBTourController.GetLines">
+            <summary>
+            获取所有线路.只有4条数据,无需分页.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:TourInfo.Application.Api.Controllers.ZBTourController.GetLineDetail(System.String)">
+            <summary>
+            获取路线详情.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:TourInfo.Application.Api.Models.HomeCarousel">
             <summary>
             首页轮播图
@@ -103,11 +115,6 @@
         <member name="F:TourInfo.Application.Api.Models.HomeCarouselDataSourceType.ZbtaNews">
             <summary>
             zbtanews网站
-            </summary>
-        </member>
-        <member name="P:TourInfo.Application.Api.Models.LineDetailModel.Description">
-            <summary>
-            描述
             </summary>
         </member>
         <member name="P:TourInfo.Application.Api.Models.LineDetailModel.TourSummary">

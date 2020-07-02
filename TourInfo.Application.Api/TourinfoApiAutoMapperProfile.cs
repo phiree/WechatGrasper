@@ -98,7 +98,8 @@ namespace TourInfo.Application.Api
 
             //路线
             CreateMap<Domain.DomainModel.SDTA.LineDetail, LineListModel>()
-                .ForMember(x => x.Name, c => c.MapFrom(d => d.name))
+
+              
                 .ForMember(x=>x.ImageUrl,c=>c.MapFrom(d=>d.thumb.LocalizedUrl))
                 .ForMember(x => x.LineTags, c => c.MapFrom(d => d.tags))
                 .ForMember(x => x.DaysAmount, c => c.MapFrom(d => d.days.Count))

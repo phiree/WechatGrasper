@@ -8,29 +8,36 @@ namespace TourInfo.Application.Api.Models
 {
     public class LineDetailModel
     {
-        /// <summary>
-        /// 描述
-        /// </summary>
-        public string Description { get; set; }
+         
 
-        public Location Location { get;set;}
+        public List<Double> Location
+        {
+            get
+            {
+                var scenicLocations = Days.SelectMany(x => x.Scenics).Select(x => x.Location);
+                if (scenicLocations.Count() > 0)
+                { return scenicLocations.First(); }
+                else {return new List<double>();}
+            }
+        }
 
         public string[] LineTags { get; set; }
 
-
+        public string Description=>string.Concat(Days.Select(x=>x.Description));
         /// <summary>
         /// 行程概览
         /// </summary>
         public string TourSummary { get; set; }
 
-        public IList<DayDetaill> Days {get;set; }
+        public IList<DayDetaill> Days { get; set; } = new List<DayDetaill>();
         /// <summary>
         /// 每日详情
         /// </summary>
         public class DayDetaill
         {
+            public string Description { get;set;}
             public int DayIndex { get; set; }
-            public List<Scenic> Scenics { get;set;}
+            public List<Scenic> Scenics { get; set; } = new List<Scenic>();
             public class Scenic
             {
                 public string Name { get; set; }
@@ -42,6 +49,8 @@ namespace TourInfo.Application.Api.Models
                 /// 建议游玩时间
                 /// </summary>
                 public int RecommentStayHour { get; set; }
+                public List<double> Location { get; set; }
+                public string Description { get;set;}
             }
 
 

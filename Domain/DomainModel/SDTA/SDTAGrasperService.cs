@@ -37,6 +37,7 @@ namespace TourInfo.Domain.DomainModel.SDTA
                 string detailUrl = $"https://www.sdta.cn/json/lines/{line.id}.json?channel=zibo";
                 LineDetail lineDetail = JsonConvert.DeserializeObject<LineDetail>(urlFetcher.FetchAsync(detailUrl).Result, new ImageUrlJsonConverter());//new ResponseLines();//fetch by api
                 lineDetail.id=line.id;
+                
                 string detailScenicUrl = "https://www.sdta.cn/searches/element/ele/_mget";
                 bool isLineDetailExisted;
                 lineLocalizer.Localize(lineDetail, string.Empty, version, out isLineDetailExisted);
