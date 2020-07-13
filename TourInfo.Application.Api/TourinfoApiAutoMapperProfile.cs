@@ -121,11 +121,11 @@ namespace TourInfo.Application.Api
                .ForMember(x => x.TitleImage, c => c.MapFrom(d => d.img.LocalizedUrl))
                  //.ForMember(x => x.Content, c => c.MapFrom(d => d.content.ImageLocalizedText));
             ;
-            CreateMap<ZiBoWechatNews, Models.HotNews>()
+            CreateMap<ZbtaNews, Models.HotNews>()
              .ForMember(x => x.Id, c => c.MapFrom(d => d.id))
-             .ForMember(x => x.Title, c => c.MapFrom(d => d.title))
-                .ForMember(x => x.ImageUrl, c => c.MapFrom(d => d.img.LocalizedUrl))
-                 .ForMember(x => x.Date, c => c.MapFrom(d => d.pubtime.ToString("yyyy-MM-dd")))
+             .ForMember(x => x.Title, c => c.MapFrom(d => d.titles))
+                .ForMember(x => x.ImageUrl, c => c.MapFrom(d => d.image.LocalizedUrl))
+                 .ForMember(x => x.Date, c => c.MapFrom(d => d.releaseTime))
               ;
         }
     }
