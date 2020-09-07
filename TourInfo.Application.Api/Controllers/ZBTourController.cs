@@ -11,6 +11,7 @@ using TourInfo.Domain.DomainModel.ZiBoWechatNews;
 using TourInfo.Domain.ZBTA;
 using TourInfo.Domain.DomainModel.WHY;
 using TourInfo.Domain.DomainModel.SDTA;
+using TourInfo.Domain.DomainModel.Weather;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace TourInfo.Application.Api.Controllers
@@ -24,7 +25,7 @@ namespace TourInfo.Application.Api.Controllers
         IRepository<TourInfo.Domain.ZBTA.ZbtaNews, string> repositoryZbta;
         IMapper mapper;
         IRepository<WhyActivity, string> whyActivityRepository;
-
+        IWeatherApplication weatherApplication;
 
         public ZBTourController(IRepository<ZiBoWechatNews, string> repositoryWechatNews,
             IRepository<ZbtaNews, string> repositoryZbta,
@@ -35,6 +36,7 @@ namespace TourInfo.Application.Api.Controllers
              IRepository<LineDetail, string> lineDetailRepository,
             IRepository<LineDetailScenic.Doc.Source, string> lineDetailScenicRepository,
             IRepository<Lines, string> linesRepository,
+            IWeatherApplication weatherApplication,
         IMapper mapper)
         {
             this.linesRepository=linesRepository;
@@ -47,6 +49,7 @@ namespace TourInfo.Application.Api.Controllers
             this.whyActivityRepository = whyActivityRepository;
             this.repositoryCityGuideDetail = repositoryCityGuideDetail;
             this.repositorySpecialLocalProductDetail = repositorySpecialLocalProductDetail;
+            this.weatherApplication=weatherApplication;
         }
 
         /// <summary>
@@ -276,6 +279,13 @@ namespace TourInfo.Application.Api.Controllers
 
 
            
+        }
+        [HttpGet("GetWeathre")]
+        public ActionResult<dynamic> GetWeather(string version)
+        {
+
+            return weatherApplication.GetWeather();
+
         }
     }
 }
