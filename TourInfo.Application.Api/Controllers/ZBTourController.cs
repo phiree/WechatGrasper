@@ -204,10 +204,10 @@ namespace TourInfo.Application.Api.Controllers
 
         [HttpGet("GetSpecialLocalProducts")]
 
-        public ResponseWrapperWithList<Summary> GetSpecialLocalProducts(int pageIndex = 0, int pageSize = 10)
+        public ResponseWrapperWithList<SpecialLocalProductSummary> GetSpecialLocalProducts(int pageIndex = 0, int pageSize = 10)
         {
-            return new ResponseWrapperWithList<Summary>(
-                mapper.Map<IList<Summary>>(
+            return new ResponseWrapperWithList<SpecialLocalProductSummary>(
+                mapper.Map<IList<SpecialLocalProductSummary>>(
                 repositorySpecialLocalProductDetail.FindList(x => true, x => x.commodity_id, true, pageIndex, pageSize)
                 ));
         }
