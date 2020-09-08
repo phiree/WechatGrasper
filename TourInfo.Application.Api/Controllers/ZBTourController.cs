@@ -211,8 +211,14 @@ namespace TourInfo.Application.Api.Controllers
                 repositorySpecialLocalProductDetail.FindList(x => true, x => x.commodity_id, true, pageIndex-1, pageSize)
                 ));
         }
+        /// <summary>
+        /// 特色商品搜索
+        /// </summary>
+        /// <param name="keyWord">标题,介绍,Tag中的部分文字</param>
+        /// <param name="pageIndex">默认值1</param>
+        /// <param name="pageSize">默认值20</param>
+        /// <returns></returns>
         [HttpGet("SearchSpecialLocalProducts")]
-
         public ResponseWrapperWithList<SpecialLocalProductSummary> SearchSpecialLocalProducts(string keyWord,int pageIndex = 1, int pageSize = 20)
         {
             return new ResponseWrapperWithList<SpecialLocalProductSummary>(
@@ -289,8 +295,13 @@ namespace TourInfo.Application.Api.Controllers
 
            
         }
+        /// <summary>
+        /// 获取天气
+        /// </summary>
+        /// <param name="version"></param>
+        /// <returns></returns>
         [HttpGet("GetWeather")]
-        public ActionResult<dynamic> GetWeather(string version)
+        public ActionResult<dynamic> GetWeather()
         {
 
             return weatherApplication.GetWeather();

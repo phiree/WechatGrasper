@@ -53,6 +53,15 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:TourInfo.Application.Api.Controllers.ZBTourController.SearchSpecialLocalProducts(System.String,System.Int32,System.Int32)">
+            <summary>
+            特色商品搜索
+            </summary>
+            <param name="keyWord">标题,介绍,Tag中的部分文字</param>
+            <param name="pageIndex">默认值1</param>
+            <param name="pageSize">默认值20</param>
+            <returns></returns>
+        </member>
         <member name="M:TourInfo.Application.Api.Controllers.ZBTourController.GetSpecialLocalProduct(System.String)">
             <summary>
             特色商品详情
@@ -70,6 +79,13 @@
             <summary>
             获取路线详情.
             </summary>
+            <returns></returns>
+        </member>
+        <member name="M:TourInfo.Application.Api.Controllers.ZBTourController.GetWeather">
+            <summary>
+            获取天气
+            </summary>
+            <param name="version"></param>
             <returns></returns>
         </member>
         <member name="T:TourInfo.Application.Api.Models.HomeCarousel">
