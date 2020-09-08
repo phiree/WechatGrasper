@@ -211,6 +211,15 @@ namespace TourInfo.Application.Api.Controllers
                 repositorySpecialLocalProductDetail.FindList(x => true, x => x.commodity_id, true, pageIndex-1, pageSize)
                 ));
         }
+        [HttpGet("SearchSpecialLocalProducts")]
+
+        public ResponseWrapperWithList<SpecialLocalProductSummary> SearchSpecialLocalProducts(string keyWord,int pageIndex = 1, int pageSize = 20)
+        {
+            return new ResponseWrapperWithList<SpecialLocalProductSummary>(
+                mapper.Map<IList<SpecialLocalProductSummary>>(
+                repositorySpecialLocalProductDetail.FindList(x => x.name_cn.Contains(keyWord)||x.commodity_intr.Contains(keyWord)||x.comm_type_name.Contains(keyWord), x => x.commodity_id, true, pageIndex - 1, pageSize)
+                ));
+        }
         /// <summary>
         /// 特色商品详情
         /// </summary>
