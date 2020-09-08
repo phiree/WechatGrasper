@@ -47,17 +47,11 @@
             <param name="id">城市锦囊列表返回的id</param>
             <returns></returns>
         </member>
-        <member name="M:TourInfo.Application.Api.Controllers.ZBTourController.GetSpecialLocalProducts(System.Int32,System.Int32)">
+        <member name="M:TourInfo.Application.Api.Controllers.ZBTourController.GetSpecialLocalProducts(System.String,System.Int32,System.Int32)">
             <summary>
-            特色商品列表
+            特色商品列表/搜索
             </summary>
-            <returns></returns>
-        </member>
-        <member name="M:TourInfo.Application.Api.Controllers.ZBTourController.SearchSpecialLocalProducts(System.String,System.Int32,System.Int32)">
-            <summary>
-            特色商品搜索
-            </summary>
-            <param name="keyWord">标题,介绍,Tag中的部分文字</param>
+            <param name="keyWord">如果为空,则返回所有.标题,介绍,Tag中的部分文字</param>
             <param name="pageIndex">默认值1</param>
             <param name="pageSize">默认值20</param>
             <returns></returns>

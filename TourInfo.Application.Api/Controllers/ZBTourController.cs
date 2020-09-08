@@ -198,34 +198,29 @@ namespace TourInfo.Application.Api.Controllers
 
         IRepository<SpecialLocalProductDetail.Data, string> repositorySpecialLocalProductDetail;
         /// <summary>
-        /// 特色商品列表
+        /// 特色商品列表/搜索
         /// </summary>
+        /// <param name="keyWord">如果为空,则返回所有.标题,介绍,Tag中的部分文字</param>
+        /// <param name="pageIndex">默认值1</param>
+        /// <param name="pageSize">默认值20</param>
         /// <returns></returns>
 
         [HttpGet("GetSpecialLocalProducts")]
 
-        public ResponseWrapperWithList<SpecialLocalProductSummary> GetSpecialLocalProducts(int pageIndex = 1, int pageSize = 20)
+        public ResponseWrapperWithList<SpecialLocalProductSummary> GetSpecialLocalProducts(string keyWord, int pageIndex = 1, int pageSize = 20)
         {
+            var where= new Func<SpecialLocalProductDetail.Data, bool>(x=>true);
+            if(!string.IsNullOrEmpty(keyWord))
+            {
+                  where = new Func<SpecialLocalProductDetail.Data, bool>(x => x.name_cn.Contains(keyWord) || x.commodity_intr.Contains(keyWord) || x.comm_type_name.Contains(keyWord));
+            }
+
             return new ResponseWrapperWithList<SpecialLocalProductSummary>(
                 mapper.Map<IList<SpecialLocalProductSummary>>(
-                repositorySpecialLocalProductDetail.FindList(x => true, x => x.commodity_id, true, pageIndex-1, pageSize)
+                repositorySpecialLocalProductDetail.FindList(where, x => x.commodity_id, true, pageIndex-1, pageSize)
                 ));
         }
-        /// <summary>
-        /// 特色商品搜索
-        /// </summary>
-        /// <param name="keyWord">标题,介绍,Tag中的部分文字</param>
-        /// <param name="pageIndex">默认值1</param>
-        /// <param name="pageSize">默认值20</param>
-        /// <returns></returns>
-        [HttpGet("SearchSpecialLocalProducts")]
-        public ResponseWrapperWithList<SpecialLocalProductSummary> SearchSpecialLocalProducts(string keyWord,int pageIndex = 1, int pageSize = 20)
-        {
-            return new ResponseWrapperWithList<SpecialLocalProductSummary>(
-                mapper.Map<IList<SpecialLocalProductSummary>>(
-                repositorySpecialLocalProductDetail.FindList(x => x.name_cn.Contains(keyWord)||x.commodity_intr.Contains(keyWord)||x.comm_type_name.Contains(keyWord), x => x.commodity_id, true, pageIndex - 1, pageSize)
-                ));
-        }
+       
         /// <summary>
         /// 特色商品详情
         /// </summary>
