@@ -98,10 +98,10 @@ namespace TourInfo.Application.Api.Controllers
         /// <param name="pageSize">分页页幅,默认10条</param>
         /// <returns></returns>
         [HttpGet("GetHomeHotNews")]
-        public ResponseWrapperWithList<HotNews> GetHomeHotNews(int pageIndex = 0, int pageSize = 10)
+        public ResponseWrapperWithList<HotNews> GetHomeHotNews(int pageIndex = 1, int pageSize = 20)
         {
             // var wechatList = repositoryWechatNews.GetList(0, 1);
-            var zbtaNewsList = repositoryZbta.FindList(x => true, x => x.created, true, pageIndex, pageSize);
+            var zbtaNewsList = repositoryZbta.FindList(x => true, x => x.created, true, pageIndex-1, pageSize);
             var zbtas = mapper.Map<List<HotNews>>(zbtaNewsList);
 
             // var wechats = mapper.Map<List<HotNews>>(wechatList);
@@ -129,10 +129,10 @@ namespace TourInfo.Application.Api.Controllers
         /// <param name="pageSize">每页数量</param>
         /// <returns></returns>
         [HttpGet("GetHotActivities")]
-        public ResponseWrapperWithList<WhyActivitySummary> GetHotActivities(int pageIndex = 0, int pageSize = 10)
+        public ResponseWrapperWithList<WhyActivitySummary> GetHotActivities(int pageIndex =1, int pageSize =20)
         {
 
-            var activities = whyActivityRepository.GetList(pageIndex, pageSize);
+            var activities = whyActivityRepository.GetList(pageIndex-1, pageSize);
 
             var activitiyModels = mapper.Map<List<WhyActivitySummary>>(activities)
                 .Select(x =>
@@ -204,11 +204,11 @@ namespace TourInfo.Application.Api.Controllers
 
         [HttpGet("GetSpecialLocalProducts")]
 
-        public ResponseWrapperWithList<SpecialLocalProductSummary> GetSpecialLocalProducts(int pageIndex = 0, int pageSize = 10)
+        public ResponseWrapperWithList<SpecialLocalProductSummary> GetSpecialLocalProducts(int pageIndex = 1, int pageSize = 20)
         {
             return new ResponseWrapperWithList<SpecialLocalProductSummary>(
                 mapper.Map<IList<SpecialLocalProductSummary>>(
-                repositorySpecialLocalProductDetail.FindList(x => true, x => x.commodity_id, true, pageIndex, pageSize)
+                repositorySpecialLocalProductDetail.FindList(x => true, x => x.commodity_id, true, pageIndex-1, pageSize)
                 ));
         }
         /// <summary>
