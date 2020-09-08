@@ -280,7 +280,7 @@ namespace TourInfo.Application.Api.Controllers
 
            
         }
-        [HttpGet("GetWeathre")]
+        [HttpGet("GetWeather")]
         public ActionResult<dynamic> GetWeather(string version)
         {
 
