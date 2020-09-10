@@ -11,6 +11,7 @@ using TourInfo.Domain.DomainModel.ZiBoWechatNews;
 using TourInfo.Domain.ZBTA;
 using TourInfo.Domain.DomainModel.WHY;
 using TourInfo.Domain.DomainModel.SDTA;
+using TourInfo.Domain.DomainModel.Weather;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace TourInfo.Application.Api.Controllers
@@ -24,7 +25,7 @@ namespace TourInfo.Application.Api.Controllers
         IRepository<TourInfo.Domain.ZBTA.ZbtaNews, string> repositoryZbta;
         IMapper mapper;
         IRepository<WhyActivity, string> whyActivityRepository;
-
+        IWeatherApplication weatherApplication;
 
         public ZBTourController(IRepository<ZiBoWechatNews, string> repositoryWechatNews,
             IRepository<ZbtaNews, string> repositoryZbta,
@@ -35,6 +36,7 @@ namespace TourInfo.Application.Api.Controllers
              IRepository<LineDetail, string> lineDetailRepository,
             IRepository<LineDetailScenic.Doc.Source, string> lineDetailScenicRepository,
             IRepository<Lines, string> linesRepository,
+            IWeatherApplication weatherApplication,
         IMapper mapper)
         {
             this.linesRepository=linesRepository;
@@ -47,6 +49,7 @@ namespace TourInfo.Application.Api.Controllers
             this.whyActivityRepository = whyActivityRepository;
             this.repositoryCityGuideDetail = repositoryCityGuideDetail;
             this.repositorySpecialLocalProductDetail = repositorySpecialLocalProductDetail;
+            this.weatherApplication=weatherApplication;
         }
 
         /// <summary>
@@ -95,10 +98,10 @@ namespace TourInfo.Application.Api.Controllers
         /// <param name="pageSize">分页页幅,默认10条</param>
         /// <returns></returns>
         [HttpGet("GetHomeHotNews")]
-        public ResponseWrapperWithList<HotNews> GetHomeHotNews(int pageIndex = 0, int pageSize = 10)
+        public ResponseWrapperWithList<HotNews> GetHomeHotNews(int pageIndex = 1, int pageSize = 20)
         {
             // var wechatList = repositoryWechatNews.GetList(0, 1);
-            var zbtaNewsList = repositoryZbta.FindList(x => true, x => x.created, true, pageIndex, pageSize);
+            var zbtaNewsList = repositoryZbta.FindList(x => true, x => x.created, true, pageIndex-1, pageSize);
             var zbtas = mapper.Map<List<HotNews>>(zbtaNewsList);
 
             // var wechats = mapper.Map<List<HotNews>>(wechatList);
@@ -126,10 +129,10 @@ namespace TourInfo.Application.Api.Controllers
         /// <param name="pageSize">每页数量</param>
         /// <returns></returns>
         [HttpGet("GetHotActivities")]
-        public ResponseWrapperWithList<WhyActivitySummary> GetHotActivities(int pageIndex = 0, int pageSize = 10)
+        public ResponseWrapperWithList<WhyActivitySummary> GetHotActivities(int pageIndex =1, int pageSize =20)
         {
 
-            var activities = whyActivityRepository.GetList(pageIndex, pageSize);
+            var activities = whyActivityRepository.GetList(pageIndex-1, pageSize);
 
             var activitiyModels = mapper.Map<List<WhyActivitySummary>>(activities)
                 .Select(x =>
@@ -195,19 +198,29 @@ namespace TourInfo.Application.Api.Controllers
 
         IRepository<SpecialLocalProductDetail.Data, string> repositorySpecialLocalProductDetail;
         /// <summary>
-        /// 特色商品列表
+        /// 特色商品列表/搜索
         /// </summary>
+        /// <param name="keyWord">如果为空,则返回所有.标题,介绍,Tag中的部分文字</param>
+        /// <param name="pageIndex">默认值1</param>
+        /// <param name="pageSize">默认值20</param>
         /// <returns></returns>
 
         [HttpGet("GetSpecialLocalProducts")]
 
-        public ResponseWrapperWithList<Summary> GetSpecialLocalProducts(int pageIndex = 0, int pageSize = 10)
+        public ResponseWrapperWithList<SpecialLocalProductSummary> GetSpecialLocalProducts(string keyWord, int pageIndex = 1, int pageSize = 20)
         {
-            return new ResponseWrapperWithList<Summary>(
-                mapper.Map<IList<Summary>>(
-                repositorySpecialLocalProductDetail.FindList(x => true, x => x.commodity_id, true, pageIndex, pageSize)
+            var where= new Func<SpecialLocalProductDetail.Data, bool>(x=>true);
+            if(!string.IsNullOrEmpty(keyWord))
+            {
+                  where = new Func<SpecialLocalProductDetail.Data, bool>(x => x.name_cn.Contains(keyWord) || x.commodity_intr.Contains(keyWord) || x.comm_type_name.Contains(keyWord));
+            }
+
+            return new ResponseWrapperWithList<SpecialLocalProductSummary>(
+                mapper.Map<IList<SpecialLocalProductSummary>>(
+                repositorySpecialLocalProductDetail.FindList(where, x => x.commodity_id, true, pageIndex-1, pageSize)
                 ));
         }
+       
         /// <summary>
         /// 特色商品详情
         /// </summary>
@@ -276,6 +289,18 @@ namespace TourInfo.Application.Api.Controllers
 
 
            
+        }
+        /// <summary>
+        /// 获取天气
+        /// </summary>
+        /// <param name="version"></param>
+        /// <returns></returns>
+        [HttpGet("GetWeather")]
+        public ActionResult<dynamic> GetWeather()
+        {
+
+            return weatherApplication.GetWeather();
+
         }
     }
 }
