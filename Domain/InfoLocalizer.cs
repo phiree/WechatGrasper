@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using TourInfo.Domain;
 using TourInfo.Domain.Base;
@@ -18,9 +20,9 @@ namespace TourInfo.Domain
 
         public InfoLocalizer(IRepository<T, Key> repository, IUrlFetcher urlFetcher, string localSavedPath, string imageClientPath)
         {
-            this.urlFetcher=urlFetcher;
+            this.urlFetcher = urlFetcher;
             this.repository = repository;
-              imageLocalizer=new ImageLocalizer(urlFetcher,localSavedPath,imageClientPath);
+            imageLocalizer = new ImageLocalizer(urlFetcher, localSavedPath, imageClientPath);
             this.localSavedPath = localSavedPath;
             this.imageClientPath = imageClientPath;
         }
@@ -35,20 +37,21 @@ namespace TourInfo.Domain
                 isExisted = true;
                 return;
             }
-
+            FetchProperty(t, originImageRootUrl, version);
+            /*
             foreach (var p in t.GetType().GetProperties())
             {
                 if (p.PropertyType == typeof(ImageUrl))
                 {
                     var imageUrl = (ImageUrl)p.GetValue(t);
-                    
+
                     if (imageUrl == null || string.IsNullOrEmpty(imageUrl.OriginalUrl))
                     {
                         imageUrl = ImageUrl.Null;
                     }
                     else
                     {
-                        imageUrl.Localize(imageLocalizer,originImageRootUrl);
+                        imageUrl.Localize(imageLocalizer, originImageRootUrl);
                         //imageUrl.UpdateLocalizedUrl(imageLocalizer.Localize(originImageRootUrl + imageUrl.OriginalUrl  ));
 
                     }
@@ -58,7 +61,7 @@ namespace TourInfo.Domain
                 {
                     var imageUrl = (ImageUrlsInText)p.GetValue(t);
 
-                    imageUrl.Localize(imageLocalizer,originImageRootUrl);
+                    imageUrl.Localize(imageLocalizer, originImageRootUrl);
                     p.SetValue(t, imageUrl);
 
                 }
@@ -69,19 +72,78 @@ namespace TourInfo.Domain
                     foreach (var itemP in arrayP)
                     {
                         var imageUrl = itemP;
-                        imageUrl.Localize(imageLocalizer ,originImageRootUrl  );
+                        imageUrl.Localize(imageLocalizer, originImageRootUrl);
                         //string localizedImage = imageLocalizer.Localize(imageUrl.OriginalUrl, localSavedPath);
                         //p.SetValue(t, new ImageUrl(imageUrl.OriginalUrl, localizedImage));
                         imageUrls.Add(imageUrl);
                     }
                     p.SetValue(t, imageUrls.ToArray());
                 }
+                else if (p.PropertyType.IsArray)
+                {
+
+                }
             }
+          */
             t.Version = version;
             repository.Insert(t);
 
         }
+        private void FetchProperty(object t, string originImageRootUrl, string version)
+        {
+            foreach (var p in t.GetType().GetProperties())
+            {
+                var pv = p.GetValue(t);
+                if (p.PropertyType == typeof(ImageUrl))
+                {
+                    var imageUrl = (ImageUrl)p.GetValue(t);
+
+                    if (imageUrl == null || string.IsNullOrEmpty(imageUrl.OriginalUrl))
+                    {
+                        imageUrl = ImageUrl.Null;
+                    }
+                    else
+                    {
+                        imageUrl.Localize(imageLocalizer, originImageRootUrl);
+                        //imageUrl.UpdateLocalizedUrl(imageLocalizer.Localize(originImageRootUrl + imageUrl.OriginalUrl  ));
+
+                    }
+                    p.SetValue(t, imageUrl);
+                }
+                else if (p.PropertyType == typeof(ImageUrlsInText))
+                {
+                    var imageUrl = (ImageUrlsInText)p.GetValue(t);
+
+                    imageUrl.Localize(imageLocalizer, originImageRootUrl);
+                    p.SetValue(t, imageUrl);
+
+                }
+                else if (p.PropertyType.IsAssignableFrom(typeof(IList<ImageUrl>)))
+                {
+                    var arrayP = (IList<ImageUrl>)p.GetValue(t);
+                    var imageUrls = new List<ImageUrl>();
+                    foreach (var itemP in arrayP)
+                    {
+                        var imageUrl = itemP;
+                        imageUrl.Localize(imageLocalizer, originImageRootUrl);
+                        //string localizedImage = imageLocalizer.Localize(imageUrl.OriginalUrl, localSavedPath);
+                        //p.SetValue(t, new ImageUrl(imageUrl.OriginalUrl, localizedImage));
+                        imageUrls.Add(imageUrl);
+                    }
+                    p.SetValue(t, imageUrls.ToArray());
+                }
+                else if (p.PropertyType.IsGenericType)
+                {
+                    
+                   // var arrT = (Array)p.GetValue(t);
+                    foreach (var newt in pv as IEnumerable)
+                    {
+                        FetchProperty(newt, originImageRootUrl, version);
+                    }
+                }
+            }
 
 
+        }
     }
 }
