@@ -68,29 +68,24 @@ namespace TourInfo.Application.Api
                     .ForMember(x => x.Summary, c => c.MapFrom(d => d.description))
                       .ForMember(x => x.Content, c => c.MapFrom(d => d.content.ImageLocalizedText))
             ;
-
-            CreateMap<SpecialLocalProductDetail.Data.Picture,string>()
-                .ConvertUsing(r => r.pho_path.OriginalUrl);
-            ;
             //特色商品
+            CreateMap<SpecialLocalProductDetail.Data.Picture,string>()
+                .ConvertUsing(r => r.pho_path.LocalizedUrl);
+            ;
           
-            CreateMap<SpecialLocalProductDetail.Data, SpecialProductModel>()
-                 .IncludeBase<SpecialLocalProductDetail.Data, Detail>()
+          
+            CreateMap<SpecialLocalProductDetail.Data, SpecialLocalProductDetailModel>()
+                 .IncludeBase<SpecialLocalProductDetail.Data, SpecialLocalProductSummary>()
                   .ForMember(x => x.Content, c => c.MapFrom(d => d.commodity_intr))
             .ForMember(x => x.Images, c => c.MapFrom(d => d.pictures))
             ;
-            CreateMap<SpecialLocalProductDetail.Data, SpecialLocalProductSummary>()
-                .IncludeBase< SpecialLocalProductDetail.Data, Summary >()
-                .ForMember(x => x.Tag, c => c.MapFrom(d => d.comm_type_name))
-                .ForMember(x => x.Introduction, c => c.MapFrom(d => d.commodity_intr))
-                ;
-            CreateMap<SpecialLocalProductDetail.Data, Detail>()
-               .ForMember(x => x.Content, c => c.MapFrom(d => d.commodity_intr))
-               ;
-            CreateMap<SpecialLocalProductDetail.Data, Summary>()
+           
+           
+            CreateMap<SpecialLocalProductDetail.Data,SpecialLocalProductSummary>()
 
                 .ForMember(x => x.Title, c => c.MapFrom(d => d.name_cn))
-
+                 .ForMember(x => x.Tag, c => c.MapFrom(d => d.comm_type_name))
+                .ForMember(x => x.Introduction, c => c.MapFrom(d => d.commodity_intr))
                   .ForMember(x => x.ImageUrl, c => c.MapFrom(d => d.defaultphoto.LocalizedUrl))
                    .ForMember(x => x.Date, c => c.MapFrom(d => d.auditdate))
                .ForMember(x => x.Id, c => c.MapFrom(d => d.id))

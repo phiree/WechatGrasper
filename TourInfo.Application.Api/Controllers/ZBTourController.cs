@@ -228,9 +228,9 @@ namespace TourInfo.Application.Api.Controllers
         /// <returns></returns>
         [HttpGet("GetSpecialLocalProduct")]
 
-        public ResponseWrapper<SpecialProductModel> GetSpecialLocalProduct(string id)
+        public ResponseWrapper<SpecialLocalProductDetailModel> GetSpecialLocalProduct(string id)
         {
-            return new ResponseWrapper<SpecialProductModel>(mapper.Map<SpecialProductModel>(repositorySpecialLocalProductDetail.Get(id)));
+            return new ResponseWrapper<SpecialLocalProductDetailModel>(mapper.Map<SpecialLocalProductDetailModel>(repositorySpecialLocalProductDetail.Get(id)));
         }
 
         IRepository<LineDetail, string> lineDetailRepository;

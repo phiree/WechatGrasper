@@ -9,9 +9,6 @@ namespace TourInfo.Application.Api.Models
     {
         public string Content { get;set;}
     }
-    public class SpecialLocalProductSummary:Summary
-    { 
-        public string Tag { get;set;}
-        public string Introduction { get;set;}
-        }
+    
+  
 }
