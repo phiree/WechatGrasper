@@ -52,6 +52,7 @@ namespace TourInfo.Application.Api
                 ;
             services.Configure<ForwardedHeadersOptions>(options =>
             {
+               // options.KnownProxies.Add(new System.Net.IPAddress();
                 options.ForwardedHeaders =
                    ForwardedHeaders.All;
             });
@@ -119,7 +120,7 @@ namespace TourInfo.Application.Api
             string sdTaImageLocalSavedPath = Configuration.GetValue<string>("Sdta:ImageLocalSavePath");
             string sdTaImageClientPath = Configuration.GetValue<string>("Sdta:ImageClientPath");
 
-
+            
             var containerBuilder = new Autofac.ContainerBuilder();
             containerBuilder.Populate(services);
             containerBuilder.RegisterModule(new TourInfo.Domain.TourInfoDomainAutofactModel
@@ -151,7 +152,7 @@ namespace TourInfo.Application.Api
             //{
             app.UseDeveloperExceptionPage();
             //}
-
+            app.UseStaticFiles();
             app.UseMvc();
             app.UseSwagger();
             app.UseSwaggerUI(options =>

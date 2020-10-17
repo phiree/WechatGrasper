@@ -4,7 +4,7 @@
         <name>TourInfo.Application.Api</name>
     </assembly>
     <members>
-        <member name="M:TourInfo.Application.Api.Controllers.ZBTourController.GetHomeCarousels(System.Int32)">
+        <member name="F:TourInfo.Application.Api.Controllers.ZBTourController.host">
             <summary>
             1 首页轮播图
             </summary>

@@ -58,6 +58,7 @@ namespace TourInfo.Application.Api.Controllers
         /// <returns></returns>
         /// <param name="size">数量</param>
         // GET: api/<ZBTourController>/GetHomeCarousels
+        string host = "https://zb.4yankj.cn";
         [HttpGet("GetHomeCarousels")]
         public ResponseWrapperWithList<HomeCarousel> GetHomeCarousels(int size = 3)
         {
@@ -67,7 +68,7 @@ namespace TourInfo.Application.Api.Controllers
                 .Select(x =>
                 {
 
-                    x.DetailUrl = Request.Scheme + "://" + Request.Host + "/api/tourinfo/GetZbtaNewsDetail?id=" + x.Id;
+                    x.DetailUrl = host+ "/api/tourinfo/GetZbtaNewsDetail?id=" + x.Id;
 
                     return x;
                 });
@@ -79,7 +80,7 @@ namespace TourInfo.Application.Api.Controllers
                    {
                        if (!x.ImageUrl.StartsWith("http"))
                        {
-                           x.ImageUrl = (Request.Scheme + "://" + Request.Host + "/" + x.ImageUrl).Replace(@"\", @"/");
+                           x.ImageUrl = (host + "/" + x.ImageUrl).Replace(@"\", @"/");
                        }
 
                        return x;
@@ -111,7 +112,7 @@ namespace TourInfo.Application.Api.Controllers
                 {
                     if (!x.ImageUrl.StartsWith("http"))
                     {
-                        x.ImageUrl = (Request.Scheme + "://" + Request.Host + "/" + x.ImageUrl).Replace(@"\", @"/");
+                        x.ImageUrl = (host + "/" + x.ImageUrl).Replace(@"\", @"/");
                     }
 
                     return x;
@@ -138,7 +139,7 @@ namespace TourInfo.Application.Api.Controllers
                 .Select(x =>
                 {
                     x.ImageUrl =
-          (Request.Scheme + "://" + Request.Host + "/" + x.ImageUrl).Replace(@"\", @"/");
+          (host+ "/" + x.ImageUrl).Replace(@"\", @"/");
                     return x;
                 }).ToList();
 
@@ -159,7 +160,7 @@ namespace TourInfo.Application.Api.Controllers
 
             var activitiyModel = mapper.Map<WhyActivityDetail>(activity);
             activitiyModel.ImageUrl =
-           (Request.Scheme + "://" + Request.Host + "/" + activitiyModel.ImageUrl).Replace(@"\", @"/");
+           (host  + "/" + activitiyModel.ImageUrl).Replace(@"\", @"/");
 
 
 
