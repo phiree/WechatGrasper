@@ -127,5 +127,9 @@ namespace TourInfo.Infrastracture.Repository.EFCore
         {
             return tourInfoDbContext.Set<T>().Skip(pageIndex * pageSize).Take(pageSize).ToList();
         }
+        public IList<T> GetList(int pageIndex, int pageSize,Func<T,T> order)
+        {
+            return tourInfoDbContext.Set<T>().Skip(pageIndex * pageSize).OrderByDescending(order).Take(pageSize).ToList();
+        }
     }
 }

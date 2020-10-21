@@ -76,7 +76,10 @@ namespace TourInfo.Domain.DomainModel
 
                     infoLocalizer.Localize(news, imageBaseUrl, version, out bool isExisted);
                     logger.LogDebug("isExists:" + isExisted);
-                    if (isExisted) { return; }
+                    
+                    if (isExisted) {
+                        logger.LogDebug(news.id.ToString());
+                        return; }
                 }
             }
             GraspNews(version, requstData.BuildNextPageRequest());

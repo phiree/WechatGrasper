@@ -12,6 +12,7 @@ using TourInfo.Domain.ZBTA;
 using TourInfo.Domain.DomainModel.WHY;
 using TourInfo.Domain.DomainModel.SDTA;
 using TourInfo.Domain.DomainModel.Weather;
+using System.Security.Cryptography.X509Certificates;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace TourInfo.Application.Api.Controllers
@@ -132,8 +133,8 @@ namespace TourInfo.Application.Api.Controllers
         [HttpGet("GetHotActivities")]
         public ResponseWrapperWithList<WhyActivitySummary> GetHotActivities(int pageIndex =1, int pageSize =20)
         {
-
-            var activities = whyActivityRepository.GetList(pageIndex-1, pageSize);
+            Func<WhyActivity, DateTime> funOrder = x => x.createTime;
+            var activities = whyActivityRepository.FindList(x=>true,funOrder,true, pageIndex-1, pageSize);
 
             var activitiyModels = mapper.Map<List<WhyActivitySummary>>(activities)
                 .Select(x =>
@@ -193,7 +194,13 @@ namespace TourInfo.Application.Api.Controllers
         {
 
             var result = mapper.Map<CityGuideDetailModel>(repositoryCityGuideDetail.Get(id));
+            result.Content = ImageUrlCorrection(result.Content);
             return new ResponseWrapper<CityGuideDetailModel>(result);
+        }
+        string domainName = "https://zb.4yankj.cn";
+        private string ImageUrlCorrection(string contentWithRelativeImagePath)
+        {
+            return contentWithRelativeImagePath.Replace("/DownloadImages/", domainName + "/DownloadImages/");
         }
 
 
