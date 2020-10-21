@@ -32,6 +32,7 @@ namespace TourInfo.Domain.Application.WHY
         ILoggerFactory loggerFactory;
         IMapper mapper;
         IRepository<WhyModel, string> repository;
+        
         IWhyModelMerger whyMerger;
 
         IRapiSync rapiSync;
@@ -137,8 +138,8 @@ namespace TourInfo.Domain.Application.WHY
         {
             
 
-            var fetcherWithPaging=new FetchWithPaging<WhyActivityWrapper,WhyActivity,string>(activityBaseUrl,whyImageBaseUrl,
-                (activity) => {return activity.recentHoldEndTime<=new DateTime(2020,5,1);}
+            var fetcherWithPaging=new FetchWithPaging<WhyActivityWrapper,WhyActivity,string>(loggerFactory,activityBaseUrl,whyImageBaseUrl,
+                (activity) => { logger.LogDebug("Activit.RecentholdEndTime:"+activity.recentHoldEndTime); return activity.recentHoldEndTime<=new DateTime(2020,5,1);}
                 ,InfoLocalizerActivities,"Get");
             fetcherWithPaging.GraspNews(version,new WhyActivityRequest(1,20));
             }

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using RestSharp;
 using System;
 using System.Collections;
@@ -35,10 +36,11 @@ namespace TourInfo.Domain.DomainModel
 
         Func<T, bool> terminalPoint;
         IInfoLocalizer<T, Key> infoLocalizer;
-
+        ILogger<T> logger;
         Method method;
-        public FetchWithPaging(string url, string imageBaseUrl, Func<T,bool> terminalPoint, IInfoLocalizer<T, Key> infoLocalizer, string method)
+        public FetchWithPaging(ILoggerFactory loggerFactory, string url, string imageBaseUrl, Func<T,bool> terminalPoint, IInfoLocalizer<T, Key> infoLocalizer, string method)
         {
+            logger = loggerFactory.CreateLogger<T>();
             this.url = url;
             this.imageBaseUrl = imageBaseUrl;
             this.terminalPoint = terminalPoint;
@@ -57,16 +59,23 @@ namespace TourInfo.Domain.DomainModel
             }
 
             var response = client.Execute(request, method);
+            logger.LogDebug("ResponseCode:" + response.StatusCode);
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
+                
                 var responseData = JsonConvert.DeserializeObject<TWrapper>(response.Content,
                     new UnixTimestampJsonconverter(), new ImageUrlJsonConverter());
+                logger.LogDebug("detailcount:" + responseData.Details.Count());
                 if (responseData.Details.Count() == 0) { return; }
                 foreach (var news in responseData.Details)
                 {
-                    if (terminalPoint(news)) { return; }
+                    
+                    if (terminalPoint(news)) { 
+                        
+                        return; }
 
                     infoLocalizer.Localize(news, imageBaseUrl, version, out bool isExisted);
+                    logger.LogDebug("isExists:" + isExisted);
                     if (isExisted) { return; }
                 }
             }

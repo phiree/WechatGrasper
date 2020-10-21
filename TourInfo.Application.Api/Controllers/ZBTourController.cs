@@ -141,7 +141,7 @@ namespace TourInfo.Application.Api.Controllers
                     x.ImageUrl =
           (host+ "/" + x.ImageUrl).Replace(@"\", @"/");
                     return x;
-                }).ToList();
+                }). OrderByDescending(x=>x.Date).ToList();
 
 
             //  var zbtaCa=mapper.Map<List<HomeCarousel>>(zbtaNewsList);
