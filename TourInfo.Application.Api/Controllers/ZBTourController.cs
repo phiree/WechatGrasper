@@ -127,7 +127,7 @@ namespace TourInfo.Application.Api.Controllers
 
             var news = repositoryZbta.Get(id);
             var newsModel = mapper.Map<Detail>(news);
-           newsModel.ImageUrl= (host + "/" + news.image).Replace(@"\", @"/");
+           newsModel.ImageUrl= (host + "/" + newsModel.ImageUrl).Replace(@"\", @"/");
             return new ResponseWrapper<Detail>(newsModel);
 
         }
