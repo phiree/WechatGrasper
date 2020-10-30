@@ -26,31 +26,42 @@ namespace TourInfo.Application.Api
             CreateMap<ZbtaNews, Models.HomeCarousel>()
                 .ForMember(x => x.Id, c => c.MapFrom(d => d.id))
                 .ForMember(x => x.Title, c => c.MapFrom(d => d.titles))
-                 .ForMember(x =>x.ImageUrl, c => c.MapFrom(d => d.image.LocalizedUrl))
-                    .ForMember(x => x.Date, c => c.MapFrom(d => Convert.ToDateTime( d.created).ToString("yyyy-MM-dd")))
+                 .ForMember(x => x.ImageUrl, c => c.MapFrom(d => d.image.LocalizedUrl))
+                    .ForMember(x => x.Date, c => c.MapFrom(d => Convert.ToDateTime(d.created).ToString("yyyy-MM-dd")))
                  ;
-           //资讯列表
+            //资讯列表
             CreateMap<ZbtaNews, Models.ZbtaNewsDetail>()
            .ForMember(x => x.Title, c => c.MapFrom(d => d.titles))
              .ForMember(x => x.TitleImage, c => c.MapFrom(d => d.image.LocalizedUrl))
                .ForMember(x => x.Content, c => c.MapFrom(d => d.details));
             ;
-           
-          
+            CreateMap<ZbtaNews, Summary>()
+                .ForMember(x => x.Title, c => c.MapFrom(d => d.titles))
+                .ForMember(x => x.Date, c => c.MapFrom(d => d.created))
+                .ForMember(x => x.ImageUrl, c => c.MapFrom(d => d.image.LocalizedUrl))
+
+                ;
+            //资讯列表
+            CreateMap<ZbtaNews, Detail>()
+                .IncludeBase<ZbtaNews, Summary>()
+           .ForMember(x => x.Content, c => c.MapFrom(d => d.details.ImageLocalizedText))
+              ;
+
+
             CreateMap<WhyActivity, Models.WhyActivitySummary>()
-                .Include<WhyActivity,WhyActivityDetail>()
+                .Include<WhyActivity, WhyActivityDetail>()
              .ForMember(x => x.Id, c => c.MapFrom(d => d.id))
              .ForMember(x => x.Title, c => c.MapFrom(d => d.name))
-                .ForMember(x => x.ImageUrl, c => c.MapFrom(d => d.hPoster.LocalizedUrl))
+                .ForMember(x => x.ImageUrl, c => c.MapFrom(d => d.hPoster.LocalizedUrl.Replace(".webp",".jpg")))
                  .ForMember(x => x.Date, c => c.MapFrom(d => Convert.ToDateTime(d.createTime).ToString("yyyy-MM-dd")))
                     .ForMember(x => x.StartDate, c => c.MapFrom(d => Convert.ToDateTime(d.recentHoldStartTime).ToString("yyyy-MM-dd")))
                        .ForMember(x => x.EndDate, c => c.MapFrom(d => Convert.ToDateTime(d.recentHoldEndTime).ToString("yyyy-MM-dd")))
                        ;
             CreateMap<WhyActivity, Models.WhyActivityDetail>()
-                     .ForMember(x => x.Content, c => c.MapFrom(d => d.content))
+                     .ForMember(x => x.Content, c => c.MapFrom(d => d.content.Replace(".webp",".jpg")));
              ;
 
-            CreateMap<CityGuide.Category.List,CityGuideListModel.GuideLineTitle>()
+            CreateMap<CityGuide.Category.List, CityGuideListModel.GuideLineTitle>()
                   .ForMember(x => x.Id, c => c.MapFrom(d => d.id))
                     .ForMember(x => x.Name, c => c.MapFrom(d => d.title))
                    .ForMember(x => x.Tag, c => c.MapFrom(d => d.tag))
@@ -60,7 +71,7 @@ namespace TourInfo.Application.Api
             //城市锦囊列表
             CreateMap<CityGuide.Category, CityGuideListModel>()
                     .ForMember(x => x.CategoryName, c => c.MapFrom(d => d.name))
-                    .ForMember(x=>x.Titles,c=>c.MapFrom(d=>d.list))
+                    .ForMember(x => x.Titles, c => c.MapFrom(d => d.list))
             ;
             //城市锦囊详情
             CreateMap<CityGuideDetail.Data, CityGuideDetailModel>()
@@ -69,19 +80,19 @@ namespace TourInfo.Application.Api
                       .ForMember(x => x.Content, c => c.MapFrom(d => d.content.ImageLocalizedText))
             ;
             //特色商品
-            CreateMap<SpecialLocalProductDetail.Data.Picture,string>()
+            CreateMap<SpecialLocalProductDetail.Data.Picture, string>()
                 .ConvertUsing(r => r.pho_path.LocalizedUrl);
             ;
-          
-          
+
+
             CreateMap<SpecialLocalProductDetail.Data, SpecialLocalProductDetailModel>()
                  .IncludeBase<SpecialLocalProductDetail.Data, SpecialLocalProductSummary>()
                   .ForMember(x => x.Content, c => c.MapFrom(d => d.commodity_intr))
             .ForMember(x => x.Images, c => c.MapFrom(d => d.pictures))
             ;
-           
-           
-            CreateMap<SpecialLocalProductDetail.Data,SpecialLocalProductSummary>()
+
+
+            CreateMap<SpecialLocalProductDetail.Data, SpecialLocalProductSummary>()
 
                 .ForMember(x => x.Title, c => c.MapFrom(d => d.name_cn))
                  .ForMember(x => x.Tag, c => c.MapFrom(d => d.comm_type_name))
@@ -101,14 +112,14 @@ namespace TourInfo.Application.Api
             //路线
             CreateMap<Domain.DomainModel.SDTA.LineDetail, LineListModel>()
 
-              
-                .ForMember(x=>x.ImageUrl,c=>c.MapFrom(d=>d.thumb.LocalizedUrl))
+
+                .ForMember(x => x.ImageUrl, c => c.MapFrom(d => d.thumb.LocalizedUrl))
                 .ForMember(x => x.LineTags, c => c.MapFrom(d => d.tags))
                 .ForMember(x => x.DaysAmount, c => c.MapFrom(d => d.days.Count))
-                .ForMember(x => x.ScenicTags, c => c.MapFrom(d => d.days.SelectMany(x=>x.place.Select(y=>y.tag)).Where(x=>!string.IsNullOrEmpty(x))))
-                .ForMember(x => x.ScenicsAmount, c => c.MapFrom(d => d.days.SelectMany(x=>x.place).Count()))
+                .ForMember(x => x.ScenicTags, c => c.MapFrom(d => d.days.SelectMany(x => x.place.Select(y => y.tag)).Where(x => !string.IsNullOrEmpty(x))))
+                .ForMember(x => x.ScenicsAmount, c => c.MapFrom(d => d.days.SelectMany(x => x.place).Count()))
                 ;
-            
+
 
             /*已过时*/
             CreateMap<ZiBoWechatNews, Models.HomeCarousel>()
@@ -121,7 +132,7 @@ namespace TourInfo.Application.Api
             CreateMap<ZiBoWechatNews, Models.WeChatNewsDetail>()
              .ForMember(x => x.Title, c => c.MapFrom(d => d.title))
                .ForMember(x => x.TitleImage, c => c.MapFrom(d => d.img.LocalizedUrl))
-                 //.ForMember(x => x.Content, c => c.MapFrom(d => d.content.ImageLocalizedText));
+            //.ForMember(x => x.Content, c => c.MapFrom(d => d.content.ImageLocalizedText));
             ;
             CreateMap<ZbtaNews, Models.HotNews>()
              .ForMember(x => x.Id, c => c.MapFrom(d => d.id))

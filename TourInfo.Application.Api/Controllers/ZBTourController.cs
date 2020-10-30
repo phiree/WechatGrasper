@@ -40,7 +40,7 @@ namespace TourInfo.Application.Api.Controllers
             IWeatherApplication weatherApplication,
         IMapper mapper)
         {
-            this.linesRepository=linesRepository;
+            this.linesRepository = linesRepository;
             this.lineDetailRepository = lineDetailRepository;
             this.lineDetailScenicRepository = lineDetailScenicRepository;
             this.repositoryCityGuide = repositoryCityGuide;
@@ -50,7 +50,7 @@ namespace TourInfo.Application.Api.Controllers
             this.whyActivityRepository = whyActivityRepository;
             this.repositoryCityGuideDetail = repositoryCityGuideDetail;
             this.repositorySpecialLocalProductDetail = repositorySpecialLocalProductDetail;
-            this.weatherApplication=weatherApplication;
+            this.weatherApplication = weatherApplication;
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace TourInfo.Application.Api.Controllers
                 .Select(x =>
                 {
 
-                    x.DetailUrl = host+ "/api/tourinfo/GetZbtaNewsDetail?id=" + x.Id;
+                    x.DetailUrl = host + "/api/tourinfo/GetZbtaNewsDetail?id=" + x.Id;
 
                     return x;
                 });
@@ -103,7 +103,7 @@ namespace TourInfo.Application.Api.Controllers
         public ResponseWrapperWithList<HotNews> GetHomeHotNews(int pageIndex = 1, int pageSize = 20)
         {
             // var wechatList = repositoryWechatNews.GetList(0, 1);
-            var zbtaNewsList = repositoryZbta.FindList(x => true, x => x.created, true, pageIndex-1, pageSize);
+            var zbtaNewsList = repositoryZbta.FindList(x => true, x => x.created, true, pageIndex - 1, pageSize);
             var zbtas = mapper.Map<List<HotNews>>(zbtaNewsList);
 
             // var wechats = mapper.Map<List<HotNews>>(wechatList);
@@ -121,8 +121,14 @@ namespace TourInfo.Application.Api.Controllers
             //  var zbtaCa=mapper.Map<List<HomeCarousel>>(zbtaNewsList);
             return new ResponseWrapperWithList<HotNews>(cas);
         }
+        [HttpGet("GetNewsDetail")]
+        public ResponseWrapper<Detail> GetZbtaNewsDetail(string id)
+        {
 
+            var news = repositoryZbta.Get(id);
+            return new ResponseWrapper<Detail>(mapper.Map<Detail>(news));
 
+        }
 
         /// <summary>
         /// 3 首页 热门资讯活动，取自 文化云活动 
@@ -131,18 +137,18 @@ namespace TourInfo.Application.Api.Controllers
         /// <param name="pageSize">每页数量</param>
         /// <returns></returns>
         [HttpGet("GetHotActivities")]
-        public ResponseWrapperWithList<WhyActivitySummary> GetHotActivities(int pageIndex =1, int pageSize =20)
+        public ResponseWrapperWithList<WhyActivitySummary> GetHotActivities(int pageIndex = 1, int pageSize = 20)
         {
             Func<WhyActivity, DateTime> funOrder = x => x.createTime;
-            var activities = whyActivityRepository.FindList(x=>true,funOrder,true, pageIndex-1, pageSize);
+            var activities = whyActivityRepository.FindList(x => true, funOrder, true, pageIndex - 1, pageSize);
 
             var activitiyModels = mapper.Map<List<WhyActivitySummary>>(activities)
                 .Select(x =>
                 {
                     x.ImageUrl =
-          (host+ "/" + x.ImageUrl).Replace(@"\", @"/");
+          (host + "/" + x.ImageUrl).Replace(@"\", @"/");
                     return x;
-                }). OrderByDescending(x=>x.Date).ToList();
+                }).OrderByDescending(x => x.Date).ToList();
 
 
             //  var zbtaCa=mapper.Map<List<HomeCarousel>>(zbtaNewsList);
@@ -161,7 +167,7 @@ namespace TourInfo.Application.Api.Controllers
 
             var activitiyModel = mapper.Map<WhyActivityDetail>(activity);
             activitiyModel.ImageUrl =
-           (host  + "/" + activitiyModel.ImageUrl).Replace(@"\", @"/");
+           (host + "/" + activitiyModel.ImageUrl).Replace(@"\", @"/");
 
 
 
@@ -217,18 +223,18 @@ namespace TourInfo.Application.Api.Controllers
 
         public ResponseWrapperWithList<SpecialLocalProductSummary> GetSpecialLocalProducts(string keyWord, int pageIndex = 1, int pageSize = 20)
         {
-            var where= new Func<SpecialLocalProductDetail.Data, bool>(x=>true);
-            if(!string.IsNullOrEmpty(keyWord))
+            var where = new Func<SpecialLocalProductDetail.Data, bool>(x => true);
+            if (!string.IsNullOrEmpty(keyWord))
             {
-                  where = new Func<SpecialLocalProductDetail.Data, bool>(x => x.name_cn.Contains(keyWord) || x.commodity_intr.Contains(keyWord) || x.comm_type_name.Contains(keyWord));
+                where = new Func<SpecialLocalProductDetail.Data, bool>(x => x.name_cn.Contains(keyWord) || x.commodity_intr.Contains(keyWord) || x.comm_type_name.Contains(keyWord));
             }
 
             return new ResponseWrapperWithList<SpecialLocalProductSummary>(
                 mapper.Map<IList<SpecialLocalProductSummary>>(
-                repositorySpecialLocalProductDetail.FindList(where, x => x.commodity_id, true, pageIndex-1, pageSize)
+                repositorySpecialLocalProductDetail.FindList(where, x => x.commodity_id, true, pageIndex - 1, pageSize)
                 ));
         }
-       
+
         /// <summary>
         /// 特色商品详情
         /// </summary>
@@ -263,18 +269,18 @@ namespace TourInfo.Application.Api.Controllers
         [HttpGet("GetLineDetail")]
         public ResponseWrapper<LineDetailModel> GetLineDetail(string lineId)
         {
-          //  var line = linesRepository.Get(lineId);
+            //  var line = linesRepository.Get(lineId);
             var lineDetail = lineDetailRepository.Get(lineId);
 
 
             LineDetailModel lineDetailModel = new LineDetailModel();
-           
+
             for (int i = 0; i < lineDetail.days.Count; i++)// var day in lineDetail.days)
             {
                 var day = lineDetail.days[i];
-               
+
                 var dayModel = new LineDetailModel.DayDetaill { DayIndex = i + 1 };
-                dayModel.Description=day.desc;
+                dayModel.Description = day.desc;
                 foreach (var scenic in day.place)
                 {
                     var detail = lineDetailScenicRepository.Get(scenic.type + "_" + scenic.id);
@@ -284,8 +290,8 @@ namespace TourInfo.Application.Api.Controllers
                         ImageUrl = detail.default_photo.LocalizedUrl,
                         Location = detail.location,
                         Name = detail.name_cn,
-                        RecommentStayHour =int.Parse( scenic.time),
-                        Description=detail.description
+                        RecommentStayHour = int.Parse(scenic.time),
+                        Description = detail.description
                     };
                     dayModel.Scenics.Add(scenicModel);
                 }
@@ -296,7 +302,7 @@ namespace TourInfo.Application.Api.Controllers
             return new ResponseWrapper<LineDetailModel>(lineDetailModel);
 
 
-           
+
         }
         /// <summary>
         /// 获取天气
