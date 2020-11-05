@@ -149,7 +149,7 @@ namespace TourInfo.Application.Api.Controllers
 
             string currentVersion = DateTime.Now.ToString("yyyyMMddhhmmss");
             zBTAApplication.Graspe(currentVersion);
-            eWQYApplication.Graspe(currentVersion);
+          //  eWQYApplication.Graspe(currentVersion);
             videoApplication.Graspe(currentVersion);
             logger.LogInformation(" 抓取完毕");
            
