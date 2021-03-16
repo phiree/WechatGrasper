@@ -56,7 +56,7 @@ namespace TourInfo.Domain.Application.WHY
             InfoLocalizerActivities=new InfoLocalizer<WhyActivity,string>(repositoryActivities,urlFetcher,whyImageSavedPath,whyImageClientPath);
             this.newsUrl = newsUrl;
             this.activityBaseUrl=activityBaseUrl;
-            this.imageLocalizer = new ImageLocalizerToMd(urlFetcher);
+           
             this.mD5Helper = mD5Helper;
             this.urlFetcher = urlFetcher;
             this.listRootUrl = listRootUrl;
@@ -76,63 +76,7 @@ namespace TourInfo.Domain.Application.WHY
             // GraspeAndSyncToRapi();
         }
         //场馆
-        private void GraspeAndSyncToRapi()
-        {
-            logger.LogInformation("开始抓取文化云数据");
-            var dataInResponse = GetDetails();
-            var dataInDb = repository.GetAll();
-            var mergeResult = whyMerger.Merge(dataInDb, dataInResponse);
-            foreach (var resultModel in mergeResult)
-            {
-
-                switch (resultModel.MergeResultStatus)
-                {
-                    case MergeResultStatus.Updated:
-                    case MergeResultStatus.Added:
-
-                        //是否上传图片到mdapi
-                        if (resultModel.MergeResultStatus == MergeResultStatus.Added || resultModel.ImageChanged)
-                        {
-                            try
-                            {
-
-                                string mdUrl = imageLocalizer.Localize(whyImageBaseUrl + resultModel.Item.hposter.OriginalUrl);
-                                resultModel.Item.hposter.UpdateLocalizedUrl(mdUrl);
-                            }
-                            catch (Exception ex)
-                            {
-                                logger.LogWarning($"图片上传到md失败.id:[{resultModel.Item.id}],imageurl:[{resultModel.Item.hposter.OriginalUrl}]");
-                            }
-                        }
-
-                        var rapiRequestModel = mapper.Map<RapiRequestModel>(resultModel.Item);
-                        int rapiId = rapiSync.AddOrUpdate(rapiRequestModel);
-                        resultModel.Item.RapiId = rapiId;
-                        if (resultModel.MergeResultStatus == MergeResultStatus.Added)
-                        {
-                            repository.Insert(resultModel.Item);
-                        }
-                        else
-                        {
-                            var dataToUpdate = dataInDb.Single(x => x.id == resultModel.Item.id);
-                            dataToUpdate.UpdateDbModelFromApi(resultModel.Item);
-                            ;
-                            repository.Update(dataToUpdate);
-                        }
-                        break;
-
-                    case MergeResultStatus.Deleted:
-                        repository.Delete(resultModel.Item);
-                        rapiSync.Delete(resultModel.Item.RapiId);
-                        break;
-                    case MergeResultStatus.NoChanged: break;
-
-                }
-
-
-            }
-            logger.LogInformation("文化云数据抓取完毕");
-        }
+    
 
         public void GraspActivity(string version)
         {
