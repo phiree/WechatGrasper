@@ -152,7 +152,8 @@ namespace TourInfo.Application.Api
             //{
             app.UseDeveloperExceptionPage();
             //}
-            app.UseStaticFiles();
+            //            app.UseStaticFiles();
+            app.UseFileServer();
             app.UseMvc();
             app.UseSwagger();
             app.UseSwaggerUI(options =>
