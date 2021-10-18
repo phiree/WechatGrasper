@@ -15,6 +15,7 @@ using System.Security.Cryptography.X509Certificates;
 using TourInfo.Domain.ZBTA;
 using TourInfo.Infrastracture.Migrations;
 using TourInfo.Domain.DomainModel.ZiBoWechatNews;
+using TourInfo.Domain.DomainModel.DataLog;
 
 namespace TourInfo.Infrastracture.Repository.EFCore
 {
@@ -331,6 +332,23 @@ namespace TourInfo.Infrastracture.Repository.EFCore
                 .HasIndex(x => x.childid);
             */
             #endregion
+
+            //日志
+            modelBuilder.Entity<DataSource>().HasData(
+                new DataSource { id= "528a3ebc-775c-4fca-b125-f2b3389eca34", Name="淄博文化云",BaseUrl="zbwhy.com", Status="正常" },
+                new DataSource { id= "e255daf9-3188-4e73-9849-5f510e265fad", Name="E文齐韵",BaseUrl= "w.culturedata.com.cn", Status="许可过期,已停用" },
+                new DataSource { id= "15da55b8-511f-402a-9d42-637cd87a6405", Name="存档资源",BaseUrl="rapi.zjwist.com", Status="正常" },
+                new DataSource { id= "64afbfcf-62a8-40c5-9815-ad660288108f", Name="淄博旅游资讯网",BaseUrl="zbta.net", Status="正常" },
+                new DataSource { id= "db1ea02d-1031-440c-bcae-036027e96001", Name="淄博新闻公众号",BaseUrl="----", Status="正常" }
+                );
+            modelBuilder.Entity<Client>().HasData(
+              new Client { id = "528a3ebc-775c-4fca-b125-f2b3389eca34", Name = "大厅迎宾屏",  AppId="appid001", AppSecret = "********" },
+              new Client { id = "e255daf9-3188-4e73-9849-5f510e265fad", Name = "安卓客户端",  AppId="appid002", AppSecret = "********" },
+              new Client { id = "15da55b8-511f-402a-9d42-637cd87a6405", Name = "一号大屏", AppId = "appid003", AppSecret = "********" },
+              new Client { id = "64afbfcf-62a8-40c5-9815-ad660288108f", Name = "二号大屏", AppId = "appid004", AppSecret = "********" },
+              new Client { id = "db1ea02d-1031-440c-bcae-036027e96001", Name = "三号大屏", AppId = "appid005", AppSecret = "********" }
+
+              );
         }
         // public DbSet<Entity<string>> Entities { get; set; }
         //public DbSet<VersionedEntity>  VersionedEntities { get; set; }
@@ -363,5 +381,13 @@ namespace TourInfo.Infrastracture.Repository.EFCore
         public DbSet<Domain.DomainModel.WHY.WHYNews> WhyNews { get; set; }
         //文化云活动
         public DbSet<Domain.DomainModel.WHY.WhyActivity> WhyActivities { get; set; }
+
+        //抓取-分发 日志
+        public DbSet< Client> Clients{ get; set; }
+        public DbSet<Domain.DomainModel.DataLog.DataSource> DataSources{ get; set; }
+      
+        public DbSet<Domain.DomainModel.DataLog.FetchLog> FetchLogs{ get; set; }
+        public DbSet<Domain.DomainModel.DataLog.DistributeLog> DistributeLogs{ get; set; }
+
     }
 }

@@ -17,6 +17,8 @@ using TourInfo.Domain.Application.ZiBoWechatNews;
 using TourInfo.Domain.Application.SDTA;
 using TourInfo.Domain.DomainModel.Weather;
 using TourInfo.Infrastracture;
+using TourInfo.Domain.Base;
+using TourInfo.Domain.DomainModel.DataLog;
 
 namespace TourInfo.Application.Api.Controllers
 {
@@ -38,9 +40,14 @@ namespace TourInfo.Application.Api.Controllers
           IMemoryCache _cache;
         ISDTAApplication sDTAApplication;
          IWeatherApplication weatherApplication;
-        public TourInfoController(ILogger<TourInfoController> logger, IServiceProvider serviceProvider, 
-            IRapiApplication rapiApplication, 
-            IZBTAApplication zBTAApplication, 
+
+        IRepository<FetchLog,string> fetchLogRepository;
+        IRepository<Client, string> clientRepository;
+        IRepository<DataSource, string> dataSourceRepository;
+        IRepository<DistributeLog, string> distributeRepository;
+        public TourInfoController(ILogger<TourInfoController> logger, IServiceProvider serviceProvider,
+            IRapiApplication rapiApplication,
+            IZBTAApplication zBTAApplication,
             IEWQYApplication eWQYApplication,
             IVideoApplication videoApplication,
             IWHYApplication wHYApplication,
@@ -48,21 +55,25 @@ namespace TourInfo.Application.Api.Controllers
             IMemoryCache cache,
             IDataService dataService,
             IZiBoWechatNewsApplication ziBoWechatNewsApplication
-            ,IWeatherApplication weatherApplication
-            )
+            , IWeatherApplication weatherApplication
+, IRepository<FetchLog, string> fetchLogRepository, IRepository<Client, string> clientRepository, IRepository<DataSource, string> dataSourceRepository, IRepository<DistributeLog, string> distributeRepository)
         {
-            this.weatherApplication=weatherApplication;
-            this.wHYApplication=wHYApplication;
-            this.logger=logger;
-           this.rapiApplication = rapiApplication;
+            this.weatherApplication = weatherApplication;
+            this.wHYApplication = wHYApplication;
+            this.logger = logger;
+            this.rapiApplication = rapiApplication;
             this.zBTAApplication = zBTAApplication;
             this.eWQYApplication = eWQYApplication;
-            this.videoApplication=videoApplication;
-            this.sDTAApplication=sDTAApplication;
+            this.videoApplication = videoApplication;
+            this.sDTAApplication = sDTAApplication;
             this.dataService = dataService;
-            this.serviceProvider=serviceProvider;
+            this.serviceProvider = serviceProvider;
             this._cache = cache;
-            this.ziBoWechatNewsApplication=ziBoWechatNewsApplication;
+            this.ziBoWechatNewsApplication = ziBoWechatNewsApplication;
+            this.fetchLogRepository = fetchLogRepository;
+            this.clientRepository = clientRepository;
+            this.dataSourceRepository = dataSourceRepository;
+            this.distributeRepository = distributeRepository;
         }
 
         [HttpGet("InitData")]
@@ -73,19 +84,27 @@ namespace TourInfo.Application.Api.Controllers
             return new ActionResult<string>("初始化成功");
         }
         [HttpGet("SyncWHYData")]
+        [TypeFilter(typeof(TourInfo.Application.Api.Controllers.DataLogFilter),Arguments =new object[] {"淄博文化云" })]
+        //[TourInfo.Application.Api.Controllers.DataLogFilter(DataSourceName ="淄博文化云")]
         public ActionResult<string> SyncWHYData(string version)
         {
+            
             logger.LogInformation("-----开始同步------");
             string currentVersion = DateTime.Now.ToString("yyyyMMddhhmmss");
             logger.LogInformation("开始更新数据");
-            wHYApplication.GraspActivity(currentVersion);
+         
+           wHYApplication.GraspActivity(currentVersion);
             //  wHYApplication.GraspNews(currentVersion);
             //更新活动
             logger.LogInformation("-----同步完成------");
+           
+          
+           
             return "同步完成";
 
         }
         [HttpGet("SyncData")]
+
         public ActionResult<dynamic> SyncData(string version)
         {
             logger.LogInformation("-----开始同步------");
@@ -116,6 +135,8 @@ namespace TourInfo.Application.Api.Controllers
 
         }
         [HttpGet("GetZiboWechatNews")]
+        [TypeFilter(typeof(TourInfo.Application.Api.Controllers.DataLogFilter), Arguments = new object[] { "淄博新闻公众号" })]
+
         public ActionResult<string> GetZiboWechatNews(string dataVersion)
         {
 
@@ -127,6 +148,8 @@ namespace TourInfo.Application.Api.Controllers
 
         }
         [HttpGet("GetZbtaNewsDetail")]
+        [TypeFilter(typeof(TourInfo.Application.Api.Controllers.DataDistributeFilter))]
+
         public ActionResult<string> GetZbtaNewsDetail(string id)
         {
             
@@ -144,6 +167,8 @@ namespace TourInfo.Application.Api.Controllers
         }
 
         [HttpGet("GraspeData")]
+        [TypeFilter(typeof(TourInfo.Application.Api.Controllers.DataLogFilter), Arguments = new object[] { "淄博旅游资讯网" })]
+
         public ActionResult<dynamic> GraspeData( )
         {
 

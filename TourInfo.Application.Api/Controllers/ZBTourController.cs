@@ -61,6 +61,7 @@ namespace TourInfo.Application.Api.Controllers
         // GET: api/<ZBTourController>/GetHomeCarousels
         string host = "https://zb.4yankj.cn";
         [HttpGet("GetHomeCarousels")]
+
         public ResponseWrapperWithList<HomeCarousel> GetHomeCarousels(int size = 3)
         {
             //var wechatList= repositoryWechatNews.GetList(0,3);
@@ -100,6 +101,8 @@ namespace TourInfo.Application.Api.Controllers
         /// <param name="pageSize">分页页幅,默认10条</param>
         /// <returns></returns>
         [HttpGet("GetHomeHotNews")]
+        [TypeFilter(typeof(TourInfo.Application.Api.Controllers.DataDistributeFilter))]
+
         public ResponseWrapperWithList<HotNews> GetHomeHotNews(int pageIndex = 1, int pageSize = 20)
         {
             // var wechatList = repositoryWechatNews.GetList(0, 1);
@@ -139,6 +142,8 @@ namespace TourInfo.Application.Api.Controllers
         /// <param name="pageSize">每页数量</param>
         /// <returns></returns>
         [HttpGet("GetHotActivities")]
+        [TypeFilter(typeof(TourInfo.Application.Api.Controllers.DataDistributeFilter))]
+
         public ResponseWrapperWithList<WhyActivitySummary> GetHotActivities(int pageIndex = 1, int pageSize = 20)
         {
             Func<WhyActivity, DateTime> funOrder = x => x.createTime;
@@ -162,6 +167,8 @@ namespace TourInfo.Application.Api.Controllers
         /// <param name="id">活动列表中返回的Id</param>
         /// <returns></returns>
         [HttpGet("GetActivity")]
+        [TypeFilter(typeof(TourInfo.Application.Api.Controllers.DataDistributeFilter))]
+
         public ResponseWrapper<WhyActivityDetail> GetActivity(string id)
         {
 
@@ -183,6 +190,8 @@ namespace TourInfo.Application.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("GetCityGuides")]
+        [TypeFilter(typeof(TourInfo.Application.Api.Controllers.DataDistributeFilter))]
+
         public ResponseWrapperWithList<CityGuideListModel> GetCityGuides()
         {
             var list = repositoryCityGuide.FindList(x => x.name == "淄博", o => o.name, true, 0, 10).SelectMany(x => x.category).ToList();
@@ -198,6 +207,7 @@ namespace TourInfo.Application.Api.Controllers
         /// <param name="id">城市锦囊列表返回的id</param>
         /// <returns></returns>
         [HttpGet("GetCityGuide")]
+ 
         public ResponseWrapper<CityGuideDetailModel> GetCityGuide(string id)
         {
 

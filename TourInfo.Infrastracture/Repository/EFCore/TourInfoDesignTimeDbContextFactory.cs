@@ -18,7 +18,7 @@ namespace TourInfo.Infrastracture.Repository.EFCore
             var builder = new DbContextOptionsBuilder<TourInfoDbContext>();
            // builder.UseSqlServer("server = (localdb)\\mssqllocaldb; database = yf; Integrated Security = SSPI; ");
             //builder.UseSqlite("Data Source=tourinfodb_backend.db3;");
-            builder.UseSqlServer("server = 111.230.100.241; database = yf; uid=sa;pwd=!!Hn@nsn123; ");
+            builder.UseSqlServer("server = (localdb)\\mssqllocaldb; database = yf; Integrated Security = SSPI;");
 
 
             var context = new TourInfoDbContext(builder.Options);

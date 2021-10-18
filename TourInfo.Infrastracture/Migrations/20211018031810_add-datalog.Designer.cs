@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TourInfo.Infrastracture.Repository.EFCore;
 
 namespace TourInfo.Infrastracture.Migrations
 {
     [DbContext(typeof(TourInfoDbContext))]
-    partial class TourInfoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211018031810_add-datalog")]
+    partial class adddatalog
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -132,7 +134,7 @@ namespace TourInfo.Infrastracture.Migrations
                     b.Property<string>("id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("DeviceName");
+                    b.Property<string>("DeviceId");
 
                     b.Property<string>("DistirbuteResult");
 
@@ -160,7 +162,7 @@ namespace TourInfo.Infrastracture.Migrations
 
                     b.Property<string>("FetchResult");
 
-                    b.Property<string>("SourceName");
+                    b.Property<string>("SourceId");
 
                     b.HasKey("id");
 

@@ -4,6 +4,14 @@
         <name>TourInfo.Domain</name>
     </assembly>
     <members>
+        <member name="T:TourInfo.Domain.Application.DataLog.DataLogApplication">
+            <summary>
+            目前自动调用的接口: 
+            tourinfo/syncwhydata
+            tourinfo/getzibowechatnews
+            tourinfo/graspedata
+            </summary>
+        </member>
         <!-- Badly formed XML comment ignored for member "P:TourInfo.Domain.Application.EWQY.ActivityModel.Version" -->
         <member name="P:TourInfo.Domain.Application.EWQY.ActivityModel.Fingerprint">
             <summary>
@@ -110,6 +118,46 @@
         <member name="P:TourInfo.Domain.Base.VersionedEntity`1.Fingerprint">
             <summary>
             数据指纹，用于判断内容是否变更
+            </summary>
+        </member>
+        <member name="T:TourInfo.Domain.DomainModel.DataLog.FetchLog">
+            <summary>
+            抓取日志
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataLog.FetchLog.SourceName">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataLog.FetchLog.FetchResult">
+            <summary>
+            抓取状态: 成功, 失败. 失败原因之类.
+            </summary>
+        </member>
+        <member name="T:TourInfo.Domain.DomainModel.DataLog.DistributeLog">
+            <summary>
+            分发日志
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataLog.DistributeLog.DistirbuteResult">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:TourInfo.Domain.DomainModel.DataLog.DataSource">
+            <summary>
+            数据源
+            </summary>
+        </member>
+        <member name="P:TourInfo.Domain.DomainModel.DataLog.DataSource.Status">
+            <summary>
+            目前状态: 正常, 已停用.
+            </summary>
+        </member>
+        <member name="T:TourInfo.Domain.DomainModel.DataLog.Client">
+            <summary>
+            客户端. 获取这些数据的客户端
             </summary>
         </member>
         <member name="T:TourInfo.Domain.DomainModel.DataSync.LocationLongtitudeAutoMapResolver">
