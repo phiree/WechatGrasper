@@ -23,26 +23,26 @@ using TourInfo.Application.Api.Models;
 
 namespace TourInfo.Application.Api.Controllers
 {
-    
+
     [Route("api/[controller]")]
     [ApiController]
     public class DataLogController : ControllerBase
     {
-       
+
         IZBTAApplication zBTAApplication;
         IEWQYApplication eWQYApplication;
-        IRapiApplication  rapiApplication;
-        IVideoApplication  videoApplication;
+        IRapiApplication rapiApplication;
+        IVideoApplication videoApplication;
         IDataService dataService;
         IServiceProvider serviceProvider;
-         IWHYApplication wHYApplication;
+        IWHYApplication wHYApplication;
         IZiBoWechatNewsApplication ziBoWechatNewsApplication;
         ILogger<TourInfoController> logger;
-          IMemoryCache _cache;
+        IMemoryCache _cache;
         ISDTAApplication sDTAApplication;
-         IWeatherApplication weatherApplication;
+        IWeatherApplication weatherApplication;
 
-        IRepository<FetchLog,string> fetchLogRepository;
+        IRepository<FetchLog, string> fetchLogRepository;
         IRepository<Client, string> clientRepository;
         IRepository<DataSource, string> dataSourceRepository;
         IRepository<DistributeLog, string> distributeRepository;
@@ -81,35 +81,50 @@ namespace TourInfo.Application.Api.Controllers
         /// <summary>
         /// 抓取日志
         /// </summary>
-        /// <param name="pageIndex"></param>
-        /// <param name="pageSize"></param>
+        /// <param name="pageIndex">页码 默认1</param>
+        /// <param name="pageSize">每页数量 默认10</param>
+        /// <param name="sourceName">数据源 默认空</param>
+        /// <param name="begin">抓取开始时间 默认空</param>
+        /// <param name="end">抓取结束时间 默认空</param>
         /// <returns></returns>
         [HttpGet("GetFetchLogs")]
-        public PagedResult<FetchLog> GetFetchLogs(int pageIndex, int pageSize)
+        public PagedResult<FetchLog> GetFetchLogs(int pageIndex = 1, int pageSize = 10, string sourceName = "", DateTime? begin = null, DateTime? end = null)
         {
+            var predicate = PredicateBuilder.True<FetchLog>();
+            if (!string.IsNullOrEmpty(sourceName)) { predicate = predicate.And(x => x.SourceName == sourceName); }
+            if (begin != null) { predicate = predicate.And(x => x.FetchBeginTime >= begin); }
+            if (end != null) { predicate = predicate.And(x => x.FetchEndTime <= end); }
 
-            var datas = fetchLogRepository.GetAll();
+            var datas = fetchLogRepository.GetAll().Where(predicate.Compile());
             return new PagedResult<FetchLog>
             {
-                Data = datas.Skip((pageIndex - 1) * pageSize).ToList(),
-                Total = datas.Count
+                Data = datas.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList(),
+                Total = datas.Count()
             };
         }
         /// <summary>
         /// 分发日志
         /// </summary>
-        /// <param name="pageIndex"></param>
-        /// <param name="pageSize"></param>
+        /// <param name="pageIndex">页码 默认1</param>
+        /// <param name="pageSize">每页数量 默认10</param>
+        /// <param name="sourceName">设备名 默认空</param>
+        /// <param name="begin">抓取开始时间 默认空</param>
+        /// <param name="end">抓取结束时间 默认空</param>
         /// <returns></returns>
         [HttpGet("GetDistributeLogs")]
-        public PagedResult<DistributeLog> GetDistributeLogs(int pageIndex, int pageSize)
+        public PagedResult<DistributeLog> GetDistributeLogs(int pageIndex = 1, int pageSize = 10, string deviceName = "", DateTime? begin = null, DateTime? end = null)
         {
+            var predicate = PredicateBuilder.True<DistributeLog>();
+            if (!string.IsNullOrEmpty(deviceName)) { predicate = predicate.And(x => x.DeviceName == deviceName); }
+            if (begin != null) { predicate = predicate.And(x => x.DistributeBeginTime >= begin); }
+            if (end != null) { predicate = predicate.And(x => x.DistributeEndTime <= end); }
 
-            var datas = distributeRepository.GetAll();
+
+            var datas = distributeRepository.GetAll().Where(predicate.Compile());
             return new PagedResult<DistributeLog>
             {
-                Data = datas.Skip((pageIndex - 1) * pageSize).ToList(),
-                Total = datas.Count
+                Data = datas.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList(),
+                Total = datas.Count()
             };
         }
         /// <summary>
@@ -153,10 +168,54 @@ namespace TourInfo.Application.Api.Controllers
         /// <param name="password"></param>
         /// <returns></returns>
         [HttpGet("AdminLogin")]
-        public bool AdminLogin(string userId,string password)
+        public bool AdminLogin(string userId, string password)
         {
 
             return true;
+        }
+
+        Random r = new Random(100);
+        [ApiExplorerSettings(IgnoreApi = true)]
+        [HttpPost("BuildDataTest")]
+        public void BuildData()
+        {
+            var endTime = DateTime.Now;
+            DateTime date = new DateTime(2019, 5, 10);
+
+            var allClients = clientRepository.GetAll();
+            var allSources = dataSourceRepository.GetAll();
+
+            while (date <= endTime)
+            {
+                fetchLogRepository.Insert(
+                    new FetchLog
+                    {
+                        FetchAmount = r.Next(100),
+                        FetchBeginTime = date,
+                        FetchEndTime = date.AddSeconds(r.Next(30))
+                    ,
+                        FetchResult = "抓取成功",
+                        id = Guid.NewGuid().ToString(),
+                        SourceName = allSources[r.Next(allSources.Count)].Name
+                    });
+
+                distributeRepository.Insert(
+                     new DistributeLog
+                     {
+                         DistributeAmount = r.Next(50),
+                         DistributeBeginTime = date.AddSeconds(r.Next(3600)),
+                         DistributeEndTime = date.AddSeconds(r.Next(3600, 7200))
+                    ,
+                         DistirbuteResult = "分发成功",
+                         id = Guid.NewGuid().ToString(),
+                         DeviceName = allClients[r.Next(allSources.Count)].Name
+                     }
+                    );
+
+                date = date.AddDays(1);
+
+            }
+
         }
 
     }

@@ -33,7 +33,7 @@ namespace TourInfo.Application.Api.Controllers
             logger.LogDebug("datalogfilter OnActionExecutionAsync" + DataSourceName);
             repository.Insert(new FetchLog
             {
-                FetchAmount = DateTime.Now.Second,
+                FetchAmount = DateTime.Now.Second+2,
                 FetchBeginTime = DateTime.Now,
                 id = logId,
                 FetchResult = "抓取中",

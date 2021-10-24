@@ -4,20 +4,26 @@
         <name>TourInfo.Application.Api</name>
     </assembly>
     <members>
-        <member name="M:TourInfo.Application.Api.Controllers.DataLogController.GetFetchLogs(System.Int32,System.Int32)">
+        <member name="M:TourInfo.Application.Api.Controllers.DataLogController.GetFetchLogs(System.Int32,System.Int32,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
             <summary>
             抓取日志
             </summary>
-            <param name="pageIndex"></param>
-            <param name="pageSize"></param>
+            <param name="pageIndex">页码 默认1</param>
+            <param name="pageSize">每页数量 默认10</param>
+            <param name="sourceName">数据源 默认空</param>
+            <param name="begin">抓取开始时间 默认空</param>
+            <param name="end">抓取结束时间 默认空</param>
             <returns></returns>
         </member>
-        <member name="M:TourInfo.Application.Api.Controllers.DataLogController.GetDistributeLogs(System.Int32,System.Int32)">
+        <member name="M:TourInfo.Application.Api.Controllers.DataLogController.GetDistributeLogs(System.Int32,System.Int32,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
             <summary>
             分发日志
             </summary>
-            <param name="pageIndex"></param>
-            <param name="pageSize"></param>
+            <param name="pageIndex">页码 默认1</param>
+            <param name="pageSize">每页数量 默认10</param>
+            <param name="sourceName">设备名 默认空</param>
+            <param name="begin">抓取开始时间 默认空</param>
+            <param name="end">抓取结束时间 默认空</param>
             <returns></returns>
         </member>
         <member name="M:TourInfo.Application.Api.Controllers.DataLogController.GetClients(System.Int32,System.Int32)">

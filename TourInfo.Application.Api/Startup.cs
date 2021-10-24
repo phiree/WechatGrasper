@@ -45,6 +45,10 @@ namespace TourInfo.Application.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>options.AddDefaultPolicy(builder =>
+            {
+                builder.WithOrigins("*").AllowCredentials();
+            }));
             services.AddHttpClient();
             services.AddMvc(x => x.EnableEndpointRouting = false)
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
@@ -154,6 +158,7 @@ namespace TourInfo.Application.Api
             //}
             //            app.UseStaticFiles();
             app.UseFileServer();
+            app.UseCors();
             app.UseMvc();
             app.UseSwagger();
             app.UseSwaggerUI(options =>

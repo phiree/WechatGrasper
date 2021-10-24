@@ -22,7 +22,7 @@ using TourInfo.Domain.DomainModel.DataLog;
 
 namespace TourInfo.Application.Api.Controllers
 {
-    [ApiExplorerSettings(IgnoreApi = true)]
+ //   [ApiExplorerSettings(IgnoreApi = true)]
     [Route("api/[controller]")]
     [ApiController]
     public class TourInfoController : ControllerBase
