@@ -95,7 +95,7 @@ namespace TourInfo.Application.Api.Controllers
             if (begin != null) { predicate = predicate.And(x => x.FetchBeginTime >= begin); }
             if (end != null) { predicate = predicate.And(x => x.FetchEndTime <= end); }
 
-            var datas = fetchLogRepository.GetAll().Where(predicate.Compile());
+            var datas = fetchLogRepository.GetAll().Where(predicate.Compile()).OrderByDescending(x=>x.FetchBeginTime);
             return new PagedResult<FetchLog>
             {
                 Data = datas.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList(),
@@ -120,7 +120,7 @@ namespace TourInfo.Application.Api.Controllers
             if (end != null) { predicate = predicate.And(x => x.DistributeEndTime <= end); }
 
 
-            var datas = distributeRepository.GetAll().Where(predicate.Compile());
+            var datas = distributeRepository.GetAll().Where(predicate.Compile()).OrderByDescending(x => x.DistributeBeginTime);
             return new PagedResult<DistributeLog>
             {
                 Data = datas.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList(),
