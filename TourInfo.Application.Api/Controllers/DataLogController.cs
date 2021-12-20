@@ -120,7 +120,7 @@ namespace TourInfo.Application.Api.Controllers
             if (end != null) { predicate = predicate.And(x => x.DistributeEndTime <= end); }
 
 
-            var datas = distributeRepository.GetAll().Where(predicate.Compile()).OrderByDescending(x=>x.DistributeBeginTime);
+            var datas = distributeRepository.GetAll().Where(predicate.Compile());
             return new PagedResult<DistributeLog>
             {
                 Data = datas.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList(),
