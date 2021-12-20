@@ -32,6 +32,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TourInfo.DomainTests", "Tou
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tourinfo.WebpConverter", "Tourinfo.WebpConverter\Tourinfo.WebpConverter.csproj", "{FDF0F67B-BC39-40D8-833B-FCB157CE3289}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecoverImages", "RecoverImages\RecoverImages.csproj", "{C1B2D58D-E15F-4DD0-A1C7-FF8F41B017C8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,6 +64,10 @@ Global
 		{FDF0F67B-BC39-40D8-833B-FCB157CE3289}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FDF0F67B-BC39-40D8-833B-FCB157CE3289}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FDF0F67B-BC39-40D8-833B-FCB157CE3289}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1B2D58D-E15F-4DD0-A1C7-FF8F41B017C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1B2D58D-E15F-4DD0-A1C7-FF8F41B017C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1B2D58D-E15F-4DD0-A1C7-FF8F41B017C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1B2D58D-E15F-4DD0-A1C7-FF8F41B017C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
