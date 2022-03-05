@@ -16,6 +16,7 @@ using TourInfo.Domain.ZBTA;
 using TourInfo.Infrastracture.Migrations;
 using TourInfo.Domain.DomainModel.ZiBoWechatNews;
 using TourInfo.Domain.DomainModel.DataLog;
+using TourInfo.Domain.DomainModel;
 
 namespace TourInfo.Infrastracture.Repository.EFCore
 {
@@ -388,6 +389,7 @@ namespace TourInfo.Infrastracture.Repository.EFCore
       
         public DbSet<Domain.DomainModel.DataLog.FetchLog> FetchLogs{ get; set; }
         public DbSet<Domain.DomainModel.DataLog.DistributeLog> DistributeLogs{ get; set; }
+        public DbSet<VisitLog> VisitLogs { get; set; }
 
     }
 }

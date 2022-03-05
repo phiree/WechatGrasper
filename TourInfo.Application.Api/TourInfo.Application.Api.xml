@@ -213,5 +213,40 @@
             包含景区数量
             </summary>
         </member>
+        <member name="P:TourInfo.Application.Api.Models.VisitLogModel.TotalAmount">
+            <summary>
+            累计总数
+            </summary>
+        </member>
+        <member name="P:TourInfo.Application.Api.Models.VisitLogModel.MonthPV">
+            <summary>
+            月访问次数
+            </summary>
+        </member>
+        <member name="P:TourInfo.Application.Api.Models.VisitLogModel.MonthUV">
+            <summary>
+            月访问人数
+            </summary>
+        </member>
+        <member name="P:TourInfo.Application.Api.Models.VisitLogModel.MonthNewUserAmount">
+            <summary>
+            月新增用户
+            </summary>
+        </member>
+        <member name="P:TourInfo.Application.Api.Models.VisitLogModel.YearPv">
+            <summary>
+            年访问次数
+            </summary>
+        </member>
+        <member name="P:TourInfo.Application.Api.Models.VisitLogModel.YearUV">
+            <summary>
+            年访问人数
+            </summary>
+        </member>
+        <member name="P:TourInfo.Application.Api.Models.VisitLogModel.YearNewUserAmount">
+            <summary>
+            年新增用户
+            </summary>
+        </member>
     </members>
 </doc>
