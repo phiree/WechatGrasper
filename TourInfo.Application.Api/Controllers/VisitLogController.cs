@@ -33,7 +33,7 @@ namespace TourInfo.Application.Api.Controllers
             var yearData = GetYearData(targetMonth.Year);
             return new VisitLogModel
             {
-                TotalAmount = GetTotal(),
+                TotalAmount = total,
                 MonthPV = monthData.PV,
                 MonthUV = monthData.UV,
                 MonthNewUserAmount = monthData.NewUser,
@@ -51,7 +51,8 @@ namespace TourInfo.Application.Api.Controllers
         private VisitLogData GetMonthData(int year, int month)
         {
             var where = PredicateBuilder.True<VisitLog>();
-            where = where.And(x => x.Year == year && x.Month == x.Month);
+            where = where.And(x => x.Year == year);
+            where = where.And(x => x.Month == month);
             var monthData = repository.FindList(where.Compile(), x => x.Year, false, 0, 20);
             if (monthData.Count <=0) { throw new Exception($"没有找到对应数据{year},{month}"); }
             else if (monthData.Count > 1) { throw new Exception($"找到多条对应数据{year},{month}"); }
