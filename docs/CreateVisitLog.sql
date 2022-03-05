@@ -8,8 +8,8 @@ declare @uv int
 declare @newuser int
 declare @date datetime
 set @index=1
-set @month=2
-set @year=2022
+set @month=1
+set @year=2020
 
 while(@index<=120)
 begin 
