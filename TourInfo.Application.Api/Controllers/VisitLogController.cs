@@ -47,7 +47,8 @@ namespace TourInfo.Application.Api.Controllers
         }
         private int GetTotal()
         {
-            return repository.GetAll().Sum(x => x.UV);
+            var lastMonth=DateTime.Now.AddMonths(-1);
+            return repository.FindList(x=>x.Year*100+x.Month<=lastMonth.Year*100+ lastMonth.Month,x=>1,false,0,9999999).Sum(x => x.UV);
         }
         private VisitLogData GetMonthData(int year, int month)
         {
@@ -55,13 +56,14 @@ namespace TourInfo.Application.Api.Controllers
             where = where.And(x => x.Year == year);
             where = where.And(x => x.Month == month);
             var monthData = repository.FindList(where.Compile(), x => x.Year, false, 0, 20);
-            if (monthData.Count <= 0) { throw new Exception($"没有找到对应数据{year},{month}"); }
+            if (monthData.Count <= 0) { return VisitLogData.None; }
             else if (monthData.Count > 1) { throw new Exception($"找到多条对应数据{year},{month}"); }
             return new VisitLogData { PV = monthData[0].PV, UV = monthData[0].UV, NewUser = monthData[0].NewUsersAmount };
 
         }
         public class VisitLogData
         {
+            public static VisitLogData None =>new VisitLogData();
             public int PV { get; set; }
      
             public int UV { get; set; }
@@ -74,7 +76,7 @@ namespace TourInfo.Application.Api.Controllers
             var where = PredicateBuilder.True<VisitLog>();
             where = where.And(x => x.Year == year);
             var monthData = repository.FindList(where.Compile(), x => x.Year, false, 0, 99999);
-            if (monthData.Count <= 0) { throw new Exception($"没有找到对应数据{year}"); }
+            if (monthData.Count <= 0) {return VisitLogData.None;  }
             int pv = monthData.Sum(x => x.PV);
             return new VisitLogData
             {
