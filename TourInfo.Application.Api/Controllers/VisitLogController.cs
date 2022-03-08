@@ -14,35 +14,36 @@ namespace TourInfo.Application.Api.Controllers
     [ApiController]
     public class VisitLogController : ControllerBase
     {
-        IRepository<VisitLog,string> repository;
+        IRepository<VisitLog, string> repository;
 
         public VisitLogController(IRepository<VisitLog, string> repository)
         {
             this.repository = repository;
         }
 
-       
+
         [HttpGet("GetVisitLog")]
         public VisitLogModel GetVisitLog(int year, int month)
 
         {
             //最新数据不能超过上月
-           var targetMonth= EnsureTargetTime(year, month);
+            var targetMonth = EnsureTargetTime(year, month);
+            var previousMonth=targetMonth.AddMonths(-1);
+            var previousYear=targetMonth.AddYears(-1);
             var total = GetTotal();
             var monthData = GetMonthData(targetMonth.Year, targetMonth.Month);
-            var yearData = GetYearData(targetMonth.Year);
-            return new VisitLogModel
-            {
-                TotalAmount = total,
-                MonthPV = monthData.PV,
-                MonthUV = monthData.UV,
-                MonthNewUserAmount = monthData.NewUser,
+            var monthDataPrevious=GetMonthData(previousMonth.Year,previousMonth.Month);
 
-                YearPv = yearData.PV,
-                YearUV = yearData.UV,
-                YearNewUserAmount = yearData.NewUser
-            };
-           
+            var yearData = GetYearData(targetMonth.Year);
+            var yearDataPreviou=GetYearData(previousYear.Year);
+            return new VisitLogModel(
+                total,
+                monthData.PV,monthData.UV,monthData.NewUser,
+                monthDataPrevious.PV,monthDataPrevious.UV,monthDataPrevious.NewUser,
+                yearData.PV,yearData.UV,yearData.NewUser,
+                yearDataPreviou.PV,yearDataPreviou.UV,yearDataPreviou.NewUser
+                );
+            
         }
         private int GetTotal()
         {
@@ -54,15 +55,19 @@ namespace TourInfo.Application.Api.Controllers
             where = where.And(x => x.Year == year);
             where = where.And(x => x.Month == month);
             var monthData = repository.FindList(where.Compile(), x => x.Year, false, 0, 20);
-            if (monthData.Count <=0) { throw new Exception($"没有找到对应数据{year},{month}"); }
+            if (monthData.Count <= 0) { throw new Exception($"没有找到对应数据{year},{month}"); }
             else if (monthData.Count > 1) { throw new Exception($"找到多条对应数据{year},{month}"); }
             return new VisitLogData { PV = monthData[0].PV, UV = monthData[0].UV, NewUser = monthData[0].NewUsersAmount };
 
         }
-        public class VisitLogData { 
-        public int PV { get; set; }
-        public int UV { get; set; }
-        public int NewUser { get; set; }
+        public class VisitLogData
+        {
+            public int PV { get; set; }
+     
+            public int UV { get; set; }
+  
+            public int NewUser { get; set; }
+      
         }
         private VisitLogData GetYearData(int year)
         {
@@ -92,6 +97,6 @@ namespace TourInfo.Application.Api.Controllers
             return targetMonth;
         }
 
-        
+
     }
 }
