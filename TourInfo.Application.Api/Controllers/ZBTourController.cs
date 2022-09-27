@@ -144,22 +144,22 @@ namespace TourInfo.Application.Api.Controllers
         [HttpGet("GetHotActivities")]
         [TypeFilter(typeof(TourInfo.Application.Api.Controllers.DataDistributeFilter))]
 
-        public ResponseWrapperWithList<WhyActivitySummary> GetHotActivities(int pageIndex = 1, int pageSize = 20)
+        public ResponseWrapperWithList<ActivitySummary> GetHotActivities(int pageIndex = 1, int pageSize = 20)
         {
             Func<WhyActivity, DateTime> funOrder = x => x.createTime;
             var activities = whyActivityRepository.FindList(x => true, funOrder, true, pageIndex - 1, pageSize);
-
-            var activitiyModels = mapper.Map<List<WhyActivitySummary>>(activities)
+            var activitiesFromWeChat= repositoryWechatNews.FindList(x=>true,x=>x.pubtime,true,pageIndex-1,pageSize);
+            var activitiyModels = mapper.Map<List<ActivitySummary>>(activitiesFromWeChat)
                 .Select(x =>
                 {
                     x.ImageUrl =
           (host + "/" + x.ImageUrl).Replace(@"\", @"/");
                     return x;
                 }).OrderByDescending(x => x.Date).ToList();
-
+            
 
             //  var zbtaCa=mapper.Map<List<HomeCarousel>>(zbtaNewsList);
-            return new ResponseWrapperWithList<WhyActivitySummary>(activitiyModels);
+            return new ResponseWrapperWithList<ActivitySummary>(activitiyModels);
         }
         /// <summary>
         /// 活动详情
@@ -169,19 +169,19 @@ namespace TourInfo.Application.Api.Controllers
         [HttpGet("GetActivity")]
         [TypeFilter(typeof(TourInfo.Application.Api.Controllers.DataDistributeFilter))]
 
-        public ResponseWrapper<WhyActivityDetail> GetActivity(string id)
+        public ResponseWrapper<ActivityDetail> GetActivity(string id)
         {
 
-            var activity = whyActivityRepository.Get(id);
+            var activity = repositoryWechatNews.Get(id);// whyActivityRepository.Get(id);
 
-            var activitiyModel = mapper.Map<WhyActivityDetail>(activity);
+            var activitiyModel = mapper.Map<ActivityDetail>(activity);
             activitiyModel.ImageUrl =
            (host + "/" + activitiyModel.ImageUrl).Replace(@"\", @"/");
 
 
 
             //  var zbtaCa=mapper.Map<List<HomeCarousel>>(zbtaNewsList);
-            return new ResponseWrapper<WhyActivityDetail>(activitiyModel);
+            return new ResponseWrapper<ActivityDetail>(activitiyModel);
         }
 
         IRepository<CityGuide, string> repositoryCityGuide;

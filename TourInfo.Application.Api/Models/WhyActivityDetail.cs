@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace TourInfo.Application.Api.Models
 {
-    public   class WhyActivityDetail:WhyActivitySummary
+    public   class ActivityDetail:ActivitySummary
     {
         
       public string Content { get;set;}

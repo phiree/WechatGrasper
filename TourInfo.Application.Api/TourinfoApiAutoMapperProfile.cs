@@ -46,10 +46,18 @@ namespace TourInfo.Application.Api
                 .IncludeBase<ZbtaNews, Summary>()
            .ForMember(x => x.Content, c => c.MapFrom(d => d.details.ImageLocalizedText))
               ;
+            CreateMap<ZiBoWechatNews, Models.ActivitySummary>()
+           
+          .ForMember(x => x.Id, c => c.MapFrom(d => d.id))
+          .ForMember(x => x.Title, c => c.MapFrom(d => d.title))
+             .ForMember(x => x.ImageUrl, c => c.MapFrom(d => d.img.LocalizedUrl.Replace(".webp", ".jpg")))
+              .ForMember(x => x.Date, c => c.MapFrom(d => Convert.ToDateTime(d.pubtime).ToString("yyyy-MM-dd")))
+                 .ForMember(x => x.StartDate, c => c.MapFrom(d => Convert.ToDateTime(d.pubtime).ToString("yyyy-MM-dd")))
+                    .ForMember(x => x.EndDate, c => c.MapFrom(d => Convert.ToDateTime(d.pubtime).ToString("yyyy-MM-dd")))
+                    ;
 
-
-            CreateMap<WhyActivity, Models.WhyActivitySummary>()
-                .Include<WhyActivity, WhyActivityDetail>()
+            CreateMap<WhyActivity, Models.ActivitySummary>()
+                .Include<WhyActivity, ActivityDetail>()
              .ForMember(x => x.Id, c => c.MapFrom(d => d.id))
              .ForMember(x => x.Title, c => c.MapFrom(d => d.name))
                 .ForMember(x => x.ImageUrl, c => c.MapFrom(d => d.hPoster.LocalizedUrl.Replace(".webp",".jpg")))
@@ -57,10 +65,12 @@ namespace TourInfo.Application.Api
                     .ForMember(x => x.StartDate, c => c.MapFrom(d => Convert.ToDateTime(d.recentHoldStartTime).ToString("yyyy-MM-dd")))
                        .ForMember(x => x.EndDate, c => c.MapFrom(d => Convert.ToDateTime(d.recentHoldEndTime).ToString("yyyy-MM-dd")))
                        ;
-            CreateMap<WhyActivity, Models.WhyActivityDetail>()
+            CreateMap<WhyActivity, Models.ActivityDetail>()
                      .ForMember(x => x.Content, c => c.MapFrom(d => d.content.Replace(".webp",".jpg")));
              ;
-
+            CreateMap<ZiBoWechatNews, Models.ActivityDetail>()
+                    .ForMember(x => x.Content, c => c.MapFrom(d => d.url));
+            ;
             CreateMap<CityGuide.Category.List, CityGuideListModel.GuideLineTitle>()
                   .ForMember(x => x.Id, c => c.MapFrom(d => d.id))
                     .ForMember(x => x.Name, c => c.MapFrom(d => d.title))
