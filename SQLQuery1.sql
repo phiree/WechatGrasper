@@ -1,4 +1,4 @@
-﻿----delete from SDTASpecialLocalProductDetail 
+﻿--delete from SDTASpecialLocalProductDetail 
 select p.* from SDTASpecialLocalProductDetail d 
 inner join SDTASpecialLocalProductDetailPictures p 
 on d.id=p.SpecialLocalProducId 
